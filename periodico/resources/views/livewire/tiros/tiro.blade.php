@@ -28,6 +28,7 @@
                                                     @keydown.escape="showDatepicker = false"
                                                     class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600 font-medium"
                                                     wire:model='date' id="date" name="date" placeholder="Select date">
+                                                <input type="hidden" >
                                                 <button wire:click.prevent="date()"
                                                     class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">Enviar</button>
                                             </form>
