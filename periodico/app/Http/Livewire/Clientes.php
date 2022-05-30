@@ -56,25 +56,6 @@ class Clientes extends Component
                 ->orWhere('telefono', 'LIKE', $keyWord)
                 ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
                 ->paginate(15),
-            'domicilios' => Domicilio::latest()
-                ->orWhere('calle', 'LIKE', $keyWord)
-                ->orWhere('noint', 'LIKE', $keyWord)
-                ->orWhere('noext', 'LIKE', $keyWord)
-                ->orWhere('colonia', 'LIKE', $keyWord)
-                ->orWhere('cp', 'LIKE', $keyWord)
-                ->orWhere('localidad', 'LIKE', $keyWord)
-                ->orWhere('municipio', 'LIKE', $keyWord)
-                ->orWhere('referencia', 'LIKE', $keyWord)
-                ->paginate(15),
-            'ejemplares' => Ejemplar::latest()
-                ->orWhere('lunes', 'LIKE', $keyWord)
-                ->orWhere('martes', 'LIKE', $keyWord)
-                ->orWhere('miercoles', 'LIKE', $keyWord)
-                ->orWhere('jueves', 'LIKE', $keyWord)
-                ->orWhere('viernes', 'LIKE', $keyWord)
-                ->orWhere('sabado', 'LIKE', $keyWord)
-                ->orWhere('domingo', 'LIKE', $keyWord)
-                ->paginate(15),
         ], compact('data', 'rutas', 'tarifas'));
     }
     public function create()
