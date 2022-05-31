@@ -31,8 +31,7 @@ return new class extends Migration
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
             $table->foreign('ruta_id')->references('id')->on('ruta')->onDelete('cascade');
             $table->foreign('tarifa_id')->references('id')->on('tarifa')->onDelete('cascade');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

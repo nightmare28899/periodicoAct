@@ -26,9 +26,7 @@ return new class extends Migration
             $table->string('email_cobranza')->nullable();
             $table->string('telefono')->nullable();
             $table->string('regimen_fiscal');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

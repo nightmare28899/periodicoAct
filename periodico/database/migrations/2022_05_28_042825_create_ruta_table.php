@@ -21,8 +21,7 @@ return new class extends Migration
             $table->string('repartidor');
             $table->string('cobrador');
             $table->string('ctaespecial')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

@@ -24,9 +24,7 @@ return new class extends Migration
             $table->integer('viernes');
             $table->integer('sabado');
             $table->integer('domingo');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
-            $table->softDeletes();
+            $table->timestamps();
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
         });
     }

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('tipo');
             $table->integer('ordinario');
             $table->string('dominical');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

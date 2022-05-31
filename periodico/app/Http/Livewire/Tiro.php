@@ -12,31 +12,62 @@ use Illuminate\Http\Request;
 
 class Tiro extends Component
 {
-    public $Ejemplares, $keyWord, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $created_at, $ejemplar_id, $date;
+    public $Ejemplares, $keyWord, $Monday, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $dia, $created_at, $ejemplar_id, $date;
     public $Domicilios;
     public $updateMode = false;
+    public $from;
+    public $to;
 
     public function render()
     {
-        $keyWord = '%' . $this->keyWord . '%';
-        $ejemplares = Ejemplar::all();
+        $ejemplares = Ejemplar::where('id', '>=', 1);
+        /* $ejemplares = Ejemplar::all(); */
         $domicilios = Domicilio::all();
-        /* $fechas = DB::table('ejemplares')
-        ->selectRaw('DATE(created_at) AS Fecha')
-        ->get(); */
-        /* dd(Ejemplar::where('cliente_id', 1)->get('lunes')); */
-        /* $ejemplares = Ejemplar::whereMonth('created_at', '>=', now()->month(2))->get(); */
+        $keyWord = '%' . $this->keyWord . '%';
+        $dateF = new Carbon($this->from);
+        $dateT = new Carbon($this->to);
+        if($this->from) {
+            /* $ejemplares = Ejemplar::whereBetween('created_at', [$dateF->format('Y-m-d')." 00:00:00", $dateT->format('Y-m-d')." 23:59:59"])->get(); */
+            $ejemplares = Ejemplar::whereDate('created_at', [$dateF->format('Y-m-d')." 00:00:00"])->get();
+            /* $ejemplares = Ejemplar::where('cliente_id', 1)->get('lunes'); */
+            /* dd($dateF); */  
+            $date = new Carbon('tomorrow');
+            switch($dateF ->format('l')) {
+                case("Monday"):
+                    /* dd($ejemplares = Ejemplar::where('cliente_id', 2)->get('martes')); */
+                    dd($ejemplares = DB::table('ejemplares')->get('martes'), $domicilio = DB::table('domicilio')->get());
+                    /* dd('lunes'); */
+                    break;
+                case("Tuesday"):
+                    dd($ejemplares = DB::table('ejemplares')->get('miercoles'));
+                    /* dd('martes'); */
+                    break;
+                case("Wednesday"):
+                    dd($ejemplares = DB::table('ejemplares')->get('jueves'));
+                    /* dd('miercoles'); */
+                    break;
+                case("Thursday"):
+                    dd($ejemplares = DB::table('ejemplares')->get('viernes'));
+                    /* dd('jueves'); */
+                    break;
+                case("Friday"):
+                    dd($ejemplares = DB::table('ejemplares')->get('sabado'));
+                    /* dd('viernes'); */
+                    break;
+                case("Saturday"):
+                    dd($ejemplares = DB::table('ejemplares')->get('lunes'));
+                    /* dd('sabado'); */
+                    break;
+            }
+            
+
+        }
+        
         return view('livewire.tiros.tiro', [
-            'ejemplares' => Ejemplar::latest()
-                ->orWhere('lunes', 'LIKE', $keyWord)
-                ->orWhere('martes', 'LIKE', $keyWord)
-                ->orWhere('miercoles', 'LIKE', $keyWord)
-                ->orWhere('jueves', 'LIKE', $keyWord)
-                ->orWhere('viernes', 'LIKE', $keyWord)
-                ->orWhere('sabado', 'LIKE', $keyWord)
-                ->orWhere('domingo', 'LIKE', $keyWord)
-                ->paginate(15),
-        ], compact('ejemplares','domicilios'));
+            'ejemplares' => $ejemplares
+        ], compact('domicilios'));
+
+        
     }
 
     public function date()
