@@ -82,6 +82,7 @@
                             <th class="px-4 py-2 w-20">No.</th>
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
+                            <th class="px-4 py-2 w-20">Ejemplares</th>
                             {{-- <th class="px-4 py-2 w-20">Martes</th>
                             <th class="px-4 py-2 w-20">Miércoles</th>
                             <th class="px-4 py-2 w-20">Jueves</th>
@@ -97,7 +98,8 @@
                             <tr>
                                 <td class="border">{{ $loop->iteration }}</td>
                                 <td class="border">{{ $ejemplar->cliente_id }}</td>
-                                <td class="border">{{ $ejemplar }}</td>
+                                <td class="border">{{ $dia }}</td>
+                                <td class="border">{{ $ejemplar->martes }}</td>
                                 {{-- <td class="border">{{ $ejemplar->martes }}</td>
                                 <td class="border">{{ $ejemplar->miercoles }}</td>
                                 <td class="border">{{ $ejemplar->jueves }}</td>

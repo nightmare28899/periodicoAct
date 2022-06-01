@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Tiro extends Model
 {
     use HasFactory;
+
 }
