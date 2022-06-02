@@ -13,10 +13,6 @@ class Ejemplar extends Model
 
     protected $table = 'ejemplares';
 
-    protected $fillable = ['cliente_id','lunes','martes','miercoles','jueves','viernes','sabado','domingo','created_at'];
+    protected $fillable = ['cliente_id','lunes','martes','miércoles','jueves','viernes','sábado','domingo','created_at'];
 
-    public function clientes()
-    {
-        return $this->hasMany(Cliente::class);
-    }
 }

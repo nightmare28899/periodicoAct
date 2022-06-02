@@ -5,6 +5,7 @@ use App\Http\Livewire\Clientes;
 use App\Http\Livewire\Tarifas;
 use App\Http\Livewire\Rutas;
 use App\Http\Livewire\Tiro;
+use App\Http\Livewire\Remisiones;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/cliente', Clientes::class);
+    Route::get('/remision', Remisiones::class);
     Route::get('/tiro', Tiro::class);
     Route::get('/tarifa', Tarifas::class);
     Route::get('/ruta', Rutas::class);

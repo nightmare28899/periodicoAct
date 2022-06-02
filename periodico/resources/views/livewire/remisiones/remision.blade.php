@@ -1,10 +1,10 @@
 <div class="container mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
-            {{ __('Generar Tiro') }}
+            {{ __('Generar Remisión') }}
         </h2>
-    </x-slot>
-
+    </x-slot>   
+    {{-- The Master doesn't talk, he acts. --}}
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
@@ -56,7 +56,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($resultado as $result)
+                        {{-- @foreach ($resultado as $result)
                             <tr>
                                 <td class="border">{{ $loop->iteration }}</td>
                                 <td class="border">{{ $result->nombre }}</td>
@@ -86,7 +86,7 @@
                                         name="imprimir" value="Imprimir" onclick="window.print();">
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
                 <br>
