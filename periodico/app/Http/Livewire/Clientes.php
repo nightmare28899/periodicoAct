@@ -9,6 +9,7 @@ use App\Models\Domicilio;
 use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
+use Illuminate\Support\Facades\Redirect;
 
 class Clientes extends Component
 {
@@ -18,7 +19,7 @@ class Clientes extends Component
 
     public $Domicilios, $calle, $noint, $noext, $colonia, $cp, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id;
 
-    public $Ejemplares, $lunes, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo,  $ejemplar_id;
+    public $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id;
 
     public $isModalOpen = 0;
     public $clienteModalOpen = 0;
@@ -40,7 +41,7 @@ class Clientes extends Component
             'T-E' => 'T-E',
             'Sanborn' => 'SANBORN',
         ];
-        $rutas = Ruta::pluck('id', 'id');
+        $rutas = Ruta::pluck('nombre', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
         /* $this->Clientes = Cliente::all(); */
         return view('livewire.clientes.view', [
@@ -135,10 +136,10 @@ class Clientes extends Component
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
-        $this->miercoles = $Ejemplar->miercoles;
+        $this->miércoles = $Ejemplar->miércoles;
         $this->jueves = $Ejemplar->jueves;
         $this->viernes = $Ejemplar->viernes;
-        $this->sabado = $Ejemplar->sabado;
+        $this->sábado = $Ejemplar->sábado;
         $this->domingo = $Ejemplar->domingo;
 
         $this->detallesModalOpen = true;
@@ -173,10 +174,10 @@ class Clientes extends Component
 
         $this->lunes = '';
         $this->martes = '';
-        $this->miercoles = '';
+        $this->miércoles = '';
         $this->jueves = '';
         $this->viernes = '';
-        $this->sabado = '';
+        $this->sábado = '';
         $this->domingo = '';
     }
 
@@ -203,10 +204,10 @@ class Clientes extends Component
 
             'lunes' => 'required',
             'martes' => 'required',
-            'miercoles' => 'required',
+            'miércoles' => 'required',
             'jueves' => 'required',
             'viernes' => 'required',
-            'sabado' => 'required',
+            'sábado' => 'required',
             'domingo' => 'required',
         ]);
 
@@ -242,19 +243,20 @@ class Clientes extends Component
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'lunes' => $this->lunes,
             'martes' => $this->martes,
-            'miercoles' => $this->miercoles,
+            'miércoles' => $this->miércoles,
             'jueves' => $this->jueves,
             'viernes' => $this->viernes,
-            'sabado' => $this->sabado,
+            'sábado' => $this->sábado,
             'domingo' => $this->domingo,
         ]);
 
-        session()->flash('message', $this->cliente_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.');
         $this->resetInput();
         $this->emit('closeModal');
         $this->updateMode = false;
         $this->closeModalPopover();
         $this->clienteModalOpen = false;
+        session()->flash('message', $this->cliente_id | $this->domicilio_id | $this->ejemplar_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.');
+        /* return Redirect::to("livewire.modals.eliminar")->with('message','Success'); */
     }
     public function edit($id)
     {
@@ -288,10 +290,10 @@ class Clientes extends Component
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
-        $this->miercoles = $Ejemplar->miercoles;
+        $this->miércoles = $Ejemplar->miércoles;
         $this->jueves = $Ejemplar->jueves;
         $this->viernes = $Ejemplar->viernes;
-        $this->sabado = $Ejemplar->sabado;
+        $this->sábado = $Ejemplar->sábado;
         $this->domingo = $Ejemplar->domingo;
 
         $this->updateMode = true;

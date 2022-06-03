@@ -19,10 +19,10 @@ return new class extends Migration
             $table->bigInteger('cliente_id')->unsigned();
             $table->integer('lunes');
             $table->integer('martes');
-            $table->integer('miercoles');
+            $table->integer('miércoles');
             $table->integer('jueves');
             $table->integer('viernes');
-            $table->integer('sabado');
+            $table->integer('sábado');
             $table->integer('domingo');
             $table->timestamps();
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');

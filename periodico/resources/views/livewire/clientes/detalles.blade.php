@@ -34,10 +34,10 @@
                             <p class="font-normal text-gray-700 dark:text-gray-300">
                                 <b>Lunes:</b> {{ $lunes }} <br>
                                 <b>Martes:</b> {{ $martes }} <br>
-                                <b>Miércoles:</b> {{ $miercoles }} <br>
+                                <b>Miércoles:</b> {{ $miércoles }} <br>
                                 <b>Jueves:</b> {{ $jueves }} <br>
                                 <b>Viernes:</b> {{ $viernes }} <br>
-                                <b>Sábado:</b> {{ $sabado }} <br>
+                                <b>Sábado:</b> {{ $sábado }} <br>
                                 <b>Domingo:</b> {{ $domingo }} <br>
                             </p>
                         </div>
