@@ -62,17 +62,19 @@
                                 <td class="border">{{ $result->nombre }}</td>
                                 <td class="border">{{ $dia }}</td>
                                 @if ($dia == 'lunes')
-                                    <td class="border">{{ $result->martes }}</td>
-                                @elseIf ($dia == 'martes')
-                                    <td class="border">{{ $result->miércoles }}</td>
-                                @elseIf ($dia == 'miércoles')
-                                    <td class="border">{{ $result->jueves }}</td>
-                                @elseIf ($dia == 'jueves')
-                                    <td class="border">{{ $result->viernes }}</td>
-                                @elseIf ($dia == 'viernes')
-                                    <td class="border">{{ $result->sábado }}</td>
-                                @elseIf ($dia == 'sábado')
                                     <td class="border">{{ $result->lunes }}</td>
+                                @elseIf ($dia == 'martes')
+                                    <td class="border">{{ $result->martes }}</td>
+                                @elseIf ($dia == 'miércoles')
+                                    <td class="border">{{ $result->miércoles }}</td>
+                                @elseIf ($dia == 'jueves')
+                                    <td class="border">{{ $result->jueves }}</td>
+                                @elseIf ($dia == 'viernes')
+                                    <td class="border">{{ $result->viernes }}</td>
+                                @elseIf ($dia == 'sábado')
+                                    <td class="border">{{ $result->sábado }}</td>
+                                @elseIf ($dia == 'domingo')
+                                    <td class="border">{{ $result->domingo }}</td>
                                 @endif
                                 <td class="border">Calle: {{ $result->calle }} <br> No. Ext:
                                     {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
