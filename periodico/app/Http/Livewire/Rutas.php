@@ -45,8 +45,8 @@ class Rutas extends Component
     {
         $this->nombre = '';
         $this->tipo = '';
-        $this->ordinario = '';
-        $this->dominical = '';
+        $this->repartidor = '';
+        $this->cobrador = '';
         $this->ctaespecial = '';
     }
 

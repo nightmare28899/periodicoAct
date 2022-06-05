@@ -24,8 +24,8 @@
                             </svg>
                         </button>
                     </div>
-                    <hr class="mb-2 w-full"/>
-                    <div class="container sm:p-3 mx-auto align-middle">
+                    <hr class="mb-2 w-full" />
+                    <div class="container mx-auto align-middle">
                         <div class="px-4 mb-4" flex-grow>
                             <div class="flex">
                                 <div class="w-1/2 p-2">
@@ -184,7 +184,7 @@
                         </div>
                     </div>
                 </div>
-                <hr class="mb-2"/>
+                <hr class="mb-2" />
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse dark:bg-gray-700">
                     <span class="basis-1/4">
                         <button wire:click.prevent="openClientModal()" type="button"

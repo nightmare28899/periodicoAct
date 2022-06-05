@@ -94,8 +94,8 @@
 
                                             <div class="border-t border-gray-100"></div>
 
-                                            <button wire:click="delete({{ $ruta->id }})"
-                                                class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">Eliminar</button>
+                                            {{-- <button wire:click="delete({{ $ruta->id }})"
+                                                class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">Eliminar</button> --}}
 
                                         </x-slot>
                                     </x-jet-dropdown>

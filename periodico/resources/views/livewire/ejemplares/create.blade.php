@@ -6,12 +6,26 @@
         <br>
         <br>
         <br>
-        <div class="inline-block align-bottom bg-white dark:bg-gray-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        <div class="inline-block align-bottom bg-white dark:bg-gray-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full"
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <form>
-                <div class="dark:bg-gray-700 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <h1 class="mb-3 ml-2 text-2xl text-white font-bold">Cantidad de Ejemplares</h1>
-                    <div class="container md:flex">
+                @csrf
+                <div class="dark:bg-gray-700 pt-5 pb-4 sm:pb-4">
+                    <div class="flex sm:px-6">
+                        <h1 class="mb-3 text-2xl text-white font-bold ml-3">Cantidad de Ejemplares</h1>
+                        <button type="button" wire:click="closeModalPopover()"
+                            class="mb-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="defaultModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <hr class="mb-2 w-full" />
+                    <div class="container">
                         <div class="px-4 mb-6" flex-grow>
                             <div class="flex">
                                 <div class="w-1/2 p-2">
@@ -94,6 +108,7 @@
                         </div>
                     </div>
                 </div>
+                <hr class="mb-2" />
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse dark:bg-gray-700">
                     <span class="basis-1/4">
                         <button wire:click.prevent="store()" type="button"
