@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="dark:bg-slate-800 border-b border-gray-100">
+<nav x-data="{ open: false }" class="border-b bg-white border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -12,7 +12,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
-                    <x-jet-nav-link class="text-white hover:text-gray-400" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-jet-nav-link class="text-gray-700 hover:text-gray-400" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                     <x-jet-dropdown align="right" width="48">
@@ -20,7 +20,7 @@
 
                             <span class="inline-flex rounded-md">
                                 <button type="button"
-                                    class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white hover:text-gray-400 focus:outline-none transition">
+                                    class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-400 focus:outline-none transition">
                                     Menú
 
                                     <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -34,9 +34,9 @@
                         </x-slot>
 
                         <x-slot name="content" class="w-full text-center">
-                            <a href="{{ url('cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">{{ __('Cliente') }}</button></a>
-                            <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">{{ __('Tiro') }}</button></a>
-                            <a href="{{ url('remision') }}"><button class="btn px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">{{ __('Remisiones') }}</button></a>
+                            <a href="{{ url('cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cliente') }}</button></a>
+                            <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Tiro') }}</button></a>
+                            <a href="{{ url('remision') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Remisiones') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
                 </div>
@@ -49,7 +49,7 @@
                         <x-jet-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white   hover:text-gray-400 focus:outline-none transition">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700  hover:text-gray-400 focus:outline-none transition">
                                         {{ Auth::user()->currentTeam->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -103,7 +103,7 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white hover:text-gray-500 focus:outline-none transition">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-500 focus:outline-none transition">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

@@ -1,6 +1,6 @@
 <div class="container mx-auto">
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
+        <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Lista de Tarifas') }}
         </h2>
     </x-slot>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="flex-none mx-1">
                         <button wire:click="create()"
-                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-red-600 text-base font-bold text-white shadow-sm hover:bg-red-700">
+                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
                             Crear tarifa
                         </button>
                     </div>
@@ -49,7 +49,7 @@
                 @endif
                 <table class="table-auto w-full text-center">
                     <thead>
-                        <tr class="bg-gray-100 dark:bg-slate-800 text-white">
+                        <tr class="bg-gray-500 text-white">
                             <th class="px-4 py-2 w-20">No.</th>
                             <th class="px-4 py-2 w-20">Tipo</th>
                             <th class="px-4 py-2 w-20">Ordinario</th>

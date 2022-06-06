@@ -6,15 +6,15 @@
         <br>
         <br>
         <br>
-        <div class="inline-block align-bottom bg-white dark:bg-gray-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full"
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full"
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <form>
                 @csrf
-                <div class="dark:bg-gray-700 pt-5 pb-4 sm:pb-4">
+                <div class="pt-5 pb-4 sm:pb-4">
                     <div class="flex sm:px-6">
-                        <h1 class="mb-3 text-2xl text-white font-bold ml-3">Datos del Cliente</h1>
+                        <h1 class="mb-3 text-2xl text-black font-bold ml-3">Datos del Cliente</h1>
                         <button type="button" wire:click="closeModalPopover()"
-                            class="mb-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            class="mb-3 text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-red-600 dark:hover:text-white"
                             data-modal-toggle="defaultModal">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -30,12 +30,12 @@
                             <div class="flex">
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput1"
-                                        class="block text-gray-300 text-sm font-bold mb-2">Clasificación</label>
+                                        class="block text-black text-sm font-bold mb-2">Clasificación</label>
                                     {{-- <select type="select"
                                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                             id="clasificacion" placeholder="Clasificación" wire:model.defer="clasificacion"> --}}
                                     <select
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         wire:model.defer="clasificacion" style="width: 100%">
                                         <option value=''>Escoge una opción</option>
                                         @foreach ($data as $datas)
@@ -57,14 +57,14 @@
                                         @error('rfc')
                                             <span class="text-red-500">{{ $message }}</span>
                                         @enderror --}}
-                                    <label class="text-gray-300">RFC</label><br>
+                                    <label class="text-black font-bold text-sm">RFC</label><br>
                                     <div class="form-group">
                                         <input wire:model.defer="rfc" name="rfc" type="radio" id="Física"
                                             value="Física" />
                                         @error('rfc')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
-                                        <label class="text-gray-300" for="Física">Física</label>
+                                        <label class="text-black" for="Física">Física</label>
                                     </div>
                                     <div class="form-group">
                                         <input wire:model.defer="rfc" name="rfc" type="radio" id="Moral"
@@ -72,7 +72,7 @@
                                         @error('rfc')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
-                                        <label class="text-gray-300" for="Moral">Moral</label>
+                                        <label class="text-black" for="Moral">Moral</label>
                                     </div>
                                 </div>
                             </div>
@@ -87,10 +87,10 @@
                                         @error('rfc_input')
                                             <span class="text-red-500">{{ $message }}</span>
                                         @enderror --}}
-                                    <label for='Física' class='block text-gray-300 text-sm font-bold mb-2'>Escribe tu
+                                    <label for='Física' class='block text-black text-sm font-bold mb-2'>Escribe tu
                                         RFC:</label>
                                     <input type='text' name='rfc_input' id='rfc_input'
-                                        class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+                                        class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
                                         maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)'
                                         wire:model.defer='rfc_input'>
                                     @error('rfc_input')
@@ -99,9 +99,9 @@
                                 </div>
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">Nombre:</label>
+                                        class="block text-black text-sm font-bold mb-2">Nombre:</label>
                                     <input type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="nombre" wire:model.defer="nombre" placeholder="Escribe tu Nombre" />
                                     @error('nombre')
                                         <span class="text-red-500">{{ $message }}</span>
@@ -112,9 +112,9 @@
                             <div class="flex">
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">Estado:</label>
+                                        class="block text-black text-sm font-bold mb-2">Estado:</label>
                                     <input type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="estado" wire:model.defer="estado" placeholder="Escribe tu Estado" />
                                     @error('estado')
                                         <span class="text-red-500">{{ $message }}</span>
@@ -122,9 +122,9 @@
                                 </div>
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">País:</label>
+                                        class="block text-black text-sm font-bold mb-2">País:</label>
                                     <input type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="pais" wire:model.defer="pais" placeholder="Escribe tu País" />
                                     @error('pais')
                                         <span class="text-red-500">{{ $message }}</span>
@@ -135,9 +135,9 @@
                             <div class="flex">
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">E-mail:</label>
+                                        class="block text-black text-sm font-bold mb-2">E-mail:</label>
                                     <input type="email"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="email" wire:model.defer="email" placeholder="Escribe tu Correo" />
                                     @error('email')
                                         <span class="text-red-500">{{ $message }}</span>
@@ -145,10 +145,10 @@
                                 </div>
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">E-mail
+                                        class="block text-black text-sm font-bold mb-2">E-mail
                                         de Cobranza:</label>
                                     <input type="email"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="email_cobranza" wire:model.defer="email_cobranza"
                                         placeholder="Escribe tu Correo" />
                                     @error('email_cobranza')
@@ -160,9 +160,9 @@
                             <div class="flex">
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">Teléfono:</label>
+                                        class="block text-black text-sm font-bold mb-2">Teléfono:</label>
                                     <input type="number"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="telefono" wire:model.defer="telefono" placeholder="Escribe tu Teléfono" />
                                     @error('telefono')
                                         <span class="text-red-500">{{ $message }}</span>
@@ -170,10 +170,10 @@
                                 </div>
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">Régimen
+                                        class="block text-black text-sm font-bold mb-2">Régimen
                                         Fiscal:</label>
                                     <input type="text"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         id="regimen_fiscal" wire:model.defer="regimen_fiscal"
                                         placeholder="Escribe tu Régimen Fiscal" />
                                     @error('regimen_fiscal')
@@ -185,7 +185,7 @@
                     </div>
                 </div>
                 <hr class="mb-2" />
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse dark:bg-gray-700">
+                <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse bg-white">
                     <span class="basis-1/4">
                         <button wire:click.prevent="openClientModal()" type="button"
                             class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">

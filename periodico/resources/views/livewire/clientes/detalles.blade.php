@@ -3,18 +3,21 @@
         <div class="fixed inset-0 transition-opacity">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
+        <br>
+        <br>
+        <br>
         <div class="inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-2/5"
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-            <div class="dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
 
                 <a href="#" class="container max-w-sm rounded-lg shadow-md dark:bg-gray-800">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Datos
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black text-center">Datos
                         del cliente:
                         {{ $nombre }}</h5>
                     <div class="flex p-6">
                         <div>
-                            <p class="font-normal text-white text-lg">Datos del Domicilio:</p>
-                            <p class="font-normal text-gray-700 dark:text-gray-300">
+                            <p class="font-normal text-gray-600 text-lg">Datos del Domicilio:</p>
+                            <p class="font-normal text-gray-500">
                                 <b>Calle:</b> {{ $calle }} <br>
                                 <b>No. Interior:</b> {{ $noint }} <br>
                                 <b>No. Exterior:</b> {{ $noext }} <br>
@@ -30,8 +33,8 @@
                         </div>
 
                         <div>
-                            <p class="font-normal text-white text-lg">Cantidad de Ejemplares:</p>
-                            <p class="font-normal text-gray-700 dark:text-gray-300">
+                            <p class="font-normal text-gray-600 text-lg">Cantidad de Ejemplares:</p>
+                            <p class="font-normal text-gray-500">
                                 <b>Lunes:</b> {{ $lunes }} <br>
                                 <b>Martes:</b> {{ $martes }} <br>
                                 <b>Miércoles:</b> {{ $miércoles }} <br>

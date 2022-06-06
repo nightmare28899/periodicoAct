@@ -1,6 +1,6 @@
 <div class="container mx-auto">
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
+        <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Generar Tiro') }}
         </h2>
     </x-slot>
@@ -44,11 +44,11 @@
                 @endif
                 <table class="table-auto w-full text-center">
                     <thead>
-                        <tr class="bg-gray-100 dark:bg-slate-800 text-white">
+                        <tr class="bg-gray-500 text-white">
                             <th class="px-4 py-2 w-20">No.</th>
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
-                            <th class="px-4 py-2 w-20">Ejemplares día siguiente</th>
+                            <th class="px-4 py-2 w-20">Ejemplares</th>
                             <th class="px-4 py-2 w-20">Domicilio</th>
                             <th class="px-4 py-2 w-20">Referencia</th>
                             <th class="px-4 py-2 w-20">Fecha</th>
