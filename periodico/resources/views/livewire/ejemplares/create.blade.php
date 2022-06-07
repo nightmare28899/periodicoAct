@@ -55,8 +55,8 @@
                                         class="block text-black text-sm font-bold mb-2">Miércoles:</label>
                                     <input type="number"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        id="miercoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
-                                    @error('miercoles')
+                                        id="miércoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
+                                    @error('miércoles')
                                         <span class="text-red-500">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -87,8 +87,8 @@
                                         class="block text-black text-sm font-bold mb-2">Sábado:</label>
                                     <input type="number"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        id="sabado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
-                                    @error('sabado')
+                                        id="sábado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
+                                    @error('sábado')
                                         <span class="text-red-500">{{ $message }}</span>
                                     @enderror
                                 </div>

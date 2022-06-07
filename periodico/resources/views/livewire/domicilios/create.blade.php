@@ -54,7 +54,7 @@
                             <div class="flex">
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
-                                        class="block text-gray-300 text-sm font-bold mb-2">No.
+                                        class="block text-black text-sm font-bold mb-2">No.
                                         Ext.:</label>
                                     <input type="number"
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
