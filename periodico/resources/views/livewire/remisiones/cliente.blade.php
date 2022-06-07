@@ -1,7 +1,7 @@
 <div class="container mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Remisión ') }}
+            {{ __('Remisión Venta/Periódico Cliente') }}
         </h2>
     </x-slot>
     {{-- The Master doesn't talk, he acts. --}}
@@ -9,63 +9,41 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex">
-                    <div class="flex-none mx-1 mt-3">
-                        <div class="antialiased sans-serif">
-                            <div>
-                                <div class="container mx-auto px-4">
-                                    <div class="">
-                                        <div class="flex" style="width: 100%;">
-                                            <div class="grid mt-1 mr-2">
-                                                <x-jet-input class="w-full" type="date" wire:model="from"
-                                                    placeholder="Desde"></x-jet-input>
-                                            </div>
-                                            <div class="grid mt-1">
-                                                <x-jet-input class="w-full" type="date" wire:model="to"
-                                                    placeholder="Hasta"></x-jet-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <p class="text-sm mt-3"><b>NO. REMISION: <k class="text-red-500 font-bold"> 1 </k> </b> </p>
+                    <p class="text-sm mt-3 ml-20"><b>FECHA:</b>
+                        <k class="text-red-500 font-bold"> {{ $fechaHoy }} </k>
+                    </p>
+                </div>
+                <div class="flex">
+                    <p class="text-sm font-bold mt-6 mr-3">CLIENTE</p>
+                    <div class="flex-initial mx-1 mt-4 mr-4" style="width: 35%;">
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            wire:model="clienteSeleccionado" style="width: 100%">
+                            <option value=''>Escoge una opción</option>
+                            @foreach ($clientes as $id => $cliente)
+                                <option value={{ $id }}>
+                                    {{ $cliente['nombre'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('clasificacion')
+                            <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <div class="flex-initial mx-1 mt-4 mr-4" style="width: 68%;">
-                        <input wire:model='keyWord' type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                            name="search" id="search" placeholder="Buscar Remisión">
-                    </div>
-                    <div class="flex-initial x-1 mt-4">
-                        <x-jet-dropdown align="right" width="48">
-                            <x-slot name="trigger">
-                                
-                                <span class="inline-flex rounded-md">
-                                    <button type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-400 focus:outline-none transition">
-                                        NUEVA REMISIÓN
-    
-                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            </x-slot>
-    
-                            <x-slot name="content" class="w-full text-center">
-                                <a href="{{ url('remision/ventaP/cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Venta/P') }}</button></a>
-                                <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suscipción') }}</button></a>
-                            </x-slot>
-                        </x-jet-dropdown>
-                    </div>
+                    {{-- <div class="flex-initial x-1 mt-4">
+                        <button wire:click="search"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Por Ruta
+                        </button>
+                    </div> --}}
                 </div>
                 <div class="card">
                     <br>
                     <div class="flex items-end pt-4 px-4 sm:block sm:p-0">
                         <div
                             class="inline-block align-bottom rounded-lg text-left overflow-hidden border-2 shadow-md w-2/5">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
+                            <div class="bg-white px-4 pt-3 pb-4 sm:p-6 sm:pb-4 mt-2">
                                 <h5
                                     class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black text-center">
                                     Datos
@@ -74,8 +52,9 @@
                                 <div class="flex p-6">
                                     <div>
                                         {{-- <p class="font-normal text-gray-600 text-lg">Datos del Domicilio:</p> --}}
+                                        
                                         <p class="font-normal text-gray-500">
-                                            <b>Clave:</b> <br>
+                                            <b>Clave:</b> {{ $data }} <br>
                                             <b>Nombre:</b> <br>
                                             <b>Calle:</b> <br>
                                             <b>Colonia:</b> <br>

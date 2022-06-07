@@ -1,7 +1,7 @@
 <div class="container mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Remisión ') }}
+            {{ __('Remisión de Venta Periódico ') }}
         </h2>
     </x-slot>
     {{-- The Master doesn't talk, he acts. --}}
@@ -35,29 +35,10 @@
                             name="search" id="search" placeholder="Buscar Remisión">
                     </div>
                     <div class="flex-initial x-1 mt-4">
-                        <x-jet-dropdown align="right" width="48">
-                            <x-slot name="trigger">
-                                
-                                <span class="inline-flex rounded-md">
-                                    <button type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-400 focus:outline-none transition">
-                                        NUEVA REMISIÓN
-    
-                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            </x-slot>
-    
-                            <x-slot name="content" class="w-full text-center">
-                                <a href="{{ url('remision/ventaP/cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Venta/P') }}</button></a>
-                                <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suscipción') }}</button></a>
-                            </x-slot>
-                        </x-jet-dropdown>
+                        <button wire:click="search"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            venta
+                        </button>
                     </div>
                 </div>
                 <div class="card">

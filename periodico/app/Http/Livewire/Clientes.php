@@ -9,7 +9,6 @@ use App\Models\Domicilio;
 use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
-use Illuminate\Support\Facades\Redirect;
 
 class Clientes extends Component
 {

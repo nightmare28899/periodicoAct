@@ -6,6 +6,7 @@ use App\Http\Livewire\Tarifas;
 use App\Http\Livewire\Rutas;
 use App\Http\Livewire\Tiro;
 use App\Http\Livewire\Remisiones;
+use App\Http\Livewire\Remisiones\RmCliente;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/tiro', Tiro::class);
     Route::get('/tarifa', Tarifas::class);
     Route::get('/ruta', Rutas::class);
+    //rutas remisiones
+    Route::get('/remision/ventaP/cliente', RmCliente::class);
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
