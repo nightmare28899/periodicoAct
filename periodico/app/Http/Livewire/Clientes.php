@@ -43,9 +43,9 @@ class Clientes extends Component
         $rutas = Ruta::pluck('nombre', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
 
-        if($this->rfc == 'Física' || $this->rfc == 'Moral') {
+        /* if($this->rfc == 'Física' || $this->rfc == 'Moral') {
             $this->estadoRFC();
-        }
+        } */
         
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()

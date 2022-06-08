@@ -31,13 +31,10 @@
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput1"
                                         class="block text-black text-sm font-bold mb-2">Clasificación</label>
-                                    {{-- <select type="select"
-                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="clasificacion" placeholder="Clasificación" wire:model.defer="clasificacion"> --}}
                                     <select
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         wire:model.defer="clasificacion" style="width: 100%">
-                                        {{-- <option value=''>Escoge una opción</option> --}}
+                                        <option value=''>Escoge una opción</option>
                                         @foreach ($data as $datas)
                                             <option value={{ $datas }}>
                                                 {{ $datas }}
