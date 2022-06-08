@@ -21,8 +21,8 @@
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             wire:model="clienteSeleccionado" style="width: 100%">
                             <option value=''>Escoge una opción</option>
-                            @foreach ($clientes as $id => $cliente)
-                                <option value={{ $id }}>
+                            @foreach ($clientes as $cliente)
+                                <option value={{ $cliente['id'] }}>
                                     {{ $cliente['nombre'] }}
                                 </option>
                             @endforeach
@@ -52,21 +52,26 @@
                                 <div class="flex p-6">
                                     <div>
                                         {{-- <p class="font-normal text-gray-600 text-lg">Datos del Domicilio:</p> --}}
-                                        
-                                        <p class="font-normal text-gray-500">
-                                            <b>Clave:</b> {{ $data }} <br>
-                                            <b>Nombre:</b> <br>
-                                            <b>Calle:</b> <br>
-                                            <b>Colonia:</b> <br>
-                                            <b>C.P.:</b> <br>
-                                            <b>Localidad:</b> <br>
-                                            <b>Estado:</b> <br>
-                                            <b>R.F.C.:</b> <br>
-                                            <b>N. Ext:</b> <br>
-                                            <b>Municipio:</b> <br>
-                                            <b>País:</b> <br>
-                                            <b>N. Int:</b>
-                                        </p>
+                                        @if ($data)
+                                            @foreach ($data as $item)
+                                                <p class="font-normal text-gray-500">
+                                                    <b>Clave:</b> {{ $item->id }} <br>
+                                                    <b>Nombre:</b> {{ $item->nombre }} <br>
+                                                    <b>Calle:</b> {{ $item->calle }} <br>
+                                                    <b>Colonia:</b> {{ $item->colonia }} <br>
+                                                    <b>C.P.:</b> {{ $item->cp }} <br>
+                                                    <b>Localidad:</b> {{ $item->localidad }} <br>
+                                                    <b>Estado:</b> {{ $item->estado }} <br>
+                                                    <b>R.F.C.:</b> {{ $item->rfc_input }} <br>
+                                                    <b>N. Ext:</b> {{ $item->noext }} <br>
+                                                    <b>Municipio:</b> {{ $item->municipio }} <br>
+                                                    <b>País:</b> {{ $item->pais }} <br>
+                                                    <b>N. Int: </b> {{ $item->noint }}
+                                                </p>
+                                            @endforeach
+                                        @else
+                                            <p class="text-center mx-auto">Selecciona un Cliente</p>
+                                        @endif
                                     </div>
 
                                     {{-- <div>
