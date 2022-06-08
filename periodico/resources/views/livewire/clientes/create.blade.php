@@ -37,7 +37,7 @@
                                     <select
                                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         wire:model.defer="clasificacion" style="width: 100%">
-                                        <option value=''>Escoge una opción</option>
+                                        {{-- <option value=''>Escoge una opción</option> --}}
                                         @foreach ($data as $datas)
                                             <option value={{ $datas }}>
                                                 {{ $datas }}
@@ -49,26 +49,18 @@
                                     @enderror
                                 </div>
                                 <div class="w-1/2 p-2">
-                                    {{-- <label for="exampleFormControlInput2"
-                                            class="block text-gray-700 text-sm font-bold mb-2">RFC:</label>
-                                        <input type="text"
-                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="rfc" wire:model.defer="rfc" placeholder="rfc" />
-                                        @error('rfc')
-                                            <span class="text-red-500">{{ $message }}</span>
-                                        @enderror --}}
                                     <label class="text-black font-bold text-sm">RFC</label><br>
                                     <div class="form-group">
-                                        <input wire:model.defer="rfc" name="rfc" type="radio" id="Física"
-                                            value="Física" />
+                                        <input wire:model="rfc" name="rfc" type="radio" id="Física"
+                                            value="Física" checked>
                                         @error('rfc')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                         <label class="text-black" for="Física">Física</label>
                                     </div>
                                     <div class="form-group">
-                                        <input wire:model.defer="rfc" name="rfc" type="radio" id="Moral"
-                                            value="Moral" />
+                                        <input wire:model="rfc" name="rfc" type="radio" id="Moral"
+                                            value="Moral" {{ $rfc == 'Moral' ? 'checked' : '' }}>
                                         @error('rfc')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
@@ -76,26 +68,21 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="flex">
                                 <div class="w-1/2 p-2" id="RFCF">
-                                    {{-- <label for="exampleFormControlInput2"
-                                            class="block text-gray-700 text-sm font-bold mb-2">Escribe tu RFC:</label>
-                                        <input type="text"
-                                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            id="rfc_input" wire:model.defer="rfc_input" placeholder="Escribe tu RFC" />
-                                        @error('rfc_input')
-                                            <span class="text-red-500">{{ $message }}</span>
-                                        @enderror --}}
-                                    <label for='Física' class='block text-black text-sm font-bold mb-2'>Escribe tu
-                                        RFC:</label>
-                                    <input type='text' name='rfc_input' id='rfc_input'
-                                        class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-                                        maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)'
-                                        wire:model.defer='rfc_input'>
-                                    @error('rfc_input')
-                                        <span class='text-red-500'>{{ $message }}</span>
-                                    @enderror
+                                    @if($rfc == "Física")
+                                        <label for='Física' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> 
+                                        <input type='text' name='rfc_input' class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)' wire:model.defer='rfc_input'> 
+                                        @error('rfc_input') 
+                                            <span class='text-red-500'>{{ $message }}</span> 
+                                        @enderror
+                                    @else
+                                        <label for='Moral' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> 
+                                        <input type='text' name='rfc_input' class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' maxlength='12' placeholder='Escribe tu RFC (son 12 digitos)' wire:model.defer='rfc_input'> 
+                                        @error('rfc_input') 
+                                            <span class='text-red-500'>{{ $message }}</span> 
+                                        @enderror
+                                    @endif
                                 </div>
                                 <div class="w-1/2 p-2">
                                     <label for="exampleFormControlInput2"
@@ -206,24 +193,26 @@
     {{-- <script>
         document.getElementById('Física').addEventListener('click', function(e) {
             const status = document.getElementById('Física').checked;
+            console.log(status);
             const value = document.getElementById('Física').value;
             console.log(value + ' ' + status);
             if (status == true && value == 'Física') {
                 console.log('Física');
                 const input = document.getElementById("RFCF").innerHTML =
-                    "<label for='Física' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> <input type='text' name='rfc_input' id='rfc_input' class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)' wire:model.defer='rfc_input'> @error('rfc_input') <span class='text-red-500'>{{ $message }}</span> @enderror";
+                    "<label for='Física' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> <input type='text' name='rfc_input' id='rfc_input' class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)' wire:model.defer='rfc_input'> @error('rfc_input') <span class='text-red-500'>{{ $message }}</span> @enderror";
                 document.getElementById("RFCF").innerHTML = input;
             }
 
         });
         document.getElementById('Moral').addEventListener('click', function(e) {
             const status = document.getElementById('Moral').checked;
+            console.log(status);
             const value = document.getElementById('Moral').value;
             console.log(value + ' ' + status);
             if (status == true && value == 'Moral') {
                 console.log('Moral');
                 const input = document.getElementById("RFCF").innerHTML =
-                    "<label for='Moral' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> <input type='text' name='rfc_input' id='rfc_input' class='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' maxlength='12' placeholder='Escribe tu RFC (son 12 digitos)'>";
+                    "<label for='Moral' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu RFC:</label> <input type='text' name='rfc_input' id='rfc_input' class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5' maxlength='12' placeholder='Escribe tu RFC (son 12 digitos)'>";
                 document.getElementById("RFCF").innerHTML = input;
             }
         });

@@ -14,7 +14,7 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc, $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id;
 
     public $Domicilios, $calle, $noint, $noext, $colonia, $cp, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id;
 
@@ -31,9 +31,9 @@ class Clientes extends Component
     {
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
+            'Genérico' => 'GENÉRICO',
             'Gobierno' => 'GOBIERNO',
             'T/O' => 'T/O',
-            'Genérico' => 'GENÉRICO',
             'Libre' => 'LIBRE',
             'Municipio' => 'MUNICIPIO',
             'S-A' => 'S-A',
@@ -42,7 +42,11 @@ class Clientes extends Component
         ];
         $rutas = Ruta::pluck('nombre', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
-        /* $this->Clientes = Cliente::all(); */
+
+        if($this->rfc == 'Física' || $this->rfc == 'Moral') {
+            $this->estadoRFC();
+        }
+        
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
                 ->orWhere('clasificacion', 'LIKE', $keyWord)
@@ -56,12 +60,16 @@ class Clientes extends Component
                 ->orWhere('telefono', 'LIKE', $keyWord)
                 ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
                 ->paginate(15),
+                'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas'));
     }
     public function create()
     {
         /* $this->resetInput(); */
         $this->openModalPopover();
+    }
+    public function estadoRFC() {
+        $this->rfc_input = '';
     }
     public function openModalPopover()
     {
@@ -150,7 +158,7 @@ class Clientes extends Component
     private function resetInput()
     {
         $this->clasificacion = '';
-        $this->rfc = '';
+        /* $this->rfc = ''; */
         $this->rfc_input = '';
         $this->nombre = '';
         $this->estado = '';

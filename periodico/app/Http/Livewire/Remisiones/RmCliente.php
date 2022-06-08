@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class RmCliente extends Component
 {
-    public $fechaHoy, $clientes, $clienteData, $clienteSeleccionado, $data;
+    public $fechaHoy, $clientes, $clienteData, $clienteSeleccionado, $data, $tipo, $datoInput, $keyWord;
 
     public function render()
     {
@@ -18,17 +18,20 @@ class RmCliente extends Component
         $this->fechaHoy = Carbon::now();
         $this->fechaHoy = $this->fechaHoy->format('d/m/Y');
         /* dd($fechaHoy); */
-
+        $this->keyWord = '%' . $this->keyWord . '%';
         $this->clientes = (object)Cliente::all();
         /* $data = DB::select('SELECT * FROM `cliente` WHERE id =', $this->clienteSeleccionado); */
         /* $this->data = DB::table('cliente')->select('id', 'nombre')->where('id', '=', $this->clienteSeleccionado)->get(); */
 
         $this->data = Cliente
             ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+            /* ->where('cliente.id', 'like', '%' . $this->keyWord . '%') */
             ->where('cliente.id', '=', $this->clienteSeleccionado)
-            ->select('cliente.id','nombre','calle','colonia','cp','localidad','estado','rfc_input','noext','municipio','pais','noint')
+            ->select('cliente.*', 'domicilio.*', 'ruta.tipo')
             ->get();
 
+        /* dd($this->data);  */   
         /* ['id' => $this->clienteSeleccionado] */
         /* $this->clienteData = Cliente::all(); */
 
@@ -40,6 +43,8 @@ class RmCliente extends Component
             'fechaHoy' => $this->fechaHoy,
             'clientes' => $this->clientes,
             'data' => $this->data,
+            'tipo' => $this->tipo,
+            'datoInput' => $this->datoInput,
         ]);
     }
 }
