@@ -27,6 +27,8 @@ class Clientes extends Component
 
     public $updateMode = false;
 
+    public $status = 'created';
+
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
@@ -46,7 +48,7 @@ class Clientes extends Component
         /* if($this->rfc == 'Física' || $this->rfc == 'Moral') {
             $this->estadoRFC();
         } */
-        
+
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
                 ->orWhere('clasificacion', 'LIKE', $keyWord)
@@ -60,7 +62,7 @@ class Clientes extends Component
                 ->orWhere('telefono', 'LIKE', $keyWord)
                 ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
                 ->paginate(15),
-                'rfc' => $this->rfc,
+            'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas'));
     }
     public function create()
@@ -68,7 +70,8 @@ class Clientes extends Component
         /* $this->resetInput(); */
         $this->openModalPopover();
     }
-    public function estadoRFC() {
+    public function estadoRFC()
+    {
         $this->rfc_input = '';
     }
     public function openModalPopover()
@@ -262,8 +265,8 @@ class Clientes extends Component
         $this->updateMode = false;
         $this->closeModalPopover();
         $this->clienteModalOpen = false;
-        session()->flash('message', $this->cliente_id | $this->domicilio_id | $this->ejemplar_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.');
-        /* return Redirect::to("livewire.modals.eliminar")->with('message','Success'); */
+        /* session()->flash('message', $this->cliente_id | $this->domicilio_id | $this->ejemplar_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.'); */
+        $this->toast();
     }
     public function edit($id)
     {
@@ -305,11 +308,24 @@ class Clientes extends Component
 
         $this->updateMode = true;
         $this->openModalPopover();
+
+        $this->status = 'updated';
+    }
+
+    public function toast()
+    {
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Cliente Creado Correctamente!' : '¡Cliente Actualizado Correctamente!'
+        ]);
     }
 
     public function delete($id)
     {
+        $this->status = 'delete';
         Cliente::find($id)->delete();
-        session()->flash('message', 'Cliente Eliminado!.');
+        /* session()->flash('message', 'Cliente Eliminado!.'); */
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
+        ]);
     }
 }

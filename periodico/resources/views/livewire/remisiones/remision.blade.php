@@ -1,13 +1,16 @@
 <div class="container mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Remisión ') }}
+            {{ __('Historial Remisiónes') }}
         </h2>
     </x-slot>
     {{-- The Master doesn't talk, he acts. --}}
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+                <h1 class="font-bold">Remisiones registradas</h1>
+                <h2 class="text-sm font-bold ml-3">Filtrar remisiones de</h2>
+
                 <div class="flex">
                     <div class="flex-none mx-1 mt-3">
                         <div class="antialiased sans-serif">
@@ -15,34 +18,49 @@
                                 <div class="container mx-auto px-4">
                                     <div class="">
                                         <div class="flex" style="width: 100%;">
-                                            <div class="grid mt-1 mr-2">
-                                                <x-jet-input class="w-full" type="date" wire:model="from"
-                                                    placeholder="Desde"></x-jet-input>
-                                            </div>
+
                                             <div class="grid mt-1">
-                                                <x-jet-input class="w-full" type="date" wire:model="to"
-                                                    placeholder="Hasta"></x-jet-input>
+                                                <div class="form-group">
+                                                    <input type="radio">
+                                                    <label for="">Venta periódico</label>
+                                                </div>
                                             </div>
+
+
+                                            <div class="grid mt-1 ml-3">
+                                                <div class="form-group">
+                                                    <input type="radio">
+                                                    <label for="">Suscripciones</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid mt-1 ml-3">
+                                                <div class="form-group">
+                                                    <input type="radio">
+                                                    <label for="">Ambas</label>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-initial mx-1 mt-4 mr-4" style="width: 68%;">
-                        <input wire:model='keyWord' type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                            name="search" id="search" placeholder="Buscar Remisión">
+                    <div class="flex-initial mx-1 mr-4">
+                        <button
+                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base text-white shadow-sm hover:bg-blue-700"
+                            title="Recargar total de remisiones">Actualizar Remisiones</button>
                     </div>
                     <div class="flex-initial x-1 mt-4">
                         <x-jet-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                
+
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-400 focus:outline-none transition">
-                                        NUEVA REMISIÓN
-    
+                                        class="btn inline-flex items-center px-3 py-2 border border-slate-800 text-sm leading-4 font-medium rounded-md text-gray-700 hover:text-gray-400 focus:outline-none transition">
+                                        NUEVA REMISION
+
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
@@ -52,64 +70,29 @@
                                     </button>
                                 </span>
                             </x-slot>
-    
+
                             <x-slot name="content" class="w-full text-center">
-                                <a href="{{ url('remision/ventaP/cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Venta/P') }}</button></a>
-                                <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suscipción') }}</button></a>
+                                <a href="{{ url('remision/ventaP/cliente') }}"><button
+                                        class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Venta/P') }}</button></a>
+                                <a href="{{ url('tiro') }}"><button
+                                        class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suscipción') }}</button></a>
                             </x-slot>
                         </x-jet-dropdown>
                     </div>
                 </div>
-                <div class="card">
-                    <br>
-                    <div class="flex items-end pt-4 px-4 sm:block sm:p-0">
-                        <div
-                            class="inline-block align-bottom rounded-lg text-left overflow-hidden border-2 shadow-md w-2/5">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
-                                <h5
-                                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black text-center">
-                                    Datos
-                                    del cliente:
-                                </h5>
-                                <div class="flex p-6">
-                                    <div>
-                                        {{-- <p class="font-normal text-gray-600 text-lg">Datos del Domicilio:</p> --}}
-                                        <p class="font-normal text-gray-500">
-                                            <b>Clave:</b> <br>
-                                            <b>Nombre:</b> <br>
-                                            <b>Calle:</b> <br>
-                                            <b>Colonia:</b> <br>
-                                            <b>C.P.:</b> <br>
-                                            <b>Localidad:</b> <br>
-                                            <b>Estado:</b> <br>
-                                            <b>R.F.C.:</b> <br>
-                                            <b>N. Ext:</b> <br>
-                                            <b>Municipio:</b> <br>
-                                            <b>País:</b> <br>
-                                            <b>N. Int:</b>
-                                        </p>
-                                    </div>
-
-                                    {{-- <div>
-                                        <p class="font-normal text-gray-600 text-lg">Cantidad de Ejemplares:</p>
-                                        <p class="font-normal text-gray-500">
-                                            <b>Lunes:</b> {{ $lunes }} <br>
-                                            <b>Martes:</b> {{ $martes }} <br>
-                                            <b>Miércoles:</b> {{ $miércoles }} <br>
-                                            <b>Jueves:</b> {{ $jueves }} <br>
-                                            <b>Viernes:</b> {{ $viernes }} <br>
-                                            <b>Sábado:</b> {{ $sábado }} <br>
-                                            <b>Domingo:</b> {{ $domingo }} <br>
-                                        </p>
-                                    </div> --}}
-                                </div>
-                            </div>
-                        </div>
+                <div>
+                    <h2>Buscar remision por:</h2>
+                    <div style="width: 51%;">
+                        <input wire:model='keyWord' type="text"
+                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                            name="search" id="search"
+                            placeholder="Buscar por Remision, cliente, nombre, rfc, factura, calle, municipio, estado">
                     </div>
+
                 </div>
+
                 <br>
-                <br>
-                <br>
+
                 @if (session()->has('message'))
                     <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3"
                         role="alert">
@@ -123,52 +106,31 @@
                 <table class="table-auto w-full text-center">
                     <thead>
                         <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">Fecha:</th>
-                            <th class="px-4 py-2 w-20">Entrada:</th>
-                            <th class="px-4 py-2 w-20">Devolución:</th>
-                            <th class="px-4 py-2 w-20">Falta:</th>
-                            <th class="px-4 py-2 w-20">Venta</th>
-                            <th class="px-4 py-2 w-20">Precio</th>
-                            <th class="px-4 py-2 w-20">Importe</th>
+                            <th class="px-4 py-2 w-20">REMISIÓN:</th>
+                            <th class="px-4 py-2 w-20">FECHA:</th>
+                            <th class="px-4 py-2 w-20">PAGO:</th>
+                            <th class="px-4 py-2 w-20">CANTIDAD:</th>
+                            <th class="px-4 py-2 w-20">TOTAL</th>
+                            <th class="px-4 py-2 w-20">FACTURA</th>
+                            <th class="px-4 py-2 w-20">SERIE</th>
+                            <th class="px-4 py-2 w-20">CONCEPTO</th>
+                            <th class="px-4 py-2 w-20">CLIENTE</th>
+                            <th class="px-4 py-2 w-20">NOMBRE</th>
+                            <th class="px-4 py-2 w-20">RFC</th>
+                            <th class="px-4 py-2 w-20">CONTRATO</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($resultado as $result)
-                            <tr>
-                                <td class="border">{{ $loop->iteration }}</td>
-                                <td class="border">{{ $result->nombre }}</td>
-                                <td class="border">{{ $dia }}</td>
-                                @if ($dia == 'lunes')
-                                    <td class="border">{{ $result->martes }}</td>
-                                @elseIf ($dia == 'martes')
-                                    <td class="border">{{ $result->miércoles }}</td>
-                                @elseIf ($dia == 'miércoles')
-                                    <td class="border">{{ $result->jueves }}</td>
-                                @elseIf ($dia == 'jueves')
-                                    <td class="border">{{ $result->viernes }}</td>
-                                @elseIf ($dia == 'viernes')
-                                    <td class="border">{{ $result->sábado }}</td>
-                                @elseIf ($dia == 'sábado')
-                                    <td class="border">{{ $result->lunes }}</td>
-                                @endif
-                                <td class="border">Calle: {{ $result->calle }} <br> No. Ext:
-                                    {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
-                                    {{ $result->localidad }}, Municipio: {{ $result->municipio }}
-                                </td>
-                                <td class="border">{{ $result->referencia }}</td>
-                                <td class="border">{{ $dateF }}</td>
-                                <td class="border px-4 py-2 flex-nowrap pt-2">
-                                    <input type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
-                                        name="imprimir" value="Imprimir" onclick="window.print();">
-                                </td>
-                            </tr>
-                        @endforeach --}}
+                        
                     </tbody>
                 </table>
                 <br>
                 {{-- {{ $resultado->links() }} --}}
                 <br>
+                
+                <h2>REGISTROS:</h2>
+
+                Búsquedas pór fecha 
             </div>
         </div>
     </div>

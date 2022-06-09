@@ -83,10 +83,10 @@
                                                             <p class="font-normal text-gray-500">
                                                                 <b>Estado:</b> {{ $item->estado }} <br>
                                                                 <b>R.F.C.:</b> {{ $item->rfc_input }} <br>
-                                                                <b>N. Ext:</b> {{ $item->noext }} <br>
+                                                                <b>No. Ext:</b> {{ $item->noext }} <br>
                                                                 <b>Municipio:</b> {{ $item->municipio }} <br>
                                                                 <b>País:</b> {{ $item->pais }} <br>
-                                                                <b>N. Int: </b> {{ $item->noint }}
+                                                                <b>No. Int: </b> {{ $item->noint }}
                                                             </p>
                                                         </div>
                                                     </div>
