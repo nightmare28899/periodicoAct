@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tiro', function (Blueprint $table) {
-            $table->id();
+            $table->engine="InnoDB";
+            $table->bigIncrements('id');
+            $table->string('cliente');
+            $table->string('dia');
+            $table->string('ejemplares');
+            $table->string('domicilio');
+            $table->string('referencia');
+            $table->string('fecha');
             $table->timestamps();
         });
     }

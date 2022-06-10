@@ -10,7 +10,7 @@ class Rutas extends Component
 {
     use WithPagination;
 
-    public $Rutas, $keyWord, $nombre, $tipo, $repartidor, $cobrador, $ctaespecial, $ruta_id;
+    public $Rutas, $keyWord, $nombre, $tipo, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;
 
@@ -66,7 +66,7 @@ class Rutas extends Component
             'cobrador' => $this->cobrador,
             'ctaespecial' => $this->ctaespecial,
         ]);
-        session()->flash('message', $this->ruta_id ? '¡Ruta Actualizado!.' : '¡Ruta Creada!.');
+        $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
         $this->updateMode = false;
@@ -83,8 +83,15 @@ class Rutas extends Component
         $this->ctaespecial = $Ruta->ctaespecial;
         $this->updateMode = true;
         $this->openModalPopover();
-    }
 
+        $this->status = 'updated';
+    }
+    public function toast()
+    {
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Ruta Creada Correctamente!' : '¡Ruta Actualizada Correctamente!'
+        ]);
+    }
     public function delete($id)
     {
         Ruta::find($id)->delete();

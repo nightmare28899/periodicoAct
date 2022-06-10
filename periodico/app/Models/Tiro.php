@@ -9,4 +9,9 @@ class Tiro extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+
+    protected $table = 'tiro';
+
+    protected $fillable = ['cliente', 'dia', 'ejemplares', 'domicilio', 'referencia', 'fecha'];
 }

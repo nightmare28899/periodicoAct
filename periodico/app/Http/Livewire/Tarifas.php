@@ -10,7 +10,7 @@ class Tarifas extends Component
 {
     use WithPagination;
 
-    public $Tarifas, $keyWord, $tipo, $ordinario, $dominical, $tarifa_id;
+    public $Tarifas, $keyWord, $tipo, $ordinario, $dominical, $tarifa_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;
 
@@ -60,7 +60,8 @@ class Tarifas extends Component
             'ordinario' => $this->ordinario,
             'dominical' => $this->dominical,
         ]);
-        session()->flash('message', $this->tarifa_id ? '¡Tarifa Actualizado!.' : '¡Tarifa Creado!.');
+        /* session()->flash('message', $this->tarifa_id ? '¡Tarifa Actualizado!.' : '¡Tarifa Creado!.'); */
+        $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
         $this->updateMode = false;
@@ -75,8 +76,14 @@ class Tarifas extends Component
         $this->dominical = $Tarifa->dominical;
         $this->updateMode = true;
         $this->openModalPopover();
+        $this->status = 'updated';
     }
-
+    public function toast()
+    {
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Tarifa Creada Correctamente!' : '¡Tarifa Actualizada Correctamente!'
+        ]);
+    }
     public function delete($id)
     {
         Tarifa::find($id)->delete();

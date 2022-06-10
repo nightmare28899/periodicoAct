@@ -30,6 +30,9 @@
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tiro">
                     </div>
+                    <div class="flex-initial ml-3 mt-4" style="width: 10%;">
+                        <button class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar Tiro</button>
+                    </div>
                 </div>
                 <br>
                 @if (session()->has('message'))
@@ -62,26 +65,26 @@
                                 <td class="border">{{ $result->nombre }}</td>
                                 <td class="border">{{ $dia }}</td>
                                 @if ($dia == 'lunes')
-                                    <td class="border">{{ $result->lunes }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->martes }}</td>
                                 @elseIf ($dia == 'martes')
-                                    <td class="border">{{ $result->martes }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->miércoles }}</td>
                                 @elseIf ($dia == 'miércoles')
-                                    <td class="border">{{ $result->miércoles }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->jueves }}</td>
                                 @elseIf ($dia == 'jueves')
-                                    <td class="border">{{ $result->jueves }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->viernes }}</td>
                                 @elseIf ($dia == 'viernes')
-                                    <td class="border">{{ $result->viernes }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->sábado }}</td>
                                 @elseIf ($dia == 'sábado')
-                                    <td class="border">{{ $result->sábado }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->domingo }}</td>
                                 @elseIf ($dia == 'domingo')
-                                    <td class="border">{{ $result->domingo }}</td>
+                                    <td wire:model="ejemplares" class="border">{{ $result->lunes }}</td>
                                 @endif
-                                <td class="border">Calle: {{ $result->calle }} <br> No. Ext:
+                                <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br> No. Ext:
                                     {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                     {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                 </td>
-                                <td class="border">{{ $result->referencia }}</td>
-                                <td class="border">{{ $dateF }}</td>
+                                <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
+                                <td wire:model="fecha" class="border">{{ $dateF }}</td>
                                 <td class="border px-4 py-2 flex-nowrap pt-2">
                                     <input type="button"
                                         class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"

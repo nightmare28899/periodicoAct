@@ -3,14 +3,16 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\Tiro;
 use App\Models\Ejemplar;
 use App\Models\Domicilio;
 use App\Models\Cliente;
 use Carbon\Carbon;
+use PDF;
 
-class Tiro extends Component
+class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $Monday, $martes, $miercoles, $jueves, $viernes, $sabado, $domingo, $dia, $created_at, $ejemplar_id, $date;
+    public $Ejemplares, $keyWord, $cliente, $ejemplares, $domicilio, $referencia, $fecha, $dia, $created_at, $ejemplar_id, $date;
     public $Domicilios;
     public $updateMode = false;
     public $from;
@@ -34,10 +36,11 @@ class Tiro extends Component
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("*")
+                ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
                 ->get($this->dia);
             /* $ejemplares = Ejemplar::all('ejemplares')->get($this->dia);
             $domicilio = Domicilio::all('domicilio')->get($this->dia); */
+            /* $this->store(); */
         }
 
         return view('livewire.tiros.tiro', [
@@ -45,4 +48,16 @@ class Tiro extends Component
             'dia' => $this->dia,
         ], compact('domicilios', 'dateF'));
     }
+
+    /* public function store() {
+        Tiro::updateOrCreate(['id' => $this->id], [
+            'cliente' => $this->cliente,
+            'dia' => $this->dia,
+            'ejemplares' => $this->ejemplares,
+            'domicilio' => $this->domicilio,
+            'referencia' => $this->referencia,
+            'fecha' => $this->fecha
+        ]);
+    } */
+    
 }

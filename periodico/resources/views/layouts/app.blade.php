@@ -50,14 +50,22 @@
     <script>
         window.addEventListener('alert', event => {
             /* alert(event.detail.message); */
-            /* console.log(event.detail.message); */
+            console.log(event.detail.message);
             if (event.detail.message == '¡Cliente Creado Correctamente!') {
                 toastr.success(event.detail.message, '¡Exito!');
             } else if (event.detail.message == '¡Cliente Eliminado Correctamente!') {
                 toastr.error(event.detail.message, '¡Alerta!');
-            } else {
+            } else if (event.detail.message == '¡Cliente Actualizado Correctamente!') {
                 toastr.info(event.detail.message, '¡Actualizado!');
-            }
+            } else if (event.detail.message == '¡Ruta Creada Correctamente!') {
+                toastr.success(event.detail.message, '¡Exito!');
+            } else if (event.detail.message == '¡Ruta Actualizada Correctamente!') {
+                toastr.info(event.detail.message, '¡Actualizado!');
+            } else if(event.detail.message == '¡Tarifa Creada Correctamente!') {
+                toastr.success(event.detail.message, '¡Exito!');
+            } else if(event.detail.message == '¡Tarifa Actualizada Correctamente!') {
+                toastr.info(event.detail.message, '¡Actualizado!');
+            } 
         });
     </script>
 </body>
