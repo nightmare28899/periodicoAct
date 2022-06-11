@@ -8,7 +8,7 @@ use App\Models\Ejemplar;
 use App\Models\Domicilio;
 use App\Models\Cliente;
 use Carbon\Carbon;
-use PDF;
+use Dompdf\Dompdf;
 
 class Tiros extends Component
 {
@@ -49,6 +49,20 @@ class Tiros extends Component
         ], compact('domicilios', 'dateF'));
     }
 
+    public function imprimir()
+    {
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml('hello world');
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
+    }
+
     /* public function store() {
         Tiro::updateOrCreate(['id' => $this->id], [
             'cliente' => $this->cliente,
@@ -59,5 +73,4 @@ class Tiros extends Component
             'fecha' => $this->fecha
         ]);
     } */
-    
 }
