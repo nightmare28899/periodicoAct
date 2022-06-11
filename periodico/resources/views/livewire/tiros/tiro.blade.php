@@ -31,7 +31,8 @@
                             name="search" id="search" placeholder="Buscar Tiro">
                     </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
-                        <button class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar Tiro</button>
+                        <button wire:click="pdf()"
+                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar Tiro</button>
                     </div>
                 </div>
                 <br>
@@ -45,6 +46,20 @@
                         </div>
                     </div>
                 @endif
+
+
+                <script>
+                    setTimeout(function() {
+                        const loader = document.getElementById('loader').style.display = 'none';
+                    }, 2000);
+                </script>
+
+                @if ($isGenerateTiro)
+                    <div id="loader">
+                        @include('livewire.tiros.tiro-p-d-f')
+                    </div>
+                @endif
+
                 <table class="table-auto w-full text-center">
                     <thead>
                         <tr class="bg-gray-500 text-white">
@@ -79,7 +94,8 @@
                                 @elseIf ($dia == 'domingo')
                                     <td wire:model="ejemplares" class="border">{{ $result->lunes }}</td>
                                 @endif
-                                <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br> No. Ext:
+                                <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br>
+                                    No. Ext:
                                     {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                     {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                 </td>

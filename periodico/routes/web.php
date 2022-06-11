@@ -26,12 +26,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/cliente', Clientes::class);
-    Route::get('/remision', Remisiones::class);
-    Route::get('/tiro', Tiros::class);
+    Route::get('/tiro', Tiros::class);/* 
+    Route::get('/tiro/PDF', \App\Http\Livewire\Tiros::class)->name('tiropdf'); */
     Route::get('/tarifa', Tarifas::class);
     Route::get('/ruta', Rutas::class);
     //rutas remisiones
     Route::get('/remision/ventaP/cliente', RmCliente::class);
+    Route::get('/remision', Remisiones::class);
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

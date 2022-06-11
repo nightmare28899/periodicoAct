@@ -10,13 +10,14 @@ use App\Models\Cliente;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 
+
 class Tiros extends Component
 {
     public $Ejemplares, $keyWord, $cliente, $ejemplares, $domicilio, $referencia, $fecha, $dia, $created_at, $ejemplar_id, $date;
     public $Domicilios;
     public $updateMode = false;
     public $from;
-    public $to;
+    public $to,$isGenerateTiro = 0;
 
     public function render()
     {
@@ -49,18 +50,10 @@ class Tiros extends Component
         ], compact('domicilios', 'dateF'));
     }
 
-    public function imprimir()
+    public function pdf()
     {
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml('hello world');
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'landscape');
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream();
+        
+        $this->isGenerateTiro = true;
     }
 
     /* public function store() {
