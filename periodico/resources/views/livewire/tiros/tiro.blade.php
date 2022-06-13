@@ -30,9 +30,9 @@
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tiro">
                     </div>
-                    <div class="flex-initial ml-3 mt-4" style="width: 10%;">
-                        <button wire:click="pdf()"
-                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar Tiro</button>
+                    <div class="flex-initial ml-3 mt-6" style="width: 10%;">
+                        <a href="{{ route('download-pdf') }}"
+                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar Tiro</a>
                     </div>
                 </div>
                 <br>
@@ -48,17 +48,18 @@
                 @endif
 
 
-                <script>
+                {{-- <script>
                     setTimeout(function() {
                         const loader = document.getElementById('loader').style.display = 'none';
                     }, 2000);
-                </script>
+                </script> --}}
 
                 @if ($isGenerateTiro)
                     <div id="loader">
                         @include('livewire.tiros.tiro-p-d-f')
                     </div>
                 @endif
+
 
                 <table class="table-auto w-full text-center">
                     <thead>

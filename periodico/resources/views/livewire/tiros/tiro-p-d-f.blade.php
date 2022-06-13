@@ -7,7 +7,7 @@
         <br>
         <br>
         <br><br>
-        <div class="inline-block align-bottom rounded-lg text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle sm:max-w-xl mx-auto text-center"
+        <div class="inline-block align-bottom rounded-lg overflow-hidden transform transition-all sm:my-8 sm:align-middle sm:max-w-xl mx-auto text-center"
             role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="margin-top: 154px;">
             <h1 class="text-6xl text-bold">Generando Tiro</h1> <br>
             <h1 class="text-6xl text-bold">Porfavor espere...</h1>

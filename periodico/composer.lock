@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa14bf438c5dbb3797be1deb4bdcd1cb",
+    "content-hash": "da0cb21be8b6512bcb6ec8e9ee084aa6",
     "packages": [
         {
             "name": "ascsoftw/livewire-toast",

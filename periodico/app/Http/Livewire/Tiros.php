@@ -8,7 +8,7 @@ use App\Models\Ejemplar;
 use App\Models\Domicilio;
 use App\Models\Cliente;
 use Carbon\Carbon;
-use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class Tiros extends Component
@@ -17,7 +17,7 @@ class Tiros extends Component
     public $Domicilios;
     public $updateMode = false;
     public $from;
-    public $to,$isGenerateTiro = 0;
+    public $to, $isGenerateTiro = 0;
 
     public function render()
     {
@@ -44,26 +44,32 @@ class Tiros extends Component
             /* $this->store(); */
         }
 
+        //Aqui va el arreglo para guardar la información que voy a pasar
+        /* Tiro::create([
+            'cliente' => $this->nombre,
+            'dia' => $this->dia,
+            'ejemplares' => $this->ejemplares,
+            'fecha' => $this->dateF,
+        ]); */
+
         return view('livewire.tiros.tiro', [
             'resultado' => $resultado,
             'dia' => $this->dia,
         ], compact('domicilios', 'dateF'));
     }
 
-    public function pdf()
+    public function downloadPdf()
     {
-        
         $this->isGenerateTiro = true;
-    }
 
-    /* public function store() {
-        Tiro::updateOrCreate(['id' => $this->id], [
-            'cliente' => $this->cliente,
-            'dia' => $this->dia,
-            'ejemplares' => $this->ejemplares,
-            'domicilio' => $this->domicilio,
-            'referencia' => $this->referencia,
-            'fecha' => $this->fecha
-        ]);
-    } */
+        $resultado = Cliente::All();
+
+        view()->share('tiros.pdf',$resultado);
+
+        $pdf = PDF::loadView('livewire.tiros.pdf', ['tiros' => $resultado]);
+        $pdf->setPaper('A5', 'landscape');
+
+        return $pdf->stream('tiros.pdf');
+        /* $pdf->download('tiros.pdf') */
+    }
 }
