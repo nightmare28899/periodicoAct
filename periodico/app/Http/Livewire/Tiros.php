@@ -13,63 +13,83 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente, $ejemplares, $domicilio, $referencia, $fecha, $dia, $created_at, $ejemplar_id, $date;
+    public $Ejemplares, $keyWord, $cliente, $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF;
     public $Domicilios;
     public $updateMode = false;
     public $from;
     public $to, $isGenerateTiro = 0;
 
+    public $showingModal = false;
+
+    public $listeners = [
+        'hideMe' => 'hideModal'
+    ];
+
     public function render()
     {
-        $ejemplares = Ejemplar::where('id', '>=', 1);
-        $resultado = Cliente::where('id', '>=', 1);
+        /* $ejemplares = Ejemplar::where('id', '>=', 1); */
+        /* $resultado = Cliente::where('id', '>=', 1); */
         /* $ejemplares = Ejemplar::all(); */
         $domicilios = Domicilio::all();
         $keyWord = '%' . $this->keyWord . '%';
         Carbon::setLocale('es');
-        $dateF = new Carbon($this->from);
-        $dateT = new Carbon($this->to);
+        $this->dateF = new Carbon($this->from);
+        /* $dateT = new Carbon($this->to); */
         if ($this->from) {
-            $this->dia = $dateF->translatedFormat('l');
+            $this->diaS = $this->dateF->translatedFormat('l');
             /* $ejemplares = Ejemplar::whereBetween('created_at', [$dateF->format('Y-m-d')." 00:00:00", $dateT->format('Y-m-d')." 23:59:59"])->get(); */
             /* $ejemplares = Ejemplar::whereDate('created_at', [$dateF->format('Y-m-d H:i:s')])->get($this->dia); */
-            $resultado = Cliente
+            $this->resultados = Cliente
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
                 ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
-                ->get($this->dia);
-            /* $ejemplares = Ejemplar::all('ejemplares')->get($this->dia);
-            $domicilio = Domicilio::all('domicilio')->get($this->dia); */
-            /* $this->store(); */
+                ->get($this->diaS);
         }
 
-        //Aqui va el arreglo para guardar la información que voy a pasar
-        /* Tiro::create([
-            'cliente' => $this->nombre,
-            'dia' => $this->dia,
-            'ejemplares' => $this->ejemplares,
-            'fecha' => $this->dateF,
-        ]); */
-
+        /* return view('livewire.tiros.tiro-modal'); */
         return view('livewire.tiros.tiro', [
-            'resultado' => $resultado,
-            'dia' => $this->dia,
-        ], compact('domicilios', 'dateF'));
+            'resultado' => $this->resultados,
+            'diaS' => $this->diaS,
+            'dateF' => $this->dateF,
+        ], compact('domicilios'));
     }
 
-    public function downloadPdf()
+    /* public function updatedFrom()
     {
-        $this->isGenerateTiro = true;
+        $this->resultados = Cliente
+            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->where('nombre', 'like', '%' . $this->keyWord . '%')
+            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
+            ->get($this->diaS);
+    } */
 
-        $resultado = Cliente::All();
+    public function showModal()
+    {
+        $this->showingModal = true;
 
-        view()->share('tiros.pdf',$resultado);
+        $this->resultados = Cliente
+            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->where('nombre', 'like', '%' . $this->keyWord . '%')
+            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
+            ->get($this->diaS);
 
-        $pdf = PDF::loadView('livewire.tiros.pdf', ['tiros' => $resultado]);
-        $pdf->setPaper('A5', 'landscape');
+        $pdfContent = PDF::loadView('livewire.tiros.pdf', [
+            'resultado' => $this->resultados,
+            'diaS' => $this->diaS,
+            'dateF' => $this->dateF,
+        ])->output();
 
-        return $pdf->stream('tiros.pdf');
-        /* $pdf->download('tiros.pdf') */
+        return response()->streamDownload(
+            fn () => print($pdfContent),
+            "tiros.pdf"
+        );
+    }
+
+    public function hideModal()
+    {
+        $this->showingModal = false;
     }
 }
