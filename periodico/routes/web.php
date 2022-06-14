@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/remision/ventaP/cliente', RmCliente::class);
     Route::get('/remision', Remisiones::class);
 
-    Route::get('/', [UserController::class, 'index']);
+    /* Route::get('/', [UserController::class, 'index']); */
     Route::get('download-pdf', [Tiros::class, 'downloadPdf'])->name('download-pdf');
 
     Route::get('/dashboard', function () {

@@ -80,8 +80,11 @@ class Tiros extends Component
             'resultado' => $this->resultados,
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
-        ])->output();
+        ])
+        ->setPaper('A5', 'landscape')
+        ->output();
 
+        /* return $pdfContent->stream(); */
         return response()->streamDownload(
             fn () => print($pdfContent),
             "tiros.pdf"

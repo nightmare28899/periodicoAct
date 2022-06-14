@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <x-jet-dialog-modal wire:model="showingModal">}
+        <x-jet-dialog-modal wire:model="showingModal">
 
             <x-slot name="title">
 
@@ -164,7 +164,7 @@
                         {{ __('Cancel')  }}
                      </x-jet-secondary-button> --}}
             </x-slot>
-    
+
 
         </x-jet-dialog-modal>
 

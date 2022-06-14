@@ -14,6 +14,12 @@ class Rutas extends Component
     public $isModalOpen = 0;
     public $updateMode = false;
 
+    public $showingModal = false;
+
+    public $listeners = [
+        'hideMe' => 'hideModal'
+    ];
+
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
@@ -31,15 +37,25 @@ class Rutas extends Component
     public function create()
     {
         $this->resetInput();
-        $this->openModalPopover();
+        $this->showModal();
+        $this->status = 'created';
     }
-    public function openModalPopover()
+    /* public function openModalPopover()
     {
         $this->isModalOpen = true;
     }
     public function closeModalPopover()
     {
         $this->isModalOpen = false;
+    } */
+    public function showModal()
+    {
+        $this->showingModal = true;
+    }
+
+    public function hideModal()
+    {
+        $this->showingModal = false;
     }
     private function resetInput()
     {
@@ -59,7 +75,7 @@ class Rutas extends Component
             'cobrador' => 'required',
         ]);
 
-        Ruta::updateOrCreate(['id' => $this->ruta_id], [
+        Ruta::Create([
             'nombre' => $this->nombre,
             'tipo' => $this->tipo,
             'repartidor' => $this->repartidor,
@@ -69,22 +85,43 @@ class Rutas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->updateMode = false;
-        $this->closeModalPopover();
+        $this->hideModal();
     }
     public function edit($id)
     {
-        $Ruta = Ruta::findOrFail($id);
+        $Ruta = Ruta::find($id);
         $this->ruta_id = $id;
         $this->nombre = $Ruta->nombre;
         $this->tipo = $Ruta->tipo;
         $this->repartidor = $Ruta->repartidor;
         $this->cobrador = $Ruta->cobrador;
         $this->ctaespecial = $Ruta->ctaespecial;
-        $this->updateMode = true;
-        $this->openModalPopover();
 
         $this->status = 'updated';
+        $this->showModal();
+    }
+    public function update()
+    {
+        $this->validate([
+            'nombre' => 'required',
+            'tipo' => 'required',
+            'repartidor' => 'required',
+            'cobrador' => 'required',
+        ]);
+
+        $Ruta = Ruta::find($this->ruta_id);
+        $Ruta->update([
+            'nombre' => $this->nombre,
+            'tipo' => $this->tipo,
+            'repartidor' => $this->repartidor,
+            'cobrador' => $this->cobrador,
+            'ctaespecial' => $this->ctaespecial,
+        ]);
+
+        $this->toast();
+        $this->resetInput();
+        $this->emit('closeModal');
+        $this->hideModal();
     }
     public function toast()
     {

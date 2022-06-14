@@ -9,11 +9,17 @@ use App\Models\Tarifa;
 class Tarifas extends Component
 {
     use WithPagination;
-    
+
 
     public $Tarifas, $keyWord, $tipo, $ordinario, $dominical, $tarifa_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;
+
+    public $showingModal = false;
+
+    public $listeners = [
+        'hideMe' => 'hideModal'
+    ];
 
     public function render()
     {
@@ -31,16 +37,17 @@ class Tarifas extends Component
     public function create()
     {
         $this->resetInput();
-        $this->openModalPopover();
+        $this->showModal();
+        $this->status = 'created';
     }
-    public function openModalPopover()
+    /* public function openModalPopover()
     {
         $this->isModalOpen = true;
     }
     public function closeModalPopover()
     {
         $this->isModalOpen = false;
-    }
+    } */
     private function resetInput()
     {
         $this->tipo = '';
@@ -56,7 +63,7 @@ class Tarifas extends Component
             'dominical' => 'required',
         ]);
 
-        Tarifa::updateOrCreate(['id' => $this->tarifa_id], [
+        Tarifa::Create([
             'tipo' => $this->tipo,
             'ordinario' => $this->ordinario,
             'dominical' => $this->dominical,
@@ -65,19 +72,39 @@ class Tarifas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->updateMode = false;
-        $this->closeModalPopover();
+        $this->hideModal();
     }
     public function edit($id)
     {
-        $Tarifa = Tarifa::findOrFail($id);
+        $Tarifa = Tarifa::find($id);
         $this->tarifa_id = $id;
         $this->tipo = $Tarifa->tipo;
         $this->ordinario = $Tarifa->ordinario;
         $this->dominical = $Tarifa->dominical;
         $this->updateMode = true;
-        $this->openModalPopover();
+
         $this->status = 'updated';
+        $this->showModal();
+    }
+    public function update()
+    {
+        $this->validate([
+            'tipo' => 'required',
+            'ordinario' => 'required',
+            'dominical' => 'required',
+        ]);
+
+        $Tarifa = Tarifa::find($this->tarifa_id);
+        $Tarifa->update([
+            'tipo' => $this->tipo,
+            'ordinario' => $this->ordinario,
+            'dominical' => $this->dominical,
+        ]);
+
+        $this->toast();
+        $this->resetInput();
+        $this->emit('closeModal');
+        $this->hideModal();
     }
     public function toast()
     {
@@ -89,5 +116,15 @@ class Tarifas extends Component
     {
         Tarifa::find($id)->delete();
         session()->flash('message', '¡Tarifa Eliminada!.');
+    }
+
+    public function showModal()
+    {
+        $this->showingModal = true;
+    }
+
+    public function hideModal()
+    {
+        $this->showingModal = false;
     }
 }
