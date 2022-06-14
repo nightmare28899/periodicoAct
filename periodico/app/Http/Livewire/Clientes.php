@@ -29,6 +29,10 @@ class Clientes extends Component
 
     public $status = 'created';
 
+    public $listeners = [
+        'hideMe' => 'hideModal'
+    ];
+
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
@@ -69,6 +73,7 @@ class Clientes extends Component
     {
         /* $this->resetInput(); */
         $this->openModalPopover();
+        $this->status = 'created';
     }
     public function estadoRFC()
     {
@@ -116,7 +121,7 @@ class Clientes extends Component
     }
     public function detalles($id)
     {
-        $Cliente = Cliente::findOrFail($id);
+        $Cliente = Cliente::find($id);
         $this->cliente_id = $id;
         $this->clasificacion = $Cliente->clasificacion;
         $this->rfc = $Cliente->rfc;
@@ -129,7 +134,7 @@ class Clientes extends Component
         $this->telefono = $Cliente->telefono;
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
 
-        $Domicilio = Domicilio::findOrFail($id);
+        $Domicilio = Domicilio::find($id);
         $this->domicilio_id = $Domicilio->id;
         $this->calle = $Domicilio->calle;
         $this->noint = $Domicilio->noint;
@@ -142,7 +147,7 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        $Ejemplar = Ejemplar::findOrFail($id);
+        $Ejemplar = Ejemplar::find($id);
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
@@ -221,7 +226,7 @@ class Clientes extends Component
             'domingo' => 'required',
         ]);
 
-        Cliente::updateOrCreate(['id' => $this->cliente_id], [
+        Cliente::Create([
             'clasificacion' => $this->clasificacion,
             'rfc' => $this->rfc,
             'rfc_input' => $this->rfc_input,
@@ -235,7 +240,7 @@ class Clientes extends Component
         ]);
 
 
-        Domicilio::updateOrCreate(['id' => $this->domicilio_id], [
+        Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'calle' => $this->calle,
             'noint' => $this->noint,
@@ -249,7 +254,7 @@ class Clientes extends Component
             'referencia' => $this->referencia,
         ]);
 
-        Ejemplar::updateOrCreate(['id' => $this->ejemplar_id], [
+        Ejemplar::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'lunes' => $this->lunes,
             'martes' => $this->martes,
@@ -270,7 +275,7 @@ class Clientes extends Component
     }
     public function edit($id)
     {
-        $Cliente = Cliente::findOrFail($id);
+        $Cliente = Cliente::find($id);
         $this->cliente_id = $id;
         $this->clasificacion = $Cliente->clasificacion;
         $this->rfc = $Cliente->rfc;
@@ -283,7 +288,7 @@ class Clientes extends Component
         $this->telefono = $Cliente->telefono;
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
 
-        $Domicilio = Domicilio::findOrFail($id);
+        $Domicilio = Domicilio::find($id);
         $this->domicilio_id = $Domicilio->id;
         $this->calle = $Domicilio->calle;
         $this->noint = $Domicilio->noint;
@@ -296,7 +301,7 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        $Ejemplar = Ejemplar::findOrFail($id);
+        $Ejemplar = Ejemplar::find($id);
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
@@ -306,10 +311,84 @@ class Clientes extends Component
         $this->sábado = $Ejemplar->sábado;
         $this->domingo = $Ejemplar->domingo;
 
-        $this->updateMode = true;
         $this->openModalPopover();
 
         $this->status = 'updated';
+    }
+
+    public function update()
+    {
+        $this->validate([
+            'nombre' => 'required',
+            'estado' => 'required',
+            'pais' => 'required',
+            'regimen_fiscal' => 'required',
+
+            'calle' => 'required',
+            'noext' => 'required',
+            'colonia' => 'required',
+            'cp' => 'required',
+            'localidad' => 'required',
+            'municipio' => 'required',
+            'referencia' => 'required',
+            'ruta_id' => 'required',
+            'tarifa_id' => 'required',
+            'clasificacion' => 'required',
+            'rfc' => 'required',
+            'rfc_input' => 'required',
+
+            'lunes' => 'required',
+            'martes' => 'required',
+            'miércoles' => 'required',
+            'jueves' => 'required',
+            'viernes' => 'required',
+            'sábado' => 'required',
+            'domingo' => 'required',
+        ]);
+
+        $cliente = Cliente::find($this->cliente_id);
+        $cliente->update([
+            'clasificacion' => $this->clasificacion,
+            'rfc' => $this->rfc,
+            'rfc_input' => $this->rfc_input,
+            'nombre' => $this->nombre,
+            'estado' => $this->estado,
+            'pais' => $this->pais,
+            'email' => $this->email,
+            'email_cobranza' => $this->email_cobranza,
+            'telefono' => $this->telefono,
+            'regimen_fiscal' => $this->regimen_fiscal,
+        ]);
+
+        $domicilio = Domicilio::find($this->domicilio_id);
+        $domicilio->update([
+            'calle' => $this->calle,
+            'noint' => $this->noint,
+            'noext' => $this->noext,
+            'colonia' => $this->colonia,
+            'cp' => $this->cp,
+            'localidad' => $this->localidad,
+            'municipio' => $this->municipio,
+            'ruta_id' => $this->ruta_id,
+            'tarifa_id' => $this->tarifa_id,
+            'referencia' => $this->referencia,
+        ]);
+
+        $ejemplar = Ejemplar::find($this->ejemplar_id);
+        $ejemplar->update([
+            'lunes' => $this->lunes,
+            'martes' => $this->martes,
+            'miércoles' => $this->miércoles,
+            'jueves' => $this->jueves,
+            'viernes' => $this->viernes,
+            'sábado' => $this->sábado,
+            'domingo' => $this->domingo,
+        ]);
+
+        $this->toast();
+        $this->resetInput();
+        $this->emit('closeModal');
+        $this->closeModalPopover();
     }
 
     public function toast()

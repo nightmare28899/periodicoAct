@@ -1,5 +1,6 @@
 
     <table class="table-auto w-full text-center">
+        <h1>Lista del Tiro</h1>
         <thead>
             <tr class="bg-gray-500 text-white">
                 <th class="px-4 py-2 w-20">No.</th>
@@ -27,11 +28,6 @@
                     </td>
                     <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
                     <td wire:model="fecha" class="border">{{ $dateF }}</td>
-                    {{-- <td class="border px-4 py-2 flex-nowrap pt-2">
-                                    <input type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
-                                        name="imprimir" value="Imprimir" onclick="window.print();">
-                                </td> --}}
                 </tr>
             @endforeach
         </tbody>

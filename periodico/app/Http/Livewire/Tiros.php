@@ -9,7 +9,7 @@ use App\Models\Domicilio;
 use App\Models\Cliente;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
@@ -65,9 +65,14 @@ class Tiros extends Component
             ->get($this->diaS);
     } */
 
+    public function remision() 
+    {
+        return view('livewire.tiros.testeo');
+    }
+
     public function showModal()
     {
-        $this->showingModal = true;
+        $this->isGenerateTiro = true;
 
         $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
@@ -82,13 +87,14 @@ class Tiros extends Component
             'dateF' => $this->dateF,
         ])
         ->setPaper('A5', 'landscape')
-        ->output();
+        ->output(); 
 
-        /* return $pdfContent->stream(); */
-        return response()->streamDownload(
-            fn () => print($pdfContent),
-            "tiros.pdf"
-        );
+        /* return Redirect::to('download-pdf'); */
+
+        return response()
+            ->streamDownload(fn () => print($pdfContent),
+            "tiros.pdf");
+        
     }
 
     public function hideModal()

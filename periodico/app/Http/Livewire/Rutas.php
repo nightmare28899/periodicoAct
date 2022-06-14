@@ -37,18 +37,18 @@ class Rutas extends Component
     public function create()
     {
         $this->resetInput();
-        $this->showModal();
+        $this->openModalPopover();
         $this->status = 'created';
     }
-    /* public function openModalPopover()
+    public function openModalPopover()
     {
         $this->isModalOpen = true;
     }
     public function closeModalPopover()
     {
         $this->isModalOpen = false;
-    } */
-    public function showModal()
+    }
+    /* public function showModal()
     {
         $this->showingModal = true;
     }
@@ -56,7 +56,7 @@ class Rutas extends Component
     public function hideModal()
     {
         $this->showingModal = false;
-    }
+    } */
     private function resetInput()
     {
         $this->nombre = '';
@@ -85,7 +85,7 @@ class Rutas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->hideModal();
+        $this->closeModalPopover();
     }
     public function edit($id)
     {
@@ -98,7 +98,7 @@ class Rutas extends Component
         $this->ctaespecial = $Ruta->ctaespecial;
 
         $this->status = 'updated';
-        $this->showModal();
+        $this->openModalPopover();
     }
     public function update()
     {
@@ -121,7 +121,7 @@ class Rutas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->hideModal();
+        $this->closeModalPopover();
     }
     public function toast()
     {

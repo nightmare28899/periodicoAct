@@ -37,17 +37,17 @@ class Tarifas extends Component
     public function create()
     {
         $this->resetInput();
-        $this->showModal();
+        $this->openModalPopover();
         $this->status = 'created';
     }
-    /* public function openModalPopover()
+    public function openModalPopover()
     {
         $this->isModalOpen = true;
     }
     public function closeModalPopover()
     {
         $this->isModalOpen = false;
-    } */
+    }
     private function resetInput()
     {
         $this->tipo = '';
@@ -72,7 +72,7 @@ class Tarifas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->hideModal();
+        $this->closeModalPopover();
     }
     public function edit($id)
     {
@@ -84,7 +84,7 @@ class Tarifas extends Component
         $this->updateMode = true;
 
         $this->status = 'updated';
-        $this->showModal();
+        $this->openModalPopover();
     }
     public function update()
     {
@@ -104,7 +104,7 @@ class Tarifas extends Component
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
-        $this->hideModal();
+        $this->closeModalPopover();
     }
     public function toast()
     {
@@ -116,15 +116,5 @@ class Tarifas extends Component
     {
         Tarifa::find($id)->delete();
         session()->flash('message', '¡Tarifa Eliminada!.');
-    }
-
-    public function showModal()
-    {
-        $this->showingModal = true;
-    }
-
-    public function hideModal()
-    {
-        $this->showingModal = false;
     }
 }
