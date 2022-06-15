@@ -67,7 +67,8 @@ class Tiros extends Component
 
     public function remision() 
     {
-        return view('livewire.tiros.testeo');
+        /* return Redirect()->to('/tiro/vistaPrevia'); */
+        return Redirect()->to('/tiro/vistaPrevia');
     }
 
     public function showModal()

@@ -32,7 +32,7 @@
                     </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         {{-- <a href="{{ route('download-pdf') }}" --}}
-                        <button wire:click="showModal" id="tiro" wire:loading.attr="disabled"
+                        <button wire:click="remision" id="tiro" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar
                             Tiro</button>
                         {{-- <div wire:click="showModal" wire:loading.attr="disabled"
@@ -54,7 +54,7 @@
                 @endif
 
 
-                <script>
+                {{-- <script>
                     document.getElementById('tiro').addEventListener('click', function(e) {
                         e.preventDefault();
                         setTimeout(function() {
@@ -63,12 +63,12 @@
                     });
                 </script>
 
-                {{-- este es el loader --}}
+                este es el loader
                 @if ($isGenerateTiro)
                     <div id="loader">
                         @include('livewire.tiros.tiro-p-d-f')
                     </div>
-                @endif
+                @endif --}}
 
 
 
