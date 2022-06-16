@@ -4,5 +4,5 @@
             {{ __('Generar Tiro') }}
         </h2>
     </x-slot>
-    <h1>Hello world vistap</h1>
+    <h1>Hello world vistap {{ $dateF }}</h1>
 </div>

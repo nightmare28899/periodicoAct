@@ -6,8 +6,12 @@ use Livewire\Component;
 
 class VistaPrevia extends Component
 {
+    public $dateF;
+
     public function render()
     {
-        return view('livewire.tiros.vista-previa');
+        return view('livewire.tiros.vista-previa', [
+            'dateF' => $this->dateF,
+        ]);
     }
 }

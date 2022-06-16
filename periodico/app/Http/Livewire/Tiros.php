@@ -65,16 +65,17 @@ class Tiros extends Component
             ->get($this->diaS);
     } */
 
-    public function remision() 
+    public function remision()
     {
+        /* dd($this->dateF); 
+        /* $this->isGenerateTiro = true; */
         /* return Redirect()->to('/tiro/vistaPrevia'); */
-        return Redirect()->to('/tiro/vistaPrevia');
+        return redirect()->to('livewire.tiros.tiro', ['dateF' => $this->dateF]);
     }
 
-    public function showModal()
+    public function descarga()
     {
         $this->isGenerateTiro = true;
-
         $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
@@ -87,15 +88,44 @@ class Tiros extends Component
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
         ])
+            /* ->setPaper('A5', 'landscape') */
+            ->output();
+            
+        return response()
+            ->streamDownload(
+                fn () => print($pdfContent),
+                "tiros.pdf"
+            );
+    }
+
+    public function showModal()
+    {
+        /* $this->isGenerateTiro = true; */
+        $this->showingModal = true;
+        /* if($this->isGenerateTiro == true) {
+            $this->showingModal = true;
+        } */
+
+        /* $this->resultados = Cliente
+            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->where('nombre', 'like', '%' . $this->keyWord . '%')
+            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
+            ->get($this->diaS);
+
+        $pdfContent = PDF::loadView('livewire.tiros.pdf', [
+            'resultado' => $this->resultados,
+            'diaS' => $this->diaS,
+            'dateF' => $this->dateF,
+        ])
         ->setPaper('A5', 'landscape')
-        ->output(); 
+        ->output();  */
 
         /* return Redirect::to('download-pdf'); */
 
-        return response()
+        /* return response()
             ->streamDownload(fn () => print($pdfContent),
-            "tiros.pdf");
-        
+            "tiros.pdf"); */
     }
 
     public function hideModal()

@@ -32,7 +32,7 @@
                     </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         {{-- <a href="{{ route('download-pdf') }}" --}}
-                        <button wire:click="remision" id="tiro" wire:loading.attr="disabled"
+                        <button wire:click="showModal" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Generar
                             Tiro</button>
                         {{-- <div wire:click="showModal" wire:loading.attr="disabled"
@@ -52,25 +52,6 @@
                         </div>
                     </div>
                 @endif
-
-
-                {{-- <script>
-                    document.getElementById('tiro').addEventListener('click', function(e) {
-                        e.preventDefault();
-                        setTimeout(function() {
-                            const loader = document.getElementById('loader').style.display = 'none';
-                        }, 1500);
-                    });
-                </script>
-
-                este es el loader
-                @if ($isGenerateTiro)
-                    <div id="loader">
-                        @include('livewire.tiros.tiro-p-d-f')
-                    </div>
-                @endif --}}
-
-
 
                 {{-- <livewire:custom-modal :wire:key="'custom-modal-'.time()"> --}}
 
@@ -100,7 +81,7 @@
                                     {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                 </td>
                                 <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
-                                <td wire:model="fecha" class="border">{{ $dateF }}</td>
+                                <td wire:model="fecha" class="border">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y')}}</td>
                                 {{-- <td class="border px-4 py-2 flex-nowrap pt-2">
                                     <input type="button"
                                         class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
@@ -116,60 +97,58 @@
             </div>
         </div>
 
-        <x-jet-dialog-modal wire:model="showingModal">
+        <div>
+            <x-jet-dialog-modal wire:model="showingModal">
 
-            <x-slot name="title">
+                <x-slot name="title">
 
-            </x-slot>
+                </x-slot>
 
-            <x-slot name="content">
-                <table class="table-auto w-full text-center">
-                    <thead>
-                        <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">No.</th>
-                            <th class="px-4 py-2 w-20">Cliente</th>
-                            <th class="px-4 py-2 w-20">Día</th>
-                            <th class="px-4 py-2 w-20">Ejemplares</th>
-                            <th class="px-4 py-2 w-20">Domicilio</th>
-                            <th class="px-4 py-2 w-20">Referencia</th>
-                            <th class="px-4 py-2 w-20">Fecha</th>
-                            {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($resultado as $result)
-                            <tr>
-                                <td class="border">{{ $loop->iteration }}</td>
-                                <td class="border">{{ $result->nombre }}</td>
-                                <td class="border">{{ $diaS }} </td>
-                                <td class="border">{{ $result->{$diaS} }}</td>
-                                <td class="border" wire:model="domicilio">Calle: {{ $result->calle }}
-                                    <br>
-                                    No. Ext:
-                                    {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
-                                    {{ $result->localidad }}, Municipio: {{ $result->municipio }}
-                                </td>
-                                <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
-                                <td wire:model="fecha" class="border">{{ $dateF }}</td>
-                                {{-- <td class="border px-4 py-2 flex-nowrap pt-2">
-                                                <input type="button"
-                                                    class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
-                                                    name="imprimir" value="Imprimir" onclick="window.print();">
-                                            </td> --}}
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-slot>
+                <x-slot name="content">
+                    <div class="text-center">
+                        <h1 class="font-bold text-sm text-2xl p-6">Datos del Tiro</h1>
+                        <div class="flex justify-center">
+                            <div class="">
+                                <p class="font-bold text-sm"> Fecha seleccionada para el tiro: <br> {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y')}} </p>
+                                <p class="font-bold text-sm" style="margin-top: 15px;">Cantidad de registros: {{ count($resultado) }}</p>
+                            </div>
+                            <div class="ml-20">
+                                <button wire:click="descarga" id="tiro" wire:loading.attr="disabled"
+                                class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">Descargar
+                                Tiro</button>
+                                <button wire:click="descarga" id="tiro" wire:loading.attr="disabled"
+                                class="p-2 bg-red-500 rounded-md text-white hover:bg-red-700 mt-5">Generar Remisiones del Tiro</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
 
-            <x-slot name="footer">
-                {{-- <x-jet-secondary-button wire:click="$set('showingModal', false)" wire:loading.attr="disabled">
+                    {{-- <script>
+                        document.getElementById('tiro').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            setTimeout(function() {
+                                const loader = document.getElementById('loader').style.display = 'none';
+                            }, 1500);
+                        });
+                    </script>
+
+                    @if ($isGenerateTiro)
+                        <div id="loader">
+                            @include('livewire.tiros.tiro-p-d-f')
+                        </div>
+                    @endif --}}
+                </x-slot>
+
+                <x-slot name="footer">
+                    {{-- <x-jet-secondary-button wire:click="$set('showingModal', false)" wire:loading.attr="disabled">
                         {{ __('Cancel')  }}
                      </x-jet-secondary-button> --}}
-            </x-slot>
+                </x-slot>
 
 
-        </x-jet-dialog-modal>
-
+            </x-jet-dialog-modal>
+        </div>
     </div>
 </div>

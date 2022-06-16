@@ -5,5 +5,6 @@
             {{ __('Generar Tiro') }}
         </h2>
     </x-slot>
-    <h1>Hello world</h1>
+    
+    {{-- <livewire:tiros.vistap/> --}}
 </div>

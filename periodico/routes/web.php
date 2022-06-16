@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     /* Route::get('/', [UserController::class, 'index']); */
     /* Route::get('/tiro/vistaPrevia', [Tiros::class, 'remision'])->name('download-pdf'); */
-    Route::get('/tiro/vistaPrevia', VistaPrevia::class);
+    Route::get('/tiro/vistaPrevia', VistaPrevia::class)->name('vista-previa');
 
     Route::get('/dashboard', function () {
         return view('dashboard');
