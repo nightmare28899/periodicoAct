@@ -27,7 +27,6 @@
                <th class="px-4 py-2 w-20">Domicilio</th>
                <th class="px-4 py-2 w-20">Referencia</th>
                <th class="px-4 py-2 w-20">Fecha</th>
-               {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
            </tr>
        </thead>
        <tbody>

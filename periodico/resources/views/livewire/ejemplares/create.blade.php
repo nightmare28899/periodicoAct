@@ -22,20 +22,20 @@
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Lunes:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunes') border-red-500 @enderror"
                         id="lunes" wire:model.defer="lunes" placeholder="Escribe la cantidad" />
                     @error('lunes')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Martes:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martes') border-red-500 @enderror"
                         id="martes" wire:model.defer="martes" placeholder="Escribe la cantidad" />
                     @error('martes')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -44,20 +44,20 @@
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Miércoles:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miercoles') border-red-500 @enderror"
                         id="miércoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
                     @error('miércoles')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Jueves:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('jueves') border-red-500 @enderror"
                         id="jueves" wire:model.defer="jueves" placeholder="Escribe la cantidad" />
                     @error('jueves')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -66,20 +66,20 @@
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Viernes:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernes') border-red-500 @enderror"
                         id="viernes" wire:model.defer="viernes" placeholder="Escribe la cantidad" />
                     @error('viernes')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Sábado:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sábado') border-red-500 @enderror"
                         id="sábado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
                     @error('sábado')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -88,10 +88,10 @@
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Domingo:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('domingo') border-red-500 @enderror"
                         id="domingo" wire:model.defer="domingo" placeholder="Escribe la cantidad" />
                     @error('domingo')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -99,15 +99,15 @@
     </x-slot>
 
     <x-slot name="footer">
-        <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
+        <div class="flex-auto w-64 px-4 sm:px-6">
             <x-jet-secondary-button
-                class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
+                class="inline-flex items-center w-full justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
                 wire:click="$set('ejemplarModalOpen', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
         </div>
 
-        <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
+        <div class="flex-auto w-64 px-4 sm:px-6">
             <button wire:click.prevent="openModalAnterior()" type="button"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                 Anterior
@@ -115,10 +115,10 @@
         </div>
 
 
-        <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
+        <div class="flex-auto w-64 px-4 sm:px-6">
             @if ($status == 'updated')
                 <button wire:click.prevent="update" type="button"
-                    class="inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
@@ -131,7 +131,7 @@
                 </button>
             @else
                 <button wire:click.prevent="store" type="button"
-                    class="inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">

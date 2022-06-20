@@ -19,7 +19,7 @@ class Tiros extends Component
     public $from;
     public $to, $isGenerateTiro = 0;
 
-    public $showingModal = false;
+    public $showingModal = false, $modalRemision = false;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -76,6 +76,7 @@ class Tiros extends Component
     public function descarga()
     {
         $this->isGenerateTiro = true;
+        $this->modalRemision = false;
         $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
@@ -90,7 +91,7 @@ class Tiros extends Component
         ])
             /* ->setPaper('A5', 'landscape') */
             ->output();
-            
+
         return response()
             ->streamDownload(
                 fn () => print($pdfContent),
@@ -98,14 +99,11 @@ class Tiros extends Component
             );
     }
 
-    public function showModal()
+    public function generarRemision()
     {
-        /* $this->isGenerateTiro = true; */
-        $this->showingModal = true;
-        /* if($this->isGenerateTiro == true) {
-            $this->showingModal = true;
-        } */
-
+        /* $cliente = Cliente::find(1)->user; */
+        $this->modalRemision = true;
+        $this->showingModal = false;
         /* $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
@@ -113,23 +111,35 @@ class Tiros extends Component
             ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
             ->get($this->diaS);
 
-        $pdfContent = PDF::loadView('livewire.tiros.pdf', [
+        $pdfContent = PDF::loadView('livewire.tiros.generarRemision', [
             'resultado' => $this->resultados,
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
         ])
-        ->setPaper('A5', 'landscape')
-        ->output();  */
+            ->setPaper('A5', 'landscape')
+            ->output();
 
-        /* return Redirect::to('download-pdf'); */
+        return response()
+            ->streamDownload(
+                fn () => print($pdfContent),
+                "tiros.pdf"
+            ); */
 
-        /* return response()
-            ->streamDownload(fn () => print($pdfContent),
-            "tiros.pdf"); */
+        /* return redirect()->to('/tiros/remision', ['dateF' => $this->dateF]); */
+    }
+
+    public function showModal()
+    {
+        $this->showingModal = true;
     }
 
     public function hideModal()
     {
         $this->showingModal = false;
+    }
+    public function hideModalRemision()
+    {
+        $this->modalRemision = false;
+        $this->showingModal = true;
     }
 }

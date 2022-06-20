@@ -10,7 +10,7 @@
             role="dialog" aria-modal="true" aria-labelledby="modal-headline">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
 
-                <a href="#" class="container max-w-sm rounded-lg shadow-md dark:bg-gray-800">
+                <a class="container max-w-sm rounded-lg shadow-md dark:bg-gray-800">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black text-center">Datos
                         del cliente:
                         {{ $nombre }}</h5>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </a>
-                <span class="">
+                <span>
                     <button wire:click="closeDetallesModal()" type="button"
                         class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-red-600 hover:bg-red-700 text-base leading-6 font-bold text-white shadow-sm focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                         Cerrar

@@ -35,10 +35,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //rutas remisiones
     Route::get('/remision/ventaP/cliente', RmCliente::class);
     Route::get('/remision', Remisiones::class);
+    Route::get('/tiros/remision', function() {
+        return view('livewire.tiros.generarRemision');
+    });
 
     /* Route::get('/', [UserController::class, 'index']); */
     /* Route::get('/tiro/vistaPrevia', [Tiros::class, 'remision'])->name('download-pdf'); */
-    Route::get('/tiro/vistaPrevia', VistaPrevia::class)->name('vista-previa');
+    /* Route::get('/tiro/vistaPrevia', VistaPrevia::class)->name('vista-previa'); */
 
     Route::get('/dashboard', function () {
         return view('dashboard');

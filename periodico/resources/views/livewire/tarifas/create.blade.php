@@ -24,20 +24,20 @@
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Tipo:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tipo') border-red-500 @enderror"
                         id="tipo" wire:model="tipo" placeholder="Escribe el tipo" />
                     @error('tipo')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Ordinario:</label>
                     <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ordinario') border-red-500 @enderror"
                         id="ordinario" wire:model="ordinario" placeholder="Ordinario" />
                     @error('ordinario')
-                        <span class="text-red-500">{{ $message }}</span>
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -48,10 +48,10 @@
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Dominical:</label>
                         <input type="number"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('dominical') border-red-500 @enderror"
                             id="dominical" wire:model="dominical" placeholder="Dominical" />
                         @error('dominical')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>

@@ -48,15 +48,6 @@ class Rutas extends Component
     {
         $this->isModalOpen = false;
     }
-    /* public function showModal()
-    {
-        $this->showingModal = true;
-    }
-
-    public function hideModal()
-    {
-        $this->showingModal = false;
-    } */
     private function resetInput()
     {
         $this->nombre = '';

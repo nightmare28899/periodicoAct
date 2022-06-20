@@ -14,4 +14,9 @@ class Tiro extends Model
     protected $table = 'tiro';
 
     protected $fillable = ['cliente', 'dia', 'ejemplares', 'domicilio', 'referencia', 'fecha'];
+
+    public function user()
+    {
+        return $this->hasOne(Cliente::class);
+    }
 }

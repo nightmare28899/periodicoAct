@@ -24,20 +24,20 @@
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Nombre:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                             id="nombre" wire:model.defer="nombre" placeholder="Escribe el nombre" />
                         @error('nombre')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="w-1/2 p-2">
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Tipo:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tipo') border-red-500 @enderror"
                             id="tipo" wire:model.defer="tipo" placeholder="Escribe el tipo" />
                         @error('tipo')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -47,20 +47,20 @@
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Repartidor:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('repartidor') border-red-500 @enderror"
                             id="repartidor" wire:model.defer="repartidor" placeholder="Escribe el repartidor" />
                         @error('repartidor')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="w-1/2 p-2">
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Cobrador:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cobrador') border-red-500 @enderror"
                             id="cobrador" wire:model.defer="cobrador" placeholder="Escribe el cobrador" />
                         @error('cobrador')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
@@ -71,10 +71,10 @@
                             class="block text-black text-sm font-bold mb-2">Ctaespecial
                             (Opcional):</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ctaespecial') border-red-500 @enderror"
                             id="ctaespecial" wire:model.defer="ctaespecial" placeholder="Escribe el Ctaespecial" />
                         @error('ctaespecial')
-                            <span class="text-red-500">{{ $message }}</span>
+                            <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>

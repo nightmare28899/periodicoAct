@@ -203,6 +203,7 @@ class Clientes extends Component
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
+            'telefono' => 'required|max:10',
 
             'calle' => 'required',
             'noext' => 'required',
