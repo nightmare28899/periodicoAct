@@ -46,7 +46,7 @@ class Clientes extends Component
             'T-E' => 'T-E',
             'Sanborn' => 'SANBORN',
         ];
-        $rutas = Ruta::pluck('nombre', 'id');
+        $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
 
         /* if($this->rfc == 'Física' || $this->rfc == 'Moral') {

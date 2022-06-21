@@ -42,16 +42,25 @@ class Tiros extends Component
             $this->resultados = Cliente
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
+                ->select("cliente.nombre", "ejemplares.*", "domicilio.*", "ruta.*")
                 ->get($this->diaS);
         }
 
+        $maxWidth = [
+            'sm' => 'sm:max-w-sm', 'md' => 'sm:max-w-md', 'lg' => 'sm:max-w-lg', 'xl' => 'sm:max-w-xl', '2xl' => 'sm:max-w-2xl', '3xl' => 'sm:max-w-3xl', '4xl' => 'sm:max-w-4xl', '5xl' => 'sm:max-w-5xl', '6xl' => 'sm:max-w-6xl', '7xl' => 'sm:max-w-7xl', 'full' => 'sm:max-w-full',
+        ];
+
+        /* dd($maxWidth['md']); */
+
         /* return view('livewire.tiros.tiro-modal'); */
+
         return view('livewire.tiros.tiro', [
             'resultado' => $this->resultados,
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
+            'maxWidth' => $maxWidth,
         ], compact('domicilios'));
     }
 

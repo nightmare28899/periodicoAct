@@ -10,7 +10,7 @@ class Rutas extends Component
 {
     use WithPagination;
 
-    public $Rutas, $keyWord, $nombre, $tipo, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
+    public $Rutas, $keyWord, $nombreruta, $tipo, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;
 
@@ -26,7 +26,7 @@ class Rutas extends Component
         /* $this->Rutas = Rutas::all(); */
         return view('livewire.rutas.view', [
             'rutas' => Ruta::latest()
-                ->orWhere('nombre', 'LIKE', $keyWord)
+                ->orWhere('nombreruta', 'LIKE', $keyWord)
                 ->orWhere('tipo', 'LIKE', $keyWord)
                 ->orWhere('repartidor', 'LIKE', $keyWord)
                 ->orWhere('cobrador', 'LIKE', $keyWord)
@@ -50,7 +50,7 @@ class Rutas extends Component
     }
     private function resetInput()
     {
-        $this->nombre = '';
+        $this->nombreruta = '';
         $this->tipo = '';
         $this->repartidor = '';
         $this->cobrador = '';
@@ -60,14 +60,14 @@ class Rutas extends Component
     public function store()
     {
         $this->validate([
-            'nombre' => 'required',
+            'nombreruta' => 'required',
             'tipo' => 'required',
             'repartidor' => 'required',
             'cobrador' => 'required',
         ]);
 
         Ruta::Create([
-            'nombre' => $this->nombre,
+            'nombreruta' => $this->nombreruta,
             'tipo' => $this->tipo,
             'repartidor' => $this->repartidor,
             'cobrador' => $this->cobrador,
@@ -82,7 +82,7 @@ class Rutas extends Component
     {
         $Ruta = Ruta::find($id);
         $this->ruta_id = $id;
-        $this->nombre = $Ruta->nombre;
+        $this->nombreruta = $Ruta->nombreruta;
         $this->tipo = $Ruta->tipo;
         $this->repartidor = $Ruta->repartidor;
         $this->cobrador = $Ruta->cobrador;
@@ -102,7 +102,7 @@ class Rutas extends Component
 
         $Ruta = Ruta::find($this->ruta_id);
         $Ruta->update([
-            'nombre' => $this->nombre,
+            'nombreruta' => $this->nombreruta,
             'tipo' => $this->tipo,
             'repartidor' => $this->repartidor,
             'cobrador' => $this->cobrador,

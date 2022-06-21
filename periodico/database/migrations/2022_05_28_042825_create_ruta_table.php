@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('ruta', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->string('nombre');
+            $table->string('nombreruta');
             $table->string('tipo');
             $table->string('repartidor');
             $table->string('cobrador');

@@ -24,9 +24,9 @@
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Nombre:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
-                            id="nombre" wire:model.defer="nombre" placeholder="Escribe el nombre" />
-                        @error('nombre')
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombreruta') border-red-500 @enderror"
+                            id="nombreruta" wire:model.defer="nombreruta" placeholder="Escribe el nombre" />
+                        @error('nombreruta')
                             <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>

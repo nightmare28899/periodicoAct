@@ -223,7 +223,40 @@
 
                 <x-slot name="content">
                     <br>
-                    <h1>Remisión</h1>
+                    <table class="text-center">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Entregar</th>
+                                <th>Devuelto</th>
+                                <th>Faltante</th>
+                                <th>Venta</th>
+                                <th>Precio</th>
+                                <th>Importe</th>
+                                <th>Dia</th>
+                                <th>Nombre Ruta</th>
+                                <th>Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($resultado as $result)
+                                <tr>
+                                    <td><input type="checkbox">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}
+                                    </td>
+                                    <td>{{ $result->{$diaS}  }}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>{{ $result->{$diaS}  }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ $result->nombreruta }}</td>
+                                    <td>{{ $result->tipo }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                 </x-slot>
 
                 <x-slot name="footer">
@@ -235,7 +268,7 @@
                         </x-jet-secondary-button>
                     </div>
                     <div class="flex-auto w-64">
-                       
+
                     </div>
 
                 </x-slot>

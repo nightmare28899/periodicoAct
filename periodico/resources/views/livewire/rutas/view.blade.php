@@ -63,7 +63,7 @@
                         @foreach ($rutas as $ruta)
                             <tr>
                                 <td class="border">{{ $ruta->id }}</td>
-                                <td class="border">{{ $ruta->nombre }}</td>
+                                <td class="border">{{ $ruta->nombreruta }}</td>
                                 <td class="border">{{ $ruta->tipo }}</td>
                                 <td class="border">{{ $ruta->repartidor }}</td>
                                 <td class="border">{{ $ruta->cobrador }}</td>
