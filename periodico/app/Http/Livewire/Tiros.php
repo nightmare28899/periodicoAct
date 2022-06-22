@@ -43,8 +43,9 @@ class Tiros extends Component
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("cliente.nombre", "ejemplares.*", "domicilio.*", "ruta.*")
+                ->select("cliente.nombre", "ejemplares.*", "domicilio.*", "ruta.*", "tarifa.*")
                 ->get($this->diaS);
         }
 

@@ -247,9 +247,9 @@
                                     <td>0</td>
                                     <td>0</td>
                                     <td>{{ $result->{$diaS}  }}</td>
+                                    <td>{{ $result->{$diaS} == 'domingo' ? $result->dominical : $result->oridnario }}</td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $diaS }}</td>
                                     <td>{{ $result->nombreruta }}</td>
                                     <td>{{ $result->tipo }}</td>
                                 </tr>
