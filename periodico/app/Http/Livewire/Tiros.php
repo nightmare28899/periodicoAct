@@ -122,7 +122,7 @@ class Tiros extends Component
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
             ->where('cliente.id', '=', $this->clienteSeleccionado)
-            ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+            ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
             ->get($this->diaS);
 
         // dd($this->resultados);
