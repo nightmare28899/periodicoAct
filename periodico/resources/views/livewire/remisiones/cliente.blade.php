@@ -17,7 +17,8 @@
                 <div class="">
                     <div class="flex">
                         <p class="text-sm font-bold mt-6">CLIENTE</p>
-                        <p class="text-sm mt-6" style="margin-left: 24rem"> <b>Cliente Ruta:</b> @foreach ($data as $item)
+                        <p class="text-sm mt-6" style="margin-left: 24rem"> <b>Cliente Ruta:</b>
+                            @foreach ($data as $item)
                                 {{ $item->tipo }}
                             @endforeach
                         </p>
@@ -35,9 +36,13 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('clasificacion')
-                            <span class="text-red-500">{{ $message }}</span>
-                        @enderror
+
+                        @foreach ($clientes as $cliente)
+                            <div class="form-group">
+                                <input wire:model="clienteSeleccionado" name="clienteSeleccionado" type="checkbox" value={{ $cliente['id'] }}>
+                                <label class="text-black" for="Física">{{ $cliente['nombre'] }}</label>
+                            </div>
+                        @endforeach
                     </div>
                     {{-- <div class="flex-initial mx-1 mt-4 mr-4" style="width: 40%;">
                         <input wire:model='keyWord' type="number"

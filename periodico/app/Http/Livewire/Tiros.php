@@ -17,7 +17,7 @@ class Tiros extends Component
     public $Domicilios;
     public $updateMode = false;
     public $from;
-    public $to, $isGenerateTiro = 0;
+    public $to, $isGenerateTiro = 0, $clienteSeleccionado = [];
 
     public $showingModal = false, $modalRemision = false;
 
@@ -45,8 +45,12 @@ class Tiros extends Component
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("cliente.nombre", "ejemplares.*", "domicilio.*", "ruta.*", "tarifa.*")
+                ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
+
+            if ($this->clienteSeleccionado) {
+                /* dd($this->clienteSeleccionado); */
+            }
         }
 
         $maxWidth = [
@@ -77,7 +81,7 @@ class Tiros extends Component
 
     public function remision()
     {
-        /* dd($this->dateF); 
+        /* dd($this->dateF);
         /* $this->isGenerateTiro = true; */
         /* return Redirect()->to('/tiro/vistaPrevia'); */
         return redirect()->to('livewire.tiros.tiro', ['dateF' => $this->dateF]);
@@ -91,7 +95,7 @@ class Tiros extends Component
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
             ->where('nombre', 'like', '%' . $this->keyWord . '%')
-            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
+            ->select("cliente.id", "cliente.nombre","ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*")
             ->get($this->diaS);
 
         $pdfContent = PDF::loadView('livewire.tiros.pdf', [
@@ -106,6 +110,35 @@ class Tiros extends Component
             ->streamDownload(
                 fn () => print($pdfContent),
                 "tiros.pdf"
+            );
+    }
+
+    public function descargaRemision()
+    {
+        // dd($this->clienteSeleccionado);
+        $this->resultados = Cliente
+            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+            ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+            ->where('cliente.id', '=', $this->clienteSeleccionado)
+            ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+            ->get($this->diaS);
+
+        // dd($this->resultados);
+
+        $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+            'resultado' => $this->resultados,
+            'diaS' => $this->diaS,
+            'dateF' => $this->dateF,
+        ])
+            ->setPaper('A5', 'landscape')
+            ->output();
+
+        return response()
+            ->streamDownload(
+                fn () => print($pdfContent),
+                "remisiones.pdf"
             );
     }
 

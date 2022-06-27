@@ -140,7 +140,7 @@
                             </div>
                             <div class="ml-20">
                                 <button wire:click="descarga" id="tiro" wire:loading.attr="disabled"
-                                    class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
+                                    class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
                                     <svg wire:loading wire:target="descarga"
                                         class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -223,40 +223,51 @@
 
                 <x-slot name="content">
                     <br>
-                    <table class="text-center">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Entregar</th>
-                                <th>Devuelto</th>
-                                <th>Faltante</th>
-                                <th>Venta</th>
-                                <th>Precio</th>
-                                <th>Importe</th>
-                                <th>Dia</th>
-                                <th>Nombre Ruta</th>
-                                <th>Tipo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($resultado as $result)
-                                <tr>
-                                    <td><input type="checkbox">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}
-                                    </td>
-                                    <td>{{ $result->{$diaS}  }}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>{{ $result->{$diaS}  }}</td>
-                                    <td>{{ $result->{$diaS} == 'domingo' ? $result->dominical : $result->oridnario }}</td>
-                                    <td></td>
-                                    <td>{{ $diaS }}</td>
-                                    <td>{{ $result->nombreruta }}</td>
-                                    <td>{{ $result->tipo }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
+                    <div class="text-center overflow-x">
+                        <div class="overflow-x-auto w-full">
+                            <table class="table-auto">
+                                <thead>
+                                    <tr class='bg-gray-100'>
+                                        <th class='px-4 py-2'>Fecha</th>
+                                        <th class='px-4 py-2'>Entregar</th>
+                                        <th class='px-4 py-2'>Devuelto</th>
+                                        <th class='px-4 py-2'>Faltante</th>
+                                        <th class='px-4 py-2'>Venta</th>
+                                        <th class='px-4 py-2'>Precio</th>
+                                        <th class='px-4 py-2'>Importe</th>
+                                        <th class='px-6 py-2'>Dia</th>
+                                        <th class='px-6 py-2'>Nombre Ruta</th>
+                                        <th class='px-6 py-2'>Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($resultado as $result)
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input wire:model="clienteSeleccionado"
+                                                         type="checkbox" value={{ $result->id }}>
+                                                    <label class="text-black"
+                                                        for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                </div>
+                                            </td>
+                                            <td>{{ $result->{$diaS} }}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>{{ $result->{$diaS} }}</td>
+                                            <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                            </td>
+                                            <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                            </td>
+                                            <td>{{ $diaS }}</td>
+                                            <td>{{ $result->nombreruta }}</td>
+                                            <td>{{ $result->tiporuta }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </x-slot>
 
                 <x-slot name="footer">
@@ -268,7 +279,19 @@
                         </x-jet-secondary-button>
                     </div>
                     <div class="flex-auto w-64">
-
+                        <button wire:click="descargaRemision" id="tiro" wire:loading.attr="disabled"
+                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
+                            <svg wire:loading wire:target="descargaRemision"
+                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>Descargar PDF
+                        </button>
                     </div>
 
                 </x-slot>

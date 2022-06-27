@@ -28,10 +28,10 @@ class RmCliente extends Component
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             /* ->where('cliente.id', 'like', '%' . $this->keyWord . '%') */
             ->where('cliente.id', '=', $this->clienteSeleccionado)
-            ->select('cliente.*', 'domicilio.*', 'ruta.tipo')
+            ->select('cliente.*', 'domicilio.*', 'ruta.tiporuta')
             ->get();
 
-        /* dd($this->data);  */   
+        /* dd($this->data);  */
         /* ['id' => $this->clienteSeleccionado] */
         /* $this->clienteData = Cliente::all(); */
 
