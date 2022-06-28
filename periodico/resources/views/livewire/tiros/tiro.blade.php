@@ -255,10 +255,8 @@
                                             <td>0</td>
                                             <td>0</td>
                                             <td>{{ $result->{$diaS} }}</td>
-                                            <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
-                                            </td>
-                                            <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
-                                            </td>
+                                            <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}</td>
+                                            <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
                                             <td>{{ $diaS }}</td>
                                             <td>{{ $result->nombreruta }}</td>
                                             <td>{{ $result->tiporuta }}</td>
