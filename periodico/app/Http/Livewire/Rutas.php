@@ -10,7 +10,7 @@ class Rutas extends Component
 {
     use WithPagination;
 
-    public $Rutas, $keyWord, $nombreruta, $tipo, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
+    public $Rutas, $keyWord, $nombreruta, $tiporuta, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;
 
@@ -27,7 +27,7 @@ class Rutas extends Component
         return view('livewire.rutas.view', [
             'rutas' => Ruta::latest()
                 ->orWhere('nombreruta', 'LIKE', $keyWord)
-                ->orWhere('tipo', 'LIKE', $keyWord)
+                ->orWhere('tiporuta', 'LIKE', $keyWord)
                 ->orWhere('repartidor', 'LIKE', $keyWord)
                 ->orWhere('cobrador', 'LIKE', $keyWord)
                 ->orWhere('ctaespecial', 'LIKE', $keyWord)
@@ -51,7 +51,7 @@ class Rutas extends Component
     private function resetInput()
     {
         $this->nombreruta = '';
-        $this->tipo = '';
+        $this->tiporuta = '';
         $this->repartidor = '';
         $this->cobrador = '';
         $this->ctaespecial = '';
@@ -61,14 +61,14 @@ class Rutas extends Component
     {
         $this->validate([
             'nombreruta' => 'required',
-            'tipo' => 'required',
+            'tiporuta' => 'required',
             'repartidor' => 'required',
             'cobrador' => 'required',
         ]);
 
         Ruta::Create([
             'nombreruta' => $this->nombreruta,
-            'tipo' => $this->tipo,
+            'tiporuta' => $this->tiporuta,
             'repartidor' => $this->repartidor,
             'cobrador' => $this->cobrador,
             'ctaespecial' => $this->ctaespecial,
@@ -83,7 +83,7 @@ class Rutas extends Component
         $Ruta = Ruta::find($id);
         $this->ruta_id = $id;
         $this->nombreruta = $Ruta->nombreruta;
-        $this->tipo = $Ruta->tipo;
+        $this->tiporuta = $Ruta->tiporuta;
         $this->repartidor = $Ruta->repartidor;
         $this->cobrador = $Ruta->cobrador;
         $this->ctaespecial = $Ruta->ctaespecial;
@@ -95,7 +95,7 @@ class Rutas extends Component
     {
         $this->validate([
             'nombre' => 'required',
-            'tipo' => 'required',
+            'tiporuta' => 'required',
             'repartidor' => 'required',
             'cobrador' => 'required',
         ]);
@@ -103,7 +103,7 @@ class Rutas extends Component
         $Ruta = Ruta::find($this->ruta_id);
         $Ruta->update([
             'nombreruta' => $this->nombreruta,
-            'tipo' => $this->tipo,
+            'tiporuta' => $this->tiporuta,
             'repartidor' => $this->repartidor,
             'cobrador' => $this->cobrador,
             'ctaespecial' => $this->ctaespecial,

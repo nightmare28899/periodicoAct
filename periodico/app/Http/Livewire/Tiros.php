@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 class Tiros extends Component
 {
     public $Ejemplares, $keyWord, $cliente, $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF;
-    public $Domicilios;
+    public $Domicilios, $status = 'error';
     public $updateMode = false;
     public $from;
     public $to, $isGenerateTiro = 0, $clienteSeleccionado = [];
@@ -95,7 +95,7 @@ class Tiros extends Component
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
             ->where('nombre', 'like', '%' . $this->keyWord . '%')
-            ->select("cliente.id", "cliente.nombre","ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*")
+            ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*")
             ->get($this->diaS);
 
         $pdfContent = PDF::loadView('livewire.tiros.pdf', [
@@ -106,6 +106,11 @@ class Tiros extends Component
             /* ->setPaper('A5', 'landscape') */
             ->output();
 
+        $this->status = 'created';
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Tiro generado exitosamente!' : ''
+        ]);
+
         return response()
             ->streamDownload(
                 fn () => print($pdfContent),
@@ -115,31 +120,41 @@ class Tiros extends Component
 
     public function descargaRemision()
     {
-        // dd($this->clienteSeleccionado);
-        $this->resultados = Cliente
-            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-            ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-            ->where('cliente.id', '=', $this->clienteSeleccionado)
-            ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-            ->get($this->diaS);
+        if ($this->clienteSeleccionado) {
+            $this->status = 'created';
+            // dd($this->clienteSeleccionado);
+            $this->resultados = Cliente
+                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where('cliente.id', '=', $this->clienteSeleccionado)
+                ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
 
-        // dd($this->resultados);
+            // dd($this->resultados);
 
-        $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
-            'resultado' => $this->resultados,
-            'diaS' => $this->diaS,
-            'dateF' => $this->dateF,
-        ])
-            ->setPaper('A5', 'landscape')
-            ->output();
+            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+                'resultado' => $this->resultados,
+                'diaS' => $this->diaS,
+                'dateF' => $this->dateF,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
 
-        return response()
-            ->streamDownload(
-                fn () => print($pdfContent),
-                "remisiones.pdf"
-            );
+            $this->toast();
+
+            return response()
+                ->streamDownload(
+                    fn () => print($pdfContent),
+                    "remisiones.pdf"
+                );
+        } else {
+            $this->status = 'error';
+            return $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡Debes seleccionar un elemento primero!' : ''
+            ]);
+        }
     }
 
     public function generarRemision()
@@ -173,7 +188,14 @@ class Tiros extends Component
 
     public function showModal()
     {
-        $this->showingModal = true;
+        if ($this->from) {
+            $this->showingModal = true;
+        } else {
+            $this->status = 'error';
+            return $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡Debes escoger una fecha primero!' : ''
+            ]);
+        }
     }
 
     public function hideModal()
@@ -184,5 +206,11 @@ class Tiros extends Component
     {
         $this->modalRemision = false;
         $this->showingModal = true;
+    }
+    public function toast()
+    {
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Remisión generada exitosamente!' : ''
+        ]);
     }
 }

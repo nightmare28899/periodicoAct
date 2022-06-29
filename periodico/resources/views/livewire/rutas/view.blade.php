@@ -64,7 +64,7 @@
                             <tr>
                                 <td class="border">{{ $ruta->id }}</td>
                                 <td class="border">{{ $ruta->nombreruta }}</td>
-                                <td class="border">{{ $ruta->tipo }}</td>
+                                <td class="border">{{ $ruta->tiporuta }}</td>
                                 <td class="border">{{ $ruta->repartidor }}</td>
                                 <td class="border">{{ $ruta->cobrador }}</td>
                                 <td class="border">{{ $ruta->ctaespecial }}</td>

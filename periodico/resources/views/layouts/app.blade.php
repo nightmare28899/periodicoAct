@@ -65,7 +65,15 @@
                 toastr.success(event.detail.message, '¡Exito!');
             } else if(event.detail.message == '¡Tarifa Actualizada Correctamente!') {
                 toastr.info(event.detail.message, '¡Actualizado!');
-            } 
+            } else if(event.detail.message == '¡Debes seleccionar un elemento primero!') {
+                toastr.error(event.detail.message, '¡Error!');
+            } else if(event.detail.message == '¡Remisión generada exitosamente!') {
+                toastr.success(event.detail.message, '¡Exito!');
+            } else if(event.detail.message == '¡Tiro generado exitosamente!') {
+                toastr.success(event.detail.message, '¡Exito!');
+            } else if(event.detail.message == '¡Debes escoger una fecha primero!') {
+                toastr.error(event.detail.message, '¡Error!');
+            }
         });
     </script>
 </body>

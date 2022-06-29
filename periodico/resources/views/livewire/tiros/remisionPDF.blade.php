@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        .a {
+        /* .a {
             border-collapse: separate;
         }
 
         .b {
             border-collapse: collapse;
-        }
+        } */
 
         /* tr,
         td,
@@ -28,13 +28,13 @@
         #movido {
             position: absolute;
             left: 460px;
-            margin-top: -7px;
+            margin-top: -6px;
         }
 
         #movido2 {
             position: absolute;
             left: 460px;
-            margin-top: -5px;
+            margin-top: -4px;
         }
 
         #movido3 {
@@ -70,6 +70,10 @@
 </head>
 
 <body>
+    <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
+        <img src="img/logo.jpe" alt="logo la voz" height="36px">
+    </div>
+    <br>
     <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén Lavín 1270
         Col. Agustín Arriaga Rivera.</h5>
     <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00 Fax Ext.
@@ -77,19 +81,19 @@
     </h5>
     <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">RFC: VMI-600516-JG7, REG. EDO. 124026-9.</h5>
     <h3
-        style="background-color: rgb(187, 230, 238); padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
+        style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px;">
         remisionado de clientes
     </h3>
-    <p id="movido"><b>RUTA</b>
+    <p id="movido" style="font-size: 16px;"><b>RUTA</b>
         @foreach ($resultado as $result)
             {{ $result->nombreruta }}
     </p>
     <h3
-        style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12;">
+        style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
         remision
         {{ $result->id }}
     </h3>
-    <p id="movido2" style="text-transform: uppercase;"><b>fecha</b>
+    <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
     <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
         {{ $result->nombre }}</p>
@@ -117,12 +121,12 @@
             concepto</p>
     </div>
     <table>
-        <thead>
-            <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
-                <th class='px-4 py-2' style="width: 100%;">cant.</th>
-                <th class='px-4 py-2' style="width: 440px;">concepto</th>
-                <th class='px-4 py-2' style="width: 100%;">val. unitario</th>
-                <th class='px-4 py-2' style="width: 100%;">importe</th>
+        <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+            <tr>
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
+                <th class='px-4 py-2' style="width: 266px; font-size: 14px;">concepto</th>
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">val. unitario</th>
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">importe</th>
             </tr>
         </thead>
         <tbody class="centrado">
@@ -138,11 +142,46 @@
                 <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}</td>
                 <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
             </tr>
-            @endforeach
         </tbody>
     </table>
     <hr>
-
+    <table>
+        <tbody class="centrado">
+            <tr>
+                <td></td>
+                <td></td>
+                <td>IMPORTE</td>
+                <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>DESCUENTO</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>SUBTOTAL</td>
+                <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>IVA</td>
+                <td>0</td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
+                <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->{$diaS} }}</th>
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
+                <th class='px-4 py-2' style="width: 140px; font-size: 14px;">{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</th>
+            </tr>
+        </thead>
+    </table>
+    @endforeach
 </body>
 
 </html>

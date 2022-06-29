@@ -34,9 +34,9 @@
                         <label for="exampleFormControlInput2"
                             class="block text-black text-sm font-bold mb-2">Tipo:</label>
                         <input type="text"
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tipo') border-red-500 @enderror"
-                            id="tipo" wire:model.defer="tipo" placeholder="Escribe el tipo" />
-                        @error('tipo')
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tiporuta') border-red-500 @enderror"
+                            id="tiporuta" wire:model.defer="tiporuta" placeholder="Escribe el tiporuta" />
+                        @error('tiporuta')
                             <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                         @enderror
                     </div>
@@ -83,13 +83,13 @@
     </x-slot>
 
     <x-slot name="footer">
-        <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
+        {{-- <div class="flex flex-row justify-end px-6 bg-gray-100 text-right">
             <x-jet-secondary-button
                 class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
                 wire:click="$set('isModalOpen', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
-        </div>
+        </div> --}}
 
 
         <div class="px-4 sm:px-6 sm:flex sm:flex-row-reverse">
