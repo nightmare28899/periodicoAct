@@ -1730,11 +1730,11 @@ select {
 .pt-3 {
   padding-top: 0.75rem;
 }
-.pb-20 {
-  padding-bottom: 5rem;
-}
 .pt-8 {
   padding-top: 2rem;
+}
+.pb-20 {
+  padding-bottom: 5rem;
 }
 .text-left {
   text-align: left;
@@ -2060,10 +2060,6 @@ select {
 .hover\:bg-red-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(254 202 202 / var(--tw-bg-opacity));
-}
-.hover\:bg-red-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
 }
 .hover\:bg-blue-600:hover {
   --tw-bg-opacity: 1;

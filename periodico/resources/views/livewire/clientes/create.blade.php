@@ -136,7 +136,7 @@
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Teléfono:</label>
-                    <input type="number"
+                    <input type="number" maxlength="10"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('telefono') border-red-500 @enderror"
                         id="telefono" wire:model.defer="telefono" placeholder="Escribe tu Teléfono" />
                     @error('telefono')
@@ -161,11 +161,11 @@
 
     <x-slot name="footer">
         <div class="flex-auto w-64 px-4 sm:px-6">
-            <x-jet-secondary-button
+            {{-- <x-jet-secondary-button
                 class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3 w-full"
                 wire:click="$set('isModalOpen', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-jet-secondary-button> --}}
         </div>
 
         <div class="flex-auto w-64 px-4 sm:px-6">

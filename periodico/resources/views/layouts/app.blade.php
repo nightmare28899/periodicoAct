@@ -73,6 +73,8 @@
                 toastr.success(event.detail.message, '¡Exito!');
             } else if(event.detail.message == '¡Debes escoger una fecha primero!') {
                 toastr.error(event.detail.message, '¡Error!');
+            } else if(event.detail.message == '¡Debes seleccionar solo un elemento a la vez!') {
+                toastr.error(event.detail.message, '¡Error!');
             }
         });
     </script>

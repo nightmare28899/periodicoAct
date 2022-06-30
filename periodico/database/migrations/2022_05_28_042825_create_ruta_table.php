@@ -17,7 +17,7 @@ return new class extends Migration
             $table->engine="InnoDB";
             $table->bigIncrements('id');
             $table->string('nombreruta');
-            $table->string('tipo');
+            $table->string('tiporuta');
             $table->string('repartidor');
             $table->string('cobrador');
             $table->string('ctaespecial')->nullable();

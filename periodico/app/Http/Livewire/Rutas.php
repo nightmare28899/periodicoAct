@@ -10,11 +10,7 @@ class Rutas extends Component
 {
     use WithPagination;
 
-    public $Rutas, $keyWord, $nombreruta, $tiporuta, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created';
-    public $isModalOpen = 0;
-    public $updateMode = false;
-
-    public $showingModal = false;
+    public $Rutas, $keyWord, $nombreruta, $tiporuta, $repartidor, $cobrador, $ctaespecial, $ruta_id, $status = 'created', $isModalOpen = 0, $updateMode = false, $showingModal = false;
 
     public $listeners = [
         'hideMe' => 'hideModal'

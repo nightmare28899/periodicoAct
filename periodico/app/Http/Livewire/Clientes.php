@@ -20,10 +20,7 @@ class Clientes extends Component
 
     public $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id;
 
-    public $isModalOpen = 0;
-    public $clienteModalOpen = 0;
-    public $ejemplarModalOpen = 0;
-    public $detallesModalOpen = 0;
+    public $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0;
 
     public $updateMode = false;
 
@@ -71,7 +68,7 @@ class Clientes extends Component
     }
     public function create()
     {
-        /* $this->resetInput(); */
+        $this->resetInput();
         $this->openModalPopover();
         $this->status = 'created';
     }
@@ -159,10 +156,12 @@ class Clientes extends Component
 
         $this->detallesModalOpen = true;
     }
+
     public function closeDetallesModal()
     {
         $this->detallesModalOpen = false;
     }
+
     private function resetInput()
     {
         $this->clasificacion = '';
@@ -240,7 +239,6 @@ class Clientes extends Component
             'regimen_fiscal' => $this->regimen_fiscal
         ]);
 
-
         Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'calle' => $this->calle,
@@ -274,6 +272,7 @@ class Clientes extends Component
         /* session()->flash('message', $this->cliente_id | $this->domicilio_id | $this->ejemplar_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.'); */
         $this->toast();
     }
+
     public function edit($id)
     {
         $Cliente = Cliente::find($id);
@@ -324,6 +323,7 @@ class Clientes extends Component
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
+            'telefono' => 'required|max:10',
 
             'calle' => 'required',
             'noext' => 'required',
