@@ -139,19 +139,20 @@ class Tiros extends Component
                     ->output();
 
                 $this->toast();
-                dd(($this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario']) * $this->resultados==$this->diaS);
+                // dd($this->resultados);
+                // dd($this->resultados[0]->{$this->diaS});
 
                 /* dd(($this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario']) * $this->resultados->$this->diaS); */
 
                 Tiro::create([
                     'fecha' => $this->dateF,
                     'cliente' => $this->resultados[0]['nombre'],
-                    'entregar' => $this->diaS,
+                    'entregar' => $this->resultados[0]->{$this->diaS},
                     'devuelto' => $this->devuelto,
                     'faltante' => $this->faltante,
-                    'venta' => $this->diaS,
+                    'venta' => $this->resultados[0]->{$this->diaS},
                     'precio' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'],
-                    'importe' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'] * $this->resultados->{$this->diaS},
+                    'importe' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'] * $this->resultados[0]->{$this->diaS},
                     'dia' => $this->diaS,
                     'nombreruta' => $this->resultados[0]['nombreruta'],
                     'tipo' => $this->resultados[0]['tiporuta'],
@@ -178,31 +179,8 @@ class Tiros extends Component
 
     public function generarRemision()
     {
-        /* $cliente = Cliente::find(1)->user; */
         $this->modalRemision = true;
         $this->showingModal = false;
-        /* $this->resultados = Cliente
-            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->where('nombre', 'like', '%' . $this->keyWord . '%')
-            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
-            ->get($this->diaS);
-
-        $pdfContent = PDF::loadView('livewire.tiros.generarRemision', [
-            'resultado' => $this->resultados,
-            'diaS' => $this->diaS,
-            'dateF' => $this->dateF,
-        ])
-            ->setPaper('A5', 'landscape')
-            ->output();
-
-        return response()
-            ->streamDownload(
-                fn () => print($pdfContent),
-                "tiros.pdf"
-            ); */
-
-        /* return redirect()->to('/tiros/remision', ['dateF' => $this->dateF]); */
     }
 
     public function showModal()
