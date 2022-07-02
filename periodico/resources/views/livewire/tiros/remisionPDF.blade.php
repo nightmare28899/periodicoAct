@@ -134,7 +134,7 @@
                 <td>{{ $result->{$diaS} }}</td>
                 <td>
                     <div class="form-group">
-                        <label class="text-black" for="Física"> Periodo:
+                        <label class="text-black" for="Física"> Fecha:
                             {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
                             {{ $result->{$diaS} }} </label>
                     </div>

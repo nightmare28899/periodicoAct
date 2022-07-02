@@ -174,9 +174,9 @@
             <x-slot name="footer">
                 <div class="flex justify-center">
                     <div class="w-64">
-                        <button wire:click="generarRemision" id="tiro" wire:loading.attr="disabled"
+                        <button wire:click="historialRemision" id="tiro" wire:loading.attr="disabled"
                             class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
-                            <svg wire:loading wire:target="generarRemision"
+                            <svg wire:loading wire:target="historialRemision"
                                 class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -308,12 +308,12 @@
 
         </x-jet-dialog-modal>
 
-        <x-jet-dialog-modal>
+        <x-jet-dialog-modal wire:model="modalHistorial">
 
             <x-slot name="title">
                 <div class="flex sm:px-6">
                     <h1 class="mb-3 text-2xl text-black font-bold ml-3">Historial de Remisión</h1>
-                    <button type="button" wire:click="hideModalRemision" wire:loading.attr="disabled"
+                    <button type="button" wire:click="modalHistorial" wire:loading.attr="disabled"
                         class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                         data-modal-toggle="defaultModal">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"

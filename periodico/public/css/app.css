@@ -1367,9 +1367,6 @@ select {
 .flex-nowrap {
   flex-wrap: nowrap;
 }
-.content-center {
-  align-content: center;
-}
 .items-end {
   align-items: flex-end;
 }
@@ -1745,9 +1742,9 @@ select {
 .text-center {
   text-align: center;
 }
-/* .text-right {
+.text-right {
   text-align: right;
-} */
+}
 .align-middle {
   vertical-align: middle;
 }
