@@ -119,22 +119,22 @@ class Tiros extends Component
             $this->status = 'created';
             // dd($this->clienteSeleccionado);
             /* foreach ($this->clienteSeleccionado as $this->cliente) { */
-                $this->clienteSeleccionado = is_array($this->clienteSeleccionado) ? $this->clienteSeleccionado : [$this->clienteSeleccionado];
+                /* $this->clienteSeleccionado = is_array($this->clienteSeleccionado) ? $this->clienteSeleccionado : [$this->clienteSeleccionado]; */
 
                 $this->resultados = Cliente
                     ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                     ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->whereIn('cliente.id', '=', $this->clienteSeleccionado)
+                    ->whereIn('cliente.id', $this->clienteSeleccionado)
                     ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
-                
+
             /*     $this->count ++;
             } */
-            dd($this->clienteSeleccionado);
+            /* dd($this->resultados); */
 
-           
+
             // dd($this->resultados[0]['nombre']);
             /* dd($this->precio); */
 
