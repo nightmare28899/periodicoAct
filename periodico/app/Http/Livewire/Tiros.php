@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -230,12 +230,51 @@ class Tiros extends Component
         $this->modalHistorial = true;
         $this->modalRemision = false;
         $this->showingModal = false;
+
+        $this->tiros = Tiro::all();
+        /* dd($this->tiros[1]['cliente']); */
+    }
+
+    public function cerrarHistorial()
+    {
+        $this->modalHistorial = false;
+        $this->modalRemision = false;
+        $this->showingModal = true;
     }
 
     public function generarRemision()
     {
         $this->modalRemision = true;
         $this->showingModal = false;
+    }
+
+    public function editarRemision($id)
+    {
+        $this->modalEditar = true;
+        $this->modalHistorial = false;
+        $this->modalRemision = false;
+        $this->showingModal = false;
+
+        $tiros = Tiro::find($id);
+        $this->devuelto = $tiros->devuelto;
+        /* dd($this->devuelto); */
+    }
+
+    public function cerrarEditar()
+    {
+        $this->modalEditar = false;
+        $this->modalHistorial = true;
+        $this->modalRemision = false;
+        $this->showingModal = false;
+    }
+
+    public function updateDevueltos()
+    {
+        $tiros = Tiro::find($this->tiros=$this->id);
+        dd($this->devuelto);
+        $tiros->update([
+            'devuelto' => $this->devuelto,
+        ]);
     }
 
     public function showModal()

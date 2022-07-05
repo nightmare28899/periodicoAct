@@ -206,7 +206,6 @@
                 </div>
             </x-slot>
 
-
         </x-jet-dialog-modal>
 
         <x-jet-dialog-modal wire:model="modalRemision">
@@ -280,6 +279,7 @@
             </x-slot>
 
             <x-slot name="footer">
+
                 <div class="flex-auto w-64">
                     <x-jet-secondary-button
                         class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3 float-left"
@@ -320,7 +320,6 @@
 
             </x-slot>
 
-
         </x-jet-dialog-modal>
 
         <x-jet-dialog-modal wire:model="modalHistorial">
@@ -328,7 +327,7 @@
             <x-slot name="title">
                 <div class="flex sm:px-6">
                     <h1 class="mb-3 text-2xl text-black font-bold ml-3">Historial de Remisión</h1>
-                    <button type="button" wire:click="modalHistorial" wire:loading.attr="disabled"
+                    <button type="button" wire:click="cerrarHistorial" wire:loading.attr="disabled"
                         class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                         data-modal-toggle="defaultModal">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -343,7 +342,102 @@
             </x-slot>
 
             <x-slot name="content">
+                <br>
+                <div class="text-center overflow-x">
+                    <div class="overflow-x-auto w-full">
+                        <table class="table-auto">
+                            <thead>
+                                <tr class='bg-gray-100'>
+                                    <th class='px-4 py-2'>Fecha</th>
+                                    <th class='px-4 py-2'>Cliente</th>
+                                    <th class='px-4 py-2'>Entregar</th>
+                                    <th class='px-4 py-2'>Devuelto</th>
+                                    <th class='px-4 py-2'>Faltante</th>
+                                    <th class='px-4 py-2'>Venta</th>
+                                    <th class='px-4 py-2'>Precio</th>
+                                    <th class='px-4 py-2'>Importe</th>
+                                    <th class='px-6 py-2'>Dia</th>
+                                    <th class='px-6 py-2'>Nombre Ruta</th>
+                                    <th class='px-6 py-2'>Tipo</th>
+                                    <th class="px-6 py-2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tiros as $tiro)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                        <td>{{ $tiro->cliente }}</td>
+                                        <td>{{ $tiro->entregar }}</td>
+                                        <td>{{ $tiro->devuelto }}</td>
+                                        <td>{{ $tiro->faltante }}</td>
+                                        <td>{{ $tiro->venta }}</td>
+                                        <td>{{ $tiro->precio }}</td>
+                                        <td>{{ $tiro->importe }}</td>
+                                        <td>{{ $tiro->dia }}</td>
+                                        <td>{{ $tiro->nombreruta }}</td>
+                                        <td>{{ $tiro->tipo }}</td>
+                                        <td>
+                                            <button wire:click="editarRemision({{ $tiro->id }})"
+                                                class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </x-slot>
 
+            <x-slot name="footer">
+
+            </x-slot>
+
+        </x-jet-dialog-modal>
+
+        <x-jet-dialog-modal wire:model="modalEditar">
+
+            <x-slot name="title">
+                <div class="flex sm:px-6">
+                    <h1 class="mb-3 text-2xl text-black font-bold ml-3">Editar devueltos</h1>
+                    <button type="button" wire:click="cerrarEditar" wire:loading.attr="disabled"
+                        class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
+                        data-modal-toggle="defaultModal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <hr>
+            </x-slot>
+
+            <x-slot name="content">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Cantidad de
+                        devueltos:</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
+                        id="devuelto" wire:model.defer="devuelto" placeholder="Escribe tu Nombre" />
+                    @error('devuelto')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <button wire:click.prevent="updateDevueltos" type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Actualizar
+                </button>
             </x-slot>
 
             <x-slot name="footer">

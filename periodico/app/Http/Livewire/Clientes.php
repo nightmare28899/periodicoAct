@@ -14,17 +14,7 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id;
-
-    public $Domicilios, $calle, $noint, $noext, $colonia, $cp, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id;
-
-    public $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id;
-
-    public $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0;
-
-    public $updateMode = false;
-
-    public $status = 'created';
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $noext, $colonia, $cp, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created';
 
     public $listeners = [
         'hideMe' => 'hideModal'
