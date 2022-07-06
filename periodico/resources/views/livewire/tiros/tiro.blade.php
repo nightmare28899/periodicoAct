@@ -420,10 +420,6 @@
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                         id="devuelto" wire:model.defer="devuelto" placeholder="Escribe tu Nombre" />
-                    @error('devuelto')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
                 </div>
                 <button wire:click.prevent="updateDevueltos" type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">

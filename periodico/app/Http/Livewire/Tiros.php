@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -114,7 +114,7 @@ class Tiros extends Component
 
     public function descargaRemision()
     {
-        if ($this->clienteSeleccionado) { 
+        if ($this->clienteSeleccionado) {
             // if (count($this->clienteSeleccionado) <= 1) {
             $this->status = 'created';
             // dd($this->clienteSeleccionado);
@@ -178,45 +178,45 @@ class Tiros extends Component
     {
         /* if ($this->clienteSeleccionado) { */
 
-            $this->status = 'created';
+        $this->status = 'created';
 
-            $this->resultados = Cliente
-                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS);
+        $this->resultados = Cliente
+            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+            ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+            ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+            ->get($this->diaS);
 
-            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
-                'resultado' => $this->resultados,
-                'diaS' => $this->diaS,
-                'dateF' => $this->dateF,
-            ])
-                ->setPaper('A5', 'landscape')
-                ->output();
+        $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+            'resultado' => $this->resultados,
+            'diaS' => $this->diaS,
+            'dateF' => $this->dateF,
+        ])
+            ->setPaper('A5', 'landscape')
+            ->output();
 
-            $this->toast();
+        $this->toast();
 
-            Tiro::create([
-                'fecha' => $this->dateF,
-                'cliente' => $this->resultados[0]['nombre'],
-                'entregar' => $this->resultados[0]->{$this->diaS},
-                'devuelto' => $this->devuelto,
-                'faltante' => $this->faltante,
-                'venta' => $this->resultados[0]->{$this->diaS},
-                'precio' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'],
-                'importe' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'] * $this->resultados[0]->{$this->diaS},
-                'dia' => $this->diaS,
-                'nombreruta' => $this->resultados[0]['nombreruta'],
-                'tipo' => $this->resultados[0]['tiporuta'],
-            ]);
+        Tiro::create([
+            'fecha' => $this->dateF,
+            'cliente' => $this->resultados[0]['nombre'],
+            'entregar' => $this->resultados[0]->{$this->diaS},
+            'devuelto' => $this->devuelto,
+            'faltante' => $this->faltante,
+            'venta' => $this->resultados[0]->{$this->diaS},
+            'precio' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'],
+            'importe' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'] * $this->resultados[0]->{$this->diaS},
+            'dia' => $this->diaS,
+            'nombreruta' => $this->resultados[0]['nombreruta'],
+            'tipo' => $this->resultados[0]['tiporuta'],
+        ]);
 
-            return response()
-                ->streamDownload(
-                    fn () => print($pdfContent),
-                    "remisiones.pdf"
-                );
+        return response()
+            ->streamDownload(
+                fn () => print($pdfContent),
+                "remisiones.pdf"
+            );
         /* } else {
             $this->status = 'error';
             return $this->dispatchBrowserEvent('alert', [
@@ -254,8 +254,9 @@ class Tiros extends Component
         $this->modalHistorial = false;
         $this->modalRemision = false;
         $this->showingModal = false;
-
+        /* dd($id); */
         $tiros = Tiro::find($id);
+        $this->tiros_id = $id;
         $this->devuelto = $tiros->devuelto;
         /* dd($this->devuelto); */
     }
@@ -270,11 +271,47 @@ class Tiros extends Component
 
     public function updateDevueltos()
     {
-        $tiros = Tiro::find($this->tiros=$this->id);
-        dd($this->devuelto);
-        $tiros->update([
-            'devuelto' => $this->devuelto,
-        ]);
+        $tiros = Tiro::find($this->tiros_id);
+        if ($this->devuelto) {
+            /* $tiros->entregar - $this->devuelto; */
+            if ($tiros->entregar >= $this->devuelto) {
+                /* dd($this->devuelto); */
+                $tiros->update([
+                    'devuelto' => $tiros->devuelto + $this->devuelto,
+                    'entregar' => $tiros->entregar - $this->devuelto,
+                    'venta' => $tiros->venta - $this->devuelto,
+                    'importe' => $tiros->importe = ($tiros->entregar - $this->devuelto) * $tiros->precio,
+                ]);
+                $this->status = 'updated';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'updated') ? '¡Se generó exitosamente la devolución!' : ''
+                ]);
+
+                $this->modalEditar = false;
+                $this->modalHistorial = false;
+                $this->showingModal = true;
+            } else if ($tiros->entregar <= $tiros->devuelto) {
+                $tiros->update([
+                    'devuelto' => $tiros->devuelto - $this->devuelto,
+                    'entregar' => $tiros->entregar + $this->devuelto,
+                    'venta' => $tiros->venta + $this->devuelto,
+                    'importe' => $tiros->importe = ($tiros->entregar + $this->devuelto) * $tiros->precio,
+                ]);
+                $this->status = 'adjust';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'adjust') ? '¡Ajuste realizado!' : ''
+                ]);
+
+                $this->modalEditar = false;
+                $this->modalHistorial = false;
+                $this->showingModal = true;
+            } else {
+                $this->status = 'error';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'error') ? '¡No puedes devolver más cantidad de la que hay!' : ''
+                ]);
+            }
+        }
     }
 
     public function showModal()

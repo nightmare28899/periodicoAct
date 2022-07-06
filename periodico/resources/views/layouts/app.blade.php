@@ -75,7 +75,15 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if(event.detail.message == '¡Debes seleccionar solo un elemento a la vez!') {
                 toastr.error(event.detail.message, '¡Error!');
+            } else if(event.detail.message == '¡Se generó exitosamente la devolución!' ) {
+                toastr.success(event.detail.message, '¡Exito!');
+            } else if(event.detail.message == '¡No puedes devolver más cantidad de la que hay!') {
+                toastr.error(event.detail.message, '¡Error!');
+            } else if(event.detail.message == '¡Ajuste realizado!') {
+                toastr.success(event.detail.message, '¡Exito!');
             }
+
+            
         });
     </script>
 </body>

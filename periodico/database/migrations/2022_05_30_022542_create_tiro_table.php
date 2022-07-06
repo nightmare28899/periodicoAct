@@ -16,17 +16,17 @@ return new class extends Migration
         Schema::create('tiro', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->string('fecha');
-            $table->string('cliente');
-            $table->string('entregar');
-            $table->string('devuelto');
-            $table->string('faltante');
-            $table->string('venta');
-            $table->string('precio');
-            $table->string('importe');
-            $table->string('dia');
-            $table->string('nombreruta');
-            $table->string('tipo');
+            $table->string('fecha')->nullable();
+            $table->string('cliente')->nullable();
+            $table->integer('entregar')->nullable();
+            $table->integer('devuelto');
+            $table->integer('faltante')->nullable();
+            $table->integer('venta')->nullable();
+            $table->integer('precio')->nullable();
+            $table->integer('importe')->nullable();
+            $table->string('dia')->nullable();
+            $table->string('nombreruta')->nullable();
+            $table->string('tipo')->nullable();
             $table->timestamps();
         });
     }

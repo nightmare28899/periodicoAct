@@ -82,7 +82,7 @@ class Clientes extends Component
     public function openClientModal()
     {
         $this->isModalOpen = false;
-        /*    $this->resetInput(); */
+        /* $this->resetInput(); */
         $this->ejemplarModalOpen = false;
         $this->clienteModalOpen = true;
     }
@@ -195,6 +195,7 @@ class Clientes extends Component
             'telefono' => 'required|max:10',
 
             'calle' => 'required',
+            'noint' => 'nullable|noint',
             'noext' => 'required',
             'colonia' => 'required',
             'cp' => 'required',
