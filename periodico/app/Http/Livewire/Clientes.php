@@ -14,7 +14,7 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $noext, $colonia, $cp, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created';
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created';
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -59,6 +59,11 @@ class Clientes extends Component
     public function create()
     {
         $this->resetInput();
+        $this->openModalPopover();
+        $this->status = 'created';
+    }
+    public function primerModal()
+    {
         $this->openModalPopover();
         $this->status = 'created';
     }
@@ -187,6 +192,12 @@ class Clientes extends Component
 
     public function store()
     {
+        if($this->noint != null) {
+            $this->noint;
+        } else {
+            $this->noint = null;
+        }
+
         $this->validate([
             'nombre' => 'required',
             'estado' => 'required',
@@ -195,7 +206,6 @@ class Clientes extends Component
             'telefono' => 'required|max:10',
 
             'calle' => 'required',
-            'noint' => 'nullable|noint',
             'noext' => 'required',
             'colonia' => 'required',
             'cp' => 'required',
@@ -233,7 +243,7 @@ class Clientes extends Component
         Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'calle' => $this->calle,
-            'noint' => $this->noint,
+            'noint' => $this?->noint,
             'noext' => $this->noext,
             'colonia' => $this->colonia,
             'cp' => $this->cp,
@@ -255,7 +265,7 @@ class Clientes extends Component
             'domingo' => $this->domingo,
         ]);
 
-        $this->resetInput();
+        /* $this->resetInput(); */
         $this->emit('closeModal');
         $this->updateMode = false;
         $this->closeModalPopover();

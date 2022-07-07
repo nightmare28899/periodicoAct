@@ -172,37 +172,35 @@
             </x-slot>
 
             <x-slot name="footer">
-                <div class="flex justify-center">
-                    <div class="w-64">
-                        <button wire:click="historialRemision" id="tiro" wire:loading.attr="disabled"
-                            class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
-                            <svg wire:loading wire:target="historialRemision"
-                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                    stroke="currentColor" stroke-width="4">
-                                </circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
-                            Historial de Remisiones</button>
-                    </div>
-                    <div class="w-64">
-                        <button wire:click="generarRemision" id="tiro" wire:loading.attr="disabled"
-                            class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
-                            <svg wire:loading wire:target="generarRemision"
-                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                    stroke="currentColor" stroke-width="4">
-                                </circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>Generar
-                            Remisiones del Tiro</button>
-                    </div>
+                <div class="flex-auto w-64 px-4 sm:px-6">
+                    <button wire:click="historialRemision" id="tiro" wire:loading.attr="disabled"
+                        class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
+                        <svg wire:loading wire:target="historialRemision"
+                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Historial de Remisiones</button>
+                </div>
+                <div class="flex-auto w-64 px-4 sm:px-6">
+                    <button wire:click="generarRemision" id="tiro" wire:loading.attr="disabled"
+                        class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
+                        <svg wire:loading wire:target="generarRemision"
+                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>Generar
+                        Remisiones del Tiro</button>
                 </div>
             </x-slot>
 
@@ -228,6 +226,52 @@
             </x-slot>
 
             <x-slot name="content">
+                <div class="flex">
+                    <h4 class="flex-initial" style="width: 11rem;">Desde:</h4>
+                    <h4 class="flex-initial w-64">Hasta:</h4>
+                </div>
+                <div class="container w-full">
+
+                    <div date-rangepicker="" class="flex items-center">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input name="start" type="text"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                placeholder="Select date start">
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input name="end" type="text"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 datepicker-input"
+                                placeholder="Select date end">
+                        </div>
+                    </div>
+
+                    <select
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                        style="width: 11rem;" name="" id="">
+                        <option value="" selected>Seleccione una ruta</option>
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                        <option value="">5</option>
+                    </select>
+                </div>
                 <br>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
@@ -280,14 +324,14 @@
 
             <x-slot name="footer">
 
-                <div class="flex-auto w-64">
+                <div class="flex-auto w-64 px-4 sm:px-6">
                     <x-jet-secondary-button
                         class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3 float-left"
                         wire:click="hideModalRemision" wire:loading.attr="disabled">
                         {{ __('Cancelar') }}
                     </x-jet-secondary-button>
                 </div>
-                <div class="flex-auto w-64">
+                <div class="flex-auto w-64 px-4 sm:px-6">
                     <button wire:click="descargaTodasRemisiones" id="tiro" wire:loading.attr="disabled"
                         class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
                         <svg wire:loading wire:target="descargaTodasRemisiones"
@@ -302,7 +346,7 @@
                         </svg>Generar Todas
                     </button>
                 </div>
-                <div class="flex-auto w-64">
+                <div class="flex-auto w-64 px-4 sm:px-6">
                     <button wire:click="descargaRemision" id="tiro" wire:loading.attr="disabled"
                         class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
                         <svg wire:loading wire:target="descargaRemision"
@@ -343,49 +387,55 @@
 
             <x-slot name="content">
                 <br>
-                <div class="text-center overflow-x">
-                    <div class="overflow-x-auto w-full">
-                        <table class="table-auto">
-                            <thead>
-                                <tr class='bg-gray-100'>
-                                    <th class='px-4 py-2'>Fecha</th>
-                                    <th class='px-4 py-2'>Cliente</th>
-                                    <th class='px-4 py-2'>Entregar</th>
-                                    <th class='px-4 py-2'>Devuelto</th>
-                                    <th class='px-4 py-2'>Faltante</th>
-                                    <th class='px-4 py-2'>Venta</th>
-                                    <th class='px-4 py-2'>Precio</th>
-                                    <th class='px-4 py-2'>Importe</th>
-                                    <th class='px-6 py-2'>Dia</th>
-                                    <th class='px-6 py-2'>Nombre Ruta</th>
-                                    <th class='px-6 py-2'>Tipo</th>
-                                    <th class="px-6 py-2">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($tiros as $tiro)
-                                    <tr>
-                                        <td>{{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                        <td>{{ $tiro->cliente }}</td>
-                                        <td>{{ $tiro->entregar }}</td>
-                                        <td>{{ $tiro->devuelto }}</td>
-                                        <td>{{ $tiro->faltante }}</td>
-                                        <td>{{ $tiro->venta }}</td>
-                                        <td>{{ $tiro->precio }}</td>
-                                        <td>{{ $tiro->importe }}</td>
-                                        <td>{{ $tiro->dia }}</td>
-                                        <td>{{ $tiro->nombreruta }}</td>
-                                        <td>{{ $tiro->tipo }}</td>
-                                        <td>
-                                            <button wire:click="editarRemision({{ $tiro->id }})"
-                                                class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
-                                        </td>
+                @if (count($tiros) > 0)
+                    <div class="text-center overflow-x">
+                        <div class="overflow-x-auto w-full">
+                            <table class="table-auto">
+                                <thead>
+                                    <tr class='bg-gray-100'>
+                                        <th class='px-4 py-2'>Fecha</th>
+                                        <th class='px-4 py-2'>Cliente</th>
+                                        <th class='px-4 py-2'>Entregar</th>
+                                        <th class='px-4 py-2'>Devuelto</th>
+                                        <th class='px-4 py-2'>Faltante</th>
+                                        <th class='px-4 py-2'>Venta</th>
+                                        <th class='px-4 py-2'>Precio</th>
+                                        <th class='px-4 py-2'>Importe</th>
+                                        <th class='px-6 py-2'>Dia</th>
+                                        <th class='px-6 py-2'>Nombre Ruta</th>
+                                        <th class='px-6 py-2'>Tipo</th>
+                                        <th class="px-6 py-2">Acciones</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tiros as $tiro)
+                                        <tr>
+                                            <td>{{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            <td>{{ $tiro->cliente }}</td>
+                                            <td>{{ $tiro->entregar }}</td>
+                                            <td>{{ $tiro->devuelto }}</td>
+                                            <td>{{ $tiro->faltante }}</td>
+                                            <td>{{ $tiro->venta }}</td>
+                                            <td>{{ $tiro->precio }}</td>
+                                            <td>{{ $tiro->importe }}</td>
+                                            <td>{{ $tiro->dia }}</td>
+                                            <td>{{ $tiro->nombreruta }}</td>
+                                            <td>{{ $tiro->tipo }}</td>
+                                            <td>
+                                                <button wire:click="editarRemision({{ $tiro->id }})"
+                                                    class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="text-center">
+                        <h1 class="text-2xl text-black font-bold">No hay registros</h1>
+                    </div>
+                @endif
             </x-slot>
 
             <x-slot name="footer">

@@ -198,19 +198,24 @@ class Tiros extends Component
 
         $this->toast();
 
-        Tiro::create([
-            'fecha' => $this->dateF,
-            'cliente' => $this->resultados[0]['nombre'],
-            'entregar' => $this->resultados[0]->{$this->diaS},
-            'devuelto' => $this->devuelto,
-            'faltante' => $this->faltante,
-            'venta' => $this->resultados[0]->{$this->diaS},
-            'precio' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'],
-            'importe' => $this->diaS == 'domingo' ? $this->resultados[0]['dominical'] : $this->resultados[0]['ordinario'] * $this->resultados[0]->{$this->diaS},
-            'dia' => $this->diaS,
-            'nombreruta' => $this->resultados[0]['nombreruta'],
-            'tipo' => $this->resultados[0]['tiporuta'],
-        ]);
+        foreach ($this->resultados as $resultado) {
+            Tiro::create([
+                'fecha' => $this->dateF,
+                'cliente' => $resultado['nombre'],
+                'entregar' => $resultado->{$this->diaS},
+                'devuelto' => $this->devuelto,
+                'faltante' => $this->faltante,
+                'venta' => $resultado->{$this->diaS},
+                'precio' => $this->diaS == 'domingo' ? $resultado['dominical'] : $resultado['ordinario'],
+                'importe' => $this->diaS == 'domingo' ? $resultado['dominical'] : $resultado['ordinario'] * $resultado->{$this->diaS},
+                'dia' => $this->diaS,
+                'nombreruta' => $resultado['nombreruta'],
+                'tipo' => $resultado['tiporuta'],
+            ]);
+        }
+
+        $this->modalRemision = false;
+        $this->showingModal = true;
 
         return response()
             ->streamDownload(

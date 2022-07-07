@@ -45,6 +45,8 @@
 
     @livewireScripts
 
+    <script src="../path/to/flowbite/dist/datepicker.js"></script>
+    <script src="https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
@@ -61,29 +63,29 @@
                 toastr.success(event.detail.message, '¡Exito!');
             } else if (event.detail.message == '¡Ruta Actualizada Correctamente!') {
                 toastr.info(event.detail.message, '¡Actualizado!');
-            } else if(event.detail.message == '¡Tarifa Creada Correctamente!') {
+            } else if (event.detail.message == '¡Tarifa Creada Correctamente!') {
                 toastr.success(event.detail.message, '¡Exito!');
-            } else if(event.detail.message == '¡Tarifa Actualizada Correctamente!') {
+            } else if (event.detail.message == '¡Tarifa Actualizada Correctamente!') {
                 toastr.info(event.detail.message, '¡Actualizado!');
-            } else if(event.detail.message == '¡Debes seleccionar un elemento primero!') {
+            } else if (event.detail.message == '¡Debes seleccionar un elemento primero!') {
                 toastr.error(event.detail.message, '¡Error!');
-            } else if(event.detail.message == '¡Remisión generada exitosamente!') {
+            } else if (event.detail.message == '¡Remisión generada exitosamente!') {
                 toastr.success(event.detail.message, '¡Exito!');
-            } else if(event.detail.message == '¡Tiro generado exitosamente!') {
+            } else if (event.detail.message == '¡Tiro generado exitosamente!') {
                 toastr.success(event.detail.message, '¡Exito!');
-            } else if(event.detail.message == '¡Debes escoger una fecha primero!') {
+            } else if (event.detail.message == '¡Debes escoger una fecha primero!') {
                 toastr.error(event.detail.message, '¡Error!');
-            } else if(event.detail.message == '¡Debes seleccionar solo un elemento a la vez!') {
+            } else if (event.detail.message == '¡Debes seleccionar solo un elemento a la vez!') {
                 toastr.error(event.detail.message, '¡Error!');
-            } else if(event.detail.message == '¡Se generó exitosamente la devolución!' ) {
+            } else if (event.detail.message == '¡Se generó exitosamente la devolución!') {
                 toastr.success(event.detail.message, '¡Exito!');
-            } else if(event.detail.message == '¡No puedes devolver más cantidad de la que hay!') {
+            } else if (event.detail.message == '¡No puedes devolver más cantidad de la que hay!') {
                 toastr.error(event.detail.message, '¡Error!');
-            } else if(event.detail.message == '¡Ajuste realizado!') {
+            } else if (event.detail.message == '¡Ajuste realizado!') {
                 toastr.success(event.detail.message, '¡Exito!');
             }
 
-            
+
         });
     </script>
 </body>
