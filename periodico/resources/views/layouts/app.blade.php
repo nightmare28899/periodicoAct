@@ -14,6 +14,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     @livewireStyles
 
     <!-- Scripts -->
@@ -84,10 +85,9 @@
             } else if (event.detail.message == '¡Ajuste realizado!') {
                 toastr.success(event.detail.message, '¡Exito!');
             }
-
-
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 </body>
 
 </html>

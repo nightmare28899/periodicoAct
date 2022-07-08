@@ -7,13 +7,14 @@ use App\Models\Tiro;
 use App\Models\Ejemplar;
 use App\Models\Domicilio;
 use App\Models\Cliente;
+use App\Models\Ruta;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -25,9 +26,14 @@ class Tiros extends Component
         /* $resultado = Cliente::where('id', '>=', 1); */
         /* $ejemplares = Ejemplar::all(); */
         $domicilios = Domicilio::all();
+        $this->ruta = Ruta::all();
+        // dd($ruta);
         $keyWord = '%' . $this->keyWord . '%';
+
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
+        $this->dateFiltro = new Carbon($this->de);
+
         /* $dateT = new Carbon($this->to); */
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
@@ -41,10 +47,27 @@ class Tiros extends Component
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
                 ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
+        }
 
-            if ($this->clienteSeleccionado) {
-                /* dd($this->clienteSeleccionado); */
-            }
+        if ($this->rutaSeleccionada == "Todos") {
+            $this->diaS = $this->dateF->translatedFormat('l');
+
+            $this->res = Cliente
+                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
+        } else {
+            $this->res = Cliente
+                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
         }
 
         $maxWidth = [
@@ -60,6 +83,8 @@ class Tiros extends Component
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
             'maxWidth' => $maxWidth,
+            'de' => $this->de,
+            'hasta' => $this->hasta,
         ], compact('domicilios'));
     }
 
@@ -85,10 +110,11 @@ class Tiros extends Component
     {
         $this->isGenerateTiro = true;
         $this->modalRemision = false;
+
         $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->where('nombre', 'like', '%' . $this->keyWord . '%')
+            ->where('nombre', 'like', '%' . $this->rutaSeleccionada . '%')
             ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*")
             ->get($this->diaS);
 
@@ -128,13 +154,23 @@ class Tiros extends Component
                 ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
-            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
-                'resultado' => $this->resultados,
-                'diaS' => $this->diaS,
-                'dateF' => $this->dateF,
-            ])
-                ->setPaper('A5', 'landscape')
-                ->output();
+            if ($this->de && $this->hasta) {
+                $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
+                    'resultado' => $this->resultados,
+                    'diaS' => $this->diaS,
+                    'dateF' => $this->dateF,
+                ])
+                    ->setPaper('A5', 'landscape')
+                    ->output();
+            } else {
+                $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+                    'resultado' => $this->resultados,
+                    'diaS' => $this->diaS,
+                    'dateF' => $this->dateF,
+                ])
+                    ->setPaper('A5', 'landscape')
+                    ->output();
+            }
 
             $this->toast();
 
