@@ -14,7 +14,6 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     @livewireStyles
 
     <!-- Scripts -->
@@ -46,8 +45,6 @@
 
     @livewireScripts
 
-    <script src="../path/to/flowbite/dist/datepicker.js"></script>
-    <script src="https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
@@ -87,7 +84,6 @@
             }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 </body>
 
 </html>

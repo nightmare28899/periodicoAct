@@ -137,7 +137,7 @@
                     <td>
                         <div class="form-group">
                             <label class="text-black" for="Física"> Periodo:
-                                {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
+                                De: {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} Hasta: {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
                                 {{ $result->{$diaS} }} </label>
                         </div>
                     </td>

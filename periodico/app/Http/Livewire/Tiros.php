@@ -159,6 +159,8 @@ class Tiros extends Component
                     'resultado' => $this->resultados,
                     'diaS' => $this->diaS,
                     'dateF' => $this->dateF,
+                    'de' => $this->de,
+                    'hasta' => $this->hasta,
                 ])
                     ->setPaper('A5', 'landscape')
                     ->output();
@@ -224,13 +226,25 @@ class Tiros extends Component
             ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
             ->get($this->diaS);
 
-        $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
-            'resultado' => $this->resultados,
-            'diaS' => $this->diaS,
-            'dateF' => $this->dateF,
-        ])
-            ->setPaper('A5', 'landscape')
-            ->output();
+        if ($this->de && $this->hasta) {
+            $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
+                'resultado' => $this->resultados,
+                'diaS' => $this->diaS,
+                'dateF' => $this->dateF,
+                'de' => $this->de,
+                'hasta' => $this->hasta,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
+        } else {
+            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+                'resultado' => $this->resultados,
+                'diaS' => $this->diaS,
+                'dateF' => $this->dateF,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
+        }
 
         $this->toast();
 
