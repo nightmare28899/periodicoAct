@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -341,11 +341,12 @@ class Tiros extends Component
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'updated') ? '¡Se generó exitosamente la devolución!' : ''
                 ]);
-
+                $this->entregar = $tiros->entregar;
                 $this->modalEditar = false;
                 $this->modalHistorial = false;
                 $this->showingModal = true;
-            } else if ($tiros->entregar <= $tiros->devuelto) {
+                $this->devuelto = 0;
+            } else if (($tiros->entregar + $this->devuelto) <= $tiros->devuelto) {
                 $tiros->update([
                     'devuelto' => $tiros->devuelto - $this->devuelto,
                     'entregar' => $tiros->entregar + $this->devuelto,
@@ -356,10 +357,11 @@ class Tiros extends Component
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'adjust') ? '¡Ajuste realizado!' : ''
                 ]);
-
+                $this->entregar = $tiros->entregar;
                 $this->modalEditar = false;
                 $this->modalHistorial = false;
                 $this->showingModal = true;
+                $this->devuelto = 0;
             } else {
                 $this->status = 'error';
                 $this->dispatchBrowserEvent('alert', [

@@ -16,7 +16,8 @@
                                     <div class="mb-5 w-64">
                                         <div class="relative">
                                             <div class="grid mt-1">
-                                                <x-jet-input class="w-full" type="date" wire:model="from"></x-jet-input>
+                                                <x-jet-input class="w-full" type="date" wire:model="from">
+                                                </x-jet-input>
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +108,7 @@
             </div>
         </div>
 
-
+        {{-- Datos del tiro --}}
         <x-jet-dialog-modal wire:model="showingModal">
 
             <x-slot name="title">
@@ -204,8 +205,8 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-
-        <x-jet-dialog-modal wire:model="modalRemision">
+        {{-- Modal datos de la remisión --}}
+        <x-jet-dialog-modal wire:model="modalRemision" maxWidth="6xl">
 
             <x-slot name="title">
                 <div class="flex sm:px-6">
@@ -268,7 +269,7 @@
                             <tbody>
                                 @foreach ($res as $result)
                                     <tr>
-                                        <td>
+                                        <td class='px-4 py-2'>
                                             <div class="form-group">
                                                 <input wire:model="clienteSeleccionado" type="checkbox"
                                                     value={{ $result->id }}>
@@ -276,18 +277,20 @@
                                                     for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
                                             </div>
                                         </td>
-                                        <td>{{ $result->nombre }}</td>
-                                        <td>{{ $result->{$diaS} }}</td>
-                                        <td>{{ $devuelto }}</td>
-                                        <td>{{ $faltante }}</td>
-                                        <td>{{ $result->{$diaS} }}</td>
-                                        <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                        <td class='px-4 py-2'>{{ $result->nombre }}</td>
+                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                        <td class='px-4 py-2'>{{ $devuelto }}</td>
+                                        <td class='px-4 py-2'>{{ $faltante }}</td>
+                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                        <td class='px-4 py-2'>
+                                            {{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
                                         </td>
-                                        <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                        <td class='px-4 py-2'>
+                                            {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
                                         </td>
-                                        <td>{{ $diaS }}</td>
-                                        <td>{{ $result->nombreruta }}</td>
-                                        <td>{{ $result->tiporuta }}</td>
+                                        <td class='px-4 py-2'>{{ $diaS }}</td>
+                                        <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
+                                        <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -305,7 +308,7 @@
                         {{ __('Cancelar') }}
                     </x-jet-secondary-button>
                 </div>
-                <div class="flex-auto w-64 px-4 sm:px-6">
+                <div class="flex-auto w-32 px-4 sm:px-6">
                     <button wire:click="descargaTodasRemisiones" id="tiro" wire:loading.attr="disabled"
                         class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
                         <svg wire:loading wire:target="descargaTodasRemisiones"
@@ -320,7 +323,7 @@
                         </svg>Generar Todas
                     </button>
                 </div>
-                <div class="flex-auto w-64 px-4 sm:px-6">
+                <div class="flex-auto w-32 px-4 sm:px-6">
                     <button wire:click="descargaRemision" id="tiro" wire:loading.attr="disabled"
                         class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
                         <svg wire:loading wire:target="descargaRemision"
@@ -339,8 +342,8 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-
-        <x-jet-dialog-modal wire:model="modalHistorial">
+        {{-- Modal historial de remisión --}}
+        <x-jet-dialog-modal wire:model="modalHistorial" maxWidth="7xl">
 
             <x-slot name="title">
                 <div class="flex sm:px-6">
@@ -384,17 +387,18 @@
                                 <tbody>
                                     @foreach ($tiros as $tiro)
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                            <td>{{ $tiro->cliente }}</td>
-                                            <td>{{ $tiro->entregar }}</td>
-                                            <td>{{ $tiro->devuelto }}</td>
-                                            <td>{{ $tiro->faltante }}</td>
-                                            <td>{{ $tiro->venta }}</td>
-                                            <td>{{ $tiro->precio }}</td>
-                                            <td>{{ $tiro->importe }}</td>
-                                            <td>{{ $tiro->dia }}</td>
-                                            <td>{{ $tiro->nombreruta }}</td>
-                                            <td>{{ $tiro->tipo }}</td>
+                                            <td class='px-4 py-2'>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->cliente }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->venta }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->precio }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->importe }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->dia }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
                                             <td>
                                                 <button wire:click="editarRemision({{ $tiro->id }})"
                                                     class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
@@ -445,19 +449,41 @@
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                         id="devuelto" wire:model.defer="devuelto" placeholder="Escribe tu Nombre" />
                 </div>
-                <button wire:click.prevent="updateDevueltos" type="button"
-                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                    <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10"
-                            stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    Actualizar
-                </button>
+                @if ($devuelto == 0 || $devuelto > 0 && $entregar > 0)
+                <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p>
+                    <button wire:click.prevent="updateDevueltos" type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                        <svg wire:loading wire:target="updateDevueltos"
+                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Devolver
+                    </button>
+                @elseif ($entregar == 0 && $devuelto > 0)
+                <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p>
+                    <button wire:click.prevent="updateDevueltos" type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                        <svg wire:loading wire:target="updateDevueltos"
+                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Cancelar devolución
+                    </button>
+                @endif
             </x-slot>
 
             <x-slot name="footer">
