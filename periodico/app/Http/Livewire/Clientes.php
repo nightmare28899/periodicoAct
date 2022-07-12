@@ -415,4 +415,8 @@ class Clientes extends Component
             'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
         ]);
     }
+    public function suscripciones($id)
+    {
+        
+    }
 }
