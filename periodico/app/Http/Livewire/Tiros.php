@@ -88,24 +88,6 @@ class Tiros extends Component
         ], compact('domicilios'));
     }
 
-    /* public function updatedFrom()
-    {
-        $this->resultados = Cliente
-            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->where('nombre', 'like', '%' . $this->keyWord . '%')
-            ->select("cliente.nombre", "ejemplares.*", "domicilio.*")
-            ->get($this->diaS);
-    } */
-
-    public function remision()
-    {
-        /* dd($this->dateF);
-        /* $this->isGenerateTiro = true; */
-        /* return Redirect()->to('/tiro/vistaPrevia'); */
-        return redirect()->to('livewire.tiros.tiro', ['dateF' => $this->dateF]);
-    }
-
     public function descarga()
     {
         $this->isGenerateTiro = true;

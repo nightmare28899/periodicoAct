@@ -15,6 +15,12 @@
                             name="search" id="search" placeholder="Buscar Cliente">
                     </div>
                     <div class="flex-none mx-1">
+                        <button wire:click="modalSuscripciones"
+                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
+                            Generar Suscripción
+                        </button>
+                    </div>
+                    <div class="flex-none mx-1">
                         <a href="{{ url('tarifa') }}"><button
                                 class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">{{ __('Tarifa') }}</button></a>
                     </div>
@@ -53,6 +59,10 @@
                 @if ($detallesModalOpen)
                     @include('livewire.clientes.detalles')
                 @endif
+                @if ($suscripciones)
+                    @include('livewire.suscripciones.suscripciones')
+                @endif
+
                 <table class="table-auto w-full text-center">
                     <thead>
                         <tr class="bg-gray-500 text-white">

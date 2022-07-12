@@ -9,12 +9,13 @@ use App\Models\Domicilio;
 use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
+use Carbon\Carbon;
 
 class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created';
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -22,6 +23,7 @@ class Clientes extends Component
 
     public function render()
     {
+        $this->date = new Carbon();
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
             'Genérico' => 'GENÉRICO',
@@ -110,6 +112,10 @@ class Clientes extends Component
         $this->isModalOpen = false;
         $this->clienteModalOpen = true;
         $this->ejemplarModalOpen = false;
+    }
+    public function modalSuscripciones()
+    {
+        $this->suscripciones = true;
     }
     public function detalles($id)
     {
