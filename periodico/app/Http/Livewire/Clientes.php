@@ -15,7 +15,7 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura';
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -38,9 +38,12 @@ class Clientes extends Component
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
 
-        /* if($this->rfc == 'Física' || $this->rfc == 'Moral') {
-            $this->estadoRFC();
-        } */
+        $this->dataClient = Cliente
+            ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
+            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+            ->where('cliente.id', '=', $this->clienteSeleccionado)
+            ->select('cliente.*', 'domicilio.*', 'ruta.tiporuta')
+            ->get();
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
@@ -204,6 +207,48 @@ class Clientes extends Component
             $this->noint = null;
         }
 
+        if($this->lunes != null) {
+            $this->lunes;
+        } else {
+            $this->lunes = 0;
+        }
+
+        if($this->martes != null) {
+            $this->martes;
+        } else {
+            $this->martes = 0;
+        }
+
+        if($this->miércoles != null) {
+            $this->miércoles;
+        } else {
+            $this->miércoles = 0;
+        }
+
+        if($this->jueves != null) {
+            $this->jueves;
+        } else {
+            $this->jueves = 0;
+        }
+
+        if($this->viernes != null) {
+            $this->viernes;
+        } else {
+            $this->viernes = 0;
+        }
+
+        if($this->sábado != null) {
+            $this->sábado;
+        } else {
+            $this->sábado = 0;
+        }
+
+        if($this->domingo != null) {
+            $this->domingo;
+        } else {
+            $this->domingo = 0;
+        }
+
         $this->validate([
             'nombre' => 'required',
             'estado' => 'required',
@@ -223,14 +268,6 @@ class Clientes extends Component
             'clasificacion' => 'required',
             'rfc' => 'required',
             'rfc_input' => 'required',
-
-            'lunes' => 'required',
-            'martes' => 'required',
-            'miércoles' => 'required',
-            'jueves' => 'required',
-            'viernes' => 'required',
-            'sábado' => 'required',
-            'domingo' => 'required',
         ]);
 
         Cliente::Create([
@@ -414,9 +451,5 @@ class Clientes extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
         ]);
-    }
-    public function suscripciones($id)
-    {
-        
     }
 }
