@@ -96,9 +96,10 @@ class Tiros extends Component
         $this->resultados = Cliente
             ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
             ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->where('nombre', 'like', '%' . $this->rutaSeleccionada . '%')
             ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*")
             ->get($this->diaS);
+
+        /* dd($this->resultados); */
 
         $pdfContent = PDF::loadView('livewire.tiros.pdf', [
             'resultado' => $this->resultados,
