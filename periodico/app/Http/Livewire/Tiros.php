@@ -70,10 +70,6 @@ class Tiros extends Component
                 ->get($this->diaS);
         }
 
-        $maxWidth = [
-            'sm' => 'sm:max-w-sm', 'md' => 'sm:max-w-md', 'lg' => 'sm:max-w-lg', 'xl' => 'sm:max-w-xl', '2xl' => 'sm:max-w-2xl', '3xl' => 'sm:max-w-3xl', '4xl' => 'sm:max-w-4xl', '5xl' => 'sm:max-w-5xl', '6xl' => 'sm:max-w-6xl', '7xl' => 'sm:max-w-7xl', 'full' => 'sm:max-w-full',
-        ];
-
         /* dd($maxWidth['md']); */
 
         /* return view('livewire.tiros.tiro-modal'); */
@@ -82,7 +78,6 @@ class Tiros extends Component
             'resultado' => $this->resultados,
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
-            'maxWidth' => $maxWidth,
             'de' => $this->de,
             'hasta' => $this->hasta,
         ], compact('domicilios'));
