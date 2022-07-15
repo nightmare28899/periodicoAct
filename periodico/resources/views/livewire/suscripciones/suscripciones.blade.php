@@ -47,13 +47,13 @@
                 <div class="flex">
                     <div class="w-1/2 px-2">
                         <p>Suscripción:</p>
-                        <p class="font-bold"><input wire:model="tipoSubscripcion" name="tipoSubscripcion" id="Normal"
+                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion" id="Normal"
                                 value="Normal" type="radio" checked> <label class="text-black"
                                 for="Normal">Normal</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model="tipoSubscripcion" name="tipoSubscripcion" id="Semanal"
+                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion" id="Semanal"
                                 value="Semanal" type="radio" {{ $tipoSubscripcion == 'Semanal' ? 'checked' : '' }}>
                             <label class="text-black" for="Semanal">Semanal</label>
                         </p>
@@ -61,18 +61,18 @@
                     <div class="border-l-4 border-black ... px-2"></div>
                     <div class="w-1/2">
                         <p>La suscripción es una:</p>
-                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio" name="subscripcionEs"
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
                                 value="Apertura" checked> <label for="Apertura">Apertura</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio" name="subscripcionEs"
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
                                 value="Renovación" {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
                                 for="Renovación">Renovación</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio" name="subscripcionEs"
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
                                 value="Reactviación" {{ $subscripcionEs == 'Reactviación' ? 'checked' : '' }}> <label
                                 for="Reactviación">Reactviación</label></p>
                     </div>
