@@ -150,7 +150,11 @@
                         </div>
                     </div>
                 @endforeach
-
+                <div class="flex">
+                    <div class="w-1/2 px-2">
+                        
+                    </div>
+                </div>
             </div>
         @else
             <div class="text-center">
