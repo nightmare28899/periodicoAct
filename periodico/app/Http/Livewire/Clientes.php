@@ -44,6 +44,8 @@ class Clientes extends Component
             ->where('cliente.id', '=', $this->clienteSeleccionado)
             ->select('cliente.*', 'domicilio.*', 'ruta.tiporuta')
             ->get();
+        
+        /* dd($this->dataClient); */
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()

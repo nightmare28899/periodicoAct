@@ -47,33 +47,37 @@
                 <div class="flex">
                     <div class="w-1/2 px-2">
                         <p>Suscripción:</p>
-                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion" id="Normal"
-                                value="Normal" type="radio" checked> <label class="text-black"
+                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion"
+                                id="Normal" value="Normal" type="radio" checked> <label class="text-black"
                                 for="Normal">Normal</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion" id="Semanal"
-                                value="Semanal" type="radio" {{ $tipoSubscripcion == 'Semanal' ? 'checked' : '' }}>
+                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion"
+                                id="Semanal" value="Semanal" type="radio"
+                                {{ $tipoSubscripcion == 'Semanal' ? 'checked' : '' }}>
                             <label class="text-black" for="Semanal">Semanal</label>
                         </p>
                     </div>
                     <div class="border-l-4 border-black ... px-2"></div>
                     <div class="w-1/2">
                         <p>La suscripción es una:</p>
-                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
-                                value="Apertura" checked> <label for="Apertura">Apertura</label></p>
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio"
+                                name="subscripcionEs" value="Apertura" checked> <label for="Apertura">Apertura</label>
+                        </p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
-                                value="Renovación" {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio"
+                                name="subscripcionEs" value="Renovación"
+                                {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
                                 for="Renovación">Renovación</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
-                                value="Reactviación" {{ $subscripcionEs == 'Reactviación' ? 'checked' : '' }}> <label
+                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio"
+                                name="subscripcionEs" value="Reactviación"
+                                {{ $subscripcionEs == 'Reactviación' ? 'checked' : '' }}> <label
                                 for="Reactviación">Reactviación</label></p>
                     </div>
                 </div>
@@ -81,78 +85,146 @@
                     <div class="flex mt-2">
                         <div class="w-1/2 px-2">
                             <p class="font-bold">FACTURAR A:</p>
-                            <b>Clave: <input type="text" style="height: 1.7rem;" value="{{ $loop->iteration }}"
-                                    class="border-0" disabled></b>
+                            <b class="">Clave: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;" value="{{ $loop->iteration }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
                             <br>
-                            <b>R.F.C.: <input type="text" style="height: 1.7rem;" value="{{ $data->rfc_input }}"
-                                    class="border-0" disabled></b>
+                            <b>R.F.C.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->rfc_input }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
                             <br>
-                            <b>Nombre: <input type="text" style="height: 1.7rem;" value="{{ $data->nombre }}"
-                                    class="border-0" disabled></b>
+                            <b>Nombre: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->nombre }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
-                    <div class="flex">
+                    <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>Calle: <input type="text" style="height: 1.7rem;" value="{{ $data->calle }}"
-                                    class="border-0" disabled></b>
+                            <b>Calle: <input type="text" style="height: 1.7rem; margin-left: 2.6rem;" value="{{ $data->calle }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>No. Int: <input type="text" style="height: 1.7rem;" value="{{ $data->noint }}"
-                                    class="border-0" disabled></b>
+                            <b>No. Int: <input type="text" style="height: 1.7rem; margin-left: 1.3rem;" value="{{ $data->noint }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>No. Ext.: <input type="text" style="height: 1.7rem;" value="{{ $data->noext }}"
-                                    class="border-0" disabled></b>
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div class="w-1/2 px-2">
-                            <b>Colonia: <input type="text" style="height: 1.7rem;" value="{{ $data->colonia }}"
-                                    class="border-0" disabled></b>
-                        </div>
-                        <div class="w-1/2 px-2">
-                            <b>C.P.: <input type="text" style="height: 1.7rem;" value="{{ $data->cp }}"
-                                    class="border-0" disabled></b>
+                            <b>No. Ext.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->noext }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
-                    <div class="flex">
+                    <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>Localidad: <input type="text" style="height: 1.7rem;"
-                                    value="{{ $data->localidad }}" class="border-0" disabled></b>
+                            <b>Colonia: <input type="text" style="height: 1.7rem; margin-left: 1.4rem;" value="{{ $data->colonia }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>Municipio: <input type="text" style="height: 1.7rem;"
-                                    value="{{ $data->municipio }}" class="border-0" disabled></b>
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div class="w-1/2 px-2">
-                            <b>Estado: <input type="text" style="height: 1.7rem;" value="{{ $data->estado }}"
-                                    class="border-0" disabled></b>
-                        </div>
-                        <div class="w-1/2 px-2">
-                            <b>País: <input type="text" style="height: 1.7rem;" value="{{ $data->pais }}"
-                                    class="border-0" disabled></b>
+                            <b>C.P.: <input type="text" style="height: 1.7rem; margin-left: 3.2rem;" value="{{ $data->cp }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
-                    <div class="flex">
+                    <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>E-mail: <input type="text" style="height: 1.7rem;" value="{{ $data->email }}"
-                                    class="border-0" disabled></b>
+                            <b>Localidad: <input type="text" style="height: 1.7rem; margin-left: 0.5rem;"
+                                    value="{{ $data->localidad }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>Tel: <input type="text" style="height: 1.7rem;" value="{{ $data->telefono }}"
-                                    class="border-0" disabled></b>
+                            <b>Municipio: <input type="text" style="height: 1.7rem; margin-left: 0.6rem;"
+                                    value="{{ $data->municipio }}" class="border-0 bg-gray-200" disabled></b>
+                        </div>
+                    </div>
+                    <div class="flex mt-1">
+                        <div class="w-1/2 px-2">
+                            <b>Estado: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->estado }}"
+                                    class="border-0 bg-gray-200" disabled></b>
+                        </div>
+                        <div class="w-1/2 px-2">
+                            <b>País: <input type="text" style="height: 1.7rem; margin-left: 3.1rem;" value="{{ $data->pais }}"
+                                    class="border-0 bg-gray-200" disabled></b>
+                        </div>
+                    </div>
+                    <div class="flex mt-1">
+                        <div class="w-1/2 px-2">
+                            <b>E-mail: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->email }}"
+                                    class="border-0 bg-gray-200" disabled></b>
+                        </div>
+                        <div class="w-1/2 px-2">
+                            <b>Tel: <input type="text" style="height: 1.7rem; margin-left: 3.6rem;" value="{{ $data->telefono }}"
+                                    class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                 @endforeach
-                <div class="flex">
+                <div class="flex mt-5">
+                    <div class="w-2/5 px-2">
+                        <p>TARIFA</p>
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="clienteSeleccionado" style="width: 100%">
+                            <option value=''>Selecciona un cliente</option>
+                            @foreach ($clientes as $cliente)
+                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="w-2/5 px-2">
+                        <p>EJEMPLARES</p>
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="clienteSeleccionado" style="width: 100%">
+                            <option value=''>Selecciona un cliente</option>
+                            @foreach ($clientes as $cliente)
+                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="w-2/5 px-2">
+                        <p>PRECIO</p>
+                        <input type="radio"> Normal
+                        <input type="radio"> Pronto pago
+                    </div>
                     <div class="w-1/2 px-2">
-                        
+                        <p>CONTRATO PARA</p>
+                        <input type="radio"> Suscripción
+                        <input type="radio"> Cortesía
+                        <input type="radio"> Intercambio
+                    </div>
+                </div>
+                <div class="flex mt-2">
+
+                </div>
+                <div class="flex mt-2">
+                    <div class="w-full">
+                        <b class="uppercase">domicilio de entrega</b>
+                        <table class="table-auto w-full text-center">
+                            <thead>
+                                <tr class="bg-gray-500 text-white uppercase">
+                                    <th class="px-4 py-2 w-20">Calle</th>
+                                    <th class="px-4 py-2 w-20">#Int</th>
+                                    <th class="px-4 py-2 w-20">#Ext</th>
+                                    <th class="px-4 py-2 w-20">Colonia</th>
+                                    <th class="px-4 py-2 w-20">C.P.</th>
+                                    <th class="px-4 py-2 w-20">Localidad</th>
+                                    <th class="px-4 py-2 w-20">Municipio</th>
+                                    <th class="px-4 py-2 w-20">#Ejem</th>
+                                    <th class="px-4 py-2 w-20">Referencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($dataClient as $cliente)
+                                    <tr>
+                                        <td class="border">{{ $cliente->calle }}</td>
+                                        <td class="border">{{ $cliente->noint }}</td>
+                                        <td class="border">{{ $cliente->noext }}</td>
+                                        <td class="border">{{ $cliente->colonia }}</td>
+                                        <td class="border">{{ $cliente->cp }}</td>
+                                        <td class="border">{{ $cliente->localidad }}</td>
+                                        <td class="border">{{ $cliente->municipio }}</td>
+                                        <td class="border">{{-- {{ $cliente->ejem }} --}}</td>
+                                        <td class="border">{{ $cliente->referencia }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
