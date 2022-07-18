@@ -24,8 +24,9 @@
                         <p class="font-bold">La suscripción es para el cliente</p>
                     </div>
                     <div class="w-1/2">
-                        <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem;"
-                                value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}" class="border-0" disabled>
+                        <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
+                                value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}"
+                                class="border-0 bg-gray-200" disabled>
                         </p>
                     </div>
                 </div>
@@ -85,42 +86,42 @@
                     <div class="flex mt-2">
                         <div class="w-1/2 px-2">
                             <p class="font-bold">FACTURAR A:</p>
-                            <b class="">Clave: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;" value="{{ $loop->iteration }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b class="">Clave: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
+                                    value="{{ $loop->iteration }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
                             <br>
-                            <b>R.F.C.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->rfc_input }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>R.F.C.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                    value="{{ $data->rfc_input }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
                             <br>
-                            <b>Nombre: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->nombre }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>Nombre: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                    value="{{ $data->nombre }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                     <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>Calle: <input type="text" style="height: 1.7rem; margin-left: 2.6rem;" value="{{ $data->calle }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>Calle: <input type="text" style="height: 1.7rem; margin-left: 2.6rem;"
+                                    value="{{ $data->calle }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>No. Int: <input type="text" style="height: 1.7rem; margin-left: 1.3rem;" value="{{ $data->noint }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>No. Int: <input type="text" style="height: 1.7rem; margin-left: 1.3rem;"
+                                    value="{{ $data->noint }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>No. Ext.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->noext }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>No. Ext.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                    value="{{ $data->noext }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                     <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>Colonia: <input type="text" style="height: 1.7rem; margin-left: 1.4rem;" value="{{ $data->colonia }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>Colonia: <input type="text" style="height: 1.7rem; margin-left: 1.4rem;"
+                                    value="{{ $data->colonia }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>C.P.: <input type="text" style="height: 1.7rem; margin-left: 3.2rem;" value="{{ $data->cp }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>C.P.: <input type="text" style="height: 1.7rem; margin-left: 3.2rem;"
+                                    value="{{ $data->cp }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                     <div class="flex mt-1">
@@ -135,22 +136,22 @@
                     </div>
                     <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>Estado: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->estado }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>Estado: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                    value="{{ $data->estado }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>País: <input type="text" style="height: 1.7rem; margin-left: 3.1rem;" value="{{ $data->pais }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>País: <input type="text" style="height: 1.7rem; margin-left: 3.1rem;"
+                                    value="{{ $data->pais }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                     <div class="flex mt-1">
                         <div class="w-1/2 px-2">
-                            <b>E-mail: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;" value="{{ $data->email }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>E-mail: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                    value="{{ $data->email }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class="w-1/2 px-2">
-                            <b>Tel: <input type="text" style="height: 1.7rem; margin-left: 3.6rem;" value="{{ $data->telefono }}"
-                                    class="border-0 bg-gray-200" disabled></b>
+                            <b>Tel: <input type="text" style="height: 1.7rem; margin-left: 3.6rem;"
+                                    value="{{ $data->telefono }}" class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
                 @endforeach
@@ -159,22 +160,24 @@
                         <p>TARIFA</p>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="clienteSeleccionado" style="width: 100%">
-                            <option value=''>Selecciona un cliente</option>
-                            @foreach ($clientes as $cliente)
+                            wire:model="tarfiaSeleccionada" style="width: 100%">
+                            <option value=''>Selecciona una tarifa</option>
+                            <option value="">Base</option>
+                            {{-- @foreach ($clientes as $cliente)
                                 <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="w-2/5 px-2">
                         <p>EJEMPLARES</p>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="clienteSeleccionado" style="width: 100%">
-                            <option value=''>Selecciona un cliente</option>
-                            @foreach ($clientes as $cliente)
+                            wire:model="cantidadSeleccionada" style="width: 100%">
+                            <option value=''>Selecciona una cantidad</option>
+                            <option value="">1</option>
+                            {{-- @foreach ($clientes as $cliente)
                                 <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="w-2/5 px-2">
@@ -190,7 +193,47 @@
                     </div>
                 </div>
                 <div class="flex mt-2">
-
+                    <div class="w-1/4 px-2">
+                        <p class="mt-3">TIPO SUSCRIPCIÓN</p>
+                        <p class="mt-3">PERIODO</p>
+                        <p class="mt-3">DÍAS</p>
+                    </div>
+                    <div class="w-1/3 px-2">
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="tipoSuscripcionSeleccionada" style="width: 100%">
+                            <option value=''>Impresa</option>
+                        </select>
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="periodoSuscripcionSeleccionada" style="width: 100%">
+                            <option value=''>Anual</option>
+                        </select>
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="diasSuscripcionSeleccionada" style="width: 100%">
+                            <option value=''>lunes a Domingo</option>
+                        </select>
+                    </div>
+                    <div class="w-2/5 px-2">
+                        <p class="mt-3">#DÍAS PARA PAGAR</p>
+                        <p class="mt-3 mr-3 flex">DEL:
+                            <select
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 MR-3 @error('clasificacion') border-red-500 @enderror"
+                                wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
+                                <option value=''>22/jul/2022</option>>
+                            </select>
+                            <kbd class="ml-3">AL:</kbd>
+                            <select
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 @error('clasificacion') border-red-500 @enderror"
+                                wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
+                                <option value=''>22/jul/2023</option>
+                            </select>
+                        </p>
+                        <input type="checkbox"> Lunes <input type="checkbox"> Martes <input type="checkbox">
+                        Miércoles <input type="checkbox"> Jueves <input type="checkbox"> Viernes <input
+                            type="checkbox"> Sábado <input type="checkbox"> Domingo
+                    </div>
                 </div>
                 <div class="flex mt-2">
                     <div class="w-full">
@@ -225,6 +268,32 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="flex mt-3">
+                    <div class="w-2/5 px-2 flex">
+                        DESCUENTO: <input type="number" style="height: 1.7rem; margin-left: 2rem;" class="border-0 bg-gray-200">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div class="w-2/5 px-2 flex">
+                        OBSERVACIONES: <input type="text" style="height: 1.7rem; margin-left: 2rem;" class="border-0 bg-gray-200">
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="w-2/5">
+                        <p class="mt-3">IMPORTE</p>
+                        <p class="mt-3">DESCUENTO</p>
+                        <p class="mt-3">SUBTOTAL</p>
+                        <p class="mt-3">IVA</p>
+                        <p class="mt-3">TOTAL</p>
+                    </div>
+                    <div class="w-1/3">
+                        <input type="number">
+                        <input type="number">
+                        <input type="number">
+                        <input type="number">
+                        <input type="number">
                     </div>
                 </div>
             </div>
