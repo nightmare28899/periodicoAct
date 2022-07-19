@@ -15,7 +15,9 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura';
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [];
+
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -44,8 +46,46 @@ class Clientes extends Component
             ->where('cliente.id', '=', $this->clienteSeleccionado)
             ->select('cliente.*', 'domicilio.*', 'ruta.tiporuta')
             ->get();
-        
+
         /* dd($this->dataClient); */
+
+        if ($this->diasSuscripcionSeleccionada != null) {
+
+
+            if ($this->diasSuscripcionSeleccionada == 'l_v') {
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
+                $this->sábado = false;
+                $this->domingo = false;
+            } else if ($this->diasSuscripcionSeleccionada == 'l_s') {
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
+                $this->sábado = true;
+                $this->domingo = false;
+            } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
+                $this->sábado = true;
+                $this->domingo = true;
+            }
+        } else {
+            $this->lunes = false;
+            $this->martes = false;
+            $this->miércoles = false;
+            $this->jueves = false;
+            $this->viernes = false;
+            $this->sábado = false;
+            $this->domingo = false;
+        }
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
@@ -203,49 +243,49 @@ class Clientes extends Component
 
     public function store()
     {
-        if($this->noint != null) {
+        if ($this->noint != null) {
             $this->noint;
         } else {
             $this->noint = null;
         }
 
-        if($this->lunes != null) {
+        if ($this->lunes != null) {
             $this->lunes;
         } else {
             $this->lunes = 0;
         }
 
-        if($this->martes != null) {
+        if ($this->martes != null) {
             $this->martes;
         } else {
             $this->martes = 0;
         }
 
-        if($this->miércoles != null) {
+        if ($this->miércoles != null) {
             $this->miércoles;
         } else {
             $this->miércoles = 0;
         }
 
-        if($this->jueves != null) {
+        if ($this->jueves != null) {
             $this->jueves;
         } else {
             $this->jueves = 0;
         }
 
-        if($this->viernes != null) {
+        if ($this->viernes != null) {
             $this->viernes;
         } else {
             $this->viernes = 0;
         }
 
-        if($this->sábado != null) {
+        if ($this->sábado != null) {
             $this->sábado;
         } else {
             $this->sábado = 0;
         }
 
-        if($this->domingo != null) {
+        if ($this->domingo != null) {
             $this->domingo;
         } else {
             $this->domingo = 0;
@@ -453,5 +493,16 @@ class Clientes extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
         ]);
+    }
+
+    public function suscripciones()
+    {
+        if($this->clienteSeleccionado != null) {
+            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion);
+        } else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
+            ]);
+        }
     }
 }

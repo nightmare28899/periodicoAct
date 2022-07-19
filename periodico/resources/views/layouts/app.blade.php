@@ -81,6 +81,8 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if (event.detail.message == '¡Ajuste realizado!') {
                 toastr.success(event.detail.message, '¡Exito!');
+            } else if (event.detail.message == '¡Seleccione un cliente!') {
+                toastr.error(event.detail.message, '¡Error!');
             }
         });
     </script>

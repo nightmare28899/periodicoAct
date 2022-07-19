@@ -42,19 +42,19 @@
                         </select>
                     </div>
                     <div class="w-1/2 p-2">
-                        <input type="checkbox" name="" id=""> Aplicar oferta
+                        <input type="checkbox" name="oferta" wire:model="oferta"> Aplicar oferta
                     </div>
                 </div>
                 <div class="flex">
                     <div class="w-1/2 px-2">
                         <p>Suscripción:</p>
-                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion"
+                        <p class="font-bold"><input wire:model.defer="tipoSubscripcion" name="tipoSubscripcion"
                                 id="Normal" value="Normal" type="radio" checked> <label class="text-black"
                                 for="Normal">Normal</label></p>
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.lazy="tipoSubscripcion" name="tipoSubscripcion"
+                        <p class="font-bold"><input wire:model.defer="tipoSubscripcion" name="tipoSubscripcion"
                                 id="Semanal" value="Semanal" type="radio"
                                 {{ $tipoSubscripcion == 'Semanal' ? 'checked' : '' }}>
                             <label class="text-black" for="Semanal">Semanal</label>
@@ -77,9 +77,9 @@
                     <div class="w-1/2">
                         <br>
                         <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio"
-                                name="subscripcionEs" value="Reactviación"
-                                {{ $subscripcionEs == 'Reactviación' ? 'checked' : '' }}> <label
-                                for="Reactviación">Reactviación</label></p>
+                                name="subscripcionEs" value="Reactivación"
+                                {{ $subscripcionEs == 'Reactivación' ? 'checked' : '' }}> <label
+                                for="Reactivación">Reactivación</label></p>
                     </div>
                 </div>
                 @foreach ($dataClient as $data)
@@ -170,69 +170,69 @@
                     </div>
                     <div class="w-2/5 px-2">
                         <p>EJEMPLARES</p>
-                        <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="cantidadSeleccionada" style="width: 100%">
-                            <option value=''>Selecciona una cantidad</option>
-                            <option value="">1</option>
-                            {{-- @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                            @endforeach --}}
-                        </select>
+                        <input type="number" class="border-0 bg-gray-200"
+                            style="height: 1.7rem; margin-top: 5px;" name="cantEjem" wire:model.defer="cantEjem">
                     </div>
                     <div class="w-2/5 px-2">
                         <p>PRECIO</p>
-                        <input type="radio"> Normal
-                        <input type="radio"> Pronto pago
+                        <input type="radio" name="precio" wire:model="precio" value="Normal" checked> Normal
+                        <input type="radio" name="precio" wire:model="precio" value="Pronto_pago"
+                            {{ $tipoSubscripcion == 'pronto_pago' ? 'checked' : '' }}> Pronto pago
                     </div>
                     <div class="w-1/2 px-2">
                         <p>CONTRATO PARA</p>
-                        <input type="radio"> Suscripción
-                        <input type="radio"> Cortesía
-                        <input type="radio"> Intercambio
+                        <input type="radio" name="contrato" wire:model="contrato" value="Suscripción" checked>
+                        Suscripción
+                        <input type="radio" name="contrato" wire:model="contrato" value="Cortesia"> Cortesía
+                        <input type="radio" name="contrato" wire:model="contrato" value="Intercambio"> Intercambio
                     </div>
                 </div>
                 <div class="flex mt-2">
-                    <div class="w-1/4 px-2">
+                    <div class="w-1/5 px-2">
                         <p class="mt-3">TIPO SUSCRIPCIÓN</p>
-                        <p class="mt-3">PERIODO</p>
-                        <p class="mt-3">DÍAS</p>
+                        <p class="mt-4">PERIODO</p>
+                        <p class="mt-5">DÍAS</p>
                     </div>
-                    <div class="w-1/3 px-2">
+                    <div class="w-1/4 px-2">
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="tipoSuscripcionSeleccionada" style="width: 100%">
+                            wire:model="tipoSuscripcionSeleccionada" style="width: 60%">
                             <option value=''>Impresa</option>
                         </select>
                         <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="periodoSuscripcionSeleccionada" style="width: 100%">
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="periodoSuscripcionSeleccionada" style="width: 60%">
                             <option value=''>Anual</option>
                         </select>
                         <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="diasSuscripcionSeleccionada" style="width: 100%">
-                            <option value=''>lunes a Domingo</option>
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="diasSuscripcionSeleccionada" style="width: 70%">
+                            <option value="">Selecciona los días</option>
+                            <option value="l_v">lunes a viernes</option>
+                            <option value="l_s">lunes a sabado</option>
+                            <option value='l_d'>lunes a Domingo</option>
                         </select>
                     </div>
-                    <div class="w-2/5 px-2">
+                    <div class="w-3/5 px-2">
                         <p class="mt-3">#DÍAS PARA PAGAR</p>
-                        <p class="mt-3 mr-3 flex">DEL:
+                        <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
                             <select
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 MR-3 @error('clasificacion') border-red-500 @enderror"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 mt-1 @error('clasificacion') border-red-500 @enderror"
                                 wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
                                 <option value=''>22/jul/2022</option>>
                             </select>
-                            <kbd class="ml-3">AL:</kbd>
+                            <kbd class="ml-3 mt-2">AL:</kbd>
                             <select
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 @error('clasificacion') border-red-500 @enderror"
-                                wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
+                                disabled wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
                                 <option value=''>22/jul/2023</option>
                             </select>
                         </p>
-                        <input type="checkbox"> Lunes <input type="checkbox"> Martes <input type="checkbox">
-                        Miércoles <input type="checkbox"> Jueves <input type="checkbox"> Viernes <input
-                            type="checkbox"> Sábado <input type="checkbox"> Domingo
+                        <div class="mt-2">
+                            <input type="checkbox" name="lunes" wire:model.defer="lunes"> Lunes <input type="checkbox" name="martes" wire:model.defer="martes"> Martes <input type="checkbox" name="miércoles" wire:model.defer="miércoles">
+                            Miércoles <input type="checkbox" name="jueves" wire:model.defer="jueves"> Jueves <input type="checkbox" name="viernes" wire:model.defer="viernes"> Viernes <input
+                                type="checkbox" name="sábado" wire:model.defer="sábado"> Sábado <input type="checkbox" name="domingo" wire:model.defer="domingo"> Domingo
+                        </div>
                     </div>
                 </div>
                 <div class="flex mt-2">
@@ -271,29 +271,50 @@
                     </div>
                 </div>
                 <div class="flex mt-3">
-                    <div class="w-2/5 px-2 flex">
-                        DESCUENTO: <input type="number" style="height: 1.7rem; margin-left: 2rem;" class="border-0 bg-gray-200">
-                    </div>
+                    @if ($oferta != false)
+                        <div class="w-2/5 px-2 flex">
+                            DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 4.3rem;"
+                                placeholder="Coloca la cantidad" name="descuento" wire:model.defer="descuento" class="border-0 bg-gray-200">
+                        </div>
+                    @endif
                 </div>
                 <div class="mt-3">
                     <div class="w-2/5 px-2 flex">
-                        OBSERVACIONES: <input type="text" style="height: 1.7rem; margin-left: 2rem;" class="border-0 bg-gray-200">
+                        OBSERVACIONES
+                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion" cols="50"></textarea>
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="w-2/5">
-                        <p class="mt-3">IMPORTE</p>
-                        <p class="mt-3">DESCUENTO</p>
-                        <p class="mt-3">SUBTOTAL</p>
-                        <p class="mt-3">IVA</p>
-                        <p class="mt-3">TOTAL</p>
+                    <div class="w-1/4 px-2">
+                        <p class="mt-2 flex">IMPORTE <input type="number" class="border-0 bg-gray-200"
+                                style="height: 1.7rem; margin-left: 5.9rem;" disabled></p>
+                        <p class="mt-2 flex">DESCUENTO <input type="number" class="border-0 bg-gray-200"
+                                style="height: 1.7rem; margin-left: 4.3rem;" disabled></p>
+                        <p class="mt-2 flex">SUBTOTAL <input type="number" class="border-0 bg-gray-200"
+                                style="height: 1.7rem; margin-left: 5.1rem;" disabled></p>
+                        <p class="mt-2 flex">IVA <input type="number" class="border-0 bg-gray-200"
+                                style="height: 1.7rem; margin-left: 8.5rem;" disabled></p>
+                        <p class="mt-2 flex">TOTAL <input type="number" class="border-0 bg-gray-200"
+                                style="height: 1.7rem; margin-left: 7rem;" disabled></p>
                     </div>
-                    <div class="w-1/3">
-                        <input type="number">
-                        <input type="number">
-                        <input type="number">
-                        <input type="number">
-                        <input type="number">
+                    <div class="w-1/2 px-2 ml-5" style="margin-left: 400px;">
+                        <p>FORMA DE PAGO</p>
+                        <select
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            wire:model="tipoSuscripcionSeleccionada" style="width: 50%">
+                            <option value=''>Efectivo</option>
+                        </select>
+                        <br>
+                        <br>
+                        <div class="mt-5 pt-4">
+                            <button wire:click.prevent="suscripciones()"
+                                class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">Guardar
+                                contrato</button>
+                            <button
+                                class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button>
+                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Borrar</button>
+                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button>
+                        </div>
                     </div>
                 </div>
             </div>
