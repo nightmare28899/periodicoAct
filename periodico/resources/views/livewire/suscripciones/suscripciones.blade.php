@@ -160,18 +160,16 @@
                         <p>TARIFA</p>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="tarfiaSeleccionada" style="width: 100%">
+                            wire:model="tarifaSeleccionada" style="width: 100%">
                             <option value=''>Selecciona una tarifa</option>
-                            <option value="">Base</option>
-                            {{-- @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                            @endforeach --}}
+                            <option value="Base">Base</option>
+                            <option value="Ejecutiva">Ejecutiva</option>
                         </select>
                     </div>
                     <div class="w-2/5 px-2">
                         <p>EJEMPLARES</p>
-                        <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-top: 5px;" name="cantEjem" wire:model.defer="cantEjem">
+                        <input type="number" class="border-0 bg-gray-200" style="height: 1.7rem; margin-top: 5px;"
+                            name="cantEjem" wire:model.defer="cantEjem">
                     </div>
                     <div class="w-2/5 px-2">
                         <p>PRECIO</p>
@@ -196,42 +194,61 @@
                     <div class="w-1/4 px-2">
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="tipoSuscripcionSeleccionada" style="width: 60%">
-                            <option value=''>Impresa</option>
+                            wire:model.defer="tipoSuscripcionSeleccionada" style="width: 80%">
+                            <option value=''>Selecciona una opción</option>
+                            <option value='Impresa'>Impresa</option>
+                            <option value='Internet'>Internet</option>
                         </select>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="periodoSuscripcionSeleccionada" style="width: 60%">
-                            <option value=''>Anual</option>
+                            wire:model="periodoSuscripcionSeleccionada" style="width: 80%">
+                            <option value='esco'>Escoger manualmente</option>
+                            <option value='Mensual'>Mensual</option>
+                            <option value='Trimestral'>Trimestral</option>
+                            <option value='Semestral'>Semestral</option>
+                            <option value='Anual'>Anual</option>
                         </select>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="diasSuscripcionSeleccionada" style="width: 70%">
-                            <option value="">Selecciona los días</option>
-                            <option value="l_v">lunes a viernes</option>
-                            <option value="l_s">lunes a sabado</option>
-                            <option value='l_d'>lunes a Domingo</option>
+                            wire:model="diasSuscripcionSeleccionada" style="width: 80%">
+                            <option value="esc_man">Escoger manualmente</option>
+                            <option value="l_v">Lunes a viernes</option>
+                            <option value='l_d'>Lunes a Domingo</option>
                         </select>
                     </div>
                     <div class="w-3/5 px-2">
                         <p class="mt-3">#DÍAS PARA PAGAR</p>
                         <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
-                            <select
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 mt-1 @error('clasificacion') border-red-500 @enderror"
-                                wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
-                                <option value=''>22/jul/2022</option>>
-                            </select>
+                            <x-jet-input class="w-2/5" type="date" wire:model="from">
+                            </x-jet-input>
                             <kbd class="ml-3 mt-2">AL:</kbd>
-                            <select
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ml-3 @error('clasificacion') border-red-500 @enderror"
-                                disabled wire:model="tipoSuscripcionSeleccionada" style="width: 40%">
-                                <option value=''>22/jul/2023</option>
-                            </select>
+                            @if ($modificarFecha)
+                                <x-jet-input class="w-2/5" type="date" wire:model="to">
+                                </x-jet-input>
+                            @else
+                                <x-jet-input class="w-2/5" type="date" wire:model="to" disabled>
+                                </x-jet-input>
+                            @endif
                         </p>
                         <div class="mt-2">
-                            <input type="checkbox" name="lunes" wire:model.defer="lunes"> Lunes <input type="checkbox" name="martes" wire:model.defer="martes"> Martes <input type="checkbox" name="miércoles" wire:model.defer="miércoles">
-                            Miércoles <input type="checkbox" name="jueves" wire:model.defer="jueves"> Jueves <input type="checkbox" name="viernes" wire:model.defer="viernes"> Viernes <input
-                                type="checkbox" name="sábado" wire:model.defer="sábado"> Sábado <input type="checkbox" name="domingo" wire:model.defer="domingo"> Domingo
+                            @if ($allow == false)
+                                <input type="checkbox" name="lunes" wire:model.defer="lunes" disabled> Lunes
+                                <input type="checkbox" name="martes" wire:model.defer="martes" disabled> Martes
+                                <input type="checkbox" name="miércoles" wire:model.defer="miércoles" disabled>
+                                Miércoles
+                                <input type="checkbox" name="jueves" wire:model.defer="jueves" disabled> Jueves
+                                <input type="checkbox" name="viernes" wire:model.defer="viernes" disabled> Viernes
+                                <input type="checkbox" name="sábado" wire:model.defer="sábado" disabled> Sábado
+                                <input type="checkbox" name="domingo" wire:model.defer="domingo" disabled> Domingo
+                            @else
+                                <input type="checkbox" name="lunes" wire:model.defer="lunes"> Lunes
+                                <input type="checkbox" name="martes" wire:model.defer="martes"> Martes
+                                <input type="checkbox" name="miércoles" wire:model.defer="miércoles"> Miércoles
+                                <input type="checkbox" name="jueves" wire:model.defer="jueves"> Jueves
+                                <input type="checkbox" name="viernes" wire:model.defer="viernes"> Viernes
+                                <input type="checkbox" name="sábado" wire:model.defer="sábado"> Sábado
+                                <input type="checkbox" name="domingo" wire:model.defer="domingo"> Domingo
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -250,6 +267,7 @@
                                     <th class="px-4 py-2 w-20">Municipio</th>
                                     <th class="px-4 py-2 w-20">#Ejem</th>
                                     <th class="px-4 py-2 w-20">Referencia</th>
+                                    <th class="px-4 py-2 w-20">Ruta</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -264,6 +282,7 @@
                                         <td class="border">{{ $cliente->municipio }}</td>
                                         <td class="border">{{-- {{ $cliente->ejem }} --}}</td>
                                         <td class="border">{{ $cliente->referencia }}</td>
+                                        <td class="border">{{ $cliente->nombreruta }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -273,15 +292,17 @@
                 <div class="flex mt-3">
                     @if ($oferta != false)
                         <div class="w-2/5 px-2 flex">
-                            DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 4.3rem;"
-                                placeholder="Coloca la cantidad" name="descuento" wire:model.defer="descuento" class="border-0 bg-gray-200">
+                            DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 1.3rem;"
+                                placeholder="Coloca la cantidad" name="descuento" wire:model.defer="descuento"
+                                class="border-0 bg-gray-200">
                         </div>
                     @endif
                 </div>
                 <div class="mt-3">
                     <div class="w-2/5 px-2 flex">
                         OBSERVACIONES
-                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion" cols="50"></textarea>
+                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion"
+                            cols="50"></textarea>
                     </div>
                 </div>
                 <div class="flex">
@@ -301,8 +322,11 @@
                         <p>FORMA DE PAGO</p>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="tipoSuscripcionSeleccionada" style="width: 50%">
-                            <option value=''>Efectivo</option>
+                            wire:model.defer="formaPagoSeleccionada" style="width: 50%">
+                            <option value=''>Selecciona un cliente</option>
+                            @foreach ($formaPago as $forma)
+                                <option value="{{ $forma }}">{{ $forma }}</option>
+                            @endforeach
                         </select>
                         <br>
                         <br>

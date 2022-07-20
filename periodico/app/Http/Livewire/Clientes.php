@@ -17,7 +17,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [];
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento, $tipoSuscripcionSeleccionada, $allow = false, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -26,6 +26,10 @@ class Clientes extends Component
     public function render()
     {
         $this->date = new Carbon();
+        Carbon::setLocale('es');
+        $this->dateF = new Carbon($this->from);
+        $this->dateFiltro = new Carbon($this->to);
+        $this->from = $this->dateF->format('Y-m-d');
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
             'Genérico' => 'GENÉRICO',
@@ -37,14 +41,51 @@ class Clientes extends Component
             'T-E' => 'T-E',
             'Sanborn' => 'SANBORN',
         ];
+        $formaPago = [
+            'Efectivo' => 'Efectivo',
+            'Cheque Nominativo' => 'Cheque Nominativo',
+            'Tarjetas de Crédito' => 'Tarjetas de Crédito',
+            'Por definir' => 'Por definir',
+            'Transferencia Electrónica' => 'Transferencia Electrónica',
+            'Monedero Electrónico' => 'Monedero Electrónico',
+            'Dinero electrónico' => 'Dinero electrónico',
+            'Vales de despensa' => 'Vales de despensa',
+            'Dación en pago' => 'Dación en pago',
+            'Pago por subrogación' => 'Pago por subrogación',
+            'Pago por consignación' => 'Pago por consignación',
+            'Condonación' => 'Condonación',
+            'Compensación' => 'Compensación',
+            'Novación' => 'Novación',
+            'Confusión' => 'Confusión',
+            'Remisión de deuda' => 'Remisión de deuda',
+            'Prescripción o caducidad' => 'Prescripción o caducidad',
+            'A satisfacción del acreedor' => 'A satisfacción del acreedor',
+            'Tarjeta de débito' => 'Tarjeta de débito',
+            'Tarjeta de servicios' => 'Tarjeta de servicios',
+        ];
+        if($this->periodoSuscripcionSeleccionada == 'Mensual'){            
+            /* dd($this->dateF->addMonth(1)); */
+            $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
+        } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
+            $this->to = $this->dateF->addMonths(3)->format('Y-m-d');
+        } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
+            $this->to = $this->dateF->addMonths(6)->format('Y-m-d');
+        } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
+            $this->to = $this->dateF->addYear(1)->format('Y-m-d');
+        } else if ($this->periodoSuscripcionSeleccionada == 'esco') {
+            $this->modificarFecha = true;
+        }
+
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
+
+        
 
         $this->dataClient = Cliente
             ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             ->where('cliente.id', '=', $this->clienteSeleccionado)
-            ->select('cliente.*', 'domicilio.*', 'ruta.tiporuta')
+            ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
         /* dd($this->dataClient); */
@@ -60,14 +101,6 @@ class Clientes extends Component
                 $this->viernes = true;
                 $this->sábado = false;
                 $this->domingo = false;
-            } else if ($this->diasSuscripcionSeleccionada == 'l_s') {
-                $this->lunes = true;
-                $this->martes = true;
-                $this->miércoles = true;
-                $this->jueves = true;
-                $this->viernes = true;
-                $this->sábado = true;
-                $this->domingo = false;
             } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
                 $this->lunes = true;
                 $this->martes = true;
@@ -76,6 +109,15 @@ class Clientes extends Component
                 $this->viernes = true;
                 $this->sábado = true;
                 $this->domingo = true;
+            } else if ($this->diasSuscripcionSeleccionada == 'esc_man') {
+                $this->lunes = false;
+                $this->martes = false;
+                $this->miércoles = false;
+                $this->jueves = false;
+                $this->viernes = false;
+                $this->sábado = false;
+                $this->domingo = false;
+                $this->allow = true;
             }
         } else {
             $this->lunes = false;
@@ -101,7 +143,7 @@ class Clientes extends Component
                 ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
                 ->paginate(15),
             'rfc' => $this->rfc,
-        ], compact('data', 'rutas', 'tarifas'));
+        ], compact('data', 'rutas', 'tarifas', 'formaPago'));
     }
     public function create()
     {
@@ -497,8 +539,13 @@ class Clientes extends Component
 
     public function suscripciones()
     {
-        if($this->clienteSeleccionado != null) {
-            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion);
+        if ($this->clienteSeleccionado) {
+            if ($this->tarifaSeleccionada == 'Base') {
+                /* los ejemplares valen 1 * 330 */
+            } else {
+                /* los ejemplares valen 1 * 300 */
+            }
+            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro,$this->descuento);
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
