@@ -17,7 +17,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [];
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento, $tipoSuscripcionSeleccionada, $allow = false, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -63,7 +63,8 @@ class Clientes extends Component
             'Tarjeta de débito' => 'Tarjeta de débito',
             'Tarjeta de servicios' => 'Tarjeta de servicios',
         ];
-        if($this->periodoSuscripcionSeleccionada == 'Mensual'){            
+
+        if($this->periodoSuscripcionSeleccionada == 'Mensual'){
             /* dd($this->dateF->addMonth(1)); */
             $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
@@ -79,8 +80,6 @@ class Clientes extends Component
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
 
-        
-
         $this->dataClient = Cliente
             ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
@@ -91,8 +90,6 @@ class Clientes extends Component
         /* dd($this->dataClient); */
 
         if ($this->diasSuscripcionSeleccionada != null) {
-
-
             if ($this->diasSuscripcionSeleccionada == 'l_v') {
                 $this->lunes = true;
                 $this->martes = true;
@@ -101,6 +98,7 @@ class Clientes extends Component
                 $this->viernes = true;
                 $this->sábado = false;
                 $this->domingo = false;
+                $this->allow = false;
             } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
                 $this->lunes = true;
                 $this->martes = true;
@@ -109,6 +107,7 @@ class Clientes extends Component
                 $this->viernes = true;
                 $this->sábado = true;
                 $this->domingo = true;
+                $this->allow = false;
             } else if ($this->diasSuscripcionSeleccionada == 'esc_man') {
                 $this->lunes = false;
                 $this->martes = false;
