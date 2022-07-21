@@ -169,7 +169,7 @@
                     <div class="w-2/5 px-2">
                         <p>EJEMPLARES</p>
                         <input type="number" class="border-0 bg-gray-200" style="height: 1.7rem; margin-top: 5px;"
-                            name="cantEjem" wire:model.defer="cantEjem">
+                            name="cantEjem" wire:model="cantEjem" min="0">
                     </div>
                     <div class="w-2/5 px-2">
                         <p>PRECIO</p>
@@ -254,8 +254,9 @@
                 </div>
                 <div class="flex mt-2">
                     <div class="w-full">
-                        <b class="uppercase">domicilio de entrega</b>
-                        <table class="table-auto w-full text-center">
+                            <b class="uppercase">domicilio de entrega</b>
+                            <button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="modalCrearDomSubs">Agregar</button>
+                        <table class="table-auto w-full text-center mt-2">
                             <thead>
                                 <tr class="bg-gray-500 text-white uppercase">
                                     <th class="px-4 py-2 w-20">Calle</th>
@@ -293,7 +294,7 @@
                     @if ($oferta != false)
                         <div class="w-2/5 px-2 flex">
                             DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 1.3rem;"
-                                placeholder="Coloca la cantidad" name="descuento" wire:model.defer="descuento"
+                                placeholder="Coloca la cantidad" name="descuento" wire:model="descuento" min="0"
                                 class="border-0 bg-gray-200">
                         </div>
                     @endif
@@ -308,15 +309,15 @@
                 <div class="flex">
                     <div class="w-1/4 px-2">
                         <p class="mt-2 flex">IMPORTE <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 5.9rem;" disabled></p>
+                                style="height: 1.7rem; margin-left: 5.9rem;" value="{{ $total }}" disabled></p>
                         <p class="mt-2 flex">DESCUENTO <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 4.3rem;" disabled></p>
+                                style="height: 1.7rem; margin-left: 4.3rem;" value="{{ $descuento }}" disabled></p>
                         <p class="mt-2 flex">SUBTOTAL <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 5.1rem;" disabled></p>
+                                style="height: 1.7rem; margin-left: 5.1rem;" value="{{ $total }}" disabled></p>
                         <p class="mt-2 flex">IVA <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 8.5rem;" disabled></p>
+                                style="height: 1.7rem; margin-left: 8.5rem;" value="{{ $iva }}" disabled></p>
                         <p class="mt-2 flex">TOTAL <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 7rem;" disabled></p>
+                                style="height: 1.7rem; margin-left: 7rem;" value="{{ $totalDesc }}" disabled></p>
                     </div>
                     <div class="w-1/2 px-2 ml-5" style="margin-left: 400px;">
                         <p>FORMA DE PAGO</p>
@@ -337,7 +338,7 @@
                             <button
                                 class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button>
                             <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Borrar</button>
-                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button>
+                            {{-- <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button> --}}
                         </div>
                     </div>
                 </div>

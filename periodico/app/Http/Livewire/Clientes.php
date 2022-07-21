@@ -17,7 +17,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [];
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -64,7 +64,7 @@ class Clientes extends Component
             'Tarjeta de servicios' => 'Tarjeta de servicios',
         ];
 
-        if($this->periodoSuscripcionSeleccionada == 'Mensual'){
+        if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
             /* dd($this->dateF->addMonth(1)); */
             $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
@@ -126,6 +126,25 @@ class Clientes extends Component
             $this->viernes = false;
             $this->sábado = false;
             $this->domingo = false;
+        }
+
+        if ($this->tarifaSeleccionada == 'Base') {
+            if ($this->cantEjem == 0) {
+                $this->total = $this->total = 0;
+            } else if ($this->cantEjem >= 1) {
+                $this->total = $this->cantEjem * 330;
+                $this->totalDesc = $this->cantEjem * 330;
+                if ($this->descuento) {
+                    $this->totalDesc = ($this->total - $this->descuento);
+                }
+            }
+        } else if ($this->tarifaSeleccionada == 'Ejecutiva') {
+            if ($this->cantEjem == 0) {
+                $this->total = $this->total = 0;
+            } else if ($this->cantEjem >= 1) {
+                $this->total = $this->cantEjem * 300;
+                $this->totalDesc = $this->cantEjem * 300;
+            }
         }
 
         return view('livewire.clientes.view', [
@@ -202,6 +221,14 @@ class Clientes extends Component
     public function modalSuscripciones()
     {
         $this->suscripciones = true;
+    }
+    public function modalCrearDomSubs()
+    {
+        $this->modalDomSubs = true;
+    }
+    public function modalCrearDom()
+    {
+        $this->modalFormDom = true;
     }
     public function detalles($id)
     {
@@ -544,7 +571,14 @@ class Clientes extends Component
             } else {
                 /* los ejemplares valen 1 * 300 */
             }
-            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro,$this->descuento);
+
+            if ($this->cantEjem == '0') {
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
+                ]);
+                /* dd($this->cantEjem); */
+            }
+            /* dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, "este",$this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro,$this->descuento); */
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''

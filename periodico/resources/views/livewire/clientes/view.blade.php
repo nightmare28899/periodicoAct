@@ -62,6 +62,12 @@
                 @if ($suscripciones)
                     @include('livewire.suscripciones.suscripciones')
                 @endif
+                @if ($modalDomSubs)
+                    @include('livewire.modals.modal-dom-subs')
+                @endif
+                @if($modalFormDom) 
+                    @include('livewire.modals.modal-form-subs')
+                @endif
 
                 <table class="table-auto w-full text-center">
                     <thead>

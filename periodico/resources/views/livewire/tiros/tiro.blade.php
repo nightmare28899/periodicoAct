@@ -447,7 +447,7 @@
                         devueltos:</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
-                        id="devuelto" wire:model.defer="devuelto" placeholder="Cantidad" />
+                        id="devuelto" wire:model.defer="devuelto" placeholder="Cantidad" min="0" />
                 </div>
                 @if ($devuelto == 0 || $devuelto > 0 && $entregar > 0)
                 <p>devuelto: {{ $devuelto }}</p>

@@ -114,7 +114,6 @@
             </button>
         </div>
 
-
         <div class="flex-auto w-64 px-4 sm:px-6">
             @if ($status == 'updated')
                 <button wire:click.prevent="update" type="button"
