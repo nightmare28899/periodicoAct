@@ -255,7 +255,7 @@
                 <div class="flex mt-2">
                     <div class="w-full">
                             <b class="uppercase">domicilio de entrega</b>
-                            <button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="modalCrearDomSubs">Agregar</button>
+                            <button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="modalCrearDomSubs">Lista</button>
                         <table class="table-auto w-full text-center mt-2">
                             <thead>
                                 <tr class="bg-gray-500 text-white uppercase">

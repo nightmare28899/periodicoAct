@@ -85,7 +85,11 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if (event.detail.message == '¡No puedes poner cero!') {
                 toastr.error(event.detail.message, '¡Error!');
-            }
+            } else if (event.detail.message == '¡Selecciona un cliente!') {
+                toastr.error(event.detail.message, '¡Error!');
+            } else if (event.detail.message == '¡Domicilio creado exitosamente!') {
+                toastr.success(event.detail.message, 'Exito!');
+            } 
         });
     </script>
 </body>

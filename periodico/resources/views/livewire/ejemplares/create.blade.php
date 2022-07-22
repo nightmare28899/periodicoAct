@@ -20,7 +20,7 @@
         <div class="px-4 mb-6" flex-grow>
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Lunes:</label>
+                    <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Lunes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunes') border-red-500 @enderror"
                         id="lunes" wire:model.defer="lunes" placeholder="Escribe la cantidad" />
@@ -30,7 +30,7 @@
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Martes:</label>
+                        class="block text-black text-sm font-bold mb-2">Martes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martes') border-red-500 @enderror"
                         id="martes" wire:model.defer="martes" placeholder="Escribe la cantidad" />
@@ -42,7 +42,7 @@
             <div class="flex">
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Miércoles:</label>
+                        class="block text-black text-sm font-bold mb-2">Miércoles(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miercoles') border-red-500 @enderror"
                         id="miércoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
@@ -52,7 +52,7 @@
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Jueves:</label>
+                        class="block text-black text-sm font-bold mb-2">Jueves(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('jueves') border-red-500 @enderror"
                         id="jueves" wire:model.defer="jueves" placeholder="Escribe la cantidad" />
@@ -64,7 +64,7 @@
             <div class="flex">
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Viernes:</label>
+                        class="block text-black text-sm font-bold mb-2">Viernes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernes') border-red-500 @enderror"
                         id="viernes" wire:model.defer="viernes" placeholder="Escribe la cantidad" />
@@ -74,7 +74,7 @@
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Sábado:</label>
+                        class="block text-black text-sm font-bold mb-2">Sábado(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sábado') border-red-500 @enderror"
                         id="sábado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
@@ -86,7 +86,7 @@
             <div class="flex">
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
-                        class="block text-black text-sm font-bold mb-2">Domingo:</label>
+                        class="block text-black text-sm font-bold mb-2">Domingo(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('domingo') border-red-500 @enderror"
                         id="domingo" wire:model.defer="domingo" placeholder="Escribe la cantidad" />

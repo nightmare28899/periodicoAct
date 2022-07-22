@@ -9,13 +9,14 @@ use App\Models\Domicilio;
 use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
+use App\Models\domicilioSubs;
 use Carbon\Carbon;
 
 class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [];
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
     public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0;
 
@@ -65,14 +66,17 @@ class Clientes extends Component
         ];
 
         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
-            /* dd($this->dateF->addMonth(1)); */
             $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
+            $this->modificarFecha = false;
         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
             $this->to = $this->dateF->addMonths(3)->format('Y-m-d');
+            $this->modificarFecha = false;
         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
             $this->to = $this->dateF->addMonths(6)->format('Y-m-d');
+            $this->modificarFecha = false;
         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
             $this->to = $this->dateF->addYear(1)->format('Y-m-d');
+            $this->modificarFecha = false;
         } else if ($this->periodoSuscripcionSeleccionada == 'esco') {
             $this->modificarFecha = true;
         }
@@ -131,6 +135,7 @@ class Clientes extends Component
         if ($this->tarifaSeleccionada == 'Base') {
             if ($this->cantEjem == 0) {
                 $this->total = $this->total = 0;
+                $this->totalDesc = $this->totalDesc = 0;
             } else if ($this->cantEjem >= 1) {
                 $this->total = $this->cantEjem * 330;
                 $this->totalDesc = $this->cantEjem * 330;
@@ -141,6 +146,7 @@ class Clientes extends Component
         } else if ($this->tarifaSeleccionada == 'Ejecutiva') {
             if ($this->cantEjem == 0) {
                 $this->total = $this->total = 0;
+                $this->totalDesc = $this->totalDesc = 0;
             } else if ($this->cantEjem >= 1) {
                 $this->total = $this->cantEjem * 300;
                 $this->totalDesc = $this->cantEjem * 300;
@@ -563,20 +569,64 @@ class Clientes extends Component
         ]);
     }
 
+    /* Aqui comienzan las suscripciones */
+
+    public function createSubs()
+    {
+        if ($this->clienteSeleccionado != null) {
+            if ($this->noint != null) {
+                $this->noint;
+            } else {
+                $this->noint = null;
+            }
+
+            dd($this->ruta);
+
+            $this->validate([
+                'calle' => 'required',
+                'noext' => 'required',
+                'colonia' => 'required',
+                'cp' => 'required',
+                'localidad' => 'required',
+                'ciudad' => 'required',
+                'referencia' => 'required'
+            ]);
+
+            domicilioSubs::Create([
+                'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
+                'calle' => $this->calle,
+                'noint' => $this?->noint,
+                'noext' => $this->noext,
+                'colonia' => $this->colonia,
+                'cp' => $this->cp,
+                'localidad' => $this->localidad,
+                'ciudad' => $this->ciudad,
+                'referencia' => $this->referencia,
+                'ruta' => $this->ruta
+            ]);
+
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Domicilio creado exitosamente!' : ''
+            ]);
+
+            $this->modalFormDom = false;
+
+            $this->resetInputSubs();
+        } else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
+            ]);
+        }
+    }
+
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
-            if ($this->tarifaSeleccionada == 'Base') {
-                /* los ejemplares valen 1 * 330 */
-            } else {
-                /* los ejemplares valen 1 * 300 */
-            }
 
             if ($this->cantEjem == '0') {
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                 ]);
-                /* dd($this->cantEjem); */
             }
             /* dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, "este",$this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro,$this->descuento); */
         } else {
@@ -584,5 +634,18 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
         }
+    }
+
+    public function resetInputSubs()
+    {
+        $this->calle = null;
+        $this->noint = null;
+        $this->noext = null;
+        $this->colonia = null;
+        $this->cp = null;
+        $this->localidad = null;
+        $this->ciudad = null;
+        $this->referencia = null;
+        $this->ruta = null;
     }
 }

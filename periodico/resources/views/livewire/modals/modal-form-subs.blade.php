@@ -29,7 +29,7 @@
                 @enderror
             </div>
             <div class="w-1/2 p-2">
-                <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.:</label>
+                <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.(Opcional):</label>
                 <input type="number" min="0"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noint') border-red-500 @enderror"
                     id="noint" wire:model.defer="noint" placeholder="Escribe tu Colonia" min="0" />
@@ -88,11 +88,11 @@
 
         <div class="flex">
             <div class="w-1/2 p-2">
-                <label for="municipio" class="block text-black text-sm font-bold mb-2">Municipio:</label>
+                <label for="ciudad" class="block text-black text-sm font-bold mb-2">Ciudad:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('municipio') border-red-500 @enderror"
-                    id="municipio" wire:model.defer="municipio" placeholder="Escribe tu Colonia" />
-                @error('municipio')
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ciudad') border-red-500 @enderror"
+                    id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Colonia" />
+                @error('ciudad')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                 @enderror
@@ -111,21 +111,29 @@
 
         <div class="flex">
             <div class="w-1/2 p-2">
-                <label for="cp" class="block text-black text-sm font-bold mb-2">Referencia:</label>
-                <input type="text"
+                <label for="referencia" class="block text-black text-sm font-bold mb-2">Referencia:</label>
+                <textarea type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('referencia') border-red-500 @enderror"
-                    id="referencia" wire:model.defer="referencia" placeholder="Escribe tu Colonia" />
+                    id="referencia" wire:model.defer="referencia" placeholder="Escribe una referencia"></textarea>
                 @error('referencia')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                 @enderror
             </div>
+
             <div class="w-1/2 p-2">
-                <label for="localidad" class="block text-black text-sm font-bold mb-2">Localidad:</label>
-                <input type="number" min="0"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('localidad') border-red-500 @enderror"
-                    id="localidad" wire:model.defer="localidad" placeholder="Escribe tu Colonia" />
-                @error('localidad')
+                <label for="ruta" class="block text-black text-sm font-bold mb-2">Ruta:</label>
+                <select
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                    wire:model.defer="ruta" id="ruta" style="width: 100%">
+                    <option value=''>Escoge una opción</option>
+                    @foreach ($rutas as $id => $ruta)
+                        <option value='{{ $ruta }}'>
+                            {{ $ruta }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('ruta')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                 @enderror
@@ -143,9 +151,9 @@
         </div>
 
         <div class="flex-auto w-64 px-4 sm:px-6">
-            <button wire:click.prevent="store" type="button"
+            <button wire:click.prevent="createSubs" type="button"
                 class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                <svg wire:loading wire:target="createSubs" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                         stroke-width="4">

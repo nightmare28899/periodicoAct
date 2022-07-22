@@ -14,17 +14,20 @@ return new class extends Migration
     public function up()
     {
         Schema::create('domicilio_subs', function (Blueprint $table) {
-            $table->id();
+            $table->engine="InnoDB";
+            $table->bigIncrements('id');
+            $table->bigInteger('cliente_id')->unsigned();
             $table->string('calle');
-            $table->integer('noint');
+            $table->integer('noint')->nullable();
             $table->integer('noext');
             $table->string('colonia');
             $table->integer('cp');
             $table->string('localidad');
-            $table->string('municipio');
+            $table->string('ciudad');
             $table->string('referencia');
             $table->string('ruta');
             $table->timestamps();
+            $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
         });
     }
 
