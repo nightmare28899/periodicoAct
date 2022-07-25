@@ -25,8 +25,8 @@
                     </div>
                     <div class="w-1/2">
                         <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
-                                value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}"
-                                class="border-0 bg-gray-200" disabled>
+                                value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}" class="border-0 bg-gray-200"
+                                disabled>
                         </p>
                     </div>
                 </div>
@@ -254,48 +254,57 @@
                 </div>
                 <div class="flex mt-2">
                     <div class="w-full">
-                            <b class="uppercase">domicilio de entrega</b>
-                            <button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="modalCrearDomSubs">Lista</button>
-                        <table class="table-auto w-full text-center mt-2">
-                            <thead>
-                                <tr class="bg-gray-500 text-white uppercase">
-                                    <th class="px-4 py-2 w-20">Calle</th>
-                                    <th class="px-4 py-2 w-20">#Int</th>
-                                    <th class="px-4 py-2 w-20">#Ext</th>
-                                    <th class="px-4 py-2 w-20">Colonia</th>
-                                    <th class="px-4 py-2 w-20">C.P.</th>
-                                    <th class="px-4 py-2 w-20">Localidad</th>
-                                    <th class="px-4 py-2 w-20">Municipio</th>
-                                    <th class="px-4 py-2 w-20">#Ejem</th>
-                                    <th class="px-4 py-2 w-20">Referencia</th>
-                                    <th class="px-4 py-2 w-20">Ruta</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($dataClient as $cliente)
-                                    <tr>
-                                        <td class="border">{{ $cliente->calle }}</td>
-                                        <td class="border">{{ $cliente->noint }}</td>
-                                        <td class="border">{{ $cliente->noext }}</td>
-                                        <td class="border">{{ $cliente->colonia }}</td>
-                                        <td class="border">{{ $cliente->cp }}</td>
-                                        <td class="border">{{ $cliente->localidad }}</td>
-                                        <td class="border">{{ $cliente->municipio }}</td>
-                                        <td class="border">{{-- {{ $cliente->ejem }} --}}</td>
-                                        <td class="border">{{ $cliente->referencia }}</td>
-                                        <td class="border">{{ $cliente->nombreruta }}</td>
+                        <b class="uppercase">domicilio de entrega</b>
+                        <button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+                            wire:click="modalCrearDomSubs">Lista</button>
+                        <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
+                            <table class="w-full text-md text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr class="bg-gray-500 text-white uppercase">
+                                        <th scope="col" class="py-3 px-6">Calle</th>
+                                        <th scope="col" class="py-3 px-6">#Int</th>
+                                        <th scope="col" class="py-3 px-6">#Ext</th>
+                                        <th scope="col" class="py-3 px-6">Colonia</th>
+                                        <th scope="col" class="py-3 px-6">C.P.</th>
+                                        <th scope="col" class="py-3 px-6">Localidad</th>
+                                        <th scope="col" class="py-3 px-6">Ciudad</th>
+                                        <th scope="col" class="py-3 px-6">#Ejem</th>
+                                        <th scope="col" class="py-3 px-6">Referencia</th>
+                                        <th scope="col" class="py-3 px-6">Ruta</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @if ($domicilioSeleccionado)
+                                        @foreach ($domicilioSeleccionado as $dom)
+                                            @php
+                                                $dom = (object) $dom;
+                                            @endphp
+                                            {{-- <pre>{{ var_dump($dom) }}</pre><br><br> --}}
+                                            <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
+                                                <td class="border">{{ $dom->calle }}</td>
+                                                <td class="border">{{ $dom->noint }}</td>
+                                                <td class="border">{{ $dom->noext }}</td>
+                                                <td class="border">{{ $dom->colonia }}</td>
+                                                <td class="border">{{ $dom->cp }}</td>
+                                                <td class="border">{{ $dom->localidad }}</td>
+                                                <td class="border">{{ $dom->ciudad }}</td>
+                                                <td class="border">{{-- {{ $dom->ejem }} --}}</td>
+                                                <td class="border">{{ $dom->referencia }}</td>
+                                                <td class="border">{{ $dom->ruta }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="flex mt-3">
                     @if ($oferta != false)
                         <div class="w-2/5 px-2 flex">
                             DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 1.3rem;"
-                                placeholder="Coloca la cantidad" name="descuento" wire:model="descuento" min="0"
-                                class="border-0 bg-gray-200">
+                                placeholder="Coloca la cantidad" name="descuento" wire:model="descuento"
+                                min="0" class="border-0 bg-gray-200">
                         </div>
                     @endif
                 </div>
@@ -309,13 +318,17 @@
                 <div class="flex">
                     <div class="w-1/4 px-2">
                         <p class="mt-2 flex">IMPORTE <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 5.9rem;" value="{{ $total }}" disabled></p>
+                                style="height: 1.7rem; margin-left: 5.9rem;" value="{{ $total }}" disabled>
+                        </p>
                         <p class="mt-2 flex">DESCUENTO <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 4.3rem;" value="{{ $descuento }}" disabled></p>
+                                style="height: 1.7rem; margin-left: 4.3rem;" value="{{ $descuento }}" disabled>
+                        </p>
                         <p class="mt-2 flex">SUBTOTAL <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 5.1rem;" value="{{ $total }}" disabled></p>
+                                style="height: 1.7rem; margin-left: 5.1rem;" value="{{ $total }}" disabled>
+                        </p>
                         <p class="mt-2 flex">IVA <input type="number" class="border-0 bg-gray-200"
-                                style="height: 1.7rem; margin-left: 8.5rem;" value="{{ $iva }}" disabled></p>
+                                style="height: 1.7rem; margin-left: 8.5rem;" value="{{ $iva }}" disabled>
+                        </p>
                         <p class="mt-2 flex">TOTAL <input type="number" class="border-0 bg-gray-200"
                                 style="height: 1.7rem; margin-left: 7rem;" value="{{ $totalDesc }}" disabled></p>
                     </div>

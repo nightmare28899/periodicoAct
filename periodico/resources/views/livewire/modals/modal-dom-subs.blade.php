@@ -1,4 +1,4 @@
-<x-jet-dialog-modal wire:model="modalDomSubs" maxWidth="5xl">
+<x-jet-dialog-modal wire:model="modalDomSubs" maxWidth="6xl">
     <x-slot name="title">
         <div class="flex sm:px-6">
             <h1 class="mb-3 text-2xl text-black font-bold ml-3">Listado de Domicilios</h1>
@@ -25,9 +25,66 @@
             </div>
         </div>
         @if (count($domiciliosSubs) > 0)
-            <p>si hay info</p>
+            <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
+                <table class="w-full text-md text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr class="bg-gray-500 text-white uppercase">
+                            <th scope="col" class="py-3 px-6">
+                                Calle
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                #Int
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                #Ext
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Colonia
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                C.P.
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Localidad
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Ciudad
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                #Ejemp
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Referencia
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Ruta
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Acciones
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($domiciliosSubs as $domicilio)
+                            <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer" wire:click="datoSeleccionado({{ $domicilio->id }})">
+                                <td class="border">{{ $domicilio->calle }}</td>
+                                <td class="border">{{ $domicilio->noint }}</td>
+                                <td class="border">{{ $domicilio->noext }}</td>
+                                <td class="border">{{ $domicilio->colonia }}</td>
+                                <td class="border">{{ $domicilio->cp }}</td>
+                                <td class="border">{{ $domicilio->localidad }}</td>
+                                <td class="border">{{ $domicilio->ciudad }}</td>
+                                <td class="border">{{-- {{ $domicilio->ejem }} --}}</td>
+                                <td class="border">{{ $domicilio->referencia }}</td>
+                                <td class="border">{{ $domicilio->ruta }}</td>
+                                <td class="border"><button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="editarDomicilioSubs({{ $domicilio->id }})">Editar</button></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @else
-        <p class="text-center font-bold text-xl">No hay domicilios registrados</p>
+            <p class="text-center font-bold text-xl">No hay domicilios registrados</p>
         @endif
 
     </x-slot>

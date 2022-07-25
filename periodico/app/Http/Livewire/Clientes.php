@@ -18,7 +18,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $arregloDatos = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -152,6 +152,10 @@ class Clientes extends Component
                 $this->totalDesc = $this->cantEjem * 300;
             }
         }
+
+        /* if($this->datoSeleccionado) {
+            dd($this->datoSeleccionado);
+        } */
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
@@ -325,49 +329,49 @@ class Clientes extends Component
 
     public function store()
     {
-        if ($this->noint != null) {
+        if ($this->noint) {
             $this->noint;
         } else {
             $this->noint = null;
         }
 
-        if ($this->lunes != null) {
+        if ($this->lunes) {
             $this->lunes;
         } else {
             $this->lunes = 0;
         }
 
-        if ($this->martes != null) {
+        if ($this->martes) {
             $this->martes;
         } else {
             $this->martes = 0;
         }
 
-        if ($this->miércoles != null) {
+        if ($this->miércoles) {
             $this->miércoles;
         } else {
             $this->miércoles = 0;
         }
 
-        if ($this->jueves != null) {
+        if ($this->jueves) {
             $this->jueves;
         } else {
             $this->jueves = 0;
         }
 
-        if ($this->viernes != null) {
+        if ($this->viernes) {
             $this->viernes;
         } else {
             $this->viernes = 0;
         }
 
-        if ($this->sábado != null) {
+        if ($this->sábado) {
             $this->sábado;
         } else {
             $this->sábado = 0;
         }
 
-        if ($this->domingo != null) {
+        if ($this->domingo) {
             $this->domingo;
         } else {
             $this->domingo = 0;
@@ -634,6 +638,22 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
         }
+    }
+
+    public function datoSeleccionado($id)
+    {
+
+        array_push($this->domicilioSeleccionado, DomicilioSubs
+            ::where('id', '=', $id)
+            ->first()
+            ->toArray());
+
+        $this->modalDomSubs = false;
+    }
+
+    public function editarDomicilioSubs($data)
+    {
+        dd($data);
     }
 
     public function resetInputSubs()
