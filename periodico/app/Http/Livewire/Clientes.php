@@ -651,6 +651,10 @@ class Clientes extends Component
         $this->modalDomSubs = false;
     }
 
+    public function eliminarDatoSeleccionado($id) {
+        $this
+    }
+
     public function editarDomicilioSubs($data)
     {
         dd($data);
