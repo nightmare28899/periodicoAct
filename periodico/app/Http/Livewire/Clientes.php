@@ -18,7 +18,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -230,7 +230,15 @@ class Clientes extends Component
     }
     public function modalCrearDomSubs()
     {
-        $this->modalDomSubs = true;
+        if ($this->clienteSeleccionado) {
+            $this->modalDomSubs = true;
+            $this->domiciliosSubs = DomicilioSubs::All();
+            /* dd($this->domiciliosSubs); */
+        } else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
+            ]);
+        }
     }
     public function modalCrearDom()
     {
@@ -573,50 +581,42 @@ class Clientes extends Component
 
     public function createSubs()
     {
-        if ($this->clienteSeleccionado != null) {
-            if ($this->noint != null) {
-                $this->noint;
-            } else {
-                $this->noint = null;
-            }
-
-            dd($this->ruta);
-
-            $this->validate([
-                'calle' => 'required',
-                'noext' => 'required',
-                'colonia' => 'required',
-                'cp' => 'required',
-                'localidad' => 'required',
-                'ciudad' => 'required',
-                'referencia' => 'required'
-            ]);
-
-            domicilioSubs::Create([
-                'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
-                'calle' => $this->calle,
-                'noint' => $this?->noint,
-                'noext' => $this->noext,
-                'colonia' => $this->colonia,
-                'cp' => $this->cp,
-                'localidad' => $this->localidad,
-                'ciudad' => $this->ciudad,
-                'referencia' => $this->referencia,
-                'ruta' => $this->ruta
-            ]);
-
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Domicilio creado exitosamente!' : ''
-            ]);
-
-            $this->modalFormDom = false;
-
-            $this->resetInputSubs();
+        if ($this->noint != null) {
+            $this->noint;
         } else {
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
-            ]);
+            $this->noint = null;
         }
+
+        $this->validate([
+            'calle' => 'required',
+            'noext' => 'required',
+            'colonia' => 'required',
+            'cp' => 'required',
+            'localidad' => 'required',
+            'ciudad' => 'required',
+            'referencia' => 'required'
+        ]);
+
+        domicilioSubs::Create([
+            'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
+            'calle' => $this->calle,
+            'noint' => $this?->noint,
+            'noext' => $this->noext,
+            'colonia' => $this->colonia,
+            'cp' => $this->cp,
+            'localidad' => $this->localidad,
+            'ciudad' => $this->ciudad,
+            'referencia' => $this->referencia,
+            'ruta' => $this->ruta
+        ]);
+
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Domicilio creado exitosamente!' : ''
+        ]);
+
+        $this->modalFormDom = false;
+
+        $this->resetInputSubs();
     }
 
     public function suscripciones()

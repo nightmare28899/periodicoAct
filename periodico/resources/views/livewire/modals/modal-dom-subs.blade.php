@@ -24,7 +24,11 @@
                     wire:click="modalCrearDom">Agregar</button>
             </div>
         </div>
+        @if (count($domiciliosSubs) > 0)
+            <p>si hay info</p>
+        @else
         <p class="text-center font-bold text-xl">No hay domicilios registrados</p>
+        @endif
 
     </x-slot>
     <x-slot name="footer">
