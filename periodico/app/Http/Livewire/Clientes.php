@@ -18,7 +18,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $arregloDatos = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -591,6 +591,8 @@ class Clientes extends Component
             $this->noint = null;
         }
 
+        $this->status = 'created';
+
         $this->validate([
             'calle' => 'required',
             'noext' => 'required',
@@ -652,24 +654,65 @@ class Clientes extends Component
     }
 
     public function eliminarDatoSeleccionado($id) {
-        DomicilioSubs::find($id)->delete();
+        foreach ($this->domicilioSeleccionado as $key => $value) {
+            if ($value['id'] == $id) {
+                unset($this->domicilioSeleccionado[$key]);
+            }
+        }
     }
 
-    public function editarDomicilioSubs($data)
+    public function editarDomicilioSubs($id)
     {
-        dd($data);
+        $this->status = 'updated';
+
+        $DomicilioSubs = DomicilioSubs::find($id);
+        $this->domicilioSubsId = $DomicilioSubs->id;
+        $this->calle = $DomicilioSubs->calle;
+        $this->noint = $DomicilioSubs->noint;
+        $this->noext = $DomicilioSubs->noext;
+        $this->colonia = $DomicilioSubs->colonia;
+        $this->cp = $DomicilioSubs->cp;
+        $this->localidad = $DomicilioSubs->localidad;
+        $this->ciudad = $DomicilioSubs->ciudad;
+        $this->referencia = $DomicilioSubs->referencia;
+        $this->ruta = $DomicilioSubs->ruta;
+
+        $this->modalCrearDom();
+        $this->modalDomSubs = true;
+    }
+
+    public function actualizarDomicilioSubs()
+    {
+        $DomicilioSubs = DomicilioSubs::find($this->domicilioSubsId);
+        $DomicilioSubs->update([
+            'calle' => $this->calle,
+            'noint' => $this->noint,
+            'noext' => $this->noext,
+            'colonia' => $this->colonia,
+            'cp' => $this->cp,
+            'localidad' => $this->localidad,
+            'ciudad' => $this->ciudad,
+            'referencia' => $this->referencia,
+            'ruta' => $this->ruta
+        ]);
+
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Domicilio actualizado exitosamente!' : ''
+        ]);
+
+        $this->modalFormDom = false;
     }
 
     public function resetInputSubs()
     {
-        $this->calle = null;
-        $this->noint = null;
-        $this->noext = null;
-        $this->colonia = null;
-        $this->cp = null;
-        $this->localidad = null;
-        $this->ciudad = null;
-        $this->referencia = null;
-        $this->ruta = null;
+        $this->calle = '';
+        $this->noint = '';
+        $this->noext = '';
+        $this->colonia = '';
+        $this->cp = '';
+        $this->localidad = '';
+        $this->ciudad = '';
+        $this->referencia = '';
+        $this->ruta = '';
     }
 }

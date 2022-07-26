@@ -66,17 +66,17 @@
                     </thead>
                     <tbody>
                         @foreach ($domiciliosSubs as $domicilio)
-                            <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer" wire:click="datoSeleccionado({{ $domicilio->id }})">
-                                <td class="border">{{ $domicilio->calle }}</td>
-                                <td class="border">{{ $domicilio->noint }}</td>
-                                <td class="border">{{ $domicilio->noext }}</td>
-                                <td class="border">{{ $domicilio->colonia }}</td>
-                                <td class="border">{{ $domicilio->cp }}</td>
-                                <td class="border">{{ $domicilio->localidad }}</td>
-                                <td class="border">{{ $domicilio->ciudad }}</td>
-                                <td class="border">{{-- {{ $domicilio->ejem }} --}}</td>
-                                <td class="border">{{ $domicilio->referencia }}</td>
-                                <td class="border">{{ $domicilio->ruta }}</td>
+                            <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->calle }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->noint }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->noext }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->colonia }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->cp }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->localidad }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->ciudad }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{-- {{ $domicilio->ejem }} --}}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->referencia }}</td>
+                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->ruta }}</td>
                                 <td class="border"><button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="editarDomicilioSubs({{ $domicilio->id }})">Editar</button></td>
                             </tr>
                         @endforeach
