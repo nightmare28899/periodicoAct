@@ -281,7 +281,7 @@
                                             @endphp
                                             {{-- <pre>{{ var_dump($dom) }}</pre><br><br> --}}
                                             <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer"
-                                            wire:click="eliminarDatoSeleccionado({{ $domicilio->id }})">
+                                            wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                 <td class="border">{{ $dom->calle }}</td>
                                                 <td class="border">{{ $dom->noint }}</td>
                                                 <td class="border">{{ $dom->noext }}</td>

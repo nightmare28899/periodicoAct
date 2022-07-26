@@ -652,7 +652,7 @@ class Clientes extends Component
     }
 
     public function eliminarDatoSeleccionado($id) {
-        $this
+        DomicilioSubs::find($id)->delete();
     }
 
     public function editarDomicilioSubs($data)
