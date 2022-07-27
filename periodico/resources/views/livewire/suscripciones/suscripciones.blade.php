@@ -259,7 +259,8 @@
                             wire:click="modalCrearDomSubs">Lista</button>
                         <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
                             <table class="w-full text-md text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <thead
+                                    class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr class="bg-gray-500 text-white uppercase">
                                         <th scope="col" class="py-3 px-6">Calle</th>
                                         <th scope="col" class="py-3 px-6">#Int</th>
@@ -281,17 +282,17 @@
                                             @endphp
                                             {{-- <pre>{{ var_dump($dom) }}</pre><br><br> --}}
                                             <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer"
-                                            wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
-                                                <td class="border">{{ $dom->calle }}</td>
-                                                <td class="border">{{ $dom->noint }}</td>
-                                                <td class="border">{{ $dom->noext }}</td>
-                                                <td class="border">{{ $dom->colonia }}</td>
-                                                <td class="border">{{ $dom->cp }}</td>
-                                                <td class="border">{{ $dom->localidad }}</td>
-                                                <td class="border">{{ $dom->ciudad }}</td>
-                                                <td class="border">{{-- {{ $dom->ejem }} --}}</td>
-                                                <td class="border">{{ $dom->referencia }}</td>
-                                                <td class="border">{{ $dom->ruta }}</td>
+                                                >
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->calle }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->noint }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->noext }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->colonia }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->cp }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->localidad }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ciudad }}</td>
+                                                <td class="border"><input type="number" class="text-black" min="0"></td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->referencia }}</td>
+                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ruta }}</td>
                                             </tr>
                                         @endforeach
                                     @endif

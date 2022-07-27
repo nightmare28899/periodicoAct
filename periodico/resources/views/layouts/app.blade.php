@@ -89,7 +89,9 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if (event.detail.message == '¡Domicilio creado exitosamente!') {
                 toastr.success(event.detail.message, 'Exito!');
-            } 
+            } else if(event.detail.message == '¡No puedes escoger el mismo domicilio!') {
+                toastr.error(event.detail.message, '¡Error!');
+            }
         });
     </script>
 </body>

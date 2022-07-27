@@ -644,16 +644,35 @@ class Clientes extends Component
 
     public function datoSeleccionado($id)
     {
+        if ($this->domicilioSeleccionado != null) {
+            foreach ($this->domicilioSeleccionado as $key => $value) {
+                if ($value['id'] == $id) {
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡No puedes escoger el mismo domicilio!' : ''
+                    ]);
+                    break;
+                }
+            }
+            if ($value['id'] != $id) {
+                array_push($this->domicilioSeleccionado, DomicilioSubs
+                    ::where('id', '=', $id)
+                    ->first()
+                    ->toArray());
 
-        array_push($this->domicilioSeleccionado, DomicilioSubs
-            ::where('id', '=', $id)
-            ->first()
-            ->toArray());
+                $this->modalDomSubs = false;
+            }
+        } else {
+            array_push($this->domicilioSeleccionado, DomicilioSubs
+                ::where('id', '=', $id)
+                ->first()
+                ->toArray());
 
-        $this->modalDomSubs = false;
+            $this->modalDomSubs = false;
+        }
     }
 
-    public function eliminarDatoSeleccionado($id) {
+    public function eliminarDatoSeleccionado($id)
+    {
         foreach ($this->domicilioSeleccionado as $key => $value) {
             if ($value['id'] == $id) {
                 unset($this->domicilioSeleccionado[$key]);

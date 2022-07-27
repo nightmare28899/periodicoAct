@@ -50,9 +50,9 @@
                             <th scope="col" class="py-3 px-6">
                                 Ciudad
                             </th>
-                            <th scope="col" class="py-3 px-6">
+                            {{-- <th scope="col" class="py-3 px-6">
                                 #Ejemp
-                            </th>
+                            </th> --}}
                             <th scope="col" class="py-3 px-6">
                                 Referencia
                             </th>
@@ -74,7 +74,6 @@
                                 <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->cp }}</td>
                                 <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->localidad }}</td>
                                 <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->ciudad }}</td>
-                                <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{-- {{ $domicilio->ejem }} --}}</td>
                                 <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->referencia }}</td>
                                 <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">{{ $domicilio->ruta }}</td>
                                 <td class="border"><button class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md" wire:click="editarDomicilioSubs({{ $domicilio->id }})">Editar</button></td>
