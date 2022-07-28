@@ -312,8 +312,7 @@
                 <div class="mt-3">
                     <div class="w-2/5 px-2 flex">
                         OBSERVACIONES
-                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion"
-                            cols="50"></textarea>
+                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion" placeholder="Coloca una descripción" cols="50"></textarea>
                     </div>
                 </div>
                 <div class="flex">
