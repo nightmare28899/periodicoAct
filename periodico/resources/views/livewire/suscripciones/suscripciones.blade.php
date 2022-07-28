@@ -174,8 +174,7 @@
                     <div class="w-2/5 px-2">
                         <p>PRECIO</p>
                         <input type="radio" name="precio" wire:model="precio" value="Normal" checked> Normal
-                        <input type="radio" name="precio" wire:model="precio" value="Pronto_pago"
-                            {{ $tipoSubscripcion == 'pronto_pago' ? 'checked' : '' }}> Pronto pago
+                        <input type="radio" name="precio" wire:model="precio" value="Pronto_pago"> Pronto pago
                     </div>
                     <div class="w-1/2 px-2">
                         <p>CONTRATO PARA</p>
@@ -290,7 +289,7 @@
                                                 <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->cp }}</td>
                                                 <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->localidad }}</td>
                                                 <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ciudad }}</td>
-                                                <td class="border"><input type="number" class="text-black" min="0"></td>
+                                                <td class="border"><input type="number" class="text-black" wire:model="cantEjem" min="0"></td>
                                                 <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->referencia }}</td>
                                                 <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ruta }}</td>
                                             </tr>
@@ -352,7 +351,7 @@
                                 contrato</button>
                             <button
                                 class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button>
-                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Borrar</button>
+                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md" wire:click.prevent="borrar()">Borrar</button>
                             {{-- <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button> --}}
                         </div>
                     </div>

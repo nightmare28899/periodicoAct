@@ -18,7 +18,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada, $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -140,7 +140,13 @@ class Clientes extends Component
                 $this->total = $this->cantEjem * 330;
                 $this->totalDesc = $this->cantEjem * 330;
                 if ($this->descuento) {
-                    $this->totalDesc = ($this->total - $this->descuento);
+                    if ($this->descuento <= $this->total) {
+                        $this->totalDesc = ($this->total - $this->descuento);
+                    } else {
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡No puedes aplicar un descuento mayora la cantidad!' : ''
+                        ]);
+                    }
                 }
             }
         } else if ($this->tarifaSeleccionada == 'Ejecutiva') {
@@ -634,12 +640,33 @@ class Clientes extends Component
                     'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                 ]);
             }
-            /* dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, "este",$this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro,$this->descuento); */
+            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, "este", $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro, $this->descuento);
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
         }
+    }
+
+    public function borrar()
+    {
+        $this->clienteSeleccionado = '';
+        $this->tipoSubscripcion = 'Normal';
+        $this->subscripcionEs = 'Apertura';
+        $this->precio = 'Normal';
+        $this->contrato = 'Suscripción';
+        $this->oferta = false;
+        $this->tarifaSeleccionada = '';
+        $this->cantEjem = 0;
+        $this->tipoSuscripcionSeleccionada = '';
+        $this->periodoSuscripcionSeleccionada = 'esco';
+        $this->diasSuscripcionSeleccionada = 'esc_man';
+        $this->descuento = 0;
+        $this->observacion = '';
+        $this->total = 0;
+        $this->descuento = 0;
+        $this->totalDesc = 0;
+        $this->formaPagoSeleccionada = '';
     }
 
     public function datoSeleccionado($id)
