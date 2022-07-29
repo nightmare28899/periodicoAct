@@ -640,7 +640,8 @@ class Clientes extends Component
                     'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                 ]);
             }
-            dd($this->date, $this->tipoSubscripcion, $this->subscripcionEs, $this->dataClient, $this->precio, $this->contrato, "este", $this->cantEjem, $this->diasSuscripcionSeleccionada, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo, $this->observacion, $this->tipoSuscripcionSeleccionada, $this->tarifaSeleccionada, $this->formaPagoSeleccionada, $this->dateF, $this->dateFiltro, $this->descuento);
+
+            dd('datos cliente', $this->dataClient, 'fecha actual', $this->date, 'suscripcion', $this->tipoSubscripcion, 'la suscripcion es una', $this->subscripcionEs, 'datos del cliente', $this->dataClient, 'tarifa', $this->tarifaSeleccionada, 'ejemplares', $this->cantEjem, 'precio', $this->precio, 'contrato', $this->contrato, 'tipo de suscripcion', $this->tipoSuscripcionSeleccionada, 'periodo', $this->periodoSuscripcionSeleccionada, 'del', $this->from, 'al', $this->to, 'dias', $this->diasSuscripcionSeleccionada, 'lunes', $this->lunes, 'martes', $this->martes, 'miercoles', $this->miércoles, 'jueves', $this->jueves, 'viernes', $this->viernes, 'sabado', $this->sábado, 'domingo', $this->domingo, 'descuento', $this->descuento, 'observacion', $this->observacion, 'forma de pago', $this->formaPagoSeleccionada);
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
