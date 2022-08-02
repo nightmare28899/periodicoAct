@@ -348,8 +348,8 @@
                             <button wire:click.prevent="suscripciones()"
                                 class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">Guardar
                                 contrato</button>
-                            <button
-                                class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button>
+                            {{-- <button
+                                class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button> --}}
                             <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md" wire:click.prevent="borrar()">Borrar</button>
                             {{-- <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button> --}}
                         </div>

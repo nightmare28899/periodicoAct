@@ -10,6 +10,7 @@ use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
 use App\Models\domicilioSubs;
+use App\Models\Suscripcion;
 use Carbon\Carbon;
 
 class Clientes extends Component
@@ -627,6 +628,7 @@ class Clientes extends Component
         ]);
 
         $this->modalFormDom = false;
+        $this->modalDomSubs = false;
 
         $this->resetInputSubs();
     }
@@ -641,12 +643,58 @@ class Clientes extends Component
                 ]);
             }
 
-            dd('datos cliente', $this->dataClient, 'fecha actual', $this->date, 'suscripcion', $this->tipoSubscripcion, 'la suscripcion es una', $this->subscripcionEs, 'datos del cliente', $this->dataClient, 'tarifa', $this->tarifaSeleccionada, 'ejemplares', $this->cantEjem, 'precio', $this->precio, 'contrato', $this->contrato, 'tipo de suscripcion', $this->tipoSuscripcionSeleccionada, 'periodo', $this->periodoSuscripcionSeleccionada, 'del', $this->from, 'al', $this->to, 'dias', $this->diasSuscripcionSeleccionada, 'lunes', $this->lunes, 'martes', $this->martes, 'miercoles', $this->miércoles, 'jueves', $this->jueves, 'viernes', $this->viernes, 'sabado', $this->sábado, 'domingo', $this->domingo, 'descuento', $this->descuento, 'observacion', $this->observacion, 'forma de pago', $this->formaPagoSeleccionada);
+            
+
+            Suscripcion::Create([
+                'cliente_id' => $this->clienteSeleccionado,
+                'suscripcion' => $this->tipoSubscripcion,
+                'esUnaSuscripcion' => $this->subscripcionEs,
+                'tarifa' => $this->tarifaSeleccionada,
+                'cantEjemplares' => $this->cantEjem,
+                'precio' => $this->precio,
+                'contrato' => $this->contrato,
+                'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                'periodo' => $this->periodoSuscripcionSeleccionada,
+                'fechaInicio' => $this->from,
+                'fechaFin' => $this->to,
+                'dias' => $this->diasSuscripcionSeleccionada,
+                'lunes' => $this->lunes,
+                'martes' => $this->martes,
+                'miércoles' => $this->miércoles,
+                'jueves' => $this->jueves,
+                'viernes' => $this->viernes,
+                'sábado' => $this->sábado,
+                'domingo' => $this->domingo,
+                'descuento' => $this->descuento,
+                'observaciones' => $this->observacion,
+                'importe' => $this->total,
+                'total' => $this->totalDesc,
+                'formaPago' => $this->formaPagoSeleccionada,
+                'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
+            ]);
+
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+            ]);
+
+            $this->borrar();
+
+            /* dd('datos cliente', $this->clienteSeleccionado, 'fecha actual', $this->date, 'suscripcion', $this->tipoSubscripcion, 'la suscripcion es una', $this->subscripcionEs, 'datos del cliente', $this->dataClient, 'tarifa', $this->tarifaSeleccionada, 'ejemplares', $this->cantEjem, 'precio', $this->precio, 'contrato', $this->contrato, 'tipo de suscripcion', $this->tipoSuscripcionSeleccionada, 'periodo', $this->periodoSuscripcionSeleccionada, 'del', $this->from, 'al', $this->to, 'dias', $this->diasSuscripcionSeleccionada, 'lunes', $this->lunes, 'martes', $this->martes, 'miercoles', $this->miércoles, 'jueves', $this->jueves, 'viernes', $this->viernes, 'sabado', $this->sábado, 'domingo', $this->domingo, 'descuento', $this->descuento, 'observacion', $this->observacion, 'forma de pago', $this->formaPagoSeleccionada); */
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
         }
+    }
+
+    public function eliminarSubs($id) {
+        $this->status = 'delete';
+        domicilioSubs::find($id)->delete();
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
+        ]);
+
+        $this->modalDomSubs = false;
     }
 
     public function borrar()

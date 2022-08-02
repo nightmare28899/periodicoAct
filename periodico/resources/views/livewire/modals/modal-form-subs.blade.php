@@ -88,29 +88,6 @@
 
         <div class="flex">
             <div class="w-1/2 p-2">
-                <label for="ciudad" class="block text-black text-sm font-bold mb-2">Ciudad:</label>
-                <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ciudad') border-red-500 @enderror"
-                    id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Colonia" />
-                @error('ciudad')
-                    <span
-                        class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="w-1/2 p-2">
-                <label for="ejemplar" class="block text-black text-sm font-bold mb-2">Ejemplar:</label>
-                <input type="number" min="0"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ejemplar') border-red-500 @enderror"
-                    id="ejemplar" wire:model.defer="ejemplar" placeholder="Escribe tu Colonia" />
-                @error('ejemplar')
-                    <span
-                        class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
-
-        <div class="flex">
-            <div class="w-1/2 p-2">
                 <label for="referencia" class="block text-black text-sm font-bold mb-2">Referencia:</label>
                 <textarea type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('referencia') border-red-500 @enderror"
@@ -137,6 +114,29 @@
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                 @enderror
+            </div>
+        </div>
+
+        <div class="flex">
+            <div class="w-1/2 p-2">
+                <label for="ciudad" class="block text-black text-sm font-bold mb-2">Ciudad:</label>
+                <input type="text"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ciudad') border-red-500 @enderror"
+                    id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Colonia" />
+                @error('ciudad')
+                    <span
+                        class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="w-1/2 p-2">
+                {{-- <label for="ejemplar" class="block text-black text-sm font-bold mb-2">Ejemplar:</label>
+                <input type="number" min="0"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ejemplar') border-red-500 @enderror"
+                    id="ejemplar" wire:model.defer="ejemplar" placeholder="Escribe tu Colonia" />
+                @error('ejemplar')
+                    <span
+                        class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                @enderror --}}
             </div>
         </div>
 

@@ -93,6 +93,8 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if (event.detail.message == '¡No puedes aplicar un descuento mayora la cantidad!') {
                 toastr.error(event.detail.message, '¡Error!');
+            } else if (event.detail.message == '¡Suscripción generada correctamente!') {
+                toastr.success(event.detail.message, '¡Exito!')
             }
         });
     </script>
