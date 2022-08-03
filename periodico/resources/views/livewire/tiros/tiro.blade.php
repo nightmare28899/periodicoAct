@@ -80,26 +80,49 @@
                     </thead>
                     <tbody>
                         @foreach ($resultado as $result)
-                            <tr>
-                                <td class="border">{{ $loop->iteration }}</td>
-                                <td class="border">{{ $result->nombre }}</td>
-                                <td class="border">{{ $diaS }} </td>
-                                <td class="border">{{ $result->{$diaS} }}</td>
-                                <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br>
-                                    No. Ext:
-                                    {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
-                                    {{ $result->localidad }}, Municipio: {{ $result->municipio }}
-                                </td>
-                                <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
-                                <td wire:model="fecha" class="border">
-                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
-                                {{-- <td class="border px-4 py-2 flex-nowrap pt-2">
-                                    <input type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
-                                        name="imprimir" value="Imprimir" onclick="window.print();">
-                                </td> --}}
-                            </tr>
+                            @if ($result->{$diaS} != 0)
+                                <tr>
+                                    <td class="border">{{ $loop->iteration }}</td>
+                                    <td class="border">{{ $result->nombre }}</td>
+                                    <td class="border">{{ $diaS }} </td>
+                                    <td class="border">{{ $result->{$diaS} }}</td>
+                                    <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br>
+                                        No. Ext:
+                                        {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
+                                        {{ $result->localidad }}, Municipio: {{ $result->municipio }}
+                                    </td>
+                                    <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
+                                    <td wire:model="fecha" class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    
+                                </tr>
+                            @endif
                         @endforeach
+                        @if (count($resultado) > 0)
+
+                            @foreach ($suscripcion as $suscrip)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $suscrip->nombre }}</td>
+                                    <td>{{ $diaS }} </td>
+                                    <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
+                                        No. Ext:
+                                        {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
+                                        {{ $suscrip->localidad }}, Municipio: {{ $suscrip->municipio }}
+                                    </td>
+                                    <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
+                                    <td wire:model="fecha" class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="7" class="border">No hay suscripciones</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
                 <br>
@@ -449,9 +472,9 @@
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                         id="devuelto" wire:model.defer="devuelto" placeholder="Cantidad" min="0" />
                 </div>
-                @if ($devuelto == 0 || $devuelto > 0 && $entregar > 0)
-                <p>devuelto: {{ $devuelto }}</p>
-                <p>entregar: {{ $entregar }}</p>
+                @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))
+                    <p>devuelto: {{ $devuelto }}</p>
+                    <p>entregar: {{ $entregar }}</p>
                     <button wire:click.prevent="updateDevueltos" type="button"
                         class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                         <svg wire:loading wire:target="updateDevueltos"
@@ -467,8 +490,8 @@
                         Devolver
                     </button>
                 @elseif ($entregar == 0 && $devuelto > 0)
-                <p>devuelto: {{ $devuelto }}</p>
-                <p>entregar: {{ $entregar }}</p>
+                    <p>devuelto: {{ $devuelto }}</p>
+                    <p>entregar: {{ $entregar }}</p>
                     <button wire:click.prevent="updateDevueltos" type="button"
                         class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                         <svg wire:loading wire:target="updateDevueltos"

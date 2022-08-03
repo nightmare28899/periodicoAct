@@ -643,7 +643,14 @@ class Clientes extends Component
                 ]);
             }
 
-            
+            $this->validate([
+                'formaPagoSeleccionada' => 'required',
+                'tarifaSeleccionada' => 'required',
+                'cantEjem' => 'required',
+                'tipoSuscripcionSeleccionada' => 'required',
+                'periodoSuscripcionSeleccionada' => 'required',
+                'diasSuscripcionSeleccionada' => 'required',
+            ]);
 
             Suscripcion::Create([
                 'cliente_id' => $this->clienteSeleccionado,
@@ -672,6 +679,8 @@ class Clientes extends Component
                 'formaPago' => $this->formaPagoSeleccionada,
                 'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
             ]);
+
+            $this->suscripciones = false;
 
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''

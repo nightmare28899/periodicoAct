@@ -8,13 +8,15 @@ use App\Models\Ejemplar;
 use App\Models\Domicilio;
 use App\Models\Cliente;
 use App\Models\Ruta;
+use App\Models\Suscripcion;
+use App\Models\domicilioSubs;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -27,6 +29,8 @@ class Tiros extends Component
         /* $ejemplares = Ejemplar::all(); */
         $domicilios = Domicilio::all();
         $this->ruta = Ruta::all();
+        $suscripcion = Suscripcion::all();
+        /* dd($suscripcion[0]['suscripcion']); */
         // dd($ruta);
         $keyWord = '%' . $this->keyWord . '%';
 
@@ -46,6 +50,13 @@ class Tiros extends Component
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
                 ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
+            
+            $this->suscripcion = Suscripcion
+                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
+                ->where('cliente.nombre', 'like', '%' . $this->keyWord . '%')
+                ->select("cliente.id", "cliente.nombre", "suscripciones.suscripcion", "domicilio_subs.*")
                 ->get($this->diaS);
         }
 
@@ -76,6 +87,7 @@ class Tiros extends Component
 
         return view('livewire.tiros.tiro', [
             'resultado' => $this->resultados,
+            'suscripcion' => $this->suscripcion,
             'diaS' => $this->diaS,
             'dateF' => $this->dateF,
             'de' => $this->de,

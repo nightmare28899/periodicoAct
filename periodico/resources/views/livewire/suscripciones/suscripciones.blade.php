@@ -39,6 +39,9 @@
                             @foreach ($clientes as $cliente)
                                 <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                             @endforeach
+                            @error('clienteSeleccionado')
+                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                            @enderror
                         </select>
                     </div>
                     <div class="w-1/2 p-2">
@@ -165,11 +168,21 @@
                             <option value="Base">Base</option>
                             <option value="Ejecutiva">Ejecutiva</option>
                         </select>
+                        @error('tarifaSeleccionada')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                        @enderror
                     </div>
                     <div class="w-2/5 px-2">
                         <p>EJEMPLARES</p>
                         <input type="number" class="border-0 bg-gray-200" style="height: 1.7rem; margin-top: 5px;"
                             name="cantEjem" wire:model="cantEjem" min="0">
+                        @error('cantEjem')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                        @enderror
                     </div>
                     <div class="w-2/5 px-2">
                         <p>PRECIO</p>
@@ -192,14 +205,19 @@
                     </div>
                     <div class="w-1/4 px-2">
                         <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tipoSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model.defer="tipoSuscripcionSeleccionada" style="width: 80%">
                             <option value=''>Selecciona una opción</option>
                             <option value='Impresa'>Impresa</option>
                             <option value='Internet'>Internet</option>
                         </select>
+                        @error('tipoSuscripcionSeleccionada')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                        @enderror
                         <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('periodoSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="periodoSuscripcionSeleccionada" style="width: 80%">
                             <option value='esco'>Escoger manualmente</option>
                             <option value='Mensual'>Mensual</option>
@@ -207,13 +225,23 @@
                             <option value='Semestral'>Semestral</option>
                             <option value='Anual'>Anual</option>
                         </select>
+                        @error('periodoSuscripcionSeleccionada')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                        @enderror
                         <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('clasificacion') border-red-500 @enderror"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('diasSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="diasSuscripcionSeleccionada" style="width: 80%">
                             <option value="esc_man">Escoger manualmente</option>
                             <option value="l_v">Lunes a viernes</option>
                             <option value='l_d'>Lunes a Domingo</option>
                         </select>
+                        @error('diasSuscripcionSeleccionada')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                        @enderror
                     </div>
                     <div class="w-3/5 px-2">
                         <p class="mt-3">#DÍAS PARA PAGAR</p>
@@ -280,18 +308,37 @@
                                                 $dom = (object) $dom;
                                             @endphp
                                             {{-- <pre>{{ var_dump($dom) }}</pre><br><br> --}}
-                                            <tr class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer"
-                                                >
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->calle }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->noint }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->noext }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->colonia }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->cp }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->localidad }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ciudad }}</td>
-                                                <td class="border"><input type="number" class="text-black" wire:model="cantEjem" min="0"></td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->referencia }}</td>
-                                                <td class="border" wire:click="eliminarDatoSeleccionado({{ $dom->id }})">{{ $dom->ruta }}</td>
+                                            <tr
+                                                class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->calle }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->noint }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->noext }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->colonia }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->cp }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->localidad }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->ciudad }}</td>
+                                                <td class="border"><input type="number" class="text-black"
+                                                        wire:model="cantEjem" min="0"></td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->referencia }}</td>
+                                                <td class="border"
+                                                    wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
+                                                    {{ $dom->ruta }}</td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -311,8 +358,9 @@
                 </div>
                 <div class="mt-3">
                     <div class="w-2/5 px-2 flex">
-                        OBSERVACIONES
-                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion" placeholder="Coloca una descripción" cols="50"></textarea>
+                        OBSERVACIONES(Opcional)
+                        <textarea style="margin-left: 2rem;" class="border-0 bg-gray-200" rows="2" wire:model.defer="observacion"
+                            placeholder="Coloca una descripción" cols="50"></textarea>
                     </div>
                 </div>
                 <div class="flex">
@@ -337,11 +385,14 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
                             wire:model.defer="formaPagoSeleccionada" style="width: 50%">
-                            <option value=''>Selecciona un cliente</option>
+                            <option value=''>Selecciona una forma</option>
                             @foreach ($formaPago as $forma)
                                 <option value="{{ $forma }}">{{ $forma }}</option>
                             @endforeach
                         </select>
+                        @error('formaPagoSeleccionada')
+                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                        @enderror
                         <br>
                         <br>
                         <div class="mt-5 pt-4">
@@ -350,7 +401,8 @@
                                 contrato</button>
                             {{-- <button
                                 class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button> --}}
-                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md" wire:click.prevent="borrar()">Borrar</button>
+                            <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
+                                wire:click.prevent="borrar()">Borrar</button>
                             {{-- <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">Salir</button> --}}
                         </div>
                     </div>
