@@ -68,7 +68,7 @@
                 <table class="table-auto w-full text-center">
                     <thead>
                         <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">No.</th>
+                            {{-- <th class="px-4 py-2 w-20">No.</th> --}}
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
                             <th class="px-4 py-2 w-20">Ejemplares</th>
@@ -82,7 +82,7 @@
                         @foreach ($resultado as $result)
                             @if ($result->{$diaS} != 0)
                                 <tr>
-                                    <td class="border">{{ $loop->iteration }}</td>
+                                    {{-- <td class="border">{{ $loop->iteration }}</td> --}}
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
@@ -97,32 +97,27 @@
                                 </tr>
                             @else
                                 <tr>
-                                    
+
                                 </tr>
                             @endif
                         @endforeach
-                        @if (count($resultado) > 0)
 
-                            @foreach ($suscripcion as $suscrip)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $suscrip->nombre }}</td>
-                                    <td>{{ $diaS }} </td>
-                                    <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
-                                        No. Ext:
-                                        {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
-                                        {{ $suscrip->localidad }}, Municipio: {{ $suscrip->municipio }}
-                                    </td>
-                                    <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
-                                    <td wire:model="fecha" class="border">
-                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
-                                </tr>
-                            @endforeach
-                        @else
+                        @foreach ($suscripcion as $suscrip)
                             <tr>
-                                <td colspan="7" class="border">No hay suscripciones</td>
+                                {{-- <td>{{ $loop->iteration }}</td> --}}
+                                <td class="border">{{ $suscrip->nombre }}</td>
+                                <td class="border">{{ $diaS }} </td>
+                                <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
+                                <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
+                                    No. Ext:
+                                    {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
+                                    {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
+                                </td>
+                                <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
+                                <td wire:model="fecha" class="border">
+                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
                             </tr>
-                        @endif
+                        @endforeach
                     </tbody>
                 </table>
                 <br>

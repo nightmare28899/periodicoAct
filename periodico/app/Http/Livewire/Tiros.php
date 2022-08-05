@@ -56,8 +56,10 @@ class Tiros extends Component
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
                 ->where('cliente.nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("cliente.id", "cliente.nombre", "suscripciones.suscripcion", "domicilio_subs.*")
+                ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
                 ->get($this->diaS);
+
+            /* dd($this->suscripcion); */
         }
 
         if ($this->rutaSeleccionada == "Todos") {
@@ -197,7 +199,7 @@ class Tiros extends Component
         } else {
             $this->status = 'error';
             return $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'error') ? '¡Debes seleccionar un elemento primero!' : ''
+                'message' => ($this->status == 'error') ? '¡Debes seleccionar un cliente primero!' : ''
             ]);
         }
     }
