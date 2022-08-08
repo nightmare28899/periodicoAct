@@ -1,4 +1,18 @@
 <div class="container mx-auto">
+    <style>
+        table,
+        td,
+        th,
+        tr {
+            border: 1px solid;
+            padding: 4px 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    </style>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Generar Tiro') }}
@@ -67,7 +81,7 @@
 
                 <table class="table-auto w-full text-center">
                     <thead>
-                        <tr class="bg-gray-500 text-white">
+                        <tr class="text-white bg-gray-500">
                             {{-- <th class="px-4 py-2 w-20">No.</th> --}}
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
@@ -103,20 +117,26 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            <tr>
-                                {{-- <td>{{ $loop->iteration }}</td> --}}
-                                <td class="border">{{ $suscrip->nombre }}</td>
-                                <td class="border">{{ $diaS }} </td>
-                                <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
-                                <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
-                                    No. Ext:
-                                    {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
-                                    {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
-                                </td>
-                                <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
-                                <td wire:model="fecha" class="border">
-                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
-                            </tr>
+                            @if ($suscrip->{$diaS} != 0)
+                                <tr>
+                                    {{-- <td>{{ $loop->iteration }}</td> --}}
+                                    <td class="border">{{ $suscrip->nombre }}</td>
+                                    <td class="border">{{ $diaS }} </td>
+                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
+                                    <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
+                                        No. Ext:
+                                        {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
+                                        {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
+                                    </td>
+                                    <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
+                                    <td wire:model="fecha" class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                </tr>
+                            @else
+                                <tr>
+
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -152,8 +172,8 @@
                         <div class="">
                             <p class="font-bold text-sm"> Fecha seleccionada para el tiro: <br>
                                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }} </p>
-                            <p class="font-bold text-sm" style="margin-top: 15px;">Cantidad de registros:
-                                {{ count($resultado) }}</p>
+                            {{-- <p class="font-bold text-sm" style="margin-top: 15px;">Cantidad de registros:
+                                {{ count($resultado) + count($suscripcion) }}</p> --}}
                         </div>
                         <div class="ml-20">
                             <button wire:click="descarga" id="tiro" wire:loading.attr="disabled"
@@ -270,7 +290,7 @@
                     <div class="overflow-x-auto w-full">
                         <table class="table-auto">
                             <thead>
-                                <tr class='bg-gray-100'>
+                                <tr class='text-white bg-gray-500'>
                                     <th class='px-4 py-2'>Fecha</th>
                                     <th class='px-4 py-2'>Cliente</th>
                                     <th class='px-4 py-2'>Entregar</th>
@@ -286,30 +306,68 @@
                             </thead>
                             <tbody>
                                 @foreach ($res as $result)
-                                    <tr>
-                                        <td class='px-4 py-2'>
-                                            <div class="form-group">
-                                                <input wire:model="clienteSeleccionado" type="checkbox"
-                                                    value={{ $result->id }}>
-                                                <label class="text-black"
-                                                    for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-2'>{{ $result->nombre }}</td>
-                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                        <td class='px-4 py-2'>{{ $devuelto }}</td>
-                                        <td class='px-4 py-2'>{{ $faltante }}</td>
-                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                        <td class='px-4 py-2'>
-                                            {{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
-                                        </td>
-                                        <td class='px-4 py-2'>
-                                            {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
-                                        </td>
-                                        <td class='px-4 py-2'>{{ $diaS }}</td>
-                                        <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
-                                        <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
-                                    </tr>
+                                    @if ($result->{$diaS} != 0)
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                <div class="form-group">
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                        value={{ $result->id }}>
+                                                    <label class="text-black"
+                                                        for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $result->nombre }}</td>
+                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>{{ $devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>
+                                                {{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $diaS }}</td>
+                                            <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+
+                                        </tr>
+                                    @endif
+                                @endforeach
+                                @foreach ($sus as $suscri)
+                                    @if ($suscri->{$diaS} != 0)
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                <div class="form-group">
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                        value={{ $suscri->id }}>
+                                                    <label class="text-black"
+                                                        for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $suscri->nombre }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
+                                            <td class='px-4 py-2'>{{ $devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>
+                                                {{ $suscri->tarifa == 'Base' ? 330 : 300 }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ $suscri->importe }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $diaS }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

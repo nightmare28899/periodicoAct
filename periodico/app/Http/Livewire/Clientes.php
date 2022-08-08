@@ -592,7 +592,7 @@ class Clientes extends Component
 
     public function createSubs()
     {
-        if ($this->noint != null) {
+        if ($this->noint) {
             $this->noint;
         } else {
             $this->noint = null;
@@ -607,7 +607,8 @@ class Clientes extends Component
             'cp' => 'required',
             'localidad' => 'required',
             'ciudad' => 'required',
-            'referencia' => 'required'
+            'referencia' => 'required',
+            'ruta' => 'required',
         ]);
 
         domicilioSubs::Create([
@@ -627,10 +628,12 @@ class Clientes extends Component
             'message' => ($this->status == 'created') ? '¡Domicilio creado exitosamente!' : ''
         ]);
 
+        $this->resetInputSubs();
+
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
 
-        $this->resetInputSubs();
+        
     }
 
     public function suscripciones()
@@ -700,7 +703,7 @@ class Clientes extends Component
         $this->status = 'delete';
         domicilioSubs::find($id)->delete();
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
+            'message' => ($this->status == 'delete') ? 'Domicilio Eliminado Correctamente!' : ''
         ]);
 
         $this->modalDomSubs = false;
@@ -729,7 +732,7 @@ class Clientes extends Component
 
     public function datoSeleccionado($id)
     {
-        if ($this->domicilioSeleccionado != null) {
+        if ($this->domicilioSeleccionado) {
             foreach ($this->domicilioSeleccionado as $key => $value) {
                 if ($value['id'] == $id) {
                     $this->dispatchBrowserEvent('alert', [
@@ -781,8 +784,8 @@ class Clientes extends Component
         $this->referencia = $DomicilioSubs->referencia;
         $this->ruta = $DomicilioSubs->ruta;
 
-        $this->modalCrearDom();
         $this->modalDomSubs = true;
+        $this->modalCrearDom();
     }
 
     public function actualizarDomicilioSubs()
@@ -797,7 +800,7 @@ class Clientes extends Component
             'localidad' => $this->localidad,
             'ciudad' => $this->ciudad,
             'referencia' => $this->referencia,
-            'ruta' => $this->ruta
+            'ruta_id' => $this->ruta
         ]);
 
         $this->dispatchBrowserEvent('alert', [

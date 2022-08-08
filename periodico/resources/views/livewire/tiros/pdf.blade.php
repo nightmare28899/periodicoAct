@@ -1,50 +1,69 @@
    <style>
-       .a {
-           border-collapse: separate;
+       table,
+       td,
+       th {
+           border: 1px solid;
+           padding: 4px 6px ;
        }
 
-       .b {
+       table {
+           width: 100%;
            border-collapse: collapse;
        }
 
-       tr,
-       td,
-       th {
-           border: 1px solid grey;
-       }
-       .centrado{
-            text-align: center;
+       .centrado {
+           text-align: center;
        }
    </style>
    <h1>Lista del Tiro</h1>
    <table class="a centrado">
        <thead>
            <tr class="bg-gray-500 text-white">
-               <th class="px-4 py-2 w-20">No.</th>
-               <th class="px-4 py-2 w-20">Cliente</th>
-               <th class="px-4 py-2 w-20">Día</th>
-               <th class="px-4 py-2 w-20">Ejemplares</th>
-               <th class="px-4 py-2 w-20">Domicilio</th>
-               <th class="px-4 py-2 w-20">Referencia</th>
-               <th class="px-4 py-2 w-20">Fecha</th>
+               {{-- <th class="px-4 py-2 w-20">No.</th> --}}
+               <th>Cliente</th>
+               <th>Día</thlass=>
+               <th>Ejemplares</thclass=>
+               <th>Domicilio</thclass=>
+               <th>Referencia</thclass=>
+               <th>Fecha</thclass=>
            </tr>
        </thead>
        <tbody>
            @foreach ($resultado as $result)
-               <tr>
-                   <td>{{ $loop->iteration }}</td>
-                   <td>{{ $result->nombre }}</td>
-                   <td>{{ $diaS }} </td>
-                   <td>{{ $result->{$diaS} }}</td>
-                   <td wire:model="domicilio">Calle: {{ $result->calle }}
-                       <br>
-                       No. Ext:
-                       {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
-                       {{ $result->localidad }}, Municipio: {{ $result->municipio }}
-                   </td>
-                   <td wire:model="referencia">{{ $result->referencia }}</td>
-                   <td wire:model="fecha">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y')}}</td>
-               </tr>
+               @if ($result->{$diaS} != 0)
+                   <tr>
+                       {{-- <td>{{ $loop->iteration }}</td> --}}
+                       <td>{{ $result->nombre }}</td>
+                       <td>{{ $diaS }} </td>
+                       <td>{{ $result->{$diaS} }}</td>
+                       <td>Calle: {{ $result->calle }}
+                           <br>
+                           No. Ext:
+                           {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
+                           {{ $result->localidad }}, Municipio: {{ $result->municipio }}
+                       </td>
+                       <td>{{ $result->referencia }}</td>
+                       <td>{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                   </tr>
+               @endif
+           @endforeach
+           @foreach ($suscripcion as $suscri)
+               @if ($suscri->{$diaS} != 0)
+                   <tr>
+                       {{-- <td>{{ $loop->iteration }}</td> --}}
+                       <td>{{ $suscri->nombre }}</td>
+                       <td>{{ $diaS }} </td>
+                       <td>{{ $suscri->{$diaS} != 0 ? $suscri->cantEjemplares : 0 }}</td>
+                       <td>Calle: {{ $suscri->calle }}
+                           <br>
+                           No. Ext:
+                           {{ $suscri->noext }}, CP: {{ $suscri->cp }}, <br> Localidad:
+                           {{ $suscri->localidad }}, Municipio: {{ $suscri->ciudad }}
+                       </td>
+                       <td>{{ $suscri->referencia }}</td>
+                       <td>{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                   </tr>
+               @endif
            @endforeach
        </tbody>
    </table>

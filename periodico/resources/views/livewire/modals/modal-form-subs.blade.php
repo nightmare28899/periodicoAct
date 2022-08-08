@@ -101,11 +101,11 @@
             <div class="w-1/2 p-2">
                 <label for="ruta" class="block text-black text-sm font-bold mb-2">Ruta:</label>
                 <select
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ruta') border-red-500 @enderror"
                     wire:model.defer="ruta" id="ruta" style="width: 100%">
                     <option value=''>Escoge una opción</option>
                     @foreach ($rutas as $id => $ruta)
-                        <option value='{{ $ruta }}'>
+                        <option value='{{ $id }}'>
                             {{ $ruta }}
                         </option>
                     @endforeach

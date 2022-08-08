@@ -25,9 +25,9 @@ return new class extends Migration
             $table->string('localidad');
             $table->string('ciudad');
             $table->string('referencia');
-            $table->string('ruta');
-            $table->timestamps();
+            $table->string('ruta')->references('id')->on('ruta')->onDelete('cascade');
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

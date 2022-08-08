@@ -95,6 +95,8 @@
                 toastr.error(event.detail.message, '¡Error!');
             } else if (event.detail.message == '¡Suscripción generada correctamente!') {
                 toastr.success(event.detail.message, '¡Exito!')
+            } else if (event.detail.message == 'Domicilio Eliminado Correctamente!') {
+                toastr.error(event.detail.message, '¡Error!');
             }
         });
     </script>
