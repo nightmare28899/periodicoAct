@@ -338,7 +338,7 @@
                                                     {{ $dom->referencia }}</td>
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
-                                                    {{ $dom->ruta }}</td>
+                                                    {{ $dom->nombreruta }}</td>
                                             </tr>
                                         @endforeach
                                     @endif

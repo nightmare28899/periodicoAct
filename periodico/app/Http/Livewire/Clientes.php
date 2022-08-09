@@ -160,6 +160,11 @@ class Clientes extends Component
             }
         }
 
+        $this->domiciliosSubs = DomicilioSubs
+            ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+            ->select('domicilio_subs.*', 'ruta.nombreruta')
+            ->get();
+
         /* if($this->datoSeleccionado) {
             dd($this->datoSeleccionado);
         } */
@@ -243,7 +248,6 @@ class Clientes extends Component
     {
         if ($this->clienteSeleccionado) {
             $this->modalDomSubs = true;
-            $this->domiciliosSubs = DomicilioSubs::All();
             /* dd($this->domiciliosSubs); */
         } else {
             $this->dispatchBrowserEvent('alert', [
@@ -632,64 +636,68 @@ class Clientes extends Component
 
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
-
-        
     }
 
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
 
-            if ($this->cantEjem == '0') {
+            if($this->domicilioSeleccionado) {
+                if ($this->cantEjem == '0') {
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
+                    ]);
+                }
+    
+                $this->validate([
+                    'formaPagoSeleccionada' => 'required',
+                    'tarifaSeleccionada' => 'required',
+                    'cantEjem' => 'required',
+                    'tipoSuscripcionSeleccionada' => 'required',
+                    'periodoSuscripcionSeleccionada' => 'required',
+                    'diasSuscripcionSeleccionada' => 'required',
+                ]);
+    
+                Suscripcion::Create([
+                    'cliente_id' => $this->clienteSeleccionado,
+                    'suscripcion' => $this->tipoSubscripcion,
+                    'esUnaSuscripcion' => $this->subscripcionEs,
+                    'tarifa' => $this->tarifaSeleccionada,
+                    'cantEjemplares' => $this->cantEjem,
+                    'precio' => $this->precio,
+                    'contrato' => $this->contrato,
+                    'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                    'periodo' => $this->periodoSuscripcionSeleccionada,
+                    'fechaInicio' => $this->from,
+                    'fechaFin' => $this->to,
+                    'dias' => $this->diasSuscripcionSeleccionada,
+                    'lunes' => $this->lunes,
+                    'martes' => $this->martes,
+                    'miércoles' => $this->miércoles,
+                    'jueves' => $this->jueves,
+                    'viernes' => $this->viernes,
+                    'sábado' => $this->sábado,
+                    'domingo' => $this->domingo,
+                    'descuento' => $this->descuento,
+                    'observaciones' => $this->observacion,
+                    'importe' => $this->total,
+                    'total' => $this->totalDesc,
+                    'formaPago' => $this->formaPagoSeleccionada,
+                    'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
+                ]);
+    
+                $this->suscripciones = false;
+    
                 $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
+                    'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+                ]);
+    
+                $this->borrar();
+            } else {
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
                 ]);
             }
-
-            $this->validate([
-                'formaPagoSeleccionada' => 'required',
-                'tarifaSeleccionada' => 'required',
-                'cantEjem' => 'required',
-                'tipoSuscripcionSeleccionada' => 'required',
-                'periodoSuscripcionSeleccionada' => 'required',
-                'diasSuscripcionSeleccionada' => 'required',
-            ]);
-
-            Suscripcion::Create([
-                'cliente_id' => $this->clienteSeleccionado,
-                'suscripcion' => $this->tipoSubscripcion,
-                'esUnaSuscripcion' => $this->subscripcionEs,
-                'tarifa' => $this->tarifaSeleccionada,
-                'cantEjemplares' => $this->cantEjem,
-                'precio' => $this->precio,
-                'contrato' => $this->contrato,
-                'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
-                'periodo' => $this->periodoSuscripcionSeleccionada,
-                'fechaInicio' => $this->from,
-                'fechaFin' => $this->to,
-                'dias' => $this->diasSuscripcionSeleccionada,
-                'lunes' => $this->lunes,
-                'martes' => $this->martes,
-                'miércoles' => $this->miércoles,
-                'jueves' => $this->jueves,
-                'viernes' => $this->viernes,
-                'sábado' => $this->sábado,
-                'domingo' => $this->domingo,
-                'descuento' => $this->descuento,
-                'observaciones' => $this->observacion,
-                'importe' => $this->total,
-                'total' => $this->totalDesc,
-                'formaPago' => $this->formaPagoSeleccionada,
-                'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
-            ]);
-
-            $this->suscripciones = false;
-
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
-            ]);
-
-            $this->borrar();
 
             /* dd('datos cliente', $this->clienteSeleccionado, 'fecha actual', $this->date, 'suscripcion', $this->tipoSubscripcion, 'la suscripcion es una', $this->subscripcionEs, 'datos del cliente', $this->dataClient, 'tarifa', $this->tarifaSeleccionada, 'ejemplares', $this->cantEjem, 'precio', $this->precio, 'contrato', $this->contrato, 'tipo de suscripcion', $this->tipoSuscripcionSeleccionada, 'periodo', $this->periodoSuscripcionSeleccionada, 'del', $this->from, 'al', $this->to, 'dias', $this->diasSuscripcionSeleccionada, 'lunes', $this->lunes, 'martes', $this->martes, 'miercoles', $this->miércoles, 'jueves', $this->jueves, 'viernes', $this->viernes, 'sabado', $this->sábado, 'domingo', $this->domingo, 'descuento', $this->descuento, 'observacion', $this->observacion, 'forma de pago', $this->formaPagoSeleccionada); */
         } else {
@@ -699,7 +707,8 @@ class Clientes extends Component
         }
     }
 
-    public function eliminarSubs($id) {
+    public function eliminarSubs($id)
+    {
         $this->status = 'delete';
         domicilioSubs::find($id)->delete();
         $this->dispatchBrowserEvent('alert', [
@@ -728,6 +737,7 @@ class Clientes extends Component
         $this->descuento = 0;
         $this->totalDesc = 0;
         $this->formaPagoSeleccionada = '';
+        $this->domicilioSeleccionado = [];
     }
 
     public function datoSeleccionado($id)
@@ -742,16 +752,22 @@ class Clientes extends Component
                 }
             }
             if ($value['id'] != $id) {
+                dd('dato seleccionado', $this->domicilioSeleccionado);
                 array_push($this->domicilioSeleccionado, DomicilioSubs
-                    ::where('id', '=', $id)
+                    ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                    ->select('domicilio_subs.*', 'ruta.nombreruta')
+                    ->where('domicilio_subs.id', '=', $id)
                     ->first()
                     ->toArray());
 
                 $this->modalDomSubs = false;
             }
         } else {
+
             array_push($this->domicilioSeleccionado, DomicilioSubs
-                ::where('id', '=', $id)
+                ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->select('domicilio_subs.*', 'ruta.nombreruta')
+                ->where('domicilio_subs.id', '=', $id)
                 ->first()
                 ->toArray());
 

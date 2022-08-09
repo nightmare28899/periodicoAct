@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -155,23 +155,15 @@ class Tiros extends Component
 
     public function descargaRemision()
     {
+        /* dd($this->clienteSeleccionado); */
         if ($this->clienteSeleccionado) {
             // if (count($this->clienteSeleccionado) <= 1) {
             $this->status = 'created';
-            // dd($this->clienteSeleccionado);
-
-            $this->resultados = Cliente
-                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                ->whereIn('cliente.id', $this->clienteSeleccionado)
-                ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS);
 
             if ($this->de && $this->hasta) {
                 $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
                     'resultado' => $this->resultados,
+                    'suscripcion' => $this->suscripcion,
                     'diaS' => $this->diaS,
                     'dateF' => $this->dateF,
                     'de' => $this->de,
@@ -182,6 +174,7 @@ class Tiros extends Component
             } else {
                 $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
                     'resultado' => $this->resultados,
+                    'suscripcion' => $this->suscripcion,
                     'diaS' => $this->diaS,
                     'dateF' => $this->dateF,
                 ])
@@ -190,9 +183,6 @@ class Tiros extends Component
             }
 
             $this->toast();
-
-            // dd($this->resultados);
-            // dd($this->resultados[0]->{$this->diaS});
 
             Tiro::create([
                 'fecha' => $this->dateF,
@@ -213,12 +203,6 @@ class Tiros extends Component
                     fn () => print($pdfContent),
                     "remisiones.pdf"
                 );
-            // } else {
-            //     $this->status = 'error';
-            //     return $this->dispatchBrowserEvent('alert', [
-            //         'message' => ($this->status == 'error') ? '¡Debes seleccionar solo un elemento a la vez!' : ''
-            //     ]);
-            // }
         } else {
             $this->status = 'error';
             return $this->dispatchBrowserEvent('alert', [

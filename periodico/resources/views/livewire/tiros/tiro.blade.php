@@ -45,7 +45,6 @@
                             name="search" id="search" placeholder="Buscar Tiro">
                     </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
-                        {{-- <a href="{{ route('download-pdf') }}" --}}
                         <button wire:click="showModal" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
                             <svg wire:loading wire:target="showModal" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -59,10 +58,6 @@
                             </svg>
                             Generar Tiro
                         </button>
-                        {{-- <div wire:click="showModal" wire:loading.attr="disabled"
-                            class="p-4 text-gray-900 cursor-pointer">
-                            Open modal
-                        </div> --}}
                     </div>
                 </div>
                 <br>
@@ -76,8 +71,6 @@
                         </div>
                     </div>
                 @endif
-
-                {{-- <livewire:custom-modal :wire:key="'custom-modal-'.time()"> --}}
 
                 <table class="table-auto w-full text-center">
                     <thead>
@@ -146,7 +139,7 @@
             </div>
         </div>
 
-        {{-- Datos del tiro --}}
+        {{-- DATOS DEL TIRO --}}
         <x-jet-dialog-modal wire:model="showingModal">
 
             <x-slot name="title">
@@ -172,8 +165,6 @@
                         <div class="">
                             <p class="font-bold text-sm"> Fecha seleccionada para el tiro: <br>
                                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }} </p>
-                            {{-- <p class="font-bold text-sm" style="margin-top: 15px;">Cantidad de registros:
-                                {{ count($resultado) + count($suscripcion) }}</p> --}}
                         </div>
                         <div class="ml-20">
                             <button wire:click="descarga" id="tiro" wire:loading.attr="disabled"
@@ -193,20 +184,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- <script>
-                        document.getElementById('tiro').addEventListener('click', function(e) {
-                            e.preventDefault();
-                            setTimeout(function() {
-                                const loader = document.getElementById('loader').style.display = 'none';
-                            }, 1500);
-                        });
-                    </script>
-
-                    @if ($isGenerateTiro)
-                        <div id="loader">
-                            @include('livewire.tiros.tiro-p-d-f')
-                        </div>
-                    @endif --}}
             </x-slot>
 
             <x-slot name="footer">
@@ -243,7 +220,7 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-        {{-- Modal datos de la remisión --}}
+        {{-- MODAL DATOS DE LA REMISIÓN --}}
         <x-jet-dialog-modal wire:model="modalRemision" maxWidth="6xl">
 
             <x-slot name="title">
@@ -418,7 +395,7 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-        {{-- Modal historial de remisión --}}
+        {{-- MODAL HISTORIAL DE REMISIÓN --}}
         <x-jet-dialog-modal wire:model="modalHistorial" maxWidth="7xl">
 
             <x-slot name="title">
@@ -497,7 +474,7 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-
+        {{-- MODAL EDITAR DEVUELTOS --}}
         <x-jet-dialog-modal wire:model="modalEditar">
 
             <x-slot name="title">
@@ -567,6 +544,5 @@
             </x-slot>
 
         </x-jet-dialog-modal>
-
     </div>
 </div>

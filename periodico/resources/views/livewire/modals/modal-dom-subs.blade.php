@@ -86,7 +86,7 @@
                                     <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">
                                         {{ $domicilio->referencia }}</td>
                                     <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">
-                                        {{ $domicilio->ruta }}</td>
+                                        {{ $domicilio->nombreruta  }}</td>
                                     <td class="border"><button
                                             class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
                                             wire:click="editarDomicilioSubs({{ $domicilio->id }})">Editar</button><br>

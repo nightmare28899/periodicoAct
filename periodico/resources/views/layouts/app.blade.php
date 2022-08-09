@@ -50,53 +50,33 @@
     <script>
         window.addEventListener('alert', event => {
             /* alert(event.detail.message); */
+
             console.log(event.detail.message);
-            if (event.detail.message == '¡Cliente Creado Correctamente!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Cliente Eliminado Correctamente!') {
-                toastr.error(event.detail.message, '¡Alerta!');
-            } else if (event.detail.message == '¡Cliente Actualizado Correctamente!') {
-                toastr.info(event.detail.message, '¡Actualizado!');
-            } else if (event.detail.message == '¡Ruta Creada Correctamente!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Ruta Actualizada Correctamente!') {
-                toastr.info(event.detail.message, '¡Actualizado!');
-            } else if (event.detail.message == '¡Tarifa Creada Correctamente!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Tarifa Actualizada Correctamente!') {
-                toastr.info(event.detail.message, '¡Actualizado!');
-            } else if (event.detail.message == '¡Debes seleccionar un elemento primero!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Remisión generada exitosamente!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Tiro generado exitosamente!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Debes escoger una fecha primero!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Debes seleccionar solo un elemento a la vez!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Se generó exitosamente la devolución!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡No puedes devolver más cantidad de la que hay!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Ajuste realizado!') {
-                toastr.success(event.detail.message, '¡Exito!');
-            } else if (event.detail.message == '¡Seleccione un cliente!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡No puedes poner cero!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Selecciona un cliente!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Domicilio creado exitosamente!') {
-                toastr.success(event.detail.message, 'Exito!');
-            } else if (event.detail.message == '¡No puedes escoger el mismo domicilio!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡No puedes aplicar un descuento mayora la cantidad!') {
-                toastr.error(event.detail.message, '¡Error!');
-            } else if (event.detail.message == '¡Suscripción generada correctamente!') {
-                toastr.success(event.detail.message, '¡Exito!')
-            } else if (event.detail.message == 'Domicilio Eliminado Correctamente!') {
-                toastr.error(event.detail.message, '¡Error!');
+            switch (event.detail.message) {
+                case '¡Cliente Creado Correctamente!' | '¡Ruta Creada Correctamente!' |
+                '¡Tarifa Creada Correctamente!' | '¡Remisión generada exitosamente!' |
+                '¡Tiro generado exitosamente!' | '¡Se generó exitosamente la devolución!' | '¡Ajuste realizado!' |
+                '¡Domicilio creado exitosamente!' | '¡Suscripción generada correctamente!':
+                    toastr.success(event.detail.message, '¡Exito!');
+                    break;
+                case '¡Cliente Eliminado Correctamente!' | '¡Debes seleccionar un elemento primero!' |
+                '¡Debes seleccionar solo un elemento a la vez!' | '¡Debes escoger una fecha primero!' |
+                '¡No puedes devolver más cantidad de la que hay!' | '¡Seleccione un cliente!' |
+                '¡No puedes poner cero!' | '¡Selecciona un cliente!', '¡No puedes escoger el mismo domicilio!',
+                '¡No puedes aplicar un descuento mayora la cantidad!', 'Domicilio Eliminado Correctamente!',
+                '¡Seleccione un domicilio!', '¡Debes seleccionar un cliente primero!':
+                    toastr.error(event.detail.message, '¡Alerta!');
+                    break;
+                case 'warning':
+                    toastr.warning(event.detail.message, event.detail.title);
+                    break;
+                case '¡Cliente Actualizado Correctamente!' | '¡Ruta Actualizada Correctamente!' |
+                '¡Tarifa Actualizada Correctamente!':
+                    toastr.info(event.detail.message, '¡Actualizado!');
+                    break;
+                default:
+                    toastr.success(event.detail.message, event.detail.title);
+                    break;
             }
         });
     </script>
