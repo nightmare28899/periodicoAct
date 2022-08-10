@@ -21,6 +21,12 @@
                         </button>
                     </div>
                     <div class="flex-none mx-1">
+                        <button wire:click="modalVentas"
+                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
+                            Generar Venta
+                        </button>
+                    </div>
+                    <div class="flex-none mx-1">
                         <a href="{{ url('tarifa') }}"><button
                                 class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">{{ __('Tarifa') }}</button></a>
                     </div>
@@ -65,8 +71,11 @@
                 @if ($modalDomSubs)
                     @include('livewire.modals.modal-dom-subs')
                 @endif
-                @if($modalFormDom) 
+                @if($modalFormDom)
                     @include('livewire.modals.modal-form-subs')
+                @endif
+                @if($modalV)
+                    @include('livewire.modals.modal-form-venta')
                 @endif
 
                 <table class="table-auto w-full text-center">

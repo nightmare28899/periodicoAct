@@ -50,28 +50,40 @@
     <script>
         window.addEventListener('alert', event => {
             /* alert(event.detail.message); */
-
-            console.log(event.detail.message);
+            /* console.log(event.detail.message); */
             switch (event.detail.message) {
-                case '¡Cliente Creado Correctamente!' | '¡Ruta Creada Correctamente!' |
-                '¡Tarifa Creada Correctamente!' | '¡Remisión generada exitosamente!' |
-                '¡Tiro generado exitosamente!' | '¡Se generó exitosamente la devolución!' | '¡Ajuste realizado!' |
-                '¡Domicilio creado exitosamente!' | '¡Suscripción generada correctamente!':
+                case '¡Cliente Creado Correctamente!':
+                case '¡Ruta Creada Correctamente!':
+                case '¡Tarifa Creada Correctamente!':
+                case '¡Tiro generado exitosamente!':
+                case '¡Remisión generada exitosamente!':
+                case '¡Se generó exitosamente la devolución!':
+                case '¡Ajuste realizado!':
+                case '¡Domicilio creado exitosamente!':
+                case '¡Suscripción generada correctamente!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
-                case '¡Cliente Eliminado Correctamente!' | '¡Debes seleccionar un elemento primero!' |
-                '¡Debes seleccionar solo un elemento a la vez!' | '¡Debes escoger una fecha primero!' |
-                '¡No puedes devolver más cantidad de la que hay!' | '¡Seleccione un cliente!' |
-                '¡No puedes poner cero!' | '¡Selecciona un cliente!', '¡No puedes escoger el mismo domicilio!',
-                '¡No puedes aplicar un descuento mayora la cantidad!', 'Domicilio Eliminado Correctamente!',
-                '¡Seleccione un domicilio!', '¡Debes seleccionar un cliente primero!':
+                case '¡Cliente Eliminado Correctamente!':
+                case '¡Debes seleccionar un elemento primero!':
+                case '¡Debes seleccionar solo un elemento a la vez!':
+                case '¡Debes escoger una fecha primero!':
+                case '¡No puedes devolver más cantidad de la que hay!':
+                case '¡Seleccione un cliente!':
+                case '¡No puedes poner cero!':
+                case '¡Selecciona un cliente!':
+                case '¡No puedes escoger el mismo domicilio!':
+                case '¡No puedes aplicar un descuento mayora la cantidad!':
+                case 'Domicilio Eliminado Correctamente!':
+                case '¡Seleccione un domicilio!':
+                case '¡Debes seleccionar un cliente primero!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case 'warning':
                     toastr.warning(event.detail.message, event.detail.title);
                     break;
-                case '¡Cliente Actualizado Correctamente!' | '¡Ruta Actualizada Correctamente!' |
-                '¡Tarifa Actualizada Correctamente!':
+                case '¡Cliente Actualizado Correctamente!':
+                case '¡Ruta Actualizada Correctamente!':
+                case '¡Tarifa Actualizada Correctamente!':
                     toastr.info(event.detail.message, '¡Actualizado!');
                     break;
                 default:

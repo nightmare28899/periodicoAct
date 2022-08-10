@@ -19,7 +19,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -258,6 +258,10 @@ class Clientes extends Component
     public function modalCrearDom()
     {
         $this->modalFormDom = true;
+    }
+    public function modalVentas()
+    {
+        $this->modalV = true;
     }
     public function detalles($id)
     {
@@ -596,11 +600,13 @@ class Clientes extends Component
 
     public function createSubs()
     {
-        if ($this->noint) {
+        /* if ($this->noint) {
             $this->noint;
         } else {
             $this->noint = null;
-        }
+        } */
+
+        { $this->noint ? $this->noint : $this->noint = null; }
 
         $this->status = 'created';
 
@@ -648,7 +654,7 @@ class Clientes extends Component
                         'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                     ]);
                 }
-    
+
                 $this->validate([
                     'formaPagoSeleccionada' => 'required',
                     'tarifaSeleccionada' => 'required',
@@ -657,7 +663,7 @@ class Clientes extends Component
                     'periodoSuscripcionSeleccionada' => 'required',
                     'diasSuscripcionSeleccionada' => 'required',
                 ]);
-    
+
                 Suscripcion::Create([
                     'cliente_id' => $this->clienteSeleccionado,
                     'suscripcion' => $this->tipoSubscripcion,
@@ -685,13 +691,13 @@ class Clientes extends Component
                     'formaPago' => $this->formaPagoSeleccionada,
                     'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
                 ]);
-    
+
                 $this->suscripciones = false;
-    
+
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
                 ]);
-    
+
                 $this->borrar();
             } else {
                 $this->dispatchBrowserEvent('alert', [

@@ -24,21 +24,15 @@ class Tiros extends Component
 
     public function render()
     {
-        /* $ejemplares = Ejemplar::where('id', '>=', 1); */
-        /* $resultado = Cliente::where('id', '>=', 1); */
-        /* $ejemplares = Ejemplar::all(); */
         $domicilios = Domicilio::all();
         $this->ruta = Ruta::all();
         $suscripcion = Suscripcion::all();
-        /* dd($suscripcion[0]['suscripcion']); */
-        // dd($ruta);
         $keyWord = '%' . $this->keyWord . '%';
 
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
         $this->dateFiltro = new Carbon($this->de);
 
-        /* $dateT = new Carbon($this->to); */
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
             /* $ejemplares = Ejemplar::whereBetween('created_at', [$dateF->format('Y-m-d')." 00:00:00", $dateT->format('Y-m-d')." 23:59:59"])->get(); */
@@ -58,8 +52,6 @@ class Tiros extends Component
                 ->where('cliente.nombre', 'like', '%' . $this->keyWord . '%')
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
                 ->get($this->diaS);
-
-            /* dd($this->suscripcion); */
         }
 
         if ($this->rutaSeleccionada == "Todos") {
@@ -98,10 +90,6 @@ class Tiros extends Component
                 ->get($this->diaS);
         }
 
-        /* dd($maxWidth['md']); */
-
-        /* return view('livewire.tiros.tiro-modal'); */
-
         return view('livewire.tiros.tiro', [
             'resultado' => $this->resultados,
             'suscripcion' => $this->suscripcion,
@@ -129,8 +117,6 @@ class Tiros extends Component
             ->where('cliente.nombre', 'like', '%' . $this->keyWord . '%')
             ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
             ->get($this->diaS);
-
-        /* dd($this->resultados); */
 
         $pdfContent = PDF::loadView('livewire.tiros.pdf', [
             'resultado' => $this->resultados,
@@ -308,11 +294,9 @@ class Tiros extends Component
         $this->modalHistorial = false;
         $this->modalRemision = false;
         $this->showingModal = false;
-        /* dd($id); */
         $tiros = Tiro::find($id);
         $this->tiros_id = $id;
         $this->devuelto = $tiros->devuelto;
-        /* dd($this->devuelto); */
     }
 
     public function cerrarEditar()
@@ -327,9 +311,7 @@ class Tiros extends Component
     {
         $tiros = Tiro::find($this->tiros_id);
         if ($this->devuelto) {
-            /* $tiros->entregar - $this->devuelto; */
             if ($tiros->entregar >= $this->devuelto) {
-                /* dd($this->devuelto); */
                 $tiros->update([
                     'devuelto' => $tiros->devuelto + $this->devuelto,
                     'entregar' => $tiros->entregar - $this->devuelto,
