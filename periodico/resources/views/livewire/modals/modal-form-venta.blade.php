@@ -1,9 +1,9 @@
-<x-jet-dialog-modal wire:model="modalFormDom" maxWidth="5xl">
+<x-jet-dialog-modal wire:model="modalV" maxWidth="5xl">
 
     <x-slot name="title">
         <div class="flex sm:px-6">
             <h1 class="mb-3 text-2xl text-black font-bold ml-3">Crear Venta</h1>
-            <button type="button" wire:click="$set('modalFormDom', false)" wire:loading.attr="disabled"
+            <button type="button" wire:click="$set('modalV', false)" wire:loading.attr="disabled"
                 class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -17,16 +17,252 @@
     </x-slot>
 
     <x-slot name="content">
-
-
+        <div class="px-4 mb-6" flex-grow>
+            <div class="flex">
+                <div class="w-1/2 px-2">
+                    <p class="font-bold">Selecciona el cliente</p>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <select
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
+                        wire:model="clienteSeleccionado" style="width: 100%">
+                        <option value=''>Selecciona un cliente</option>
+                        @foreach ($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                        @endforeach
+                        @error('clienteSeleccionado')
+                            <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                        @enderror
+                    </select>
+                </div>
+            </div>
+            @foreach ($dataClient as $data)
+                <div class="flex mt-2">
+                    <div class="w-1/2 px-2">
+                        <p class="font-bold">FACTURAR A:</p>
+                        <b class="">Clave: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
+                                value="{{ $loop->iteration }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <br>
+                        <b>R.F.C.: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                value="{{ $data->rfc_input }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <br>
+                        <b>Nombre: <input type="text" style="height: 1.7rem; margin-left: 1.2rem;"
+                                value="{{ $data->nombre }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                </div>
+                <div class="flex mt-1">
+                    <div class="w-1/2 px-2">
+                        <b>Calle: <input type="text" style="height: 1.7rem; margin-left: 2.6rem;"
+                                value="{{ $data->calle }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>No. Int: <input type="text" style="height: 1.7rem; margin-left: 1.3rem;"
+                                value="{{ $data->noint }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>No. Ext.: <input type="text" style="height: 1.7rem; margin-left: 1.2rem;"
+                                value="{{ $data->noext }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                </div>
+                <div class="flex mt-1">
+                    <div class="w-1/2 px-2">
+                        <b>Colonia: <input type="text" style="height: 1.7rem; margin-left: 1.4rem;"
+                                value="{{ $data->colonia }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>C.P.: <input type="text" style="height: 1.7rem; margin-left: 2.5rem;"
+                                value="{{ $data->cp }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>Localidad: <input type="text" style="height: 1.7rem; margin-left: 0.4rem;"
+                                value="{{ $data->localidad }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                </div>
+                <div class="flex mt-1">
+                    
+                    <div class="w-1/2 px-2">
+                        <b>Municipio: <input type="text" style="height: 1.7rem; margin-left: 0.5rem;"
+                                value="{{ $data->municipio }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>Estado: <input type="text" style="height: 1.7rem; margin-left: 1.1rem;"
+                                value="{{ $data->estado }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>País: <input type="text" style="height: 1.7rem; margin-left: 2.9rem;"
+                                value="{{ $data->pais }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                </div>
+                <div class="flex mt-1">
+                    <div class="w-1/2 px-2">
+                        <b>E-mail: <input type="text" style="height: 1.7rem; margin-left: 1.8rem;"
+                                value="{{ $data->email }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 px-2">
+                        <b>Tel: <input type="text" style="height: 1.7rem; margin-left: 2.9rem;"
+                                value="{{ $data->telefono }}" class="border-0 bg-gray-200" disabled></b>
+                    </div>
+                    <div class="w-1/2 p-2"></div>
+                </div>
+            @endforeach
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <p class="font-bold">Desde:</p>
+                </div>
+                <div class="w-1/2 p-2">
+                    <p class="font-bold">Hasta:</p>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <x-jet-input class="w-full" type="date" wire:model="from">
+                    </x-jet-input>
+                </div>
+                <div class="w-1/2 p-2">
+                    <x-jet-input class="w-full" type="date" wire:model="">
+                    </x-jet-input>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Lunes(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunes') border-red-500 @enderror"
+                        id="lunes" wire:model.defer="lunes" placeholder="Escribe la cantidad" />
+                    @error('lunes')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Martes(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martes') border-red-500 @enderror"
+                        id="martes" wire:model.defer="martes" placeholder="Escribe la cantidad" />
+                    @error('martes')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Miércoles(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miercoles') border-red-500 @enderror"
+                        id="miércoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
+                    @error('miércoles')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Jueves(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('jueves') border-red-500 @enderror"
+                        id="jueves" wire:model.defer="jueves" placeholder="Escribe la cantidad" />
+                    @error('jueves')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Viernes(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernes') border-red-500 @enderror"
+                        id="viernes" wire:model.defer="viernes" placeholder="Escribe la cantidad" />
+                    @error('viernes')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Sábado(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sábado') border-red-500 @enderror"
+                        id="sábado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
+                    @error('sábado')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="exampleFormControlInput2"
+                        class="block text-black text-sm font-bold mb-2">Domingo(Opcional):</label>
+                    <input type="number"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('domingo') border-red-500 @enderror"
+                        id="domingo" wire:model.defer="domingo" placeholder="Escribe la cantidad" />
+                    @error('domingo')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
     </x-slot>
 
     <x-slot name="footer">
+        {{-- <div class="flex-auto w-64 px-4 sm:px-6">
+            <x-jet-secondary-button
+                class="inline-flex items-center w-full justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
+                wire:click="$set('ejemplarModalOpen', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-jet-secondary-button>
+        </div> --}}
+
         <div class="flex-auto w-64 px-4 sm:px-6">
             {{-- <button wire:click.prevent="openModalAnterior()" type="button"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                 Anterior
             </button> --}}
+        </div>
+
+        <div class="flex-auto w-64 px-4 sm:px-6">
+            @if ($status == 'updated')
+                <button wire:click.prevent="update" type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Actualizar
+                </button>
+            @else
+                <button wire:click.prevent="store" type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Crear
+                </button>
+            @endif
         </div>
 
     </x-slot>

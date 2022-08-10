@@ -66,20 +66,27 @@ class Clientes extends Component
             'Tarjeta de servicios' => 'Tarjeta de servicios',
         ];
 
-        if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
-            $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
-            $this->modificarFecha = false;
-        } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
-            $this->to = $this->dateF->addMonths(3)->format('Y-m-d');
-            $this->modificarFecha = false;
-        } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
-            $this->to = $this->dateF->addMonths(6)->format('Y-m-d');
-            $this->modificarFecha = false;
-        } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
-            $this->to = $this->dateF->addYear(1)->format('Y-m-d');
-            $this->modificarFecha = false;
-        } else if ($this->periodoSuscripcionSeleccionada == 'esco') {
-            $this->modificarFecha = true;
+        switch ($this->periodoSuscripcionSeleccionada) {
+            case 'Mensual':
+                $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
+                $this->modificarFecha = false;
+                break;
+            case 'Trimestral':
+                $this->to = $this->dateF->addMonths(3)->format('Y-m-d');
+                $this->modificarFecha = false;
+                break;
+            case 'Semestral':
+                $this->to = $this->dateF->addMonths(6)->format('Y-m-d');
+                $this->modificarFecha = false;
+                break;
+            case 'Anual':
+                $this->to = $this->dateF->addYear(1)->format('Y-m-d');
+                $this->modificarFecha = false;
+                break;
+
+            default:
+                $this->modificarFecha = true;
+                break;
         }
 
         $rutas = Ruta::pluck('nombreruta', 'id');
@@ -92,10 +99,8 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-        /* dd($this->dataClient); */
-
-        if ($this->diasSuscripcionSeleccionada != null) {
-            if ($this->diasSuscripcionSeleccionada == 'l_v') {
+        switch ($this->diasSuscripcionSeleccionada) {
+            case 'l_v':
                 $this->lunes = true;
                 $this->martes = true;
                 $this->miércoles = true;
@@ -104,7 +109,8 @@ class Clientes extends Component
                 $this->sábado = false;
                 $this->domingo = false;
                 $this->allow = false;
-            } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
+                break;
+            case 'l_d':
                 $this->lunes = true;
                 $this->martes = true;
                 $this->miércoles = true;
@@ -113,7 +119,9 @@ class Clientes extends Component
                 $this->sábado = true;
                 $this->domingo = true;
                 $this->allow = false;
-            } else if ($this->diasSuscripcionSeleccionada == 'esc_man') {
+                break;
+            
+            default:
                 $this->lunes = false;
                 $this->martes = false;
                 $this->miércoles = false;
@@ -122,52 +130,38 @@ class Clientes extends Component
                 $this->sábado = false;
                 $this->domingo = false;
                 $this->allow = true;
-            }
-        } else {
-            $this->lunes = false;
-            $this->martes = false;
-            $this->miércoles = false;
-            $this->jueves = false;
-            $this->viernes = false;
-            $this->sábado = false;
-            $this->domingo = false;
+                break;
         }
 
-        if ($this->tarifaSeleccionada == 'Base') {
-            if ($this->cantEjem == 0) {
-                $this->total = $this->total = 0;
-                $this->totalDesc = $this->totalDesc = 0;
-            } else if ($this->cantEjem >= 1) {
-                $this->total = $this->cantEjem * 330;
-                $this->totalDesc = $this->cantEjem * 330;
-                if ($this->descuento) {
-                    if ($this->descuento <= $this->total) {
-                        $this->totalDesc = ($this->total - $this->descuento);
-                    } else {
-                        $this->dispatchBrowserEvent('alert', [
-                            'message' => ($this->status == 'created') ? '¡No puedes aplicar un descuento mayora la cantidad!' : ''
-                        ]);
-                    }
+
+        if ($this->tarifaSeleccionada) {
+            if ($this->tarifaSeleccionada === 'Base') {
+                if ($this->cantEjem >= 1) {
+                    $this->total = $this->cantEjem * 330;
+                    $this->totalDesc = $this->cantEjem * 330;
+                }
+            } else if ($this->tarifaSeleccionada === 'Ejecutiva') {
+                if ($this->cantEjem >= 1) {
+                    $this->total = $this->cantEjem * 300;
+                    $this->totalDesc = $this->cantEjem * 300;
                 }
             }
-        } else if ($this->tarifaSeleccionada == 'Ejecutiva') {
             if ($this->cantEjem == 0) {
                 $this->total = $this->total = 0;
                 $this->totalDesc = $this->totalDesc = 0;
-            } else if ($this->cantEjem >= 1) {
-                $this->total = $this->cantEjem * 300;
-                $this->totalDesc = $this->cantEjem * 300;
             }
+            if ($this->descuento) {
+                { $this->descuento <= $this->total ? $this->totalDesc = ($this->total - $this->descuento) : $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡No puedes aplicar un descuento mayora la cantidad!' : ''
+                ]); }
+            }
+
         }
 
         $this->domiciliosSubs = DomicilioSubs
             ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
             ->select('domicilio_subs.*', 'ruta.nombreruta')
             ->get();
-
-        /* if($this->datoSeleccionado) {
-            dd($this->datoSeleccionado);
-        } */
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
@@ -215,6 +209,17 @@ class Clientes extends Component
     }
     public function openClientModal()
     {
+        $this->validate([
+            'clasificacion' => 'required',
+            'rfc' => 'required',
+            'nombre' => 'required',
+            'estado' => 'required',
+            'pais' => 'required',
+            'regimen_fiscal' => 'required',
+            'telefono' => 'required|max:10',
+            'rfc_input' => 'required',
+        ]);
+
         $this->isModalOpen = false;
         /* $this->resetInput(); */
         $this->ejemplarModalOpen = false;
@@ -246,14 +251,9 @@ class Clientes extends Component
     }
     public function modalCrearDomSubs()
     {
-        if ($this->clienteSeleccionado) {
-            $this->modalDomSubs = true;
-            /* dd($this->domiciliosSubs); */
-        } else {
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
-            ]);
-        }
+        { $this->clienteSeleccionado ? $this->modalDomSubs = true : $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
+        ]); }
     }
     public function modalCrearDom()
     {
@@ -343,53 +343,23 @@ class Clientes extends Component
     }
 
     public function store()
-    {
-        if ($this->noint) {
-            $this->noint;
-        } else {
-            $this->noint = null;
-        }
-
-        if ($this->lunes) {
-            $this->lunes;
-        } else {
-            $this->lunes = 0;
-        }
-
-        if ($this->martes) {
-            $this->martes;
-        } else {
-            $this->martes = 0;
-        }
-
-        if ($this->miércoles) {
-            $this->miércoles;
-        } else {
-            $this->miércoles = 0;
-        }
-
-        if ($this->jueves) {
-            $this->jueves;
-        } else {
-            $this->jueves = 0;
-        }
-
-        if ($this->viernes) {
-            $this->viernes;
-        } else {
-            $this->viernes = 0;
-        }
-
-        if ($this->sábado) {
-            $this->sábado;
-        } else {
-            $this->sábado = 0;
-        }
-
-        if ($this->domingo) {
-            $this->domingo;
-        } else {
-            $this->domingo = 0;
+    { 
+        {
+            $this->noint ? $this->noint : null;
+        } {
+            $this->lunes ? $this->lunes : 0;
+        } {
+            $this->martes ? $this->martes : 0;
+        } {
+            $this->miércoles ? $this->miércoles : 0;
+        } {
+            $this->jueves ? $this->jueves : 0;
+        } {
+            $this->viernes ? $this->viernes : 0;
+        } {
+            $this->sábado ? $this->sábado : 0;
+        } {
+            $this->domingo ? $this->domingo : 0;
         }
 
         $this->validate([
@@ -440,7 +410,7 @@ class Clientes extends Component
             'referencia' => $this->referencia,
         ]);
 
-        Ejemplar::Create([
+        /* Ejemplar::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
             'lunes' => $this->lunes,
             'martes' => $this->martes,
@@ -449,14 +419,13 @@ class Clientes extends Component
             'viernes' => $this->viernes,
             'sábado' => $this->sábado,
             'domingo' => $this->domingo,
-        ]);
+        ]); */
 
         /* $this->resetInput(); */
         $this->emit('closeModal');
         $this->updateMode = false;
         $this->closeModalPopover();
         $this->clienteModalOpen = false;
-        /* session()->flash('message', $this->cliente_id | $this->domicilio_id | $this->ejemplar_id ? '¡Cliente Actualizado!.' : '¡Cliente Creado!.'); */
         $this->toast();
     }
 
@@ -524,14 +493,6 @@ class Clientes extends Component
             'clasificacion' => 'required',
             'rfc' => 'required',
             'rfc_input' => 'required',
-
-            'lunes' => 'required',
-            'martes' => 'required',
-            'miércoles' => 'required',
-            'jueves' => 'required',
-            'viernes' => 'required',
-            'sábado' => 'required',
-            'domingo' => 'required',
         ]);
 
         $cliente = Cliente::find($this->cliente_id);
@@ -562,7 +523,7 @@ class Clientes extends Component
             'referencia' => $this->referencia,
         ]);
 
-        $ejemplar = Ejemplar::find($this->ejemplar_id);
+        /* $ejemplar = Ejemplar::find($this->ejemplar_id);
         $ejemplar->update([
             'lunes' => $this->lunes,
             'martes' => $this->martes,
@@ -571,7 +532,7 @@ class Clientes extends Component
             'viernes' => $this->viernes,
             'sábado' => $this->sábado,
             'domingo' => $this->domingo,
-        ]);
+        ]); */
 
         $this->toast();
         $this->resetInput();
@@ -590,7 +551,6 @@ class Clientes extends Component
     {
         $this->status = 'delete';
         Cliente::find($id)->delete();
-        /* session()->flash('message', 'Cliente Eliminado!.'); */
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
         ]);
@@ -600,13 +560,9 @@ class Clientes extends Component
 
     public function createSubs()
     {
-        /* if ($this->noint) {
-            $this->noint;
-        } else {
-            $this->noint = null;
-        } */
-
-        { $this->noint ? $this->noint : $this->noint = null; }
+        {
+            $this->noint ? $this->noint : $this->noint = null;
+        }
 
         $this->status = 'created';
 
@@ -644,11 +600,16 @@ class Clientes extends Component
         $this->modalDomSubs = false;
     }
 
+    public function crearVenta() 
+    {
+        
+    }
+
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
 
-            if($this->domicilioSeleccionado) {
+            if ($this->domicilioSeleccionado) {
                 if ($this->cantEjem == '0') {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
@@ -704,8 +665,6 @@ class Clientes extends Component
                     'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
                 ]);
             }
-
-            /* dd('datos cliente', $this->clienteSeleccionado, 'fecha actual', $this->date, 'suscripcion', $this->tipoSubscripcion, 'la suscripcion es una', $this->subscripcionEs, 'datos del cliente', $this->dataClient, 'tarifa', $this->tarifaSeleccionada, 'ejemplares', $this->cantEjem, 'precio', $this->precio, 'contrato', $this->contrato, 'tipo de suscripcion', $this->tipoSuscripcionSeleccionada, 'periodo', $this->periodoSuscripcionSeleccionada, 'del', $this->from, 'al', $this->to, 'dias', $this->diasSuscripcionSeleccionada, 'lunes', $this->lunes, 'martes', $this->martes, 'miercoles', $this->miércoles, 'jueves', $this->jueves, 'viernes', $this->viernes, 'sabado', $this->sábado, 'domingo', $this->domingo, 'descuento', $this->descuento, 'observacion', $this->observacion, 'forma de pago', $this->formaPagoSeleccionada); */
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
@@ -769,7 +728,6 @@ class Clientes extends Component
                 $this->modalDomSubs = false;
             }
         } else {
-
             array_push($this->domicilioSeleccionado, DomicilioSubs
                 ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
                 ->select('domicilio_subs.*', 'ruta.nombreruta')
