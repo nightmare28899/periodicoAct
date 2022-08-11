@@ -12,6 +12,7 @@ use App\Models\Tarifa;
 use App\Models\domicilioSubs;
 use App\Models\Suscripcion;
 use Carbon\Carbon;
+use App\Models\ventas;
 
 class Clientes extends Component
 {
@@ -19,7 +20,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -30,7 +31,9 @@ class Clientes extends Component
         $this->date = new Carbon();
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
+        $this->converHasta = new Carbon($this->desde);
         $this->dateFiltro = new Carbon($this->to);
+        $this->desde = $this->converHasta->format('Y-m-d');
         $this->from = $this->dateF->format('Y-m-d');
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
@@ -120,7 +123,7 @@ class Clientes extends Component
                 $this->domingo = true;
                 $this->allow = false;
                 break;
-            
+
             default:
                 $this->lunes = false;
                 $this->martes = false;
@@ -332,34 +335,20 @@ class Clientes extends Component
         $this->referencia = '';
         $this->ruta_id = '';
         $this->tarifa_id = '';
-
+/*
         $this->lunes = '';
         $this->martes = '';
         $this->miércoles = '';
         $this->jueves = '';
         $this->viernes = '';
         $this->sábado = '';
-        $this->domingo = '';
+        $this->domingo = ''; */
     }
 
     public function store()
-    { 
+    {
         {
             $this->noint ? $this->noint : null;
-        } {
-            $this->lunes ? $this->lunes : 0;
-        } {
-            $this->martes ? $this->martes : 0;
-        } {
-            $this->miércoles ? $this->miércoles : 0;
-        } {
-            $this->jueves ? $this->jueves : 0;
-        } {
-            $this->viernes ? $this->viernes : 0;
-        } {
-            $this->sábado ? $this->sábado : 0;
-        } {
-            $this->domingo ? $this->domingo : 0;
         }
 
         $this->validate([
@@ -543,7 +532,7 @@ class Clientes extends Component
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'created') ? '¡Cliente Creado Correctamente!' : '¡Cliente Actualizado Correctamente!'
+            'message' => ($this->status == 'created') ? '¡Cliente creado correctamente!' : '¡Cliente actualizado correctamente!'
         ]);
     }
 
@@ -552,7 +541,7 @@ class Clientes extends Component
         $this->status = 'delete';
         Cliente::find($id)->delete();
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'delete') ? '¡Cliente Eliminado Correctamente!' : ''
+            'message' => ($this->status == 'delete') ? '¡Cliente eliminado correctamente!' : ''
         ]);
     }
 
@@ -600,9 +589,55 @@ class Clientes extends Component
         $this->modalDomSubs = false;
     }
 
-    public function crearVenta() 
+    public function crearVenta()
     {
-        
+        {
+            $this->lunes ? $this->lunes : 0;
+        } {
+            $this->martes ? $this->martes : 0;
+        } {
+            $this->miércoles ? $this->miércoles : 0;
+        } {
+            $this->jueves ? $this->jueves : 0;
+        } {
+            $this->viernes ? $this->viernes : 0;
+        } {
+            $this->sábado ? $this->sábado : 0;
+        } {
+            $this->domingo ? $this->domingo : 0;
+        }
+        if ($this->clienteSeleccionado) {
+            if ($this->lunes || $this->martes || $this->miércoles || $this->jueves || $this->viernes || $this->sábado || $this->domingo) {
+
+                ventas::Create([
+                    'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
+                    'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
+                    'desde' => $this->desde,
+                    'hasta' => $this->hasta,
+                    'lunes' => $this->lunes,
+                    'martes' => $this->martes,
+                    'miércoles' => $this->miércoles,
+                    'jueves' => $this->jueves,
+                    'viernes' => $this->viernes,
+                    'sábado' => $this->sábado,
+                    'domingo' => $this->domingo,
+                ]);
+
+                /* dd($this->clienteSeleccionado, $this->from, $this->to, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo); */
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
+                ]);
+                $this->modalV = false;
+            } else {
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Debes escoger por lo menos un día!' : ''
+                ]);
+            }
+        } else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
+            ]);
+        }
     }
 
     public function suscripciones()
@@ -677,7 +712,7 @@ class Clientes extends Component
         $this->status = 'delete';
         domicilioSubs::find($id)->delete();
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'delete') ? 'Domicilio Eliminado Correctamente!' : ''
+            'message' => ($this->status == 'delete') ? 'Domicilio eliminado correctamente!' : ''
         ]);
 
         $this->modalDomSubs = false;

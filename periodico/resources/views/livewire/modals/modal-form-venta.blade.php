@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="flex mt-1">
-                    
+
                     <div class="w-1/2 px-2">
                         <b>Municipio: <input type="text" style="height: 1.7rem; margin-left: 0.5rem;"
                                 value="{{ $data->municipio }}" class="border-0 bg-gray-200" disabled></b>
@@ -114,20 +114,15 @@
             <div class="flex">
                 <div class="w-1/2 p-2">
                     <p class="font-bold">Desde:</p>
+                    <x-jet-input class="w-full" type="date" wire:model="desde">
+                    </x-jet-input>
                 </div>
                 <div class="w-1/2 p-2">
                     <p class="font-bold">Hasta:</p>
-                </div>
-            </div>
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <x-jet-input class="w-full" type="date" wire:model="from">
+                    <x-jet-input class="w-full" type="date" wire:model="hasta">
                     </x-jet-input>
                 </div>
-                <div class="w-1/2 p-2">
-                    <x-jet-input class="w-full" type="date" wire:model="">
-                    </x-jet-input>
-                </div>
+                <div class="w-1/2"></div>
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
@@ -152,6 +147,7 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="w-1/2"></div>
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
@@ -176,6 +172,7 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="w-1/2"></div>
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
@@ -200,6 +197,7 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="w-1/2"></div>
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
@@ -213,6 +211,8 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="w-1/2"></div>
+                <div class="w-1/2"></div>
             </div>
         </div>
     </x-slot>
@@ -249,7 +249,7 @@
                     Actualizar
                 </button>
             @else
-                <button wire:click.prevent="store" type="button"
+                <button wire:click.prevent="crearVenta" type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -113,7 +113,7 @@ class Rutas extends Component
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'created') ? '¡Ruta Creada Correctamente!' : '¡Ruta Actualizada Correctamente!'
+            'message' => ($this->status == 'created') ? '¡Ruta creada correctamente!' : '¡Ruta actualizada correctamente!'
         ]);
     }
     public function delete($id)

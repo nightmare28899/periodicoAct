@@ -52,18 +52,19 @@
             /* alert(event.detail.message); */
             /* console.log(event.detail.message); */
             switch (event.detail.message) {
-                case '¡Cliente Creado Correctamente!':
-                case '¡Ruta Creada Correctamente!':
-                case '¡Tarifa Creada Correctamente!':
+                case '¡Cliente creado correctamente!':
+                case '¡Ruta creada correctamente!':
+                case '¡Tarifa creada correctamente!':
                 case '¡Tiro generado exitosamente!':
                 case '¡Remisión generada exitosamente!':
                 case '¡Se generó exitosamente la devolución!':
                 case '¡Ajuste realizado!':
                 case '¡Domicilio creado exitosamente!':
                 case '¡Suscripción generada correctamente!':
+                case '¡Venta generada exitosamente!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
-                case '¡Cliente Eliminado Correctamente!':
+                case '¡Cliente eliminado correctamente!':
                 case '¡Debes seleccionar un elemento primero!':
                 case '¡Debes seleccionar solo un elemento a la vez!':
                 case '¡Debes escoger una fecha primero!':
@@ -73,17 +74,18 @@
                 case '¡Selecciona un cliente!':
                 case '¡No puedes escoger el mismo domicilio!':
                 case '¡No puedes aplicar un descuento mayora la cantidad!':
-                case 'Domicilio Eliminado Correctamente!':
+                case 'Domicilio eliminado correctamente!':
                 case '¡Seleccione un domicilio!':
                 case '¡Debes seleccionar un cliente primero!':
+                case '¡Debes escoger por lo menos un día!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case 'warning':
                     toastr.warning(event.detail.message, event.detail.title);
                     break;
-                case '¡Cliente Actualizado Correctamente!':
-                case '¡Ruta Actualizada Correctamente!':
-                case '¡Tarifa Actualizada Correctamente!':
+                case '¡Cliente actualizado correctamente!':
+                case '¡Ruta actualizada correctamente!':
+                case '¡Tarifa actualizada correctamente!':
                     toastr.info(event.detail.message, '¡Actualizado!');
                     break;
                 default:

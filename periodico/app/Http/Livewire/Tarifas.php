@@ -109,7 +109,7 @@ class Tarifas extends Component
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'created') ? '¡Tarifa Creada Correctamente!' : '¡Tarifa Actualizada Correctamente!'
+            'message' => ($this->status == 'created') ? '¡Tarifa creada correctamente!' : '¡Tarifa actualizada correctamente!'
         ]);
     }
     public function delete($id)
