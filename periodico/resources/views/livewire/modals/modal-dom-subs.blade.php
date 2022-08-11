@@ -66,7 +66,7 @@
                     </thead>
                     <tbody>
                         @foreach ($domiciliosSubs as $domicilio)
-                            @if ($domicilio->id == $clienteSeleccionado)
+                            @if ($domicilio->cliente_id == $clienteSeleccionado)
                                 <tr
                                     class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
                                     <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">

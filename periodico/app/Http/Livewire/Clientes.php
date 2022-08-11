@@ -46,6 +46,7 @@ class Clientes extends Component
             'T-E' => 'T-E',
             'Sanborn' => 'SANBORN',
         ];
+        
         $formaPago = [
             'Efectivo' => 'Efectivo',
             'Cheque Nominativo' => 'Cheque Nominativo',
@@ -69,28 +70,19 @@ class Clientes extends Component
             'Tarjeta de servicios' => 'Tarjeta de servicios',
         ];
 
-        switch ($this->periodoSuscripcionSeleccionada) {
-            case 'Mensual':
-                $this->to = $this->dateF->addMonth(1)->format('Y-m-d');
-                $this->modificarFecha = false;
-                break;
-            case 'Trimestral':
-                $this->to = $this->dateF->addMonths(3)->format('Y-m-d');
-                $this->modificarFecha = false;
-                break;
-            case 'Semestral':
-                $this->to = $this->dateF->addMonths(6)->format('Y-m-d');
-                $this->modificarFecha = false;
-                break;
-            case 'Anual':
-                $this->to = $this->dateF->addYear(1)->format('Y-m-d');
-                $this->modificarFecha = false;
-                break;
+        $days = $this->periodoSuscripcionSeleccionada === 'Mensual'
+        ? 1 
+        : ($this->periodoSuscripcionSeleccionada === 'Trimestral' 
+            ? 3 
+            : ($this->periodoSuscripcionSeleccionada === 'Semestral'
+                ? 6 
+                : ($this->periodoSuscripcionSeleccionada === 'Anual'
+                    ? 12 
+                    : 0))) ;
+        
+        $this->to = $this->dateF->addMonth($days)->format('Y-m-d');
 
-            default:
-                $this->modificarFecha = true;
-                break;
-        }
+        $days > 0 ? $this->modificarFecha = false : $this->modificarFecha = true;
 
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('id', 'id');
@@ -138,20 +130,14 @@ class Clientes extends Component
 
 
         if ($this->tarifaSeleccionada) {
-            if ($this->tarifaSeleccionada === 'Base') {
-                if ($this->cantEjem >= 1) {
-                    $this->total = $this->cantEjem * 330;
-                    $this->totalDesc = $this->cantEjem * 330;
-                }
-            } else if ($this->tarifaSeleccionada === 'Ejecutiva') {
-                if ($this->cantEjem >= 1) {
-                    $this->total = $this->cantEjem * 300;
-                    $this->totalDesc = $this->cantEjem * 300;
-                }
-            }
-            if ($this->cantEjem == 0) {
-                $this->total = $this->total = 0;
-                $this->totalDesc = $this->totalDesc = 0;
+            $costo = 0;
+            if ($this->cantEjem >= 1) {
+                $costo = $this->tarifaSeleccionada === 'Base' ? 330 : ($this->tarifaSeleccionada === 'Ejecutiva' ? 300 : 0);
+                $this->total = $this->cantEjem * $costo;
+                $this->totalDesc = $this->cantEjem * $costo;
+            } else {
+                $this->total = 0;
+                $this->totalDesc = 0;
             }
             if ($this->descuento) {
                 { $this->descuento <= $this->total ? $this->totalDesc = ($this->total - $this->descuento) : $this->dispatchBrowserEvent('alert', [
@@ -162,7 +148,8 @@ class Clientes extends Component
         }
 
         $this->domiciliosSubs = DomicilioSubs
-            ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+            ::join("cliente", "cliente.id", "=", "domicilio_subs.cliente_id")
+            ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
             ->select('domicilio_subs.*', 'ruta.nombreruta')
             ->get();
 
@@ -191,7 +178,6 @@ class Clientes extends Component
     public function primerModal()
     {
         $this->openModalPopover();
-        $this->status = 'created';
     }
     public function estadoRFC()
     {
@@ -294,7 +280,7 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        $Ejemplar = Ejemplar::find($id);
+        /* $Ejemplar = Ejemplar::find($id);
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
@@ -302,7 +288,7 @@ class Clientes extends Component
         $this->jueves = $Ejemplar->jueves;
         $this->viernes = $Ejemplar->viernes;
         $this->sábado = $Ejemplar->sábado;
-        $this->domingo = $Ejemplar->domingo;
+        $this->domingo = $Ejemplar->domingo; */
 
         $this->detallesModalOpen = true;
     }
@@ -446,7 +432,7 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        $Ejemplar = Ejemplar::find($id);
+        /* $Ejemplar = Ejemplar::find($id);
         $this->ejemplar_id = $Ejemplar->id;
         $this->lunes = $Ejemplar->lunes;
         $this->martes = $Ejemplar->martes;
@@ -454,7 +440,7 @@ class Clientes extends Component
         $this->jueves = $Ejemplar->jueves;
         $this->viernes = $Ejemplar->viernes;
         $this->sábado = $Ejemplar->sábado;
-        $this->domingo = $Ejemplar->domingo;
+        $this->domingo = $Ejemplar->domingo; */
 
         $this->openModalPopover();
 
@@ -651,7 +637,11 @@ class Clientes extends Component
                     ]);
                 }
 
-                $this->validate([
+                for ($i=0; $i<=count($this->domicilioSeleccionado); $i++) {
+                    dd($i);
+                }                
+
+                /* $this->validate([
                     'formaPagoSeleccionada' => 'required',
                     'tarifaSeleccionada' => 'required',
                     'cantEjem' => 'required',
@@ -685,8 +675,8 @@ class Clientes extends Component
                     'importe' => $this->total,
                     'total' => $this->totalDesc,
                     'formaPago' => $this->formaPagoSeleccionada,
-                    'domicilio_id' => $this->domicilio_id = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->first()->id,
-                ]);
+                    'domicilio_id' => json_encode($this->domicilioSeleccionado),
+                ]); */
 
                 $this->suscripciones = false;
 
@@ -752,7 +742,6 @@ class Clientes extends Component
                 }
             }
             if ($value['id'] != $id) {
-                dd('dato seleccionado', $this->domicilioSeleccionado);
                 array_push($this->domicilioSeleccionado, DomicilioSubs
                     ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
                     ->select('domicilio_subs.*', 'ruta.nombreruta')
