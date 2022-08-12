@@ -130,7 +130,7 @@
                         class="block text-black text-sm font-bold mb-2">Lunes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunes') border-red-500 @enderror"
-                        id="lunes" wire:model.defer="lunes" placeholder="Escribe la cantidad" />
+                        id="lunes" wire:model="lunes" placeholder="Escribe la cantidad" />
                     @error('lunes')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -141,7 +141,7 @@
                         class="block text-black text-sm font-bold mb-2">Martes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martes') border-red-500 @enderror"
-                        id="martes" wire:model.defer="martes" placeholder="Escribe la cantidad" />
+                        id="martes" wire:model="martes" placeholder="Escribe la cantidad" />
                     @error('martes')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -155,7 +155,7 @@
                         class="block text-black text-sm font-bold mb-2">Miércoles(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miercoles') border-red-500 @enderror"
-                        id="miércoles" wire:model.defer="miércoles" placeholder="Escribe la cantidad" />
+                        id="miércoles" wire:model="miércoles" placeholder="Escribe la cantidad" />
                     @error('miércoles')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -166,7 +166,7 @@
                         class="block text-black text-sm font-bold mb-2">Jueves(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('jueves') border-red-500 @enderror"
-                        id="jueves" wire:model.defer="jueves" placeholder="Escribe la cantidad" />
+                        id="jueves" wire:model="jueves" placeholder="Escribe la cantidad" />
                     @error('jueves')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -180,7 +180,7 @@
                         class="block text-black text-sm font-bold mb-2">Viernes(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernes') border-red-500 @enderror"
-                        id="viernes" wire:model.defer="viernes" placeholder="Escribe la cantidad" />
+                        id="viernes" wire:model="viernes" placeholder="Escribe la cantidad" />
                     @error('viernes')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -191,7 +191,7 @@
                         class="block text-black text-sm font-bold mb-2">Sábado(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sábado') border-red-500 @enderror"
-                        id="sábado" wire:model.defer="sábado" placeholder="Escribe la cantidad" />
+                        id="sábado" wire:model="sábado" placeholder="Escribe la cantidad" />
                     @error('sábado')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -205,7 +205,7 @@
                         class="block text-black text-sm font-bold mb-2">Domingo(Opcional):</label>
                     <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('domingo') border-red-500 @enderror"
-                        id="domingo" wire:model.defer="domingo" placeholder="Escribe la cantidad" />
+                        id="domingo" wire:model="domingo" placeholder="Escribe la cantidad" />
                     @error('domingo')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -233,35 +233,50 @@
             </button> --}}
         </div>
 
-        <div class="flex-auto w-64 px-4 sm:px-6">
-            @if ($status == 'updated')
-                <button wire:click.prevent="update" type="button"
-                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                    <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10"
-                            stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    Actualizar
-                </button>
-            @else
-                <button wire:click.prevent="crearVenta" type="button"
-                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                    <svg wire:loading wire:target="crearVenta" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10"
-                            stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    Crear
-                </button>
+        <div class="flex-auto w-full px-4 sm:px-6">
+            <button wire:click.prevent="editarVenta" type="button"
+                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <svg wire:loading wire:target="editarVenta" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4">
+                    </circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                Editar
+            </button>
+        </div>
+        <div class="flex-auto w-full px-4 sm:px-6">
+            @if ($editEnabled == true)
+            <button wire:click.prevent="crearVenta" type="button"
+                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <svg wire:loading wire:target="crearVenta" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4">
+                    </circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                actualizar
+            </button>
+            @else 
+            <button wire:click.prevent="crearVenta" type="button"
+                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <svg wire:loading wire:target="crearVenta" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4">
+                    </circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                Crear
+            </button>
             @endif
         </div>
 

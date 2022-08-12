@@ -130,8 +130,8 @@
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tarifa') border-red-500 @enderror"
                         wire:model.defer="tarifa_id" style="width: 100%">
                         <option value=''>Escoge una opción</option>
-                        @foreach ($tarifas as $tarifa)
-                            <option value={{ $tarifa }}>
+                        @foreach ($tarifas as $id => $tarifa)
+                            <option value={{ $id }}>
                                 {{ $tarifa }}
                             </option>
                         @endforeach

@@ -78,6 +78,7 @@
                 case '¡Seleccione un domicilio!':
                 case '¡Debes seleccionar un cliente primero!':
                 case '¡Debes escoger por lo menos un día!':
+                case '¡Falta ingresar la fecha hasta!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case 'warning':

@@ -20,7 +20,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId = [], $editEnabled = false, $ventas;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -78,14 +78,14 @@ class Clientes extends Component
                 ? 6 
                 : ($this->periodoSuscripcionSeleccionada === 'Anual'
                     ? 12 
-                    : 0))) ;
+                    : 0)));
         
         $this->to = $this->dateF->addMonth($days)->format('Y-m-d');
 
         $days > 0 ? $this->modificarFecha = false : $this->modificarFecha = true;
 
         $rutas = Ruta::pluck('nombreruta', 'id');
-        $tarifas = Tarifa::pluck('id', 'id');
+        $tarifas = Tarifa::pluck('tipo', 'id');
 
         $this->dataClient = Cliente
             ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
@@ -144,7 +144,6 @@ class Clientes extends Component
                     'message' => ($this->status == 'created') ? '¡No puedes aplicar un descuento mayora la cantidad!' : ''
                 ]); }
             }
-
         }
 
         $this->domiciliosSubs = DomicilioSubs
@@ -594,26 +593,30 @@ class Clientes extends Component
         }
         if ($this->clienteSeleccionado) {
             if ($this->lunes || $this->martes || $this->miércoles || $this->jueves || $this->viernes || $this->sábado || $this->domingo) {
-
-                ventas::Create([
-                    'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
-                    'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
-                    'desde' => $this->desde,
-                    'hasta' => $this->hasta,
-                    'lunes' => $this->lunes,
-                    'martes' => $this->martes,
-                    'miércoles' => $this->miércoles,
-                    'jueves' => $this->jueves,
-                    'viernes' => $this->viernes,
-                    'sábado' => $this->sábado,
-                    'domingo' => $this->domingo,
-                ]);
-
-                /* dd($this->clienteSeleccionado, $this->from, $this->to, $this->lunes, $this->martes, $this->miércoles, $this->jueves, $this->viernes, $this->sábado, $this->domingo); */
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
-                ]);
-                $this->modalV = false;
+                if ($this->hasta) {
+                    ventas::Create([
+                        'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
+                        'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
+                        'desde' => $this->desde,
+                        'hasta' => $this->hasta,
+                        'lunes' => $this->lunes,
+                        'martes' => $this->martes,
+                        'miércoles' => $this->miércoles,
+                        'jueves' => $this->jueves,
+                        'viernes' => $this->viernes,
+                        'sábado' => $this->sábado,
+                        'domingo' => $this->domingo,
+                    ]);
+    
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
+                    ]);
+                    $this->modalV = false;
+                } else {
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => '¡Falta ingresar la fecha hasta!'
+                    ]);
+                }
             } else {
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡Debes escoger por lo menos un día!' : ''
@@ -626,6 +629,29 @@ class Clientes extends Component
         }
     }
 
+    public function editarVenta()
+    {
+       if ($this->clienteSeleccionado) {
+            $this->editEnabled = true;
+
+            $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
+            $this->desde = $this->ventas[0]['desde'];
+            $this->hasta = $this->ventas[0]['hasta'];
+            $this->lunes = $this->ventas[0]['lunes'];
+            $this->martes = $this->ventas[0]['martes'];
+            $this->miércoles = $this->ventas[0]['miércoles'];
+            $this->jueves = $this->ventas[0]['jueves'];
+            $this->viernes = $this->ventas[0]['viernes'];
+            $this->sábado = $this->ventas[0]['sábado'];
+            $this->domingo = $this->ventas[0]['domingo'];
+            $this->modalV = true;
+       } else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
+            ]);
+       }  
+    }
+
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
@@ -635,13 +661,16 @@ class Clientes extends Component
                     $this->dispatchBrowserEvent('alert', [
                         'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                     ]);
+                } 
+                
+                foreach ($this->domicilioSeleccionado as $key => $value) {
+                    if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
+                        array_push($this->domicilioId, $value['id']);
+                        
+                    }
                 }
 
-                for ($i=0; $i<=count($this->domicilioSeleccionado); $i++) {
-                    dd($i);
-                }                
-
-                /* $this->validate([
+                $this->validate([
                     'formaPagoSeleccionada' => 'required',
                     'tarifaSeleccionada' => 'required',
                     'cantEjem' => 'required',
@@ -675,8 +704,8 @@ class Clientes extends Component
                     'importe' => $this->total,
                     'total' => $this->totalDesc,
                     'formaPago' => $this->formaPagoSeleccionada,
-                    'domicilio_id' => json_encode($this->domicilioSeleccionado),
-                ]); */
+                    'domicilio_id' =>  json_encode($this->domicilioId),  
+                ]);
 
                 $this->suscripciones = false;
 
