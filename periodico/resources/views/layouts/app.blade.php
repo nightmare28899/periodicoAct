@@ -62,6 +62,7 @@
                 case '¡Domicilio creado exitosamente!':
                 case '¡Suscripción generada correctamente!':
                 case '¡Venta generada exitosamente!':
+                case '¡Venta actualizada exitosamente!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':

@@ -96,38 +96,31 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-        switch ($this->diasSuscripcionSeleccionada) {
-            case 'l_v':
-                $this->lunes = true;
-                $this->martes = true;
-                $this->miércoles = true;
-                $this->jueves = true;
-                $this->viernes = true;
+        if ($this->diasSuscripcionSeleccionada) {
+            if ($this->diasSuscripcionSeleccionada == 'l_v') {
                 $this->sábado = false;
                 $this->domingo = false;
-                $this->allow = false;
-                break;
-            case 'l_d':
-                $this->lunes = true;
-                $this->martes = true;
-                $this->miércoles = true;
-                $this->jueves = true;
-                $this->viernes = true;
+            } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
                 $this->sábado = true;
                 $this->domingo = true;
+            }
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
                 $this->allow = false;
-                break;
-
-            default:
-                $this->lunes = false;
-                $this->martes = false;
-                $this->miércoles = false;
-                $this->jueves = false;
-                $this->viernes = false;
-                $this->sábado = false;
-                $this->domingo = false;
-                $this->allow = true;
-                break;
+            
+                if ($this->diasSuscripcionSeleccionada == 'esc_man') {
+                    $this->lunes = false;
+                    $this->martes = false;
+                    $this->miércoles = false;
+                    $this->jueves = false;
+                    $this->viernes = false;
+                    $this->sábado = false;
+                    $this->domingo = false;
+                    $this->allow = true;
+                }
         }
 
 
@@ -148,11 +141,6 @@ class Clientes extends Component
                 }
             }
         }
-
-        /* if ($this->clienteSeleccionado) {
-            $this->limpiarClienteSeleccionado();
-            $this->editEnabled = false;
-        } */
 
         $this->domiciliosSubs = DomicilioSubs
             ::join("cliente", "cliente.id", "=", "domicilio_subs.cliente_id")
@@ -635,6 +623,37 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
+    }
+
+    public function actualizarVenta()
+    {
+        $this->validate([
+            'lunesVentas' => 'required',
+            'martesVentas' => 'required',
+            'miercolesVentas' => 'required',
+            'juevesVentas' => 'required',
+            'viernesVentas' => 'required',
+            'sabadoVentas' => 'required',
+            'domingoVentas' => 'required',
+        ]);
+        $this->status = 'updated';
+        $this->ventas = ventas::where('id', $this->clienteSeleccionado)->first();
+        $this->ventas->update([
+            'desde' => $this->desde,
+            'hasta' => $this->hasta,
+            'lunes' => $this->lunesVentas,
+            'martes' => $this->martesVentas,
+            'miércoles' => $this->miercolesVentas,
+            'jueves' => $this->juevesVentas,
+            'viernes' => $this->viernesVentas,
+            'sábado' => $this->sabadoVentas,
+            'domingo' => $this->domingoVentas,
+        ]);
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
+        ]);
+        $this->limpiarVentaModal();
+        $this->modalV = false;
     }
 
     public function editarVenta()
