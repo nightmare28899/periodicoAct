@@ -81,8 +81,8 @@
                 case '¡Falta ingresar la fecha hasta!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
-                case 'warning':
-                    toastr.warning(event.detail.message, event.detail.title);
+                case '¡El cliente no tiene ningúna venta registrada!':
+                    toastr.warning(event.detail.message, '¡Alerta!');
                     break;
                 case '¡Cliente actualizado correctamente!':
                 case '¡Ruta actualizada correctamente!':
