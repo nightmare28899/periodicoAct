@@ -80,6 +80,8 @@
                 case '¡Debes seleccionar un cliente primero!':
                 case '¡Debes escoger por lo menos un día!':
                 case '¡Falta ingresar la fecha hasta!':
+                case '¡Primero escribe el nombre!':
+                case '¡No hay registros de esa fecha!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

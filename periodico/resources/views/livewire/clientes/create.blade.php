@@ -21,7 +21,7 @@
         <div class="px-4 mb-4" flex-grow>
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput1"
+                    <label for="clasificacion"
                         class="block text-black text-sm font-bold mb-2">Clasificación</label>
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
@@ -75,7 +75,7 @@
                     @endif
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="nombre"
                         class="block text-black text-sm font-bold mb-2">Nombre:</label>
                     <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
@@ -88,7 +88,7 @@
 
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="estado"
                         class="block text-black text-sm font-bold mb-2">Estado:</label>
                     <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('estado') border-red-500 @enderror"
@@ -98,7 +98,7 @@
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="pais"
                         class="block text-black text-sm font-bold mb-2">País:</label>
                     <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
@@ -111,7 +111,7 @@
 
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="email"
                         class="block text-black text-sm font-bold mb-2">E-mail:</label>
                     <input type="email"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('email') border-red-500 @enderror"
@@ -121,7 +121,7 @@
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">E-mail
+                    <label for="email_cobranza" class="block text-black text-sm font-bold mb-2">E-mail
                         de Cobranza:</label>
                     <input type="email"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('email_cobranza') border-red-500 @enderror"
@@ -134,7 +134,7 @@
 
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="telefono"
                         class="block text-black text-sm font-bold mb-2">Teléfono:</label>
                     <input type="number" maxlength="10"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('telefono') border-red-500 @enderror"
@@ -144,7 +144,7 @@
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="exampleFormControlInput2"
+                    <label for="regimen_fiscal"
                         class="block text-black text-sm font-bold mb-2">Régimen
                         Fiscal:</label>
                     <input type="text"

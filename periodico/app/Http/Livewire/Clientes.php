@@ -338,7 +338,9 @@ class Clientes extends Component
             'pais' => 'required',
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
-
+            'email' => 'required',
+            'email_cobranza' => 'required',
+            
             'calle' => 'required',
             'noext' => 'required',
             'colonia' => 'required',

@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="flex-initial mx-1 mt-4" style="width: 100%;">
-                        <input wire:model='keyWord' type="text"
+                        <input wire:model.defer='keyWord' wire:keydown.enter="busqueda" type="text"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tiro">
                     </div>
@@ -86,21 +86,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($resultado as $result)
+                        @foreach ($ventas as $result)
                             @if ($result->{$diaS} != 0)
                                 <tr>
                                     {{-- <td class="border">{{ $loop->iteration }}</td> --}}
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
-                                    <td class="border" wire:model="domicilio">Calle: {{ $result->calle }} <br>
+                                    <td class="border">Calle: {{ $result->calle }} <br>
                                         No. Ext:
                                         {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                         {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                     </td>
-                                    <td wire:model="referencia" class="border">{{ $result->referencia }}</td>
-                                    <td wire:model="fecha" class="border">
-                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                    <td class="border">{{ $result->referencia }}</td>
+                                    <td class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td=>
                                 </tr>
                             @else
                                 <tr>

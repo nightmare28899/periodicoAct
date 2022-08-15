@@ -13,10 +13,11 @@ use App\Models\domicilioSubs;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\ventas;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -27,7 +28,10 @@ class Tiros extends Component
         $domicilios = Domicilio::all();
         $this->ruta = Ruta::all();
         $suscripcion = Suscripcion::all();
+        $ventas = ventas::all();
         $keyWord = '%' . $this->keyWord . '%';
+       
+        /* dd($ventas[0]['desde']); */
 
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
@@ -37,17 +41,28 @@ class Tiros extends Component
             $this->diaS = $this->dateF->translatedFormat('l');
             /* $ejemplares = Ejemplar::whereBetween('created_at', [$dateF->format('Y-m-d')." 00:00:00", $dateT->format('Y-m-d')." 23:59:59"])->get(); */
             /* $ejemplares = Ejemplar::whereDate('created_at', [$dateF->format('Y-m-d H:i:s')])->get($this->dia); */
-            $this->resultados = Cliente
+            /* $this->resultados = Cliente
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where('nombre', 'like', '%' . $this->keyWord . '%')
                 ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS);
-
+                ->get($this->diaS); */
+            /* dd($this->from); */
             
-
+            $this->ventas = ventas
+                ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where(function ($query) {
+                    $query->where('desde', '<=', $this->from)
+                          ->where('hasta', '>=', $this->from);
+                })
+                ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*" ,"ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
+            
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
@@ -93,6 +108,7 @@ class Tiros extends Component
         }
 
         return view('livewire.tiros.tiro', [
+            'ventas' => $this->ventas,
             'resultado' => $this->resultados,
             'suscripcion' => $this->suscripcion,
             'diaS' => $this->diaS,
@@ -100,6 +116,18 @@ class Tiros extends Component
             'de' => $this->de,
             'hasta' => $this->hasta,
         ], compact('domicilios'));
+    }
+
+    public function busqueda() 
+    {
+        if ($this->keyWord) {
+            
+        } else {
+            $this->status = 'created';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Primero escribe el nombre!' : ''
+            ]);
+        }
     }
 
     public function descarga()
