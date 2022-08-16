@@ -36,7 +36,7 @@
                         <x-slot name="content" class="w-full text-center">
                             <a href="{{ url('cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cliente') }}</button></a>
                             <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Tiro') }}</button></a>
-                            <a href="{{ url('remision') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Remisión') }}</button></a>
+                            {{-- <a href="{{ url('remision') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Remisión') }}</button></a> --}}
                         </x-slot>
                     </x-jet-dropdown>
                 </div>

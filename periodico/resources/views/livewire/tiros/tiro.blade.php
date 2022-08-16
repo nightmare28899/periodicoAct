@@ -282,7 +282,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($res as $result)
+                                @foreach ($ventas as $result)
                                     @if ($result->{$diaS} != 0)
                                         <tr>
                                             <td class='px-4 py-2'>

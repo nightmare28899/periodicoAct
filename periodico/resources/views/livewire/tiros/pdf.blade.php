@@ -19,7 +19,7 @@
    <table class="a centrado">
        <thead>
            <tr class="bg-gray-500 text-white">
-               {{-- <th class="px-4 py-2 w-20">No.</th> --}}
+               <th class="px-4 py-2 w-20">Tipo</th>
                <th>Cliente</th>
                <th>Día</thlass=>
                <th>Ejemplares</thclass=>
@@ -29,10 +29,10 @@
            </tr>
        </thead>
        <tbody>
-           @foreach ($resultado as $result)
+           @foreach ($ventas as $result)
                @if ($result->{$diaS} != 0)
                    <tr>
-                       {{-- <td>{{ $loop->iteration }}</td> --}}
+                       <td>Venta/Cliente</td>
                        <td>{{ $result->nombre }}</td>
                        <td>{{ $diaS }} </td>
                        <td>{{ $result->{$diaS} }}</td>
@@ -50,7 +50,7 @@
            @foreach ($suscripcion as $suscri)
                @if ($suscri->{$diaS} != 0)
                    <tr>
-                       {{-- <td>{{ $loop->iteration }}</td> --}}
+                       <td>Suscripción</td>
                        <td>{{ $suscri->nombre }}</td>
                        <td>{{ $diaS }} </td>
                        <td>{{ $suscri->{$diaS} != 0 ? $suscri->cantEjemplares : 0 }}</td>

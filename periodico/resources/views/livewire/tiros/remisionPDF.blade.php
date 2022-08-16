@@ -70,7 +70,7 @@
 </head>
 
 <body>
-    @foreach ($resultado as $result)
+    @foreach ($ventas as $result)
         <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
             <img src="img/logo.jpe" alt="logo la voz" height="36px">
         </div>
