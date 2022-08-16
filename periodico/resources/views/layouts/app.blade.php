@@ -82,6 +82,9 @@
                 case '¡Falta ingresar la fecha hasta!':
                 case '¡Primero escribe el nombre!':
                 case '¡No hay registros de esa fecha!':
+                case '¡Debes ingresar un valor!':
+                case '¡Primero coloca ejemplares!':
+                case '¡No puedes poner una cantidad mayor a los ejemplares!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
@@ -93,7 +96,7 @@
                     toastr.info(event.detail.message, '¡Actualizado!');
                     break;
                 default:
-                    toastr.success(event.detail.message, event.detail.title);
+                    /* toastr.warning(event.detail.message, 'Error'); */
                     break;
             }
         });

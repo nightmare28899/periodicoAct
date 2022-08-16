@@ -13,5 +13,5 @@ class domicilioSubs extends Model
 
     protected $table = 'domicilio_subs';
 
-    protected $fillable = ['cliente_id','calle','noint','noext','colonia','cp','localidad','ciudad','ruta','referencia'];
+    protected $fillable = ['cliente_id','calle','noint','noext','colonia','cp','localidad','ciudad','ruta','referencia','ejemplares'];
 }

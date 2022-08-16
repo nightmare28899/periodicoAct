@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('calle');
             $table->integer('noint')->nullable();
             $table->integer('noext');
+            $table->integer('ejemplares')->nullable();
             $table->string('colonia');
             $table->integer('cp');
             $table->string('localidad');

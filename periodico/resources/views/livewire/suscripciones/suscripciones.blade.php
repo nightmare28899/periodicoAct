@@ -331,8 +331,9 @@
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->ciudad }}</td>
-                                                <td class="border"><input type="number" class="text-black"
-                                                        wire:model="cantEjem" min="0"></td>
+                                                <td class="border">
+                                                    <input type="number" class="text-black" placeholder="coloca 0 si esta vacío"
+                                                        wire:model.defer="cantDom.{{ $dom->id }}" min="0"></td>
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->referencia }}</td>

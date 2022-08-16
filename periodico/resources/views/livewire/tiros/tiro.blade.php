@@ -40,9 +40,9 @@
                         </div>
                     </div>
                     <div class="flex-initial mx-1 mt-4" style="width: 100%;">
-                        <input wire:model.defer='keyWord' wire:keydown.enter="busqueda" type="text"
+                        {{-- <input wire:model.defer='keyWord' wire:keydown.enter="busqueda" type="text"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                            name="search" id="search" placeholder="Buscar Tiro">
+                            name="search" id="search" placeholder="Buscar Tiro"> --}}
                     </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         <button wire:click="showModal" wire:loading.attr="disabled"
@@ -282,7 +282,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ventas as $result)
+                                @foreach ($ventaCopia as $result)
                                     @if ($result->{$diaS} != 0)
                                         <tr>
                                             <td class='px-4 py-2'>

@@ -17,7 +17,7 @@ use App\Models\ventas;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -61,12 +61,14 @@ class Tiros extends Component
                 ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
+            
+
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
                 ->where(function ($query) {
                     $query->where('fechaInicio', '<=', $this->from)
-                        ->where('fechaFin', '>=', $this->from);
+                          ->where('fechaFin', '>=', $this->from);
                 })
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
                 ->get($this->diaS);
@@ -75,7 +77,9 @@ class Tiros extends Component
         if ($this->rutaSeleccionada == "Todos") {
             $this->diaS = $this->dateF->translatedFormat('l');
 
-            $this->res = Cliente
+            $this->ventaCopia = $this->ventas;
+
+            /* $this->res = Cliente
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
@@ -88,9 +92,21 @@ class Tiros extends Component
                 ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
                 ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                ->get($this->diaS);
+                ->get($this->diaS); */
         } else {
-            $this->res = Cliente
+
+            $this->ventaCopia = ventas
+                ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where(function ($query) {
+                    $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                })
+                ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
+
+            /* $this->res = Cliente
                 ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
@@ -105,7 +121,7 @@ class Tiros extends Component
                 ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                 ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                ->get($this->diaS);
+                ->get($this->diaS); */
         }
 
         return view('livewire.tiros.tiro', [
@@ -119,7 +135,7 @@ class Tiros extends Component
         ], compact('domicilios'));
     }
 
-    public function busqueda()
+    /* public function busqueda()
     {
         if ($this->keyWord) {
         } else {
@@ -128,7 +144,7 @@ class Tiros extends Component
                 'message' => ($this->status == 'created') ? '¡Primero escribe el nombre!' : ''
             ]);
         }
-    }
+    } */
 
     public function descarga()
     {
@@ -197,6 +213,7 @@ class Tiros extends Component
                 ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where('cliente.id', '=', $this->clienteSeleccionado)
                 ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
