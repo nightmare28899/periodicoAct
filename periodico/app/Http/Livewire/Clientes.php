@@ -20,7 +20,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId = [], $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId = [], $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -722,10 +722,11 @@ class Clientes extends Component
 
     public function updatedCantDom($field, $value)
     {
-        if ($this->cantEjem) {
+        $this->inputCantidad = $field;
+        $this->posicion = $value;
+        /* if ($this->cantEjem) {
             if ($field <= $this->cantEjem) {
                 if ($field || $field == 0) {
-                    /* $this->cantEjem = $this->cantEjem - $field; */
                     $this->status = 'updated';
     
                     $DomicilioSubs = DomicilioSubs::find($value);
@@ -746,80 +747,139 @@ class Clientes extends Component
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Primero coloca ejemplares!' : ''
             ]);
-        }   
+        }  */  
     }
 
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
-
-            if ($this->domicilioSeleccionado) {
-                if ($this->cantEjem == '0') {
+            $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+            if ($this->suscripciones == null && $this->subscripcionEs == 'Apertura') {
+                if ($this->domicilioSeleccionado) {
+                    if ($this->cantEjem == '0') {
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
+                        ]);
+                    }
+    
+                    foreach ($this->domicilioSeleccionado as $key => $value) {
+                        if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
+                            array_push($this->domicilioId, $value['id']);
+                        }
+                    }
+    
+                    $this->validate([
+                        'formaPagoSeleccionada' => 'required',
+                        'tarifaSeleccionada' => 'required',
+                        'cantEjem' => 'required',
+                        'tipoSuscripcionSeleccionada' => 'required',
+                        'periodoSuscripcionSeleccionada' => 'required',
+                        'diasSuscripcionSeleccionada' => 'required',
+                    ]);
+    
+                    if ($this->inputCantidad) {
+                        if ($this->inputCantidad <= $this->cantEjem) {
+                            Suscripcion::Create([
+                                'cliente_id' => $this->clienteSeleccionado,
+                                'suscripcion' => $this->tipoSubscripcion,
+                                'esUnaSuscripcion' => $this->subscripcionEs,
+                                'tarifa' => $this->tarifaSeleccionada,
+                                'cantEjemplares' => $this->cantEjem,
+                                'precio' => $this->precio,
+                                'contrato' => $this->contrato,
+                                'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                                'periodo' => $this->periodoSuscripcionSeleccionada,
+                                'fechaInicio' => $this->from,
+                                'fechaFin' => $this->to,
+                                'dias' => $this->diasSuscripcionSeleccionada,
+                                'lunes' => $this->lunes,
+                                'martes' => $this->martes,
+                                'miércoles' => $this->miércoles,
+                                'jueves' => $this->jueves,
+                                'viernes' => $this->viernes,
+                                'sábado' => $this->sábado,
+                                'domingo' => $this->domingo,
+                                'descuento' => $this->descuento,
+                                'observaciones' => $this->observacion,
+                                'importe' => $this->total,
+                                'total' => $this->totalDesc,
+                                'formaPago' => $this->formaPagoSeleccionada,
+                                'domicilio_id' =>  json_encode($this->domicilioId),
+                            ]);
+        
+                            $this->status = 'created';
+    
+                            /* $this->status = 'updated'; */
+    
+                            $DomicilioSubs = DomicilioSubs::find($this->posicion);
+                            $DomicilioSubs->update([
+                                'ejemplares' => $this->inputCantidad,
+                            ]); 
+        
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+                            ]);
+            
+                            $this->suscripciones = false;
+            
+                            $this->borrar();
+                        } else {
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'created') ? '¡No puedes poner una cantidad mayor a los ejemplares!' : ''
+                            ]);
+                        }  
+                    } else {
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡Debes colocar la cantidad en los domicilios!' : ''
+                        ]);
+                    }
+                } else {
                     $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
+                        'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
                     ]);
                 }
-
+            } else if ($this->subscripcionEs == 'Renovación') {
+                $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
                 
-                /* foreach ($this->cantDom as $key => $value) {
-                    array_push($this->cantArray, $value);
-                }
+                $this->domicilioId = $this->suscripciones[0]->domicilio_id;
+                $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
+                $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
+                /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
+                $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
+                $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
+                $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo;
+                $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
+                $this->from = $this->suscripciones[0]->fechaInicio;
+                $this->to = $this->suscripciones[0]->fechaFin;
+                $this->lunes = $this->suscripciones[0]->lunes;
+                $this->martes = $this->suscripciones[0]->martes;
+                $this->miércoles = $this->suscripciones[0]->miércoles;
+                $this->jueves = $this->suscripciones[0]->jueves;
+                $this->viernes = $this->suscripciones[0]->viernes;
+                $this->sábado = $this->suscripciones[0]->sábado;
+                $this->domingo = $this->suscripciones[0]->domingo;
+                $this->descuento = $this->suscripciones[0]->descuento;
+                $this->observacion = $this->suscripciones[0]->observaciones;
+                $this->total = $this->suscripciones[0]->importe;
+                $this->totalDesc = $this->suscripciones[0]->total;
+                $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
 
-                dd($this->cantArray); */
-
-                foreach ($this->domicilioSeleccionado as $key => $value) {
-                    if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
-                        array_push($this->domicilioId, $value['id']);
+                $this->domicilioS = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->get();
+                $this->domicilioSeleccionado = $this->domicilioS;
+                $this->inputCantidad = $this->domicilioS[0]->ejemplares;
+                $this->cantDom = $this->inputCantidad;   
+                /* dd($this->inputCantidad); */
+                /* $this->domicilioId = $this->domicilioS[0]->domicilio_id;
+                foreach ($this->domicilioS as $domicilio) {
+                    if ($domicilio->ejemplares != 0) {
+                        $this->domicilioId = $domicilio->domicilio_id;
                     }
                 }
-
-                $this->validate([
-                    'formaPagoSeleccionada' => 'required',
-                    'tarifaSeleccionada' => 'required',
-                    'cantEjem' => 'required',
-                    'tipoSuscripcionSeleccionada' => 'required',
-                    'periodoSuscripcionSeleccionada' => 'required',
-                    'diasSuscripcionSeleccionada' => 'required',
-                ]);
-
-                Suscripcion::Create([
-                    'cliente_id' => $this->clienteSeleccionado,
-                    'suscripcion' => $this->tipoSubscripcion,
-                    'esUnaSuscripcion' => $this->subscripcionEs,
-                    'tarifa' => $this->tarifaSeleccionada,
-                    'cantEjemplares' => $this->cantEjem,
-                    'precio' => $this->precio,
-                    'contrato' => $this->contrato,
-                    'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
-                    'periodo' => $this->periodoSuscripcionSeleccionada,
-                    'fechaInicio' => $this->from,
-                    'fechaFin' => $this->to,
-                    'dias' => $this->diasSuscripcionSeleccionada,
-                    'lunes' => $this->lunes,
-                    'martes' => $this->martes,
-                    'miércoles' => $this->miércoles,
-                    'jueves' => $this->jueves,
-                    'viernes' => $this->viernes,
-                    'sábado' => $this->sábado,
-                    'domingo' => $this->domingo,
-                    'descuento' => $this->descuento,
-                    'observaciones' => $this->observacion,
-                    'importe' => $this->total,
-                    'total' => $this->totalDesc,
-                    'formaPago' => $this->formaPagoSeleccionada,
-                    'domicilio_id' =>  json_encode($this->domicilioId),
-                ]);
-
-                $this->suscripciones = false;
-
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
-                ]);
-
-                $this->borrar();
+                dd($this->domicilioId); */
+                
             } else {
                 $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
+                    'message' => ($this->status == 'created') ? '¡El cliente ya tiene una suscripción!' : ''
                 ]);
             }
         } else {

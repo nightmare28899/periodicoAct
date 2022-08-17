@@ -72,7 +72,7 @@
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio"
+                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio"
                                 name="subscripcionEs" value="Renovación"
                                 {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
                                 for="Renovación">Renovación</label></p>
@@ -332,8 +332,17 @@
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->ciudad }}</td>
                                                 <td class="border">
-                                                    <input type="number" class="text-black" placeholder="coloca 0 si esta vacío"
-                                                        wire:model.defer="cantDom.{{ $dom->id }}" min="0"></td>
+                                                    <input type="number"
+                                                        class="text-black @error('cantDom') border-red-500 @enderror"
+                                                        placeholder="coloca la cantidad"
+                                                        wire:model.defer="cantDom.{{ $dom->id }}"
+                                                        min="0">
+                                                    @error('cantDom')
+                                                        <span class="text-red-500 text-xs italic">
+                                                            {{ $message }}
+                                                        </span>
+                                                    @enderror
+                                                </td>
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->referencia }}</td>

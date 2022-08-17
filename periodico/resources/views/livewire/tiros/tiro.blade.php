@@ -75,7 +75,7 @@
                 <table class="table-auto w-full text-center">
                     <thead>
                         <tr class="text-white bg-gray-500">
-                            {{-- <th class="px-4 py-2 w-20">No.</th> --}}
+                            <th class="px-4 py-2 w-20">Tipo</th>
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
                             <th class="px-4 py-2 w-20">Ejemplares</th>
@@ -89,7 +89,7 @@
                         @foreach ($ventas as $result)
                             @if ($result->{$diaS} != 0)
                                 <tr>
-                                    {{-- <td class="border">{{ $loop->iteration }}</td> --}}
+                                    <td class="border">Venta/Cliente</td>
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
@@ -110,12 +110,12 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if ($suscrip->{$diaS} != 0)
+                            @if ($suscrip->{$diaS} != 0 && $suscrip->ejemplares != 0)
                                 <tr>
-                                    {{-- <td>{{ $loop->iteration }}</td> --}}
+                                    <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
-                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
+                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->ejemplares : 0 }}</td>
                                     <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
                                         No. Ext:
                                         {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:

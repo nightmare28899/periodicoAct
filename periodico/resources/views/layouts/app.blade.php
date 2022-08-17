@@ -85,6 +85,8 @@
                 case '¡Debes ingresar un valor!':
                 case '¡Primero coloca ejemplares!':
                 case '¡No puedes poner una cantidad mayor a los ejemplares!':
+                case '¡Debes colocar la cantidad en los domicilios!':
+                case '¡El cliente ya tiene una suscripción!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
