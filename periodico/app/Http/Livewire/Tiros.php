@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ventas;
+use Illuminate\Support\Facades\DB;
 
 class Tiros extends Component
 {
@@ -65,13 +66,32 @@ class Tiros extends Component
 
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "cliente.id")
+                ->where(function ($query) {
+                    $query->where('fechaInicio', '<=', $this->from)
+                          ->where('fechaFin', '>=', $this->from);
+                })
+                ->select("cliente.id", "cliente.nombre", "suscripciones.*", "suscripciones.domicilio_id")
+                ->get($this->diaS);
+                /* dd($this->suscripcion); */
+                /* dd(json_decode($this->suscripcion[0]->domicilio_id)); */
+            
+            /* $this->subs = Suscripcion
+                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                ->whereIn('domicilio_subs.id', json_decode($this->suscripcion[0]->domicilio_id))
                 ->where(function ($query) {
                     $query->where('fechaInicio', '<=', $this->from)
                           ->where('fechaFin', '>=', $this->from);
                 })
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
                 ->get($this->diaS);
+                dd($this->subs); */
+
+                /* dd($this->suscripcion[0]->domicilio_id);
+                dd(json_decode($this->suscripcion[0]->domicilio_id)); */
+                $domsubs = DB::table('domicilio_subs')
+                    ->whereIn('id', json_decode($this->suscripcion[0]->domicilio_id))
+                    ->get();
+                /* dd($domsubs); */
         }
 
         if ($this->rutaSeleccionada == "Todos") {

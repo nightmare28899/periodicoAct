@@ -161,6 +161,7 @@ class Clientes extends Component
             $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
             /* $this->from = $this->suscripciones[0]->fechaInicio;
             $this->to = $this->suscripciones[0]->fechaFin; */
+            $this->contrato = $this->suscripciones[0]->contrato;
             $this->lunes = $this->suscripciones[0]->lunes;
             $this->martes = $this->suscripciones[0]->martes;
             $this->miércoles = $this->suscripciones[0]->miércoles;
@@ -173,17 +174,22 @@ class Clientes extends Component
             $this->total = $this->suscripciones[0]->importe;
             $this->totalDesc = $this->suscripciones[0]->total;
             $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
-
-            $this->domicilioS = domicilioSubs
+            /* $this->domicilioS = domicilioSubs
                 ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
                 ->where('cliente_id', $this->clienteSeleccionado)
                 ->select('domicilio_subs.*', 'ruta.nombreruta')
                 ->get();
             $this->domicilioSeleccionado = $this->domicilioS;
-            /* dd($this->domicilioSeleccionado); */
 
             $this->inputCantidad = $this->domicilioS[0]->ejemplares;
-            $this->cantDom = $this->inputCantidad;
+            $this->cantDom = $this->inputCantidad; */
+        }
+
+        if ($this->clienteSeleccionado && $this->contrato == 'Cortesía') {
+            $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+            $this->total = 0;
+            $this->totalDesc = 0;
+            
         }
 
         return view('livewire.clientes.view', [
@@ -488,17 +494,6 @@ class Clientes extends Component
             'tarifa_id' => $this->tarifa_id,
             'referencia' => $this->referencia,
         ]);
-
-        /* $ejemplar = Ejemplar::find($this->ejemplar_id);
-        $ejemplar->update([
-            'lunes' => $this->lunes,
-            'martes' => $this->martes,
-            'miércoles' => $this->miércoles,
-            'jueves' => $this->jueves,
-            'viernes' => $this->viernes,
-            'sábado' => $this->sábado,
-            'domingo' => $this->domingo,
-        ]); */
 
         $this->toast();
         $this->resetInput();

@@ -192,7 +192,7 @@
                         <p>CONTRATO PARA</p>
                         <input type="radio" name="contrato" wire:model="contrato" value="Suscripción" checked>
                         Suscripción
-                        <input type="radio" name="contrato" wire:model="contrato" value="Cortesia"> Cortesía
+                        <input type="radio" name="contrato" wire:model="contrato" value="Cortesía" {{ $contrato == 'Cortesía' ? 'checked' : '' }}> Cortesía
                         <input type="radio" name="contrato" wire:model="contrato" value="Intercambio"> Intercambio
                     </div>
                 </div>

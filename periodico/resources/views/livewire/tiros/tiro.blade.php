@@ -110,12 +110,12 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if ($suscrip->{$diaS} != 0 && $suscrip->ejemplares != 0)
+                            @if ($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
-                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->ejemplares : 0 }}</td>
+                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
                                     <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
                                         No. Ext:
                                         {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
