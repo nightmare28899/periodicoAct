@@ -72,9 +72,8 @@
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio"
-                                name="subscripcionEs" value="Renovación"
-                                {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
+                        <p class="font-bold"><input wire:model="subscripcionEs" type="radio" name="subscripcionEs"
+                                value="Renovación" {{ $subscripcionEs == 'Renovación' ? 'checked' : '' }}> <label
                                 for="Renovación">Renovación</label></p>
                     </div>
                     <div class="w-1/2">
@@ -246,8 +245,13 @@
                     <div class="w-3/5 px-2">
                         <p class="mt-3">#DÍAS PARA PAGAR</p>
                         <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
-                            <x-jet-input class="w-2/5" type="date" wire:model="from">
-                            </x-jet-input>
+                            @if ($modificarFecha)
+                                <x-jet-input class="w-2/5" type="date" wire:model="from">
+                                </x-jet-input>
+                            @else
+                                <x-jet-input class="w-2/5" type="date" wire:model="from" disabled>
+                                </x-jet-input>
+                            @endif
                             <kbd class="ml-3 mt-2">AL:</kbd>
                             @if ($modificarFecha)
                                 <x-jet-input class="w-2/5" type="date" wire:model="to">
@@ -332,16 +336,10 @@
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->ciudad }}</td>
                                                 <td class="border">
-                                                    <input type="number"
-                                                        class="text-black @error('cantDom') border-red-500 @enderror"
+                                                    <input type="number" class="text-black"
                                                         placeholder="coloca la cantidad"
                                                         wire:model.defer="cantDom.{{ $dom->id }}"
-                                                        min="0">
-                                                    @error('cantDom')
-                                                        <span class="text-red-500 text-xs italic">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
+                                                        wire:model="inputCantidad" min="0">
                                                 </td>
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">

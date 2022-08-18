@@ -104,23 +104,23 @@ class Clientes extends Component
                 $this->sábado = true;
                 $this->domingo = true;
             }
-                $this->lunes = true;
-                $this->martes = true;
-                $this->miércoles = true;
-                $this->jueves = true;
-                $this->viernes = true;
-                $this->allow = false;
-            
-                if ($this->diasSuscripcionSeleccionada == 'esc_man') {
-                    $this->lunes = false;
-                    $this->martes = false;
-                    $this->miércoles = false;
-                    $this->jueves = false;
-                    $this->viernes = false;
-                    $this->sábado = false;
-                    $this->domingo = false;
-                    $this->allow = true;
-                }
+            $this->lunes = true;
+            $this->martes = true;
+            $this->miércoles = true;
+            $this->jueves = true;
+            $this->viernes = true;
+            $this->allow = false;
+
+            if ($this->diasSuscripcionSeleccionada == 'esc_man') {
+                $this->lunes = false;
+                $this->martes = false;
+                $this->miércoles = false;
+                $this->jueves = false;
+                $this->viernes = false;
+                $this->sábado = false;
+                $this->domingo = false;
+                $this->allow = true;
+            }
         }
 
 
@@ -147,6 +147,44 @@ class Clientes extends Component
             ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
             ->select('domicilio_subs.*', 'ruta.nombreruta')
             ->get();
+
+        if ($this->clienteSeleccionado && $this->subscripcionEs == 'Renovación') {
+            $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+
+            $this->domicilioId = $this->suscripciones[0]->domicilio_id;
+            $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
+            $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
+            /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
+            $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
+            $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
+            /* $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo; */
+            $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
+            /* $this->from = $this->suscripciones[0]->fechaInicio;
+            $this->to = $this->suscripciones[0]->fechaFin; */
+            $this->lunes = $this->suscripciones[0]->lunes;
+            $this->martes = $this->suscripciones[0]->martes;
+            $this->miércoles = $this->suscripciones[0]->miércoles;
+            $this->jueves = $this->suscripciones[0]->jueves;
+            $this->viernes = $this->suscripciones[0]->viernes;
+            $this->sábado = $this->suscripciones[0]->sábado;
+            $this->domingo = $this->suscripciones[0]->domingo;
+            $this->descuento = $this->suscripciones[0]->descuento;
+            $this->observacion = $this->suscripciones[0]->observaciones;
+            $this->total = $this->suscripciones[0]->importe;
+            $this->totalDesc = $this->suscripciones[0]->total;
+            $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
+
+            $this->domicilioS = domicilioSubs
+                ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->where('cliente_id', $this->clienteSeleccionado)
+                ->select('domicilio_subs.*', 'ruta.nombreruta')
+                ->get();
+            $this->domicilioSeleccionado = $this->domicilioS;
+            /* dd($this->domicilioSeleccionado); */
+
+            $this->inputCantidad = $this->domicilioS[0]->ejemplares;
+            $this->cantDom = $this->inputCantidad;
+        }
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::latest()
@@ -205,7 +243,6 @@ class Clientes extends Component
         ]);
 
         $this->isModalOpen = false;
-        /* $this->resetInput(); */
         $this->ejemplarModalOpen = false;
         $this->clienteModalOpen = true;
     }
@@ -276,24 +313,12 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        /* $Ejemplar = Ejemplar::find($id);
-        $this->ejemplar_id = $Ejemplar->id;
-        $this->lunes = $Ejemplar->lunes;
-        $this->martes = $Ejemplar->martes;
-        $this->miércoles = $Ejemplar->miércoles;
-        $this->jueves = $Ejemplar->jueves;
-        $this->viernes = $Ejemplar->viernes;
-        $this->sábado = $Ejemplar->sábado;
-        $this->domingo = $Ejemplar->domingo; */
-
         $this->detallesModalOpen = true;
     }
-
     public function closeDetallesModal()
     {
         $this->detallesModalOpen = false;
     }
-
     private function resetInput()
     {
         $this->clasificacion = '';
@@ -317,18 +342,10 @@ class Clientes extends Component
         $this->referencia = '';
         $this->ruta_id = '';
         $this->tarifa_id = '';
-        /*
-        $this->lunes = '';
-        $this->martes = '';
-        $this->miércoles = '';
-        $this->jueves = '';
-        $this->viernes = '';
-        $this->sábado = '';
-        $this->domingo = ''; */
     }
-
     public function store()
-    { {
+    {
+        {
             $this->noint ? $this->noint : null;
         }
 
@@ -340,7 +357,7 @@ class Clientes extends Component
             'telefono' => 'required|max:10',
             'email' => 'required',
             'email_cobranza' => 'required',
-            
+
             'calle' => 'required',
             'noext' => 'required',
             'colonia' => 'required',
@@ -382,17 +399,6 @@ class Clientes extends Component
             'referencia' => $this->referencia,
         ]);
 
-        /* Ejemplar::Create([
-            'cliente_id' => $this->cliente_id = Cliente::where('nombre', $this->nombre)->first()->id,
-            'lunes' => $this->lunes,
-            'martes' => $this->martes,
-            'miércoles' => $this->miércoles,
-            'jueves' => $this->jueves,
-            'viernes' => $this->viernes,
-            'sábado' => $this->sábado,
-            'domingo' => $this->domingo,
-        ]); */
-
         /* $this->resetInput(); */
         $this->emit('closeModal');
         $this->updateMode = false;
@@ -400,7 +406,6 @@ class Clientes extends Component
         $this->clienteModalOpen = false;
         $this->toast();
     }
-
     public function edit($id)
     {
         $Cliente = Cliente::find($id);
@@ -429,21 +434,10 @@ class Clientes extends Component
         $this->ruta_id = $Domicilio->ruta_id;
         $this->tarifa_id = $Domicilio->tarifa_id;
 
-        /* $Ejemplar = Ejemplar::find($id);
-        $this->ejemplar_id = $Ejemplar->id;
-        $this->lunes = $Ejemplar->lunes;
-        $this->martes = $Ejemplar->martes;
-        $this->miércoles = $Ejemplar->miércoles;
-        $this->jueves = $Ejemplar->jueves;
-        $this->viernes = $Ejemplar->viernes;
-        $this->sábado = $Ejemplar->sábado;
-        $this->domingo = $Ejemplar->domingo; */
-
         $this->openModalPopover();
 
         $this->status = 'updated';
     }
-
     public function update()
     {
         $this->validate([
@@ -511,14 +505,12 @@ class Clientes extends Component
         $this->emit('closeModal');
         $this->closeModalPopover();
     }
-
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Cliente creado correctamente!' : '¡Cliente actualizado correctamente!'
         ]);
     }
-
     public function delete($id)
     {
         $this->status = 'delete';
@@ -527,12 +519,9 @@ class Clientes extends Component
             'message' => ($this->status == 'delete') ? '¡Cliente eliminado correctamente!' : ''
         ]);
     }
-
     /* Aqui comienzan las suscripciones */
-
     public function createSubs()
-    { 
-        {
+    { {
             $this->noint ? $this->noint : $this->noint = null;
         }
 
@@ -572,10 +561,8 @@ class Clientes extends Component
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
     }
-
     public function crearVenta()
-    { 
-        {
+    { {
             $this->lunesVentas ? $this->lunesVentas : 0;
         } {
             $this->martesVentas ? $this->martesVentas : 0;
@@ -629,7 +616,6 @@ class Clientes extends Component
             ]);
         }
     }
-
     public function actualizarVenta()
     {
         $this->validate([
@@ -660,7 +646,6 @@ class Clientes extends Component
         $this->limpiarVentaModal();
         $this->modalV = false;
     }
-
     public function editarVenta()
     {
         if ($this->clienteSeleccionado) {
@@ -688,7 +673,6 @@ class Clientes extends Component
             ]);
         }
     }
-
     public function limpiarClienteSeleccionado()
     {
         $this->editEnabled = false;
@@ -703,7 +687,6 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
     }
-
     public function limpiarVentaModal()
     {
         $this->editEnabled = false;
@@ -719,55 +702,29 @@ class Clientes extends Component
         $this->domingoVentas = null;
         $this->modalV = false;
     }
-
     public function updatedCantDom($field, $value)
     {
         $this->inputCantidad = $field;
         $this->posicion = $value;
-        /* if ($this->cantEjem) {
-            if ($field <= $this->cantEjem) {
-                if ($field || $field == 0) {
-                    $this->status = 'updated';
-    
-                    $DomicilioSubs = DomicilioSubs::find($value);
-                    $DomicilioSubs->update([
-                        'ejemplares' => $field,
-                    ]); 
-                }  else {
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Debes ingresar un valor!' : ''
-                    ]);
-                } 
-            } else {
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡No puedes poner una cantidad mayor a los ejemplares!' : ''
-                ]);
-            }
-        } else {
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Primero coloca ejemplares!' : ''
-            ]);
-        }  */  
     }
-
     public function suscripciones()
     {
         if ($this->clienteSeleccionado) {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
-            if ($this->suscripciones == null && $this->subscripcionEs == 'Apertura') {
+            if ($this->suscripciones && $this->subscripcionEs == 'Apertura') {
                 if ($this->domicilioSeleccionado) {
                     if ($this->cantEjem == '0') {
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                         ]);
                     }
-    
+
                     foreach ($this->domicilioSeleccionado as $key => $value) {
                         if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
                             array_push($this->domicilioId, $value['id']);
                         }
                     }
-    
+
                     $this->validate([
                         'formaPagoSeleccionada' => 'required',
                         'tarifaSeleccionada' => 'required',
@@ -776,7 +733,7 @@ class Clientes extends Component
                         'periodoSuscripcionSeleccionada' => 'required',
                         'diasSuscripcionSeleccionada' => 'required',
                     ]);
-    
+
                     if ($this->inputCantidad) {
                         if ($this->inputCantidad <= $this->cantEjem) {
                             Suscripcion::Create([
@@ -806,28 +763,28 @@ class Clientes extends Component
                                 'formaPago' => $this->formaPagoSeleccionada,
                                 'domicilio_id' =>  json_encode($this->domicilioId),
                             ]);
-        
+
                             $this->status = 'created';
-    
+
                             /* $this->status = 'updated'; */
-    
+
                             $DomicilioSubs = DomicilioSubs::find($this->posicion);
                             $DomicilioSubs->update([
                                 'ejemplares' => $this->inputCantidad,
-                            ]); 
-        
+                            ]);
+
                             $this->dispatchBrowserEvent('alert', [
                                 'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
                             ]);
-            
+
                             $this->suscripciones = false;
-            
+
                             $this->borrar();
                         } else {
                             $this->dispatchBrowserEvent('alert', [
                                 'message' => ($this->status == 'created') ? '¡No puedes poner una cantidad mayor a los ejemplares!' : ''
                             ]);
-                        }  
+                        }
                     } else {
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡Debes colocar la cantidad en los domicilios!' : ''
@@ -839,44 +796,26 @@ class Clientes extends Component
                     ]);
                 }
             } else if ($this->subscripcionEs == 'Renovación') {
-                $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
-                
-                $this->domicilioId = $this->suscripciones[0]->domicilio_id;
-                $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
-                $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
-                /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
-                $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
-                $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
-                $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo;
-                $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
-                $this->from = $this->suscripciones[0]->fechaInicio;
-                $this->to = $this->suscripciones[0]->fechaFin;
-                $this->lunes = $this->suscripciones[0]->lunes;
-                $this->martes = $this->suscripciones[0]->martes;
-                $this->miércoles = $this->suscripciones[0]->miércoles;
-                $this->jueves = $this->suscripciones[0]->jueves;
-                $this->viernes = $this->suscripciones[0]->viernes;
-                $this->sábado = $this->suscripciones[0]->sábado;
-                $this->domingo = $this->suscripciones[0]->domingo;
-                $this->descuento = $this->suscripciones[0]->descuento;
-                $this->observacion = $this->suscripciones[0]->observaciones;
-                $this->total = $this->suscripciones[0]->importe;
-                $this->totalDesc = $this->suscripciones[0]->total;
-                $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
+                $suscrip = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
 
-                $this->domicilioS = domicilioSubs::where('cliente_id', $this->clienteSeleccionado)->get();
-                $this->domicilioSeleccionado = $this->domicilioS;
-                $this->inputCantidad = $this->domicilioS[0]->ejemplares;
-                $this->cantDom = $this->inputCantidad;   
-                /* dd($this->inputCantidad); */
-                /* $this->domicilioId = $this->domicilioS[0]->domicilio_id;
-                foreach ($this->domicilioS as $domicilio) {
-                    if ($domicilio->ejemplares != 0) {
-                        $this->domicilioId = $domicilio->domicilio_id;
-                    }
-                }
-                dd($this->domicilioId); */
-                
+                $suscrip = Suscripcion::find($suscrip[0]->id);
+                /* dd($suscrip); */
+                $suscrip->update([
+                    'periodo' => $this->periodoSuscripcionSeleccionada,
+                    'fechaInicio' => $this->from,
+                    'fechaFin' => $this->to,
+                ]);
+
+                $this->status = 'created';
+
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Renovación generada!' : ''
+                ]);
+
+                $this->suscripciones = false;
+
+                $this->borrar();
+
             } else {
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡El cliente ya tiene una suscripción!' : ''
@@ -899,7 +838,6 @@ class Clientes extends Component
 
         $this->modalDomSubs = false;
     }
-
     public function borrar()
     {
         $this->clienteSeleccionado = '';
@@ -921,7 +859,6 @@ class Clientes extends Component
         $this->formaPagoSeleccionada = '';
         $this->domicilioSeleccionado = [];
     }
-
     public function datoSeleccionado($id)
     {
         if ($this->domicilioSeleccionado) {
@@ -954,7 +891,6 @@ class Clientes extends Component
             $this->modalDomSubs = false;
         }
     }
-
     public function eliminarDatoSeleccionado($id)
     {
         foreach ($this->domicilioSeleccionado as $key => $value) {
@@ -963,7 +899,6 @@ class Clientes extends Component
             }
         }
     }
-
     public function editarDomicilioSubs($id)
     {
         $this->status = 'updated';
@@ -983,7 +918,6 @@ class Clientes extends Component
         $this->modalDomSubs = true;
         $this->modalCrearDom();
     }
-
     public function actualizarDomicilioSubs()
     {
         $DomicilioSubs = DomicilioSubs::find($this->domicilioSubsId);
@@ -1005,7 +939,6 @@ class Clientes extends Component
 
         $this->modalFormDom = false;
     }
-
     public function resetInputSubs()
     {
         $this->calle = '';

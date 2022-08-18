@@ -63,6 +63,7 @@
                 case '¡Suscripción generada correctamente!':
                 case '¡Venta generada exitosamente!':
                 case '¡Venta actualizada exitosamente!':
+                case '¡Renovación generada!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -87,6 +88,7 @@
                 case '¡No puedes poner una cantidad mayor a los ejemplares!':
                 case '¡Debes colocar la cantidad en los domicilios!':
                 case '¡El cliente ya tiene una suscripción!':
+                case '¡Selecciona un cliente primero!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
