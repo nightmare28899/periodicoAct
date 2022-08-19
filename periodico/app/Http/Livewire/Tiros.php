@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\ventas;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Tiros extends Component
 {
     public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [];
@@ -39,6 +41,7 @@ class Tiros extends Component
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
 
+            /* if (count($this->ventas) || count($this->suscripcion)) { */
             $this->ventas = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
@@ -50,9 +53,7 @@ class Tiros extends Component
                 })
                 ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
-
-
-
+            
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->where(function ($query) {
@@ -61,19 +62,19 @@ class Tiros extends Component
                 })
                 ->select("cliente.id", "cliente.nombre", "suscripciones.*")
                 ->get($this->diaS);
-            // dd($this->suscripcion[1]);
 
             $this->domsubs = domicilioSubs
                 ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
                 ->get();
+            /* } else {
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡No hay datos registrados!' : ''
+                ]);
+            } */
+            
             /* $this->datosTiroSuscripcion = array_merge($this->suscripcion, $this->domsubs); */
-
-            /* dd($this->datosTiroSuscripcion); */
-        } /* else {
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡No hay datos registrados!' : ''
-            ]);
-        } */
+        }
 
         if ($this->rutaSeleccionada == "Todos") {
             $this->diaS = $this->dateF->translatedFormat('l');

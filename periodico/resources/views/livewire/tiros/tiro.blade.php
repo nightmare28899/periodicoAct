@@ -79,8 +79,8 @@
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
                             <th class="px-4 py-2 w-20">Ejemplares</th>
-                            <th class="px-4 py-2 w-20">Domicilio</th>
-                            <th class="px-4 py-2 w-20">Referencia</th>
+                            {{-- <th class="px-4 py-2 w-20">Domicilio</th>
+                            <th class="px-4 py-2 w-20">Referencia</th> --}}
                             <th class="px-4 py-2 w-20">Fecha</th>
                             {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
                         </tr>
@@ -109,19 +109,22 @@
                             @endif
                         @endforeach
 
-                        @foreach ($suscripcion as $key => $suscrip)
+                        @foreach ($suscripcion as $suscrip)
+                            @php
+                                $domsubs = (object) $domsubs;
+                            @endphp
                             @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares) || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
-                                    <td class="border">Calle: {{ $domsubs[$key]['calle'] }} <br>
+                                    {{-- <td class="border">Calle: {{ $domsubs[$key]->calle }} <br>
                                         No. Ext:
                                         {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
                                         {{ $domsubs[$key]->localidad }}, Ciudad: {{ $domsubs[$key]->ciudad }}
                                     </td>
-                                    <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td>
+                                    <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td> --}}
                                     <td wire:model="fecha" class="border">
                                         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
                                 </tr>

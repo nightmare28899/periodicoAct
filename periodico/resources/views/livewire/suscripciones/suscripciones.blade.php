@@ -338,8 +338,7 @@
                                                 <td class="border">
                                                     <input type="number" class="text-black"
                                                         placeholder="coloca la cantidad"
-                                                        wire:model.defer="cantDom.{{ $dom->id }}"
-                                                        wire:model="inputCantidad" min="0">
+                                                        wire:model="cantDom.{{ $dom->id }}" min="0">
                                                 </td>
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
