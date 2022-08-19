@@ -905,24 +905,14 @@ class Clientes extends Component
     }
     public function eliminarDatoSeleccionado($id)
     {
-        
-        $this->inputCantidad = 0;
         foreach ($this->domicilioSeleccionado as $key => $value) {
             if ($value['id'] == $id) {
-                $this->posicionDomSubs = $value;
                 unset($this->domicilioSeleccionado[$key]);
-                /* $value->update([
-                    'ejemplares' => $this->inputCantidad,
-                ]); */
+                domicilioSubs:: where('id', $id)->update([
+                    'ejemplares' => 0,
+                ]);
             }
-            /* dd($value['ejemplares'] -> update([
-                'ejemplares' => $this->inputCantidad,
-            ])); */
-        }     
-        $this->posicionDomSubs->update([
-            'ejemplares' => $this->inputCantidad,
-        ]);
-        /* dd($this->domicilioSeleccionado); */       
+        }         
     }
     public function editarDomicilioSubs($id)
     {
