@@ -109,19 +109,19 @@
                             @endif
                         @endforeach
 
-                        @foreach ($suscripcion as $suscrip)
-                            @if ($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares || $suscrip->contrato == 'Cortesía')
+                        @foreach ($suscripcion as $key => $suscrip)
+                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares) || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
-                                    <td class="border" wire:model="domicilio">Calle: {{ $suscrip->calle }} <br>
+                                    <td class="border">Calle: {{ $domsubs[$key]['calle'] }} <br>
                                         No. Ext:
-                                        {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
-                                        {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
+                                        {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
+                                        {{ $domsubs[$key]->localidad }}, Ciudad: {{ $domsubs[$key]->ciudad }}
                                     </td>
-                                    <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
+                                    <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td>
                                     <td wire:model="fecha" class="border">
                                         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
                                 </tr>

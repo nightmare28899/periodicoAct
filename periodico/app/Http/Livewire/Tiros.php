@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -38,17 +38,6 @@ class Tiros extends Component
 
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
-            /* $ejemplares = Ejemplar::whereBetween('created_at', [$dateF->format('Y-m-d')." 00:00:00", $dateT->format('Y-m-d')." 23:59:59"])->get(); */
-            /* $ejemplares = Ejemplar::whereDate('created_at', [$dateF->format('Y-m-d H:i:s')])->get($this->dia); */
-            /* $this->resultados = Cliente
-                ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-                ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                ->where('nombre', 'like', '%' . $this->keyWord . '%')
-                ->select("cliente.id", "cliente.nombre", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS); */
-            /* dd($this->from); */
 
             $this->ventas = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -62,37 +51,29 @@ class Tiros extends Component
                 ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
-            
+
 
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->where(function ($query) {
                     $query->where('fechaInicio', '<=', $this->from)
-                          ->where('fechaFin', '>=', $this->from);
+                        ->where('fechaFin', '>=', $this->from);
                 })
-                ->select("cliente.id", "cliente.nombre", "suscripciones.*", "suscripciones.domicilio_id")
+                ->select("cliente.id", "cliente.nombre", "suscripciones.*")
                 ->get($this->diaS);
-                /* dd($this->suscripcion); */
-                /* dd(json_decode($this->suscripcion[0]->domicilio_id)); */
-            
-            /* $this->subs = Suscripcion
-                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                ->whereIn('domicilio_subs.id', json_decode($this->suscripcion[0]->domicilio_id))
-                ->where(function ($query) {
-                    $query->where('fechaInicio', '<=', $this->from)
-                          ->where('fechaFin', '>=', $this->from);
-                })
-                ->select("cliente.id", "cliente.nombre", "suscripciones.*", "domicilio_subs.*")
-                ->get($this->diaS);
-                dd($this->subs); */
+            // dd($this->suscripcion[1]);
 
-                /* dd($this->suscripcion[0]->domicilio_id);
-                dd(json_decode($this->suscripcion[0]->domicilio_id)); */
-                $domsubs = DB::table('domicilio_subs')
-                    ->whereIn('id', json_decode($this->suscripcion[0]->domicilio_id))
-                    ->get();
-                /* dd($domsubs); */
-        }
+            $this->domsubs = domicilioSubs
+                ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
+                ->get();
+            /* $this->datosTiroSuscripcion = array_merge($this->suscripcion, $this->domsubs); */
+
+            /* dd($this->datosTiroSuscripcion); */
+        } /* else {
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡No hay datos registrados!' : ''
+            ]);
+        } */
 
         if ($this->rutaSeleccionada == "Todos") {
             $this->diaS = $this->dateF->translatedFormat('l');

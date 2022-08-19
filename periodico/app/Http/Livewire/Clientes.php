@@ -123,7 +123,6 @@ class Clientes extends Component
             }
         }
 
-
         if ($this->tarifaSeleccionada) {
             $costo = 0;
             if ($this->cantEjem >= 1) {
@@ -189,7 +188,6 @@ class Clientes extends Component
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             $this->total = 0;
             $this->totalDesc = 0;
-            
         }
 
         return view('livewire.clientes.view', [
@@ -212,7 +210,7 @@ class Clientes extends Component
     {
         $this->resetInput();
         $this->openModalPopover();
-        $this->status = 'created';
+        /* $this->status = 'created'; */
     }
     public function primerModal()
     {
@@ -350,8 +348,7 @@ class Clientes extends Component
         $this->tarifa_id = '';
     }
     public function store()
-    {
-        {
+    { {
             $this->noint ? $this->noint : null;
         }
 
@@ -706,7 +703,8 @@ class Clientes extends Component
     {
         if ($this->clienteSeleccionado) {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
-            if ($this->suscripciones && $this->subscripcionEs == 'Apertura') {
+            /* dd($this->suscripciones); */
+            if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
                 if ($this->domicilioSeleccionado) {
                     if ($this->cantEjem == '0') {
                         $this->dispatchBrowserEvent('alert', [
@@ -790,7 +788,14 @@ class Clientes extends Component
                         'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
                     ]);
                 }
-            } else if ($this->subscripcionEs == 'Renovación') {
+            } else {
+
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡El cliente ya tiene una suscripción!' : ''
+                ]);
+            }
+
+            if ($this->subscripcionEs == 'Renovación') {
                 $suscrip = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
 
                 $suscrip = Suscripcion::find($suscrip[0]->id);
@@ -810,11 +815,6 @@ class Clientes extends Component
                 $this->suscripciones = false;
 
                 $this->borrar();
-
-            } else {
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡El cliente ya tiene una suscripción!' : ''
-                ]);
             }
         } else {
             $this->dispatchBrowserEvent('alert', [
@@ -822,7 +822,6 @@ class Clientes extends Component
             ]);
         }
     }
-
     public function eliminarSubs($id)
     {
         $this->status = 'delete';
