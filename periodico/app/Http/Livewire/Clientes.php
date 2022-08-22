@@ -96,22 +96,29 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-        if ($this->diasSuscripcionSeleccionada) {
-            if ($this->diasSuscripcionSeleccionada == 'l_v') {
+        switch ($this->diasSuscripcionSeleccionada) {
+            case 'l_v':
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
                 $this->sábado = false;
                 $this->domingo = false;
-            } else if ($this->diasSuscripcionSeleccionada == 'l_d') {
+                $this->allow = false;
+                break;
+            case 'l_d':
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
                 $this->sábado = true;
                 $this->domingo = true;
-            }
-            $this->lunes = true;
-            $this->martes = true;
-            $this->miércoles = true;
-            $this->jueves = true;
-            $this->viernes = true;
-            $this->allow = false;
+                $this->allow = false;
+                break;
 
-            if ($this->diasSuscripcionSeleccionada == 'esc_man') {
+            default:
                 $this->lunes = false;
                 $this->martes = false;
                 $this->miércoles = false;
@@ -120,7 +127,7 @@ class Clientes extends Component
                 $this->sábado = false;
                 $this->domingo = false;
                 $this->allow = true;
-            }
+                break;
         }
 
         if ($this->tarifaSeleccionada) {

@@ -110,9 +110,6 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @php
-                                $domsubs = (object) $domsubs;
-                            @endphp
                             @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares) || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
@@ -323,7 +320,7 @@
                                             <td class='px-4 py-2'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
-                                                        value={{ $suscri->id }}>
+                                                        value={{ $suscri->cliente_id }}>
                                                     <label class="text-black"
                                                         for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
                                                 </div>
@@ -340,8 +337,10 @@
                                                 {{ $suscri->importe }}
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
-                                            <td class='px-4 py-2'>{{ $rutaEncontrada[$key]->nombreruta }}</td>
-                                            <td class='px-4 py-2'>{{ $rutaEncontrada[$key]->tiporuta }}</td>
+                                            @if ($rutaEncontrada)
+                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['nombreruta'] }}</td>
+                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['tiporuta'] }}</td>
+                                            @endif
                                         </tr>
                                     @else
                                         <tr>

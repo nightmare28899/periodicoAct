@@ -32,7 +32,7 @@
                 <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.(Opcional):</label>
                 <input type="number" min="0"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noint') border-red-500 @enderror"
-                    id="noint" wire:model.defer="noint" placeholder="Escribe tu Colonia" min="0" />
+                    id="noint" wire:model.defer="noint" placeholder="Escribe tu No. Int" min="0" />
                 @error('noint')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -45,7 +45,7 @@
                 <label for="noext" class="block text-black text-sm font-bold mb-2">No. Ext.:</label>
                 <input type="number" min="0"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noext') border-red-500 @enderror"
-                    id="noext" wire:model.defer="noext" placeholder="Escribe tu Colonia" />
+                    id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                 @error('noext')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -68,7 +68,7 @@
                 <label for="cp" class="block text-black text-sm font-bold mb-2">C.P.:</label>
                 <input type="number" min="0"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cp') border-red-500 @enderror"
-                    id="cp" wire:model.defer="cp" placeholder="Escribe tu Colonia" />
+                    id="cp" wire:model.defer="cp" placeholder="Escribe tu CP" />
                 @error('cp')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -78,7 +78,7 @@
                 <label for="localidad" class="block text-black text-sm font-bold mb-2">Localidad:</label>
                 <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('localidad') border-red-500 @enderror"
-                    id="localidad" wire:model.defer="localidad" placeholder="Escribe tu Colonia" />
+                    id="localidad" wire:model.defer="localidad" placeholder="Escribe tu Localidad" />
                 @error('localidad')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
@@ -122,7 +122,7 @@
                 <label for="ciudad" class="block text-black text-sm font-bold mb-2">Ciudad:</label>
                 <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ciudad') border-red-500 @enderror"
-                    id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Colonia" />
+                    id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Ciudad" />
                 @error('ciudad')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>

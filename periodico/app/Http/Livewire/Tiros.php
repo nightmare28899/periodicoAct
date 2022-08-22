@@ -20,7 +20,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [];
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -61,12 +61,18 @@ class Tiros extends Component
                     })
                     ->select("cliente.id", "cliente.nombre", "suscripciones.*")
                     ->get($this->diaS);
+                
+                    foreach ($this->suscripcion as $key => $value) {
+                        array_push($this->domiciliosIdSacados, $this->domsubs = domicilioSubs
+                            ::whereIn('id', json_decode($this->suscripcion[$key]['domicilio_id']))
+                            ->get());
+                        array_push($this->rutaEncontrada, Ruta::where('id', $this->domiciliosIdSacados[$key][0]['ruta'])->get());
+                    }
+                    
+                    /* dd($this->rutaEncontrada[0][0]['nombreruta']); */
+                
+                    /* dd($this->rutaEncontrada); */
 
-                $this->domsubs = domicilioSubs
-                    ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
-                    ->get();
-
-                $this->rutaEncontrada = Ruta::where('id', $this->domsubs[0]['ruta'])->get();
             } catch (\Exception $e) {
                 /* if ($e->getMessage()) {
                     $this->status = 'created';
@@ -172,6 +178,7 @@ class Tiros extends Component
     /* voy en esta parte recuerda checar la remision faltan datos de la suscripcion */
     public function descargaRemision()
     {
+        /* dd($this->clienteSeleccionado); */
         if ($this->clienteSeleccionado) {
             // if (count($this->clienteSeleccionado) <= 1) {
             $this->status = 'created';
@@ -187,11 +194,21 @@ class Tiros extends Component
 
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                ->join("domicilio_subs", "domicilio_subs.cliente_id", "=", "suscripciones.cliente_id")
-                ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                 ->where('cliente.id', '=', $this->clienteSeleccionado)
-                ->select("cliente.*", "suscripciones.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                ->select("cliente.*", "suscripciones.*")
                 ->get($this->diaS);
+
+            $this->domsubs = domicilioSubs
+                ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
+                ->get();
+
+            foreach ($this->domsubs as $key => $value) {
+                array_push($this->rutasNombre, ruta
+                    ::where('ruta.id', '=', $this->domsubs[$key]['ruta'])
+                    ->select('ruta.nombreruta')
+                    ->get());
+            }
+            /* dd($this->rutasNombre[1][0]->nombreruta); */
 
             if ($this->de && $this->hasta) {
                 $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -200,19 +217,34 @@ class Tiros extends Component
                     'diaS' => $this->diaS,
                     'dateF' => $this->dateF,
                     'de' => $this->de,
+                    'domsubs' => $this->domsubs,
                     'hasta' => $this->hasta,
+                    'rutasNombre' => $this->rutasNombre,
                 ])
                     ->setPaper('A5', 'landscape')
                     ->output();
+
+                $this->clienteSeleccionado = [];
+                $this->rutasNombre = [];
+                $this->modalRemision = false;
+                $this->de = '';
+                $this->hasta = '';
+
             } else {
                 $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
                     'ventas' => $this->ventas,
                     'suscripcion' => $this->suscripcion,
                     'diaS' => $this->diaS,
                     'dateF' => $this->dateF,
+                    'domsubs' => $this->domsubs,
+                    'rutasNombre' => $this->rutasNombre,
                 ])
                     ->setPaper('A5', 'landscape')
                     ->output();
+
+                $this->clienteSeleccionado = [];
+                $this->rutasNombre = [];
+                $this->modalRemision = false;
             }
 
             $this->toast();
@@ -244,39 +276,75 @@ class Tiros extends Component
             ]);
         }
     }
-
+    /* me quede en esta parte ya solo es crear otro pdf para evitar cagarla en el envio de información */
     public function descargaTodasRemisiones()
     {
         /* if ($this->clienteSeleccionado) { */
 
         $this->status = 'created';
 
-        $this->resultados = Cliente
-            ::join("ejemplares", "ejemplares.cliente_id", "=", "cliente.id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
-            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-            ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-            ->select("cliente.*", "ejemplares.lunes", "ejemplares.martes", "ejemplares.miércoles", "ejemplares.jueves", "ejemplares.viernes", "ejemplares.sábado", "ejemplares.domingo", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-            ->get($this->diaS);
+        $this->ventas = ventas
+                ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->select("ventas.*", "cliente.*", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->get($this->diaS);
+
+            $this->suscripcion = Suscripcion
+                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                ->select("cliente.*", "suscripciones.*")
+                ->get($this->diaS);
+
+            for ($i=0; $i < count($this->suscripcion); $i++) {
+                array_push($this->domiPDF, $this->domsubs = domicilioSubs
+                    ::whereIn('id', json_decode($this->suscripcion[$i]['domicilio_id']))
+                    ->get());
+            }
+            /* dd($this->domiPDF); */
+
+            foreach ($this->domsubs as $key => $value) {
+                array_push($this->rutasNombre, ruta
+                    ::where('ruta.id', '=', $this->domsubs[$key]['ruta'])
+                    ->select('ruta.nombreruta')
+                    ->get());
+            }
 
         if ($this->de && $this->hasta) {
             $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
-                'resultado' => $this->resultados,
+                'ventas' => $this->ventas,
+                'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
                 'dateF' => $this->dateF,
                 'de' => $this->de,
+                'domiPDF' => $this->domiPDF,
                 'hasta' => $this->hasta,
+                'rutasNombre' => $this->rutasNombre,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
+
+            $this->clienteSeleccionado = [];
+            $this->rutasNombre = [];
+            $this->modalRemision = false;
+            $this->de = '';
+            $this->hasta = '';
+            
         } else {
             $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
-                'resultado' => $this->resultados,
+                'ventas' => $this->ventas,
+                'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
                 'dateF' => $this->dateF,
+                'domsubs' => $this->domiPDF,
+                'rutasNombre' => $this->rutasNombre,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
+
+            $this->clienteSeleccionado = [];
+            $this->rutasNombre = [];
+            $this->modalRemision = false;
         }
 
         $this->toast();
