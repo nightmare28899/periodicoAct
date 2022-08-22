@@ -20,7 +20,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = 'esco', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId = [], $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId = [], $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -275,7 +275,8 @@ class Clientes extends Component
         $this->suscripciones = true;
     }
     public function modalCrearDomSubs()
-    { {
+    {
+        {
             $this->clienteSeleccionado ? $this->modalDomSubs = true : $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
@@ -348,7 +349,7 @@ class Clientes extends Component
         $this->tarifa_id = '';
     }
     public function store()
-    { 
+    {
         {
             $this->noint ? $this->noint : null;
         }
@@ -359,8 +360,8 @@ class Clientes extends Component
             'pais' => 'required',
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
-            'email' => 'required',
-            'email_cobranza' => 'required',
+            'email' => 'required|string|unique:users',
+            'email_cobranza' => 'required|string',
 
             'calle' => 'required',
             'noext' => 'required',
@@ -426,7 +427,7 @@ class Clientes extends Component
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
 
         $Domicilio = Domicilio::find($id);
-        $this->domicilio_id = $Domicilio->id;
+        $this->domicilio_id = $id;
         $this->calle = $Domicilio->calle;
         $this->noint = $Domicilio->noint;
         $this->noext = $Domicilio->noext;
@@ -506,7 +507,7 @@ class Clientes extends Component
     }
     public function delete($id)
     {
-        
+
         $domD = Domicilio::where('cliente_id', $id)->first();
         $this->status = 'delete';
 
@@ -519,11 +520,11 @@ class Clientes extends Component
         } else {
             dd('No existe');
         }
-        
     }
     /* Aqui comienzan las suscripciones */
     public function createSubs()
-    { {
+    {
+        {
             $this->noint ? $this->noint : $this->noint = null;
         }
 
@@ -564,7 +565,7 @@ class Clientes extends Component
         $this->modalDomSubs = false;
     }
     public function crearVenta()
-    { 
+    {
         {
             $this->lunesVentas ? $this->lunesVentas : 0;
         } {
@@ -709,18 +710,29 @@ class Clientes extends Component
     {
         $this->inputCantidad = $field;
         $this->posicion = $value;
-        
-        if ($field) {    
-            $DomicilioSubs = DomicilioSubs::find($this->posicion);
-            $DomicilioSubs->update([
-                'ejemplares' => $this->inputCantidad,
-            ]);
+
+        if ($field) {
+            if ($this->cantEjem) {
+                if ($field <= $this->cantEjem) {
+                    $DomicilioSubs = DomicilioSubs::find($this->posicion);
+                    $DomicilioSubs->update([
+                        'ejemplares' => $this->inputCantidad,
+                    ]);
+                } else {
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => '¡La cantidad de ejemplares no puede ser mayor a la cantidad de ejemplares existentes!'
+                    ]);
+                }
+            } else {
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => '¡Debes ingresar la cantidad de ejemplares primero!'
+                ]);
+            }
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Debes colocar la cantidad en los domicilios!' : ''
             ]);
         }
-
     }
     public function suscripciones()
     {
@@ -908,11 +920,11 @@ class Clientes extends Component
         foreach ($this->domicilioSeleccionado as $key => $value) {
             if ($value['id'] == $id) {
                 unset($this->domicilioSeleccionado[$key]);
-                domicilioSubs:: where('id', $id)->update([
+                domicilioSubs::where('id', $id)->update([
                     'ejemplares' => 0,
                 ]);
             }
-        }         
+        }
     }
     public function editarDomicilioSubs($id)
     {

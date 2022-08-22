@@ -140,7 +140,7 @@
 
                                             <div class="border-t border-gray-200"></div>
 
-                                            <button wire:click="delete({{ $cliente->id }})"
+                                            {{-- <button wire:click="delete({{ $cliente->id }})"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">
                                                 <svg wire:loading wire:target="delete"
                                                     class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -153,7 +153,7 @@
                                                     </path>
                                                 </svg>
                                                 Eliminar
-                                            </button>
+                                            </button> --}}
                                         </x-slot>
                                     </x-jet-dropdown>
                                 </td>

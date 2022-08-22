@@ -218,6 +218,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('periodoSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="periodoSuscripcionSeleccionada" style="width: 80%">
+                            <option value="">...</option>
                             <option value='esco'>Escoger manualmente</option>
                             <option value='Mensual'>Mensual</option>
                             <option value='Trimestral'>Trimestral</option>
@@ -232,6 +233,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('diasSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="diasSuscripcionSeleccionada" style="width: 80%">
+                            <option value="">...</option>
                             <option value="esc_man">Escoger manualmente</option>
                             <option value="l_v">Lunes a viernes</option>
                             <option value='l_d'>Lunes a Domingo</option>

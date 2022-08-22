@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('estado');
             $table->string('pais');
             $table->string('email')->unique();
-            $table->string('email_cobranza')->unique();
+            $table->string('email_cobranza')->nullable();
             $table->string('telefono')->nullable();
             $table->string('regimen_fiscal');
             $table->timestamps();

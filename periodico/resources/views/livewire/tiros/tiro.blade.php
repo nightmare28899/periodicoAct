@@ -93,12 +93,12 @@
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
-                                    <td class="border">Calle: {{ $result->calle }} <br>
+                                    {{-- <td class="border">Calle: {{ $result->calle }} <br>
                                         No. Ext:
                                         {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                         {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                     </td>
-                                    <td class="border">{{ $result->referencia }}</td>
+                                    <td class="border">{{ $result->referencia }}</td> --}}
                                     <td class="border">
                                         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td=>
                                 </tr>
@@ -317,7 +317,7 @@
                                         </tr>
                                     @endif
                                 @endforeach
-                                @foreach ($sus as $suscri)
+                                @foreach ($suscripcionCopia as $key => $suscri)
                                     @if ($suscri->{$diaS} != 0)
                                         <tr>
                                             <td class='px-4 py-2'>
@@ -332,7 +332,7 @@
                                             <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
                                             <td class='px-4 py-2'>{{ $devuelto }}</td>
                                             <td class='px-4 py-2'>{{ $faltante }}</td>
-                                            <td class='px-4 py-2'>{{ $suscri->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
                                             <td class='px-4 py-2'>
                                                 {{ $suscri->tarifa == 'Base' ? 330 : 300 }}
                                             </td>
@@ -340,8 +340,8 @@
                                                 {{ $suscri->importe }}
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
-                                            <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
-                                            <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
+                                            <td class='px-4 py-2'>{{ $rutaEncontrada[$key]->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $rutaEncontrada[$key]->tiporuta }}</td>
                                         </tr>
                                     @else
                                         <tr>

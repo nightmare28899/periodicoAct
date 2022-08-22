@@ -90,6 +90,8 @@
                 case '¡El cliente ya tiene una suscripción!':
                 case '¡Selecciona un cliente primero!':
                 case '¡No hay datos registrados!':
+                case '¡La cantidad de ejemplares no puede ser mayor a la cantidad de ejemplares existentes!':
+                case '¡Debes ingresar la cantidad de ejemplares primero!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
