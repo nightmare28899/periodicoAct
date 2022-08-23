@@ -79,8 +79,8 @@
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
                             <th class="px-4 py-2 w-20">Ejemplares</th>
-                            {{-- <th class="px-4 py-2 w-20">Domicilio</th>
-                            <th class="px-4 py-2 w-20">Referencia</th> --}}
+                            <th class="px-4 py-2 w-20">Domicilio</th>
+                            <th class="px-4 py-2 w-20">Referencia</th>
                             <th class="px-4 py-2 w-20">Fecha</th>
                             {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
                         </tr>
@@ -90,15 +90,16 @@
                             @if ($result->{$diaS} != 0)
                                 <tr>
                                     <td class="border">Venta/Cliente</td>
+                                    <td class="border">{{ $result->id }}</td>
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
-                                    {{-- <td class="border">Calle: {{ $result->calle }} <br>
+                                    <td class="border">Calle: {{ $result->calle }} <br>
                                         No. Ext:
                                         {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                         {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                     </td>
-                                    <td class="border">{{ $result->referencia }}</td> --}}
+                                    <td class="border">{{ $result->referencia }}</td>
                                     <td class="border">
                                         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td=>
                                 </tr>
@@ -110,12 +111,19 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares && $suscrip->estado == 'Activo') || $suscrip->contrato == 'Cortesía')
+                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares && $suscrip->estado == 'Activo') ||
+                                $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
+                                    <td class="border">Calle: {{ $suscrip->calle }} <br>
+                                        No. Ext:
+                                        {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
+                                        {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
+                                    </td>
+                                    <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
                                     {{-- <td class="border">Calle: {{ $domsubs[$key]->calle }} <br>
                                         No. Ext:
                                         {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
@@ -314,13 +322,13 @@
                                         </tr>
                                     @endif
                                 @endforeach
-                                @foreach ($suscripcionCopia as $key => $suscri)
+                                @foreach ($suscripcionCopia as $suscri)
                                     @if ($suscri->{$diaS} != 0)
                                         <tr>
                                             <td class='px-4 py-2'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
-                                                        value={{ $suscri->cliente_id }}>
+                                                        value={{ $suscri->id }}>
                                                     <label class="text-black"
                                                         for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
                                                 </div>
@@ -337,11 +345,9 @@
                                                 {{ $suscri->importe }}
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
-                                            @if ($rutaEncontrada)
-                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['nombreruta'] }}
-                                                </td>
-                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['tiporuta'] }}</td>
-                                            @endif
+                                            <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
+
                                         </tr>
                                     @else
                                         <tr>
@@ -403,7 +409,7 @@
 
             <x-slot name="title">
                 <div class="flex sm:px-6">
-                    <h1 class="mb-3 text-2xl text-black font-bold ml-3">Historial de Remisión</h1>
+                    <h1 class="mb-3 text-2xl text-black font-bold ml-3">Historial</h1>
                     <button type="button" wire:click="cerrarHistorial" wire:loading.attr="disabled"
                         class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                         data-modal-toggle="defaultModal">
@@ -456,12 +462,20 @@
                                             <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
-                                            @if ($tiro->precio == 330 || $tiro->tarifa == 300)
-                                                <td>
-                                                    <button wire:click="pausarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Pausar
-                                                        suscripción</button>
-                                                </td>
+                                            @if ($tiro->precio == 330 || $tiro->precio == 300)
+                                                @if ($tiro->estado == 'Activo')
+                                                    <td>
+                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white">Pausar
+                                                            suscripción</button>
+                                                    </td>
+                                                @elseif ($tiro->estado == 'Pausado')
+                                                    <td>
+                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Activar
+                                                            suscripción</button>
+                                                    </td>
+                                                @endif
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"

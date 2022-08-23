@@ -13,7 +13,7 @@ class Tiro extends Model
 
     protected $table = 'tiro';
 
-    protected $fillable = ['fecha','cliente', 'entregar', 'devuelto', 'faltante', 'venta', 'precio','importe','dia','nombreruta','tipo'];
+    protected $fillable = ['fecha','cliente', 'entregar', 'devuelto', 'faltante', 'venta', 'precio','importe','dia','nombreruta','tipo', 'estado', 'cliente_id'];
 
     public function user()
     {

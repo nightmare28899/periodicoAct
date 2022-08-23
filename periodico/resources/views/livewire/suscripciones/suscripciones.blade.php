@@ -302,7 +302,7 @@
                                         <th scope="col" class="py-3 px-6">C.P.</th>
                                         <th scope="col" class="py-3 px-6">Localidad</th>
                                         <th scope="col" class="py-3 px-6">Ciudad</th>
-                                        <th scope="col" class="py-3 px-6">#Ejem</th>
+                                        {{-- <th scope="col" class="py-3 px-6">#Ejem</th> --}}
                                         <th scope="col" class="py-3 px-6">Referencia</th>
                                         <th scope="col" class="py-3 px-6">Ruta</th>
                                     </tr>
@@ -337,11 +337,11 @@
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->ciudad }}</td>
-                                                <td class="border">
+                                                {{-- <td class="border">
                                                     <input type="number" class="text-black"
                                                         placeholder="coloca la cantidad"
                                                         wire:model="cantDom.{{ $dom->id }}" min="0">
-                                                </td>
+                                                </td> --}}
                                                 <td class="border"
                                                     wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                     {{ $dom->referencia }}</td>

@@ -195,7 +195,7 @@
             </table>
         @endforeach
     @endif
-    @if (count($domsubs) > 1)
+    {{-- @if (count($domsubs) > 1)
         @foreach ($suscripcion as $key => $result)
             <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
                 <img src="img/logo.jpe" alt="logo la voz" height="36px">
@@ -316,7 +316,8 @@
                 </thead>
             </table>
         @endforeach
-    @else
+    @else --}}
+    @if (count($suscripcion) > 0)
         @foreach ($suscripcion as $key => $result)
             <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
                 <img src="img/logo.jpe" alt="logo la voz" height="36px">
@@ -338,7 +339,7 @@
                 remisionado de clientes
             </h3>
             <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-                {{ $rutasNombre[$key][0]->nombreruta }}
+                {{ $result->nombreruta }}
             </p>
             <h3
                 style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
@@ -352,24 +353,24 @@
             <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
                 {{ $result->rfc_input }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-                {{ $domsubs[$key]->calle }}</p>
+                {{ $result->calle }}</p>
             <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>colonia</b>
-                {{ $domsubs[$key]->colonia }}
+                {{ $result->colonia }}
             </p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>ciudad</b>
-                {{ $domsubs[$key]->ciudad }}</p>
+                {{ $result->ciudad }}</p>
             <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>estado</b>
                 {{ $result->estado }}
             </p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-                {{ $domsubs[$key]->noext }}</p>
+                {{ $result->noext }}</p>
             <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
                     int</b>
-                {{ $domsubs[$key]->noint }}</p>
+                {{ $result->noint }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-                {{ $domsubs[$key]->cp }}</p>
+                {{ $result->cp }}</p>
             <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
                 {{ $result->pais }}</p>
             <div style="padding-top: 8px;">
@@ -442,6 +443,7 @@
             </table>
         @endforeach
     @endif
+        {{-- @endif --}}
 </body>
 
 </html>

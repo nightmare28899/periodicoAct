@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('suscripciones', function (Blueprint $table) {
             $table->engine="InnoDB";
-            $table->bigIncrements('id');
+            $table->string('id');
             $table->string('suscripcion');
             $table->string('esUnaSuscripcion');
             $table->bigInteger('cliente_id')->unsigned();

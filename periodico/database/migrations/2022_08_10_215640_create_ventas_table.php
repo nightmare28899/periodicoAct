@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->engine="InnoDB";
-            $table->bigIncrements('id');
+            $table->string('id');
             $table->bigInteger('cliente_id')->unsigned();
 
             $table->string('desde');

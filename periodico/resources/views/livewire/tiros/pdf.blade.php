@@ -48,12 +48,12 @@
                @endif
            @endforeach
            @foreach ($suscripcion as $suscri)
-               @if ($suscri->{$diaS} != 0 && $suscri->ejemplares != 0)
+               @if ($suscri->{$diaS} != 0)
                    <tr>
                        <td>Suscripción</td>
                        <td>{{ $suscri->nombre }}</td>
                        <td>{{ $diaS }} </td>
-                       <td>{{ $suscri->{$diaS} != 0 ? $suscri->ejemplares : 0 }}</td>
+                       <td>{{ $suscri->{$diaS} != 0 ? $suscri->cantEjemplares : 0 }}</td>
                        <td>Calle: {{ $suscri->calle }}
                            <br>
                            No. Ext:
