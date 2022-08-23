@@ -27,43 +27,43 @@
 
         #movido {
             position: absolute;
-            left: 430px;
+            left: 450px;
             margin-top: -6px;
         }
 
         #movido2 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: -4px;
         }
 
         #movido3 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: 0px;
         }
 
         #movido4 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: 0px;
         }
 
         #movido5 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: 0px;
         }
 
         #movido6 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: 0px;
         }
 
         #movido7 {
             position: absolute;
-            left: 430px;
+            left: 460px;
             margin-top: 0px;
         }
     </style>
@@ -100,13 +100,13 @@
         <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
             {{ $result->nombre }}</p>
         <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-            {{ $result->rfc }}</p>
+            {{ $result->rfc_input }}</p>
         <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
             {{ $result->calle }}</p>
         <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
             {{ $result->colonia }}</p>
-        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
-            {{ $result->municipio }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>ciudad</b>
+            {{ $result->ciudad }}</p>
         <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
             {{ $result->estado }}</p>
         <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
@@ -136,9 +136,8 @@
                     <td>{{ $result->{$diaS} }}</td>
                     <td>
                         <div class="form-group">
-                            <label class="text-black" for="Física"> Periodo:
-                                Del: {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} Hasta:
-                                {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
+                            <label class="text-black" for="Física"> Fecha:
+                                {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
                                 {{ $result->{$diaS} }} </label>
                         </div>
                     </td>
@@ -186,8 +185,9 @@
             </thead>
         </table>
     @endforeach
+
     @if (count($domsubs) > 1)
-        @foreach ($suscripcion as $key => $result)
+        {{-- @foreach ($suscripcion as $key => $result)
             <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
                 <img src="img/logo.jpe" alt="logo la voz" height="36px">
             </div>
@@ -257,9 +257,8 @@
                         <td>{{ $result->cantEjemplares }}</td>
                         <td>
                             <div class="form-group">
-                                <label class="text-black" for="Física"> Periodo:
-                                    Del: {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} Hasta:
-                                    {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
+                                <label class="text-black" for="Física"> Fecha:
+                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
                                     {{ $result->cantEjemplares }} </label>
                             </div>
                         </td>
@@ -307,7 +306,7 @@
                     </tr>
                 </thead>
             </table>
-        @endforeach
+        @endforeach --}}
     @else
         @foreach ($suscripcion as $key => $result)
             <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
@@ -330,7 +329,7 @@
                 remisionado de clientes
             </h3>
             <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-                {{ $rutasNombre[$key][0]->nombreruta }}
+                {{-- {{ $rutasNombre[$key][0]->nombreruta }} --}}
             </p>
             <h3
                 style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
@@ -344,24 +343,22 @@
             <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
                 {{ $result->rfc_input }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-                {{ $domsubs[$key]->calle }}</p>
+                {{ $domsubs->calle }}</p>
             <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>colonia</b>
-                {{ $domsubs[$key]->colonia }}
-            </p>
+                {{ $domsubs->colonia }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>ciudad</b>
-                {{ $domsubs[$key]->ciudad }}</p>
+                {{ $domsubs->ciudad }}</p>
             <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>estado</b>
-                {{ $result->estado }}
-            </p>
+                {{ $result->estado }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-                {{ $domsubs[$key]->noext }}</p>
+                {{ $domsubs->noext }}</p>
             <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
                     int</b>
-                {{ $domsubs[$key]->noint }}</p>
+                {{ $domsubs->noint }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-                {{ $domsubs[$key]->cp }}</p>
+                {{ $domsubs->cp }}</p>
             <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
                 {{ $result->pais }}</p>
             <div style="padding-top: 8px;">
@@ -383,9 +380,8 @@
                         <td>{{ $result->cantEjemplares }}</td>
                         <td>
                             <div class="form-group">
-                                <label class="text-black" for="Física"> Periodo:
-                                    Del: {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} Hasta:
-                                    {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
+                                <label class="text-black" for="Física"> Fecha:
+                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
                                     {{ $result->cantEjemplares }} </label>
                             </div>
                         </td>

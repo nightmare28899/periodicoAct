@@ -784,6 +784,7 @@ class Clientes extends Component
                                 'fechaInicio' => $this->from,
                                 'fechaFin' => $this->to,
                                 'dias' => $this->diasSuscripcionSeleccionada,
+                                'estado' => 'Activo',
                                 'lunes' => $this->lunes,
                                 'martes' => $this->martes,
                                 'miércoles' => $this->miércoles,

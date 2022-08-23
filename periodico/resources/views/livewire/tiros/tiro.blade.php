@@ -110,7 +110,7 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares) || $suscrip->contrato == 'Cortesía')
+                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares && $suscrip->estado == 'Activo') || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
@@ -338,7 +338,8 @@
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
                                             @if ($rutaEncontrada)
-                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['nombreruta'] }}</td>
+                                                <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['nombreruta'] }}
+                                                </td>
                                                 <td class='px-4 py-2'>{{ $rutaEncontrada[$key][0]['tiporuta'] }}</td>
                                             @endif
                                         </tr>
@@ -454,10 +455,19 @@
                                             <td class='px-4 py-2'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
-                                            <td>
-                                                <button wire:click="editarRemision({{ $tiro->id }})"
-                                                    class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
-                                            </td>
+                                            {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
+                                            @if ($tiro->precio == 330 || $tiro->tarifa == 300)
+                                                <td>
+                                                    <button wire:click="pausarRemision({{ $tiro->id }})"
+                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Pausar
+                                                        suscripción</button>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <button wire:click="editarRemision({{ $tiro->id }})"
+                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>
