@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('suscripciones', function (Blueprint $table) {
             $table->engine="InnoDB";
-            $table->string('id');
+            $table->bigIncrements('id');
             $table->string('suscripcion');
             $table->string('esUnaSuscripcion');
             $table->bigInteger('cliente_id')->unsigned();
-
+            $table->string('idSuscripcion');
             $table->string('tarifa');
             $table->integer('cantEjemplares');
             $table->string('precio');

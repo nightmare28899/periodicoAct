@@ -97,7 +97,7 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-       
+
         if ($this->diasSuscripcionSeleccionada) {
             if ($this->diasSuscripcionSeleccionada == 'l_v') {
                 $this->lunes = true;
@@ -586,7 +586,7 @@ class Clientes extends Component
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
                     ventas::Create([
-                        'id' => 'venta' . $this->idSuscrip,
+                        'idVenta' => 'venta' . $this->idSuscrip,
                         'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
                         'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
                         'desde' => $this->desde,
@@ -750,7 +750,7 @@ class Clientes extends Component
                         ]);
                     }
 
-                    
+
 
                     /* foreach ($this->domicilioSeleccionado as $key => $value) {
                         if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
@@ -770,7 +770,7 @@ class Clientes extends Component
                     /* if ($this->inputCantidad) { */
                         /* if ($this->inputCantidad <= $this->cantEjem) { */
                             Suscripcion::Create([
-                                'id' => 'suscri' . $this->idSuscrip,
+                                'idSuscripcion' => 'suscri' . $this->idSuscrip,
                                 'cliente_id' => $this->clienteSeleccionado,
                                 'suscripcion' => $this->tipoSubscripcion,
                                 'esUnaSuscripcion' => $this->subscripcionEs,
@@ -800,7 +800,7 @@ class Clientes extends Component
                                 'domicilio_id' =>  $this->domicilioSeleccionado[0]['id'],
                             ]);
 
-                            
+
                             /* 'domicilio_id' =>  json_encode($this->domicilioId), */
 
                             $this->status = 'created';

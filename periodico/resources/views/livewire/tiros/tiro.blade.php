@@ -90,7 +90,6 @@
                             @if ($result->{$diaS} != 0)
                                 <tr>
                                     <td class="border">Venta/Cliente</td>
-                                    <td class="border">{{ $result->id }}</td>
                                     <td class="border">{{ $result->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
                                     <td class="border">{{ $result->{$diaS} }}</td>
@@ -111,7 +110,7 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if (($suscrip->{$diaS} != 0 && $suscrip->cantEjemplares && $suscrip->estado == 'Activo') ||
+                            @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo') ||
                                 $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
@@ -252,13 +251,24 @@
                 <div class="flex">
                     <h4 class="flex-initial" style="width: 11rem;">Desde:</h4>
                     <h4 class="flex-initial" style="width: 11rem;">Hasta:</h4>
-                    <h4 class="flex-initial">Ruta:</h4>
+                    <h4 class="flex-initial" style="width: 11rem;">Ruta:</h4>
+                    <h4 class="flex-initial">Tipo</h4>
                 </div>
                 <div class="container w-full">
 
                     <x-jet-input type="date" wire:model="de"></x-jet-input>
                     <x-jet-input type="date" wire:model="hasta"></x-jet-input>
 
+                    <select
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                        style="width: 11rem;" wire:model="rutaSeleccionada">
+                        <option value='Todos' selected>TODOS</option>
+                        @foreach ($ruta as $rut)
+                            <option value='{{ $rut['nombreruta'] }}'>
+                                {{ $rut['nombreruta'] }}
+                            </option>
+                        @endforeach
+                    </select>
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                         style="width: 11rem;" wire:model="rutaSeleccionada">
@@ -296,7 +306,7 @@
                                             <td class='px-4 py-2'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
-                                                        value={{ $result->id }}>
+                                                        value={{ $result->idVenta }}>
                                                     <label class="text-black"
                                                         for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
                                                 </div>
@@ -328,7 +338,7 @@
                                             <td class='px-4 py-2'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
-                                                        value={{ $suscri->id }}>
+                                                        value={{ $suscri->idSuscripcion }}>
                                                     <label class="text-black"
                                                         for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
                                                 </div>
