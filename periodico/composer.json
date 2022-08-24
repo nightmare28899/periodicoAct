@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "ascsoftw/livewire-toast": "^1.0",
         "barryvdh/laravel-dompdf": "^1.0",
+        "crisvegadev/facturama-php-sdk": "^1.0@beta",
         "flightsadmin/livewire-crud": "^0.0.17",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.11",
