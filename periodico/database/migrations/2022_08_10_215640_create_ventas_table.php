@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('viernes')->nullable();
             $table->integer('sábado')->nullable();
             $table->integer('domingo')->nullable();
-
+            $table->string('tipo');
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
             $table->string('domicilio_id')->references('id')->on('domicilio')->onDelete('cascade');
             $table->timestamps();

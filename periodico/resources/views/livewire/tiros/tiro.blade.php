@@ -110,8 +110,7 @@
                         @endforeach
 
                         @foreach ($suscripcion as $suscrip)
-                            @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo') ||
-                                $suscrip->contrato == 'Cortesía')
+                            @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo') || $suscrip->contrato == 'Cortesía')
                                 <tr>
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
@@ -271,13 +270,13 @@
                     </select>
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                        style="width: 11rem;" wire:model="rutaSeleccionada">
-                        <option value='Todos' selected>TODOS</option>
-                        @foreach ($ruta as $rut)
-                            <option value='{{ $rut['nombreruta'] }}'>
-                                {{ $rut['nombreruta'] }}
-                            </option>
-                        @endforeach
+                        style="width: 11rem;" wire:model="tipoSeleccionada">
+                        <option value='venta'>
+                            Venta/Cliente
+                        </option>
+                        <option value='suscripcion'>
+                            Suscripción
+                        </option>
                     </select>
                 </div>
                 <br>

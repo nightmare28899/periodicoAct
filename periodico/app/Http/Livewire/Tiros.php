@@ -20,7 +20,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta';
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -87,18 +87,27 @@ class Tiros extends Component
         if ($this->rutaSeleccionada == "Todos") {
             $this->diaS = $this->dateF->translatedFormat('l');
 
+            /* if (count($this->ventas) > 0) {
+                for ($i = 0; $i < count($this->ventas); $i++) {
+                    if (substr($this->tipoSeleccionada[$i], 0, 5) == 'venta') {
+                    
+                }
+            } */
             $this->ventaCopia = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                ->where("ventas.tipo", "=" , $this->tipoSeleccionada)
                 ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
+            /* dd($this->ventaCopia); */
             /* dd($idVentas = $this->ventaCopia[0]->idVenta); */
             $this->suscripcionCopia = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                ->where("suscripciones.tipo", "=" , $this->tipoSeleccionada)
                 ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
             $this->rutaEncontrada;
@@ -109,7 +118,8 @@ class Tiros extends Component
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where(function ($query) {
-                    $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                    $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                          ->where('ventas.tipo', '=', $this->tipoSeleccionada);
                 })
                 ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
@@ -119,7 +129,8 @@ class Tiros extends Component
                 ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                 ->where(function ($query) {
-                    $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                    $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                          ->where('suscripciones.tipo', '=', $this->tipoSeleccionada);
                 })
                 ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
@@ -293,7 +304,6 @@ class Tiros extends Component
                         ]);
                     }
                 }
-                /* $this->clienteSeleccionado = []; */
                 /* dd($i); */
                 /* dd($this->ventas[0]['idVenta']); */
                 /* dd($this->clienteSeleccionado); */
@@ -338,6 +348,7 @@ class Tiros extends Component
 
             }
 
+            $this->clienteSeleccionado = [];
             return response()
                 ->streamDownload(
                     fn () => print($pdfContent),
@@ -380,24 +391,26 @@ class Tiros extends Component
     {
         /* if ($this->clienteSeleccionado) { */
 
-        $this->status = 'created';
-
         $this->ventas = ventas
             ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
             ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+            ->where("ventas.tipo", "=" , $this->tipoSeleccionada)
             ->select("ventas.*", "cliente.*", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
             ->get($this->diaS);
 
         $this->suscripcion = Suscripcion
             ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-            ->select("cliente.*", "suscripciones.*")
+            ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+            ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+            ->where("suscripciones.tipo", "=" , $this->tipoSeleccionada)
+            ->select("suscripciones.*", "cliente.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
             ->get($this->diaS);
 
         // dd($this->suscripcion);
 
-        for ($i = 0; $i < count($this->suscripcion); $i++) {
+        /* for ($i = 0; $i < count($this->suscripcion); $i++) {
             array_push($this->domiPDF, $this->domsubs = domicilioSubs
                 ::whereIn('id', json_decode($this->suscripcion[$i]['domicilio_id']))
                 ->get());
@@ -409,11 +422,11 @@ class Tiros extends Component
                 ::where('ruta.id', '=', $this->domsubs[$key]['ruta'])
                 ->select('ruta.nombreruta')
                 ->get());
-        }
+        } */
 
 
         if ($this->de && $this->hasta) {
-            $pdfContent = PDF::loadView('livewire.remisiones.todasremisiones', [
+            $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
                 'ventas' => $this->ventas,
                 'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
@@ -432,7 +445,7 @@ class Tiros extends Component
             $this->de = '';
             $this->hasta = '';
         } else {
-            $pdfContent = PDF::loadView('livewire.remisiones.todasremisiones', [
+            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
                 'ventas' => $this->ventas,
                 'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
@@ -448,38 +461,60 @@ class Tiros extends Component
             $this->modalRemision = false;
         }
 
-        $this->toast();
 
-        foreach ($this->resultados as $resultado) {
-            Tiro::create([
-                'fecha' => $this->dateF,
-                'cliente' => $resultado['nombre'],
-                'entregar' => $resultado->{$this->diaS},
-                'devuelto' => $this->devuelto,
-                'faltante' => $this->faltante,
-                'venta' => $resultado->{$this->diaS},
-                'precio' => $this->diaS == 'domingo' ? $resultado['dominical'] : $resultado['ordinario'],
-                'importe' => $this->diaS == 'domingo' ? $resultado['dominical'] : $resultado['ordinario'] * $resultado->{$this->diaS},
-                'dia' => $this->diaS,
-                'nombreruta' => $resultado['nombreruta'],
-                'tipo' => $resultado['tiporuta'],
-            ]);
+        if (count($this->ventas) > 0) {
+            for ($i = 0; $i < count($this->ventas); $i++) {
+                    Tiro::create([
+                        'fecha' => $this->dateF,
+                        'cliente' => $this->ventas[$i]['nombre'],
+                        'entregar' => $this->ventas[$i]->{$this->diaS},
+                        'devuelto' => $this->devuelto,
+                        'faltante' => $this->faltante,
+                        'venta' => $this->ventas[$i]->{$this->diaS},
+                        'estado' => 'Activo',
+                        'cliente_id' => $this->ventas[$i]->cliente_id,
+                        'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                        'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
+                        'dia' => $this->diaS,
+                        'nombreruta' => $this->ventas[$i]['nombreruta'],
+                        'tipo' => $this->ventas[$i]['tiporuta'],
+                    ]);
+            }
         }
+
+        if (count($this->suscripcion) > 0) {
+            for ($i = 0; $i < count($this->suscripcion); $i++) {
+                    Tiro::create([
+                        'fecha' => $this->dateF,
+                        'cliente' => $this->suscripcion[$i]['nombre'],
+                        'entregar' => $this->suscripcion[$i]['cantEjemplares'],
+                        'devuelto' => $this->devuelto,
+                        'faltante' => $this->faltante,
+                        'estado' => 'Activo',
+                        'cliente_id' => $this->suscripcion[$i]['cliente_id'],
+                        'venta' => $this->suscripcion[$i]['cantEjemplares'],
+                        'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                        'importe' => $this->suscripcion[$i]->total,
+                        'dia' => $this->diaS,
+                        'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                        'tipo' => $this->suscripcion[$i]['tiporuta'],
+                    ]);
+            }
+
+        }
+        $this->status = 'created';
+
+        $this->toast();
 
         $this->modalRemision = false;
         $this->showingModal = true;
+        $this->clienteSeleccionado = [];
 
         return response()
             ->streamDownload(
                 fn () => print($pdfContent),
                 "remisiones.pdf"
             );
-        /* } else {
-            $this->status = 'error';
-            return $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'error') ? '¡Debes seleccionar un elemento primero!' : ''
-            ]);
-        } */
     }
 
     public function historialRemision()

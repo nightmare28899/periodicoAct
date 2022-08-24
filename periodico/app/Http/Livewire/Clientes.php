@@ -493,7 +493,7 @@ class Clientes extends Component
             'tarifa_id' => $this->tarifa_id,
             'referencia' => $this->referencia,
         ]);
-
+        $this->status = 'created';
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
@@ -566,6 +566,7 @@ class Clientes extends Component
     }
     public function crearVenta()
     {
+        $this->status = 'created';
         $this->idSuscrip = Str::random(6);
         {
             $this->lunesVentas ? $this->lunesVentas : 0;
@@ -587,6 +588,7 @@ class Clientes extends Component
                 if ($this->hasta) {
                     ventas::Create([
                         'idVenta' => 'venta' . $this->idSuscrip,
+                        'tipo' => 'venta',
                         'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
                         'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
                         'desde' => $this->desde,
@@ -624,7 +626,7 @@ class Clientes extends Component
     }
     public function actualizarVenta()
     {
-        $this->validate([
+        /* $this->validate([
             'lunesVentas' => 'required',
             'martesVentas' => 'required',
             'miercolesVentas' => 'required',
@@ -632,9 +634,9 @@ class Clientes extends Component
             'viernesVentas' => 'required',
             'sabadoVentas' => 'required',
             'domingoVentas' => 'required',
-        ]);
-        $this->status = 'updated';
-        $this->ventas = ventas::where('id', $this->clienteSeleccionado)->first();
+        ]); */
+        
+        $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
         $this->ventas->update([
             'desde' => $this->desde,
             'hasta' => $this->hasta,
@@ -649,6 +651,7 @@ class Clientes extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
         ]);
+        $this->status = 'created';
         $this->limpiarVentaModal();
         $this->modalV = false;
     }
@@ -668,6 +671,7 @@ class Clientes extends Component
                 $this->sabadoVentas = $this->ventas[0]['sábado'];
                 $this->domingoVentas = $this->ventas[0]['domingo'];
                 $this->modalV = true;
+                $this->status = 'updated';
             } else {
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡El cliente no tiene ningúna venta registrada!' : ''
@@ -771,6 +775,7 @@ class Clientes extends Component
                         /* if ($this->inputCantidad <= $this->cantEjem) { */
                             Suscripcion::Create([
                                 'idSuscripcion' => 'suscri' . $this->idSuscrip,
+                                'tipo' => 'suscripcion',
                                 'cliente_id' => $this->clienteSeleccionado,
                                 'suscripcion' => $this->tipoSubscripcion,
                                 'esUnaSuscripcion' => $this->subscripcionEs,
@@ -974,7 +979,7 @@ class Clientes extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Domicilio actualizado exitosamente!' : ''
         ]);
-
+        $this->status = 'created';
         $this->modalFormDom = false;
     }
     public function resetInputSubs()

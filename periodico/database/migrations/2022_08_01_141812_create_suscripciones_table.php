@@ -37,7 +37,7 @@ return new class extends Migration
             $table->boolean('sábado')->default(0)->nullable();
             $table->boolean('domingo')->default(0)->nullable();
             $table->string('estado');
-
+            $table->string('tipo');
             $table->integer('descuento')->nullable();
             $table->string('observaciones')->nullable();
             $table->integer('importe');
