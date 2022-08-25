@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('dia');
             $table->string('nombreruta');
             $table->string('tipo');
+            $table->string('idTipo');
             $table->timestamps();
         });
     }

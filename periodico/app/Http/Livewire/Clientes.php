@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cliente;
 use App\Models\Domicilio;
-use App\Models\Ejemplar;
 use App\Models\Ruta;
 use App\Models\Tarifa;
 use App\Models\domicilioSubs;
@@ -753,8 +752,6 @@ class Clientes extends Component
                             'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                         ]);
                     }
-
-
 
                     /* foreach ($this->domicilioSeleccionado as $key => $value) {
                         if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {

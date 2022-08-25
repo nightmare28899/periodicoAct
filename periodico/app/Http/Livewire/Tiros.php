@@ -15,13 +15,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\ventas;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Response;
 
 use function PHPUnit\Framework\isEmpty;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta';
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -33,12 +32,12 @@ class Tiros extends Component
         $this->ruta = Ruta::all();
         $suscripcion = Suscripcion::all();
         $ventas = ventas::all();
-        $facturama = new \Facturama\Client('USER', 'PASSWORD');
         $keyWord = '%' . $this->keyWord . '%';
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
         $this->dateFiltro = new Carbon($this->de);
-        /* dd($suscripcion); */
+        $this->tiro = Tiro::all();
+
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
             try {
@@ -53,7 +52,6 @@ class Tiros extends Component
                     })
                     ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
-                /* dd($this->ventas); */
                 $this->suscripcion = Suscripcion
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
@@ -64,17 +62,12 @@ class Tiros extends Component
                     })
                     ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-                /* dd($this->suscripcion); */
                 /* foreach ($this->suscripcion as $key => $value) {
                     array_push($this->domiciliosIdSacados, $this->domsubs = domicilioSubs
                         ::whereIn('id', json_decode($this->suscripcion[$key]['domicilio_id']))
                         ->get());
                     array_push($this->rutaEncontrada, Ruta::where('id', $this->domiciliosIdSacados[$key][0]['ruta'])->get());
                 } */
-
-                /* dd($this->rutaEncontrada[0][0]['nombreruta']); */
-
-                /* dd($this->rutaEncontrada); */
             } catch (\Exception $e) {
                 /* if ($e->getMessage()) {
                     $this->status = 'created';
@@ -89,12 +82,6 @@ class Tiros extends Component
         if ($this->rutaSeleccionada == "Todos") {
             $this->diaS = $this->dateF->translatedFormat('l');
 
-            /* if (count($this->ventas) > 0) {
-                for ($i = 0; $i < count($this->ventas); $i++) {
-                    if (substr($this->tipoSeleccionada[$i], 0, 5) == 'venta') {
-
-                }
-            } */
             $this->ventaCopia = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
@@ -103,8 +90,7 @@ class Tiros extends Component
                 ->where("ventas.tipo", "=", $this->tipoSeleccionada)
                 ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
-            /* dd($this->ventaCopia); */
-            /* dd($idVentas = $this->ventaCopia[0]->idVenta); */
+
             $this->suscripcionCopia = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
@@ -151,79 +137,6 @@ class Tiros extends Component
         ], compact('domicilios'));
     }
 
-    /* public function busqueda()
-    {
-        if ($this->keyWord) {
-        } else {
-            $this->status = 'created';
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Primero escribe el nombre!' : ''
-            ]);
-        }
-    } */
-
-    public function facturar()
-    {
-        $facturama =  \Crisvegadev\Facturama\Invoice::create([
-            "Serie" => "R",
-            "Currency" => "MXN",
-            "ExpeditionPlace" => "78116",
-            "PaymentConditions" => "CREDITO A SIETE DIAS",
-            "Folio" => "100",
-            "CfdiType" => "I",
-            "PaymentForm" => "03",
-            "PaymentMethod" => "PUE",
-            "Receiver" => [
-                "Rfc" => "RSS2202108U5",
-                "Name" => "RADIAL SOFTWARE SOLUTIONS",
-                "CfdiUse" => "P01"
-            ],
-            "Items" => [
-                [
-                    "ProductCode" => "10101504",
-                    "IdentificationNumber" => "EDL",
-                    "Description" => "Estudios de viabilidad",
-                    "Unit" => "NO APLICA",
-                    "UnitCode" => "MTS",
-                    "UnitPrice" => 50.0,
-                    "Quantity" => 2.0,
-                    "Subtotal" => 100.0,
-                    "Taxes" => [
-                        [
-                            "Total" => 16.0,
-                            "Name" => "IVA",
-                            "Base" => 100.0,
-                            "Rate" => 0.16,
-                            "IsRetention" => false
-                        ]
-                    ],
-                    "Total" => 116.0
-                ],
-                [
-                    "ProductCode" => "10101504",
-                    "IdentificationNumber" => "001",
-                    "Description" => "SERVICIO DE COLOCACION",
-                    "Unit" => "NO APLICA",
-                    "UnitCode" => "E49",
-                    "UnitPrice" => 100.0,
-                    "Quantity" => 15.0,
-                    "Subtotal" => 1500.0,
-                    "Discount" => 0.0,
-                    "Taxes" => [
-                        [
-                            "Total" => 240.0,
-                            "Name" => "IVA",
-                            "Base" => 1500.0,
-                            "Rate" => 0.16,
-                            "IsRetention" => false
-                        ]
-                    ],
-                    "Total" => 1740.0
-                ]
-            ]
-        ]);
-    }
-
     public function descarga()
     {
         $this->isGenerateTiro = true;
@@ -264,13 +177,10 @@ class Tiros extends Component
                 "tiros.pdf"
             );
     }
-    /* voy en esta parte recuerda checar la remision faltan datos de la suscripcion */
+    
     public function descargaRemision()
     {
-        // dd(substr($this->clienteSeleccionado[1], 0, 5));
-        /* dd($this->clienteSeleccionado); */
         if ($this->clienteSeleccionado) {
-            // if (count($this->clienteSeleccionado) <= 1) {
             $this->status = 'created';
 
             $this->ventas = ventas
@@ -282,8 +192,6 @@ class Tiros extends Component
                 ->select("ventas.*", "cliente.*", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
-            /* dd($this->ventas); */
-
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                 ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
@@ -291,7 +199,6 @@ class Tiros extends Component
                 ->whereIn('suscripciones.idSuscripcion', $this->clienteSeleccionado)
                 ->select("cliente.*", "suscripciones.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
-            /* dd($this->suscripcion); */
             /* if (count($this->suscripcion) > 0) {
                 $this->domsubs = domicilioSubs
                     ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
@@ -307,7 +214,6 @@ class Tiros extends Component
                         ->select('ruta.nombreruta')
                         ->get());
                 }
-                dd($this->rutasNombre[0][0]['nombreruta']);
             } */
 
             if ($this->de && $this->hasta) {
@@ -346,35 +252,56 @@ class Tiros extends Component
 
             $this->toast();
 
-            /* es para el historial */
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (substr($this->clienteSeleccionado[$i], 0, 5) == 'venta') {
-                        /* dd('es ventas'); */
-                        Tiro::create([
-                            'fecha' => $this->dateF,
-                            'cliente' => $this->ventas[$i]['nombre'],
-                            'entregar' => $this->ventas[$i]->{$this->diaS},
-                            'devuelto' => $this->devuelto,
-                            'faltante' => $this->faltante,
-                            'venta' => $this->ventas[$i]->{$this->diaS},
-                            'estado' => 'Activo',
-                            'cliente_id' => $this->ventas[$i]->cliente_id,
-                            'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
-                            'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
-                            'dia' => $this->diaS,
-                            'nombreruta' => $this->ventas[$i]['nombreruta'],
-                            'tipo' => $this->ventas[$i]['tiporuta'],
-                        ]);
+                        if (count($this->tiro) > 0) {
+                            if ($this->tiro[$i]['idTipo'] == $this->ventas[$i]['idVenta']) {
+                                /* $this->status = 'error';
+                                $this->dispatchBrowserEvent('alert', [
+                                    'message' => ($this->status == 'error') ? '¡Ya existe esa remisión!' : ''
+                                ]); */
+                            } else {
+                                Tiro::create([
+                                    'fecha' => $this->dateF,
+                                    'cliente' => $this->ventas[$i]['nombre'],
+                                    'entregar' => $this->ventas[$i]->{$this->diaS},
+                                    'devuelto' => $this->devuelto,
+                                    'faltante' => $this->faltante,
+                                    'venta' => $this->ventas[$i]->{$this->diaS},
+                                    'estado' => 'Activo',
+                                    'cliente_id' => $this->ventas[$i]->cliente_id,
+                                    'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                                    'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
+                                    'dia' => $this->diaS,
+                                    'idTipo' => $this->clienteSeleccionado[$i],
+                                    'nombreruta' => $this->ventas[$i]['nombreruta'],
+                                    'tipo' => $this->ventas[$i]['tiporuta'],
+                                ]);
+                            }
+                        } else {
+                            Tiro::create([
+                                'fecha' => $this->dateF,
+                                'cliente' => $this->ventas[$i]['nombre'],
+                                'entregar' => $this->ventas[$i]->{$this->diaS},
+                                'devuelto' => $this->devuelto,
+                                'faltante' => $this->faltante,
+                                'venta' => $this->ventas[$i]->{$this->diaS},
+                                'estado' => 'Activo',
+                                'cliente_id' => $this->ventas[$i]->cliente_id,
+                                'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                                'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
+                                'dia' => $this->diaS,
+                                'idTipo' => $this->clienteSeleccionado[$i],
+                                'nombreruta' => $this->ventas[$i]['nombreruta'],
+                                'tipo' => $this->ventas[$i]['tiporuta'],
+                            ]);
+                        }
                     }
                 }
-                /* dd($i); */
-                /* dd($this->ventas[0]['idVenta']); */
-                /* dd($this->clienteSeleccionado); */
             }
-            /* es para el historial subs */
+
             if (count($this->suscripcion) > 0) {
-                /* dd($this->suscripcion); */
                 /* $this->domsubs = domicilioSubs
                     ::whereIn('id', json_decode($this->suscripcion[0]['domicilio_id']))
                     ->get(); */
@@ -390,22 +317,48 @@ class Tiros extends Component
                 } */
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (substr($this->clienteSeleccionado[$i], 0, 6) == 'suscri') {
-                        /* dd('es suscripcion'); */
-                        Tiro::create([
-                            'fecha' => $this->dateF,
-                            'cliente' => $this->suscripcion[$i]['nombre'],
-                            'entregar' => $this->suscripcion[$i]['cantEjemplares'],
-                            'devuelto' => $this->devuelto,
-                            'faltante' => $this->faltante,
-                            'estado' => 'Activo',
-                            'cliente_id' => $this->suscripcion[$i]['cliente_id'],
-                            'venta' => $this->suscripcion[$i]['cantEjemplares'],
-                            'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
-                            'importe' => $this->suscripcion[$i]->total,
-                            'dia' => $this->diaS,
-                            'nombreruta' => $this->suscripcion[$i]['nombreruta'],
-                            'tipo' => $this->suscripcion[$i]['tiporuta'],
-                        ]);
+                        if (count($this->tiro) > 0) {
+                            if ($this->tiro[$i]['idTipo'] == $this->suscripcion[$i]['idSuscripcion']) {
+                                /* $this->status = 'error';
+                                $this->dispatchBrowserEvent('alert', [
+                                    'message' => ($this->status == 'error') ? '¡Ya existe esa remisión!' : ''
+                                ]); */
+                            } else {
+                                Tiro::create([
+                                    'fecha' => $this->dateF,
+                                    'cliente' => $this->suscripcion[$i]['nombre'],
+                                    'entregar' => $this->suscripcion[$i]['cantEjemplares'],
+                                    'devuelto' => $this->devuelto,
+                                    'faltante' => $this->faltante,
+                                    'estado' => 'Activo',
+                                    'cliente_id' => $this->suscripcion[$i]['cliente_id'],
+                                    'venta' => $this->suscripcion[$i]['cantEjemplares'],
+                                    'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                                    'importe' => $this->suscripcion[$i]->total,
+                                    'dia' => $this->diaS,
+                                    'idTipo' => $this->clienteSeleccionado[$i],
+                                    'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                                    'tipo' => $this->suscripcion[$i]['tiporuta'],
+                                ]);
+                            }
+                        } else {
+                            Tiro::create([
+                                'fecha' => $this->dateF,
+                                'cliente' => $this->suscripcion[$i]['nombre'],
+                                'entregar' => $this->suscripcion[$i]['cantEjemplares'],
+                                'devuelto' => $this->devuelto,
+                                'faltante' => $this->faltante,
+                                'estado' => 'Activo',
+                                'cliente_id' => $this->suscripcion[$i]['cliente_id'],
+                                'venta' => $this->suscripcion[$i]['cantEjemplares'],
+                                'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                                'importe' => $this->suscripcion[$i]->total,
+                                'dia' => $this->diaS,
+                                'idTipo' => $this->clienteSeleccionado[$i],
+                                'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                                'tipo' => $this->suscripcion[$i]['tiporuta'],
+                            ]);
+                        }
                         /* $this->clienteSeleccionado = []; */
                     }
                 }
@@ -424,6 +377,7 @@ class Tiros extends Component
             ]);
         }
     }
+
     public function pausarRemision($id)
     {
         $tiro = Tiro
@@ -449,11 +403,9 @@ class Tiros extends Component
         }
         $this->modalHistorial = false;
     }
-    /* me quede en esta parte ya solo es crear otro pdf para evitar cagarla en el envio de información */
+
     public function descargaTodasRemisiones()
     {
-        /* if ($this->clienteSeleccionado) { */
-
         $this->ventas = ventas
             ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
             ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
@@ -471,14 +423,11 @@ class Tiros extends Component
             ->select("suscripciones.*", "cliente.*", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
             ->get($this->diaS);
 
-        // dd($this->suscripcion);
-
         /* for ($i = 0; $i < count($this->suscripcion); $i++) {
             array_push($this->domiPDF, $this->domsubs = domicilioSubs
                 ::whereIn('id', json_decode($this->suscripcion[$i]['domicilio_id']))
                 ->get());
         }
-        dd($this->domiPDF);
 
         foreach ($this->domsubs as $key => $value) {
             array_push($this->rutasNombre, ruta
@@ -486,7 +435,6 @@ class Tiros extends Component
                 ->select('ruta.nombreruta')
                 ->get());
         } */
-
 
         if ($this->de && $this->hasta) {
             $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -524,44 +472,97 @@ class Tiros extends Component
             $this->modalRemision = false;
         }
 
-
         if (count($this->ventas) > 0) {
             for ($i = 0; $i < count($this->ventas); $i++) {
-                Tiro::create([
-                    'fecha' => $this->dateF,
-                    'cliente' => $this->ventas[$i]['nombre'],
-                    'entregar' => $this->ventas[$i]->{$this->diaS},
-                    'devuelto' => $this->devuelto,
-                    'faltante' => $this->faltante,
-                    'venta' => $this->ventas[$i]->{$this->diaS},
-                    'estado' => 'Activo',
-                    'cliente_id' => $this->ventas[$i]->cliente_id,
-                    'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
-                    'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
-                    'dia' => $this->diaS,
-                    'nombreruta' => $this->ventas[$i]['nombreruta'],
-                    'tipo' => $this->ventas[$i]['tiporuta'],
-                ]);
+                if (count($this->tiro) > 0) {
+                    if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) {
+                        Tiro::create([
+                            'fecha' => $this->dateF,
+                            'cliente' => $this->ventas[$i]['nombre'],
+                            'entregar' => $this->ventas[$i]->{$this->diaS},
+                            'devuelto' => $this->devuelto,
+                            'faltante' => $this->faltante,
+                            'venta' => $this->ventas[$i]->{$this->diaS},
+                            'estado' => 'Activo',
+                            'cliente_id' => $this->ventas[$i]->cliente_id,
+                            'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                            'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
+                            'dia' => $this->diaS,
+                            'idTipo' => $this->ventas[$i]['idVenta'],
+                            'nombreruta' => $this->ventas[$i]['nombreruta'],
+                            'tipo' => $this->ventas[$i]['tiporuta'],
+                        ]);
+                    } else {
+                        /* $this->status = 'error';
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'error') ? '¡Ya existe esa remisión!' : ''
+                        ]); */
+                    }
+                } else {
+                    Tiro::create([
+                        'fecha' => $this->dateF,
+                        'cliente' => $this->ventas[$i]['nombre'],
+                        'entregar' => $this->ventas[$i]->{$this->diaS},
+                        'devuelto' => $this->devuelto,
+                        'faltante' => $this->faltante,
+                        'venta' => $this->ventas[$i]->{$this->diaS},
+                        'estado' => 'Activo',
+                        'cliente_id' => $this->ventas[$i]->cliente_id,
+                        'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                        'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
+                        'dia' => $this->diaS,
+                        'idTipo' => $this->ventas[$i]['idVenta'],
+                        'nombreruta' => $this->ventas[$i]['nombreruta'],
+                        'tipo' => $this->ventas[$i]['tiporuta'],
+                    ]); 
+                }
             }
         }
 
         if (count($this->suscripcion) > 0) {
             for ($i = 0; $i < count($this->suscripcion); $i++) {
-                Tiro::create([
-                    'fecha' => $this->dateF,
-                    'cliente' => $this->suscripcion[$i]['nombre'],
-                    'entregar' => $this->suscripcion[$i]['cantEjemplares'],
-                    'devuelto' => $this->devuelto,
-                    'faltante' => $this->faltante,
-                    'estado' => 'Activo',
-                    'cliente_id' => $this->suscripcion[$i]['cliente_id'],
-                    'venta' => $this->suscripcion[$i]['cantEjemplares'],
-                    'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
-                    'importe' => $this->suscripcion[$i]->total,
-                    'dia' => $this->diaS,
-                    'nombreruta' => $this->suscripcion[$i]['nombreruta'],
-                    'tipo' => $this->suscripcion[$i]['tiporuta'],
-                ]);
+                if (count($this->tiro) > 0) {
+                    if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
+                        Tiro::create([
+                            'fecha' => $this->dateF,
+                            'cliente' => $this->suscripcion[$i]['nombre'],
+                            'entregar' => $this->suscripcion[$i]['cantEjemplares'],
+                            'devuelto' => $this->devuelto,
+                            'faltante' => $this->faltante,
+                            'estado' => 'Activo',
+                            'cliente_id' => $this->suscripcion[$i]['cliente_id'],
+                            'venta' => $this->suscripcion[$i]['cantEjemplares'],
+                            'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                            'importe' => $this->suscripcion[$i]->total,
+                            'dia' => $this->diaS,
+                            'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
+                            'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                            'tipo' => $this->suscripcion[$i]['tiporuta'],
+                        ]);
+                    } else {
+                        /* $this->status = 'error';
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'error') ? '¡Ya existe esa remisión!' : ''
+                        ]); */
+                    }
+                } else {
+                    Tiro::create([
+                        'fecha' => $this->dateF,
+                        'cliente' => $this->suscripcion[$i]['nombre'],
+                        'entregar' => $this->suscripcion[$i]['cantEjemplares'],
+                        'devuelto' => $this->devuelto,
+                        'faltante' => $this->faltante,
+                        'estado' => 'Activo',
+                        'cliente_id' => $this->suscripcion[$i]['cliente_id'],
+                        'venta' => $this->suscripcion[$i]['cantEjemplares'],
+                        'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                        'importe' => $this->suscripcion[$i]->total,
+                        'dia' => $this->diaS,
+                        'idTipo' => $this->clienteSeleccionado[$i],
+                        'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                        'tipo' => $this->suscripcion[$i]['tiporuta'],
+                    ]);
+                }
             }
         }
         $this->status = 'created';
@@ -586,7 +587,6 @@ class Tiros extends Component
         $this->showingModal = false;
 
         $this->tiros = Tiro::all();
-        /* dd($this->tiros[1]['cliente']); */
     }
 
     public function cerrarHistorial()
@@ -682,11 +682,13 @@ class Tiros extends Component
     {
         $this->showingModal = false;
     }
+
     public function hideModalRemision()
     {
         $this->modalRemision = false;
         $this->showingModal = true;
     }
+
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [

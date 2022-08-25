@@ -442,6 +442,7 @@
                                 <thead>
                                     <tr class='bg-gray-100'>
                                         <th class='px-4 py-2'>Fecha</th>
+                                        {{-- <th class="px-6 py-2">idTipo</th> --}}
                                         <th class='px-4 py-2'>Cliente</th>
                                         <th class='px-4 py-2'>Entregar</th>
                                         <th class='px-4 py-2'>Devuelto</th>
@@ -460,6 +461,7 @@
                                         <tr>
                                             <td class='px-4 py-2'>
                                                 {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
                                             <td class='px-4 py-2'>{{ $tiro->cliente }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
@@ -475,20 +477,28 @@
                                                 @if ($tiro->estado == 'Activo')
                                                     <td>
                                                         <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white">Pausar
+                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2">Pausar
                                                             suscripción</button>
+
+                                                        <a href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}" class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2">Factura</a>
                                                     </td>
                                                 @elseif ($tiro->estado == 'Pausado')
                                                     <td>
                                                         <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Activar
+                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2">Activar
                                                             suscripción</button>
+
+                                                        <button wire:click="editarRemision({{ $tiro->id }})"
+                                                            class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2">Factura</button>
                                                     </td>
                                                 @endif
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white">Editar</button>
+                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2">Editar</button>
+
+                                                    <button wire:click="editarRemision({{ $tiro->id }})"
+                                                        class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white">Factura</button>
                                                 </td>
                                             @endif
                                         </tr>
