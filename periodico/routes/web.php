@@ -22,8 +22,8 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    /* return view('welcome'); */
-    dd( \Crisvegadev\Facturama\Invoice::create([
+    return view('welcome');
+    /* dd( \Crisvegadev\Facturama\Invoice::create([
         "Serie" => "R",
         "Currency" => "MXN",
         "ExpeditionPlace" => "78116",
@@ -80,7 +80,7 @@ Route::get('/', function () {
               "Total" => 1740.0
             ]
         ]
-    ]));
+    ])); */
 });
 
 
