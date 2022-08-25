@@ -198,6 +198,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         /* libreria para generar PDF */
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

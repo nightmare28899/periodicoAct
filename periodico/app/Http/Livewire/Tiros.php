@@ -33,7 +33,7 @@ class Tiros extends Component
         $this->ruta = Ruta::all();
         $suscripcion = Suscripcion::all();
         $ventas = ventas::all();
-        dd($facturama = new \Facturama\Client('LaVozDeMich', 'lavoz1270'));
+        $facturama = new \Facturama\Client('USER', 'PASSWORD');
         $keyWord = '%' . $this->keyWord . '%';
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
@@ -164,7 +164,7 @@ class Tiros extends Component
 
     public function facturar()
     {
-        \Crisvegadev\Facturama\Invoice::create([
+        $facturama =  \Crisvegadev\Facturama\Invoice::create([
             "Serie" => "R",
             "Currency" => "MXN",
             "ExpeditionPlace" => "78116",
