@@ -6,10 +6,11 @@ use Livewire\Component;
 use App\Models\Cliente;
 use App\Models\domicilioSubs;
 use App\Models\Suscripcion;
+use App\Models\Tiro;
 
 class Factura extends Component
 {
-    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio;
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $paymentMethod, $cfdiUse;
 
     public function render()
     {
@@ -23,9 +24,11 @@ class Factura extends Component
             $this->idTipo = $idTipo;
 
             $this->cliente = Cliente::find($cliente_id);
+            /* $this->historial = Tiro::where('idTipo', $idTipo)->get(); */
             $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->first();
             $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
 
+            $this->tipoFactura = 'PUE';
             /* dd($this->domicilio); */
         } else if (substr($idTipo, 0, 5) == 'venta') {
             dd('venta');
@@ -35,11 +38,11 @@ class Factura extends Component
     public function facturar()
     {
         $facturama =  \Crisvegadev\Facturama\Invoice::create([
-            "Serie" => "R",
+            "Serie" => "SUSPUE",
             "Currency" => "MXN",
             "ExpeditionPlace" => "78116",
             "PaymentConditions" => "CREDITO A SIETE DIAS",
-            "Folio" => "100",
+            "Folio" => "1",
             "CfdiType" => "I",
             "PaymentForm" => "03",
             "PaymentMethod" => "PUE",
@@ -68,29 +71,9 @@ class Factura extends Component
                         ]
                     ],
                     "Total" => 116.0
-                ],
-                [
-                    "ProductCode" => "10101504",
-                    "IdentificationNumber" => "001",
-                    "Description" => "SERVICIO DE COLOCACION",
-                    "Unit" => "NO APLICA",
-                    "UnitCode" => "E49",
-                    "UnitPrice" => 100.0,
-                    "Quantity" => 15.0,
-                    "Subtotal" => 1500.0,
-                    "Discount" => 0.0,
-                    "Taxes" => [
-                        [
-                            "Total" => 240.0,
-                            "Name" => "IVA",
-                            "Base" => 1500.0,
-                            "Rate" => 0.16,
-                            "IsRetention" => false
-                        ]
-                    ],
-                    "Total" => 1740.0
                 ]
             ]
         ]);
+
     }
 }

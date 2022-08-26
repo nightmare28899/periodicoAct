@@ -391,7 +391,7 @@
                                 style="height: 1.7rem; margin-left: 7rem;" value="{{ $totalDesc }}" disabled></p>
                     </div>
                     <div class="w-1/2 px-2 ml-5" style="margin-left: 400px;">
-                        <p>FORMA DE PAGO</p>
+                        {{-- <p>FORMA DE PAGO</p>
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
                             wire:model.defer="formaPagoSeleccionada" style="width: 50%">
@@ -402,7 +402,9 @@
                         </select>
                         @error('formaPagoSeleccionada')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                        @enderror
+                        @enderror --}}
+                        <br>
+                        <br>
                         <br>
                         <br>
                         <div class="mt-5 pt-4">

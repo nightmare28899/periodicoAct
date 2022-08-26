@@ -474,28 +474,23 @@
                                             <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             @if ($tiro->precio == 330 || $tiro->precio == 300)
-                                                @if ($tiro->estado == 'Activo')
-                                                    <td>
+                                                <td>
+                                                    @if ($tiro->estado == 'Activo')
                                                         <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2">Pausar
+                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">Pausar
                                                             suscripción</button>
-
-                                                        <a href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}" class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2">Factura</a>
-                                                    </td>
-                                                @elseif ($tiro->estado == 'Pausado')
-                                                    <td>
+                                                    @elseif ($tiro->estado == 'Pausado')
                                                         <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2">Activar
+                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Activar
                                                             suscripción</button>
-
-                                                        <button wire:click="editarRemision({{ $tiro->id }})"
-                                                            class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2">Factura</button>
-                                                    </td>
-                                                @endif
+                                                    @endif
+                                                    <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
+                                                </td>
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2">Editar</button>
+                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
 
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
                                                         class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white">Factura</button>

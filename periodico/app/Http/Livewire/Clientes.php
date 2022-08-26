@@ -760,7 +760,7 @@ class Clientes extends Component
                     } */
 
                     $this->validate([
-                        'formaPagoSeleccionada' => 'required',
+                        /* 'formaPagoSeleccionada' => 'required', */
                         'tarifaSeleccionada' => 'required',
                         'cantEjem' => 'required',
                         'tipoSuscripcionSeleccionada' => 'required',
@@ -798,7 +798,7 @@ class Clientes extends Component
                                 'observaciones' => $this->observacion,
                                 'importe' => $this->total,
                                 'total' => $this->totalDesc,
-                                'formaPago' => $this->formaPagoSeleccionada,
+                                /* 'formaPago' => $this->formaPagoSeleccionada, */
                                 'domicilio_id' =>  $this->domicilioSeleccionado[0]['id'],
                             ]);
 
