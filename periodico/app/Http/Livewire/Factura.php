@@ -4,13 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Cliente;
-use Illuminate\Http\Request;
+use App\Models\domicilioSubs;
+use App\Models\Suscripcion;
 
 class Factura extends Component
 {
-    public $clienteid;
-    public $idTipo;
-    public $cliente;
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio;
 
     public function render()
     {
@@ -19,12 +18,18 @@ class Factura extends Component
 
     public function mount($cliente_id, $idTipo)
     {
-        $this->clienteid = $cliente_id;
-        $this->idTipo = $idTipo;  
+        if (substr($idTipo, 0, 6) == 'suscri') {
+            $this->clienteid = $cliente_id;
+            $this->idTipo = $idTipo;
 
-        $this->cliente = Cliente::find($cliente_id);
+            $this->cliente = Cliente::find($cliente_id);
+            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->first();
+            $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
 
-        /* dd($this->cliente); */
+            /* dd($this->domicilio); */
+        } else if (substr($idTipo, 0, 5) == 'venta') {
+            dd('venta');
+        }
     }
 
     public function facturar()
