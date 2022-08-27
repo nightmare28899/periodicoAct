@@ -18,7 +18,7 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
 
     public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip;
 
@@ -243,6 +243,7 @@ class Clientes extends Component
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
             'rfc_input' => 'required',
+            'razon_social' => 'required',
         ]);
 
         $this->isModalOpen = false;
@@ -386,7 +387,8 @@ class Clientes extends Component
             'email' => $this->email,
             'email_cobranza' => $this->email_cobranza,
             'telefono' => $this->telefono,
-            'regimen_fiscal' => $this->regimen_fiscal
+            'regimen_fiscal' => $this->regimen_fiscal,
+            'razon_social' => $this->razon_social,
         ]);
 
         Domicilio::Create([
@@ -634,7 +636,7 @@ class Clientes extends Component
             'sabadoVentas' => 'required',
             'domingoVentas' => 'required',
         ]); */
-        
+
         $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
         $this->ventas->update([
             'desde' => $this->desde,

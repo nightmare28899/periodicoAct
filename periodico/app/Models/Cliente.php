@@ -13,5 +13,5 @@ class Cliente extends Model
 
     protected $table = 'cliente';
 
-    protected $fillable = ['clasificacion', 'rfc', 'rfc_input', 'nombre', 'estado', 'pais', 'email', 'email_cobranza', 'telefono', 'regimen_fiscal'];
+    protected $fillable = ['clasificacion', 'rfc', 'rfc_input', 'nombre', 'estado', 'pais', 'email', 'email_cobranza', 'telefono', 'regimen_fiscal', 'razon_social'];
 }

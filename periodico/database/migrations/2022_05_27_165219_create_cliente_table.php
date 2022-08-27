@@ -16,15 +16,16 @@ return new class extends Migration
         Schema::create('cliente', function (Blueprint $table) {
             $table->engine="InnoDB";
             $table->bigIncrements('id');
-            $table->string('clasificacion')->nullable();
+            $table->string('clasificacion');
             $table->string('rfc')->nullable();
-            $table->string('rfc_input')->nullable();
+            $table->string('rfc_input');
             $table->string('nombre');
+            $table->string('razon_social');
             $table->string('estado');
             $table->string('pais');
             $table->string('email')->unique();
-            $table->string('email_cobranza')->nullable();
-            $table->string('telefono')->nullable();
+            $table->string('email_cobranza');
+            $table->string('telefono');
             $table->string('regimen_fiscal');
             $table->timestamps();
         });

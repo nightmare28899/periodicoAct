@@ -156,6 +156,19 @@
                     @enderror
                 </div>
             </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="razon_social"
+                        class="block text-black text-sm font-bold mb-2">Razón Social:</label>
+                    <input type="text"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('razon_social') border-red-500 @enderror"
+                        id="razon_social" wire:model.defer="razon_social"
+                        placeholder="Escribe tu Régimen Fiscal" />
+                    @error('razon_social')
+                        <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
         </div>
     </x-slot>
 
