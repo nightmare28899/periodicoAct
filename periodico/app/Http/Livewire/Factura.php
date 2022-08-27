@@ -38,42 +38,63 @@ class Factura extends Component
     public function facturar()
     {
         $facturama =  \Crisvegadev\Facturama\Invoice::create([
-            "Serie" => "SUSPUE",
+            "Serie" => "VPPUE",
             "Currency" => "MXN",
-            "ExpeditionPlace" => "78116",
+            "ExpeditionPlace" => "58190",
             "PaymentConditions" => "CREDITO A SIETE DIAS",
             "Folio" => "1",
             "CfdiType" => "I",
             "PaymentForm" => "03",
             "PaymentMethod" => "PUE",
+            "GlobalInformation" => [
+                "Periodicity" => "04",
+                "Months" => "08",
+                "Year" => "2022",
+            ],
+            "Decimals" => "2",
             "Receiver" => [
-                "Rfc" => "RSS2202108U5",
-                "Name" => "RADIAL SOFTWARE SOLUTIONS",
-                "CfdiUse" => "P01"
+                "Rfc" => "XAXX010101000",
+                "Name" => "PUBLICO EN GENERAL",
+                "CfdiUse" => "S01",
+                "TaxZipCode" => "58190",
+                "FiscalRegime" => "616",
+                "Address" => [
+                    "Street" => "CALLE",
+                    "ExteriorNumber" => "1",
+                    "InteriorNumber" => "",
+                    "Neighborhood" => "OBRERA",
+                    "Locality" => "MORELIA",
+                    "State" => "MICHOACAN",
+                    "Country" => "MEXICO",
+                    "ZipCode" => "58190"
+                ]
             ],
             "Items" => [
                 [
-                    "ProductCode" => "10101504",
+                    "Serie" => "VPPUE",
+                    "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
-                    "Description" => "Estudios de viabilidad",
-                    "Unit" => "NO APLICA",
-                    "UnitCode" => "MTS",
-                    "UnitPrice" => 50.0,
-                    "Quantity" => 2.0,
-                    "Subtotal" => 100.0,
+                    "Description" => "VENTA PERIÓDICO FACTURA GLOBAL",
+                    "Unit" => "Pieza",
+                    "UnitCode" => "H87",
+                    "UnitPrice" => 12.0,
+                    "Quantity" => 1,
+                    "Subtotal" => 12.0,
+                    "ObjetoImp" => "02",
+                    "TaxObject" => "02",
                     "Taxes" => [
                         [
-                            "Total" => 16.0,
+                            "Total" => 0.0,
                             "Name" => "IVA",
-                            "Base" => 100.0,
-                            "Rate" => 0.16,
+                            "Base" => 12.0,
+                            "Rate" => 0,
                             "IsRetention" => false
                         ]
                     ],
-                    "Total" => 116.0
+                    "Total" => 12.0
                 ]
-            ]
+            ],
         ]);
-
+        dd($facturama);
     }
 }

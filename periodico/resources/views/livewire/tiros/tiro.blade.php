@@ -484,16 +484,16 @@
                                                             class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Activar
                                                             suscripción</button>
                                                     @endif
-                                                    <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
+                                                    {{-- <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a> --}}
                                                 </td>
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
                                                         class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
 
-                                                    <button wire:click="editarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white">Factura</button>
+                                                    {{-- <button wire:click="editarRemision({{ $tiro->id }})"
+                                                        class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white">Factura</button> --}}
                                                 </td>
                                             @endif
                                         </tr>
