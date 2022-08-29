@@ -39,11 +39,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex-initial mx-1 mt-4" style="width: 100%;">
+                    <div class="flex-initial mx-1 mt-4" style="width: 80%;">
                         {{-- <input wire:model.defer='keyWord' wire:keydown.enter="busqueda" type="text"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tiro"> --}}
                     </div>
+                    {{-- <div class="flex-initial ml-3 mt-4" style="width: 10%;">
+                        <button wire:click="showModal" wire:loading.attr="disabled"
+                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
+                            <svg wire:loading wire:target="showModal" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Historial de Facturas
+                        </button>
+                    </div> --}}
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         <button wire:click="showModal" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
@@ -484,16 +499,16 @@
                                                             class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Activar
                                                             suscripción</button>
                                                     @endif
-                                                    {{-- <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a> --}}
+                                                    <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
                                                 </td>
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
                                                         class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
 
-                                                    {{-- <button wire:click="editarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white">Factura</button> --}}
+                                                    <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
                                                 </td>
                                             @endif
                                         </tr>

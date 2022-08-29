@@ -42,7 +42,7 @@ return new class extends Migration
             $table->string('observaciones')->nullable();
             $table->integer('importe');
             $table->integer('total');
-            $table->string('formaPago');
+            /* $table->string('formaPago'); */
 
             $table->foreign('cliente_id')->references('id')->on('cliente')->onDelete('cascade');
             $table->string('domicilio_id')->references('id')->on('domicilio')->onDelete('cascade');

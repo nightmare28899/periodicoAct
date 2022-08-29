@@ -130,15 +130,15 @@
 
                                         <x-slot name="content">
 
-                                            <button wire:click="detalles({{ $cliente->id }})"
-                                                class="px-2 w-full py-1 cursor-pointer hover:bg-green-600 hover:text-white">Detalles</button>
+                                            {{-- <button wire:click="detalles({{ $cliente->id }})"
+                                                class="px-2 w-full py-1 cursor-pointer hover:bg-green-600 hover:text-white">Detalles</button> --}}
 
-                                            <div class="border-t border-gray-200"></div>
+                                            {{-- <div class="border-t border-gray-200"></div> --}}
 
                                             <button wire:click="edit({{ $cliente->id }})"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">Editar</button>
 
-                                            <div class="border-t border-gray-200"></div>
+                                            {{-- <div class="border-t border-gray-200"></div> --}}
 
                                             {{-- <button wire:click="delete({{ $cliente->id }})"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">

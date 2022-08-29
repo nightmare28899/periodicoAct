@@ -163,7 +163,7 @@
                     <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('razon_social') border-red-500 @enderror"
                         id="razon_social" wire:model.defer="razon_social"
-                        placeholder="Escribe tu Régimen Fiscal" />
+                        placeholder="Escribe tu Razón Social" />
                     @error('razon_social')
                         <span class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
