@@ -190,7 +190,7 @@ class Clientes extends Component
         }
 
         return view('livewire.clientes.view', [
-            'clientes' => Cliente::latest()
+            'clientes' => Cliente::first()
                 ->orWhere('clasificacion', 'LIKE', $keyWord)
                 ->orWhere('rfc', 'LIKE', $keyWord)
                 ->orWhere('rfc_input', 'LIKE', $keyWord)

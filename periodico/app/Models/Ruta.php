@@ -13,5 +13,5 @@ class Ruta extends Model
 
     protected $table = 'ruta';
 
-    protected $fillable = ['nombre','tipo','repartidor','cobrador','ctaespecial'];
+    protected $fillable = ['nombreruta','tiporuta','repartidor','cobrador','ctaespecial'];
 }

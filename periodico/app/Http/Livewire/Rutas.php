@@ -19,9 +19,8 @@ class Rutas extends Component
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
-        /* $this->Rutas = Rutas::all(); */
         return view('livewire.rutas.view', [
-            'rutas' => Ruta::latest()
+            'rutas' => Ruta::first()
                 ->orWhere('nombreruta', 'LIKE', $keyWord)
                 ->orWhere('tiporuta', 'LIKE', $keyWord)
                 ->orWhere('repartidor', 'LIKE', $keyWord)
@@ -90,7 +89,7 @@ class Rutas extends Component
     public function update()
     {
         $this->validate([
-            'nombre' => 'required',
+            'nombreruta' => 'required',
             'tiporuta' => 'required',
             'repartidor' => 'required',
             'cobrador' => 'required',

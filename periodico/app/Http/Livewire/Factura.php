@@ -251,6 +251,8 @@ class Factura extends Component
                 $facturama = Storage::url('file.pdf'); */
                 /* dd($facturama->data); */
                 /* return Redirect::to('/tiro'); */
+            } else {
+                dd($facturama->message);
             }
         } catch (\Throwable $th) {
         }
