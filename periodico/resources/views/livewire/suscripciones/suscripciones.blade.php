@@ -35,7 +35,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
                             wire:model="clienteSeleccionado" style="width: 100%">
-                            <option value=''>Selecciona un cliente</option>
+                            <option value='' style="display: none;">Selecciona un cliente</option>
                             @foreach ($clientes as $cliente)
                                 <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                             @endforeach
@@ -163,7 +163,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
                             wire:model="tarifaSeleccionada" style="width: 100%">
-                            <option value=''>Selecciona una tarifa</option>
+                            <option value='' style="display: none;">Selecciona una tarifa</option>
                             <option value="Base">Base</option>
                             <option value="Ejecutiva">Ejecutiva</option>
                         </select>
@@ -207,7 +207,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tipoSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model.defer="tipoSuscripcionSeleccionada" style="width: 80%">
-                            <option value=''>Selecciona una opción</option>
+                            <option value='' style="display: none;">Selecciona una opción</option>
                             <option value='Impresa'>Impresa</option>
                             <option value='Internet'>Internet</option>
                         </select>
@@ -219,7 +219,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('periodoSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="periodoSuscripcionSeleccionada" style="width: 80%">
-                            <option value="">...</option>
+                            <option value="" style="display: none;">...</option>
                             <option value='esco'>Escoger manualmente</option>
                             <option value='Mensual'>Mensual</option>
                             <option value='Trimestral'>Trimestral</option>
@@ -234,7 +234,7 @@
                         <select
                             class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mt-1 @error('diasSuscripcionSeleccionada') border-red-500 @enderror"
                             wire:model="diasSuscripcionSeleccionada" style="width: 80%">
-                            <option value="">...</option>
+                            <option value="" style="display: none;">...</option>
                             <option value="esc_man">Escoger manualmente</option>
                             <option value="l_v">Lunes a viernes</option>
                             <option value='l_d'>Lunes a Domingo</option>

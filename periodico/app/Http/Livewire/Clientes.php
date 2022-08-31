@@ -888,8 +888,8 @@ class Clientes extends Component
         $this->tarifaSeleccionada = '';
         $this->cantEjem = 0;
         $this->tipoSuscripcionSeleccionada = '';
-        $this->periodoSuscripcionSeleccionada = 'esco';
-        $this->diasSuscripcionSeleccionada = 'esc_man';
+        $this->periodoSuscripcionSeleccionada = '...';
+        $this->diasSuscripcionSeleccionada = '...';
         $this->descuento = 0;
         $this->observacion = '';
         $this->total = 0;

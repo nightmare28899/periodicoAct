@@ -92,6 +92,7 @@
                             <th class="px-4 py-2 w-20">Email Cobranza</th>
                             <th class="px-4 py-2 w-20">Teléfono</th>
                             <th class="px-4 py-2 w-20">Régimen Fiscal</th>
+                            <th class="px-4 py-2 w-20">Razón Social</th>
                             <th class="px-4 py-2 w-20">Acciones</th>
                         </tr>
                     </thead>
@@ -109,6 +110,7 @@
                                 <td class="border">{{ $cliente->email_cobranza }}</td>
                                 <td class="border">{{ $cliente->telefono }}</td>
                                 <td class="border">{{ $cliente->regimen_fiscal }}</td>
+                                <td class="border">{{ $cliente->razon_social }}</td>
                                 <td class="border px-4 py-2 flex-nowrap pt-2">
                                     <x-jet-dropdown align="right" width="48">
                                         <x-slot name="trigger">

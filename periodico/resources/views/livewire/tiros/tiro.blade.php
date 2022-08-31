@@ -44,10 +44,10 @@
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tiro"> --}}
                     </div>
-                    {{-- <div class="flex-initial ml-3 mt-4" style="width: 10%;">
-                        <button wire:click="showModal" wire:loading.attr="disabled"
+                    <div class="flex-initial ml-3 mt-4" style="width: 10%;">
+                        <button wire:click="historialFactura" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
-                            <svg wire:loading wire:target="showModal" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            <svg wire:loading wire:target="historialFactura" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
                                     stroke="currentColor" stroke-width="4">
@@ -58,7 +58,7 @@
                             </svg>
                             Historial de Facturas
                         </button>
-                    </div> --}}
+                    </div>
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         <button wire:click="showModal" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
