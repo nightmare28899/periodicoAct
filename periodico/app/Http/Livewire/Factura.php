@@ -10,8 +10,12 @@ use App\Models\Tiro;
 use App\Models\ventas;
 use App\Models\Domicilio;
 use App\Models\Invoice;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Termwind\Components\Dd;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class Factura extends Component
 {
@@ -64,8 +68,25 @@ class Factura extends Component
         }
     }
 
-    public function modalEdit() {
+    public function modalEdit()
+    {
         $this->modalAgregar = true;
+
+        if (substr($this->idTipo, 0, 6) == 'suscri') {
+            $domicilioEdit = domicilioSubs::find($this->suscripcion['domicilio_id']);
+            $this->cpInput = $domicilioEdit->cp;
+            $this->calleInput = $domicilioEdit->calle;
+            $this->noextInput = $domicilioEdit->noext;
+            $this->nointInput = $domicilioEdit->noint;
+            $this->colInput = $domicilioEdit->colonia;
+        } else {
+            $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
+            $this->cpInput = $domicilioEdit->cp;
+            $this->calleInput = $domicilioEdit->calle;
+            $this->noextInput = $domicilioEdit->noext;
+            $this->nointInput = $domicilioEdit->noint;
+            $this->colInput = $domicilioEdit->colonia;
+        }
 
         $clienteEdit = Cliente::find($this->clienteid);
         $this->rfcInput = $clienteEdit->rfc_input;
@@ -73,16 +94,10 @@ class Factura extends Component
         $this->paisInput = $clienteEdit->pais;
         $this->regimenfisInput = $clienteEdit->regimen_fiscal;
         $this->razonsInput = $clienteEdit->razon_social;
-
-        $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
-        $this->cpInput = $domicilioEdit->cp;
-        $this->calleInput = $domicilioEdit->calle;
-        $this->noextInput = $domicilioEdit->noext;
-        $this->nointInput = $domicilioEdit->noint;
-        $this->colInput = $domicilioEdit->colonia;
     }
 
-    public function editar() {
+    public function editar()
+    {
         $this->validate([
             'rfcInput' => 'required',
             'cpInput' => 'required',
@@ -96,6 +111,26 @@ class Factura extends Component
             'razonsInput' => 'required',
         ]);
 
+        if (substr($this->idTipo, 0, 6) == 'suscri') {
+            $domicilioEdit = domicilioSubs::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit->update([
+                'cp' => $this->cpInput,
+                'calle' => $this->calleInput,
+                'noext' => $this->noextInput,
+                'noint' => $this->nointInput,
+                'colonia' => $this->colInput,
+            ]);
+        } else {
+            $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit->update([
+                'cp' => $this->cpInput,
+                'calle' => $this->calleInput,
+                'noext' => $this->noextInput,
+                'noint' => $this->nointInput,
+                'colonia' => $this->colInput,
+            ]);
+        }
+
         $clienteEdit = Cliente::find($this->clienteid);
         $clienteEdit->update([
             'rfc_input' => $this->rfcInput,
@@ -105,14 +140,7 @@ class Factura extends Component
             'razon_social' => $this->razonsInput,
         ]);
 
-        $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
-        $domicilioEdit->update([
-            'cp' => $this->cpInput,
-            'calle' => $this->calleInput,
-            'noext' => $this->noextInput,
-            'noint' => $this->nointInput,
-            'colonia' => $this->colInput,
-        ]);
+
         $this->modalAgregar = false;
     }
 
@@ -128,7 +156,7 @@ class Factura extends Component
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => $this->suscripcion->tarifa == 'Base' ? "330" : "300",
-                    "Descount" => $this->suscripcion->descuento,
+                    "Discount" => $this->suscripcion->descuento,
                     "Quantity" => $this->suscripcion->cantEjemplares,
                     "Subtotal" => $this->suscripcion->importe,
                     "ObjetoImp" => "02",
@@ -137,12 +165,12 @@ class Factura extends Component
                         [
                             "Total" => 0.0,
                             "Name" => "IVA",
-                            "Base" => $this->suscripcion->total,
+                            "Base" => $this->suscripcion->importe,
                             "Rate" => 0,
                             "IsRetention" => false
                         ]
                     ],
-                    "Total" => $this->suscripcion->total
+                    "Total" => $this->suscripcion->total,
                 ]
             ];
         } else {
@@ -155,7 +183,7 @@ class Factura extends Component
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => $this->tiro->precio,
-                    "Descount" => 0,
+                    "Discount" => 0,
                     "Quantity" => $this->tiro->entregar,
                     "Subtotal" => $this->tiro->importe,
                     "ObjetoImp" => "02",
@@ -206,6 +234,8 @@ class Factura extends Component
                 ],
                 'Items' => $items,
             ]);
+
+            /* \Crisvegadev\Facturama\Invoice::cancel($facturama->Folio, $facturama->Serie, 01); */
         } else {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
@@ -214,10 +244,10 @@ class Factura extends Component
         }
 
         try {
+            /* dd($facturama); */
             if ($facturama->statusCode == 201) {
-                /* dd($facturama->data); */
 
-                Invoice::Create([
+                Invoice::create([
                     'invoice_id' => $facturama->data->Id,
                     'invoice_date' => $facturama->data->Date,
                     'serie' => $facturama->data->Serie,
@@ -251,10 +281,9 @@ class Factura extends Component
                 $facturama = Storage::url('file.pdf'); */
                 /* dd($facturama->data); */
                 /* return Redirect::to('/tiro'); */
-            } else {
-                dd($facturama->message);
             }
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
+            /* dd($e); */
         }
     }
 }

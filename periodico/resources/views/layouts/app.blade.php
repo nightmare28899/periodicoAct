@@ -95,6 +95,7 @@
                 case '¡Debes ingresar la cantidad de ejemplares primero!':
                 case '¡Ya existe esa remisión!':
                 case '¡Rellena todos los campos!':
+                case '¡Ocurrio un error al crear la factura!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
