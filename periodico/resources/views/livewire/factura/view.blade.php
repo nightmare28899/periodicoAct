@@ -249,147 +249,154 @@
             </div>
         </div>
 
+        {{-- MODAL EDITAR DOMICILIO --}}
+        <x-jet-dialog-modal wire:model="modalAgregar">
 
-<x-jet-dialog-modal wire:model="modalAgregar">
+            <x-slot name="title">
+                <div class="flex sm:px-6">
+                    <h1 class="mb-3 text-2xl text-black font-bold ml-3">Datos Fiscales</h1>
+                    <button type="button" wire:click="$set('modalAgregar', false)" wire:loading.attr="disabled"
+                        class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
+                        data-modal-toggle="defaultModal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <hr>
+            </x-slot>
 
-    <x-slot name="title">
-        <div class="flex sm:px-6">
-            <h1 class="mb-3 text-2xl text-black font-bold ml-3">Datos Fiscales</h1>
-            <button type="button" wire:click="$set('modalAgregar', false)" wire:loading.attr="disabled"
-                class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
-                data-modal-toggle="defaultModal">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
-            </button>
-        </div>
-        <hr>
-    </x-slot>
+            <x-slot name="content">
+                <div class="px-4 mb-4" flex-grow>
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            <label for="rfcInput" class="text-black font-bold text-sm">RFC</label><br>
+                            <input type='text' name='rfcInput'
+                                class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('rfcInput') border-red-500 @enderror'
+                                placeholder='Escribe tu RFC' wire:model.defer='rfcInput'>
+                            @error('rfcInput')
+                                <span
+                                    class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <label for='cpInput' class='block text-gray-700 text-sm font-bold mb-2'>Código
+                                Postal:</label>
+                            <input type='number' name='cpInput'
+                                class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cpInput') border-red-500 @enderror'
+                                placeholder='Escribe tu Código Postal' wire:model.defer='cpInput'>
+                            @error('cpInput')
+                                <span
+                                    class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            <label for='colInput' class='block text-gray-700 text-sm font-bold mb-2'>Colonia:</label>
+                            <input type='text' name='colInput'
+                                class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colInput') border-red-500 @enderror'
+                                maxlength='12' placeholder='Escribe tu colonia' wire:model.defer='colInput'>
+                            @error('colInput')
+                                <span
+                                    class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <label for="estadoInput" class="block text-black text-sm font-bold mb-2">Estado:</label>
+                            <input type="text"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('estadoInput') border-red-500 @enderror"
+                                id="estadoInput" wire:model.defer="estadoInput" placeholder="Escribe tu estado" />
+                            @error('estadoInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
-    <x-slot name="content">
-        <div class="px-4 mb-4" flex-grow>
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for="rfcInput" class="text-black font-bold text-sm">RFC</label><br>
-                    <input type='text' name='rfcInput'
-                        class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('rfcInput') border-red-500 @enderror'
-                        placeholder='Escribe tu RFC' wire:model.defer='rfcInput'>
-                    @error('rfcInput')
-                        <span
-                            class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2 p-2">
-                    <label for='cpInput' class='block text-gray-700 text-sm font-bold mb-2'>Código Postal:</label>
-                    <input type='number' name='cpInput'
-                        class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cpInput') border-red-500 @enderror'
-                        placeholder='Escribe tu Código Postal' wire:model.defer='cpInput'>
-                    @error('cpInput')
-                        <span
-                            class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for='colInput' class='block text-gray-700 text-sm font-bold mb-2'>Colonia:</label>
-                    <input type='text' name='colInput'
-                        class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colInput') border-red-500 @enderror'
-                        maxlength='12' placeholder='Escribe tu colonia' wire:model.defer='colInput'>
-                    @error('colInput')
-                        <span
-                            class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2 p-2">
-                    <label for="estadoInput" class="block text-black text-sm font-bold mb-2">Estado:</label>
-                    <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('estadoInput') border-red-500 @enderror"
-                        id="estadoInput" wire:model.defer="estadoInput" placeholder="Escribe tu estado" />
-                    @error('estadoInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            <label for="noextInput" class="block text-black text-sm font-bold mb-2">No.
+                                Exterior:</label>
+                            <input type="number"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noextInput') border-red-500 @enderror"
+                                id="noextInput" wire:model.defer="noextInput" placeholder="Escribe tu noext" />
+                            @error('noextInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <label for="nointInput" class="block text-black text-sm font-bold mb-2">No.
+                                Interior:</label>
+                            <input type="number"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
+                                id="nointInput" wire:model.defer="nointInput" placeholder="Escribe tu noint" />
+                            @error('nointInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for="noextInput" class="block text-black text-sm font-bold mb-2">No. Exterior:</label>
-                    <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noextInput') border-red-500 @enderror"
-                        id="noextInput" wire:model.defer="noextInput" placeholder="Escribe tu noext" />
-                    @error('noextInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2 p-2">
-                    <label for="nointInput" class="block text-black text-sm font-bold mb-2">No. Interior:</label>
-                    <input type="number"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
-                        id="nointInput" wire:model.defer="nointInput" placeholder="Escribe tu noint" />
-                    @error('nointInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            <label for="regimenfisInput" class="block text-black text-sm font-bold mb-2">Regimen
+                                Fiscal:</label>
+                            <input type="text"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('regimenfisInput') border-red-500 @enderror"
+                                id="regimenfisInput" wire:model.defer="regimenfisInput"
+                                placeholder="Escribe tu regimen fiscal" />
+                            @error('regimenfisInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <label for="razonsInput" class="block text-black text-sm font-bold mb-2">Razón
+                                Social:</label>
+                            <input type="text"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('razonsInput') border-red-500 @enderror"
+                                id="razonsInput" wire:model.defer="razonsInput"
+                                placeholder="Escribe tu razón social" />
+                            @error('razonsInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for="regimenfisInput" class="block text-black text-sm font-bold mb-2">Regimen Fiscal:</label>
-                    <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('regimenfisInput') border-red-500 @enderror"
-                        id="regimenfisInput" wire:model.defer="regimenfisInput" placeholder="Escribe tu regimen fiscal" />
-                    @error('regimenfisInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
+                    <div class="flex">
+                        <div class="w-1/2 p-2">
+                            <label for="calleInput" class="block text-black text-sm font-bold mb-2">Calle:</label>
+                            <input type="text" maxlength="10"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('calleInput') border-red-500 @enderror"
+                                id="calleInput" wire:model.defer="calleInput" placeholder="Escribe tu calle" />
+                            @error('calleInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="w-1/2 p-2">
+                            <label for="paisInput" class="block text-black text-sm font-bold mb-2">País:</label>
+                            <input type="text"
+                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('paisInput') border-red-500 @enderror"
+                                id="paisInput" wire:model.defer="paisInput" placeholder="Escribe tu país" />
+                            @error('paisInput')
+                                <span
+                                    class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
-                <div class="w-1/2 p-2">
-                    <label for="razonsInput" class="block text-black text-sm font-bold mb-2">Razón Social:</label>
-                    <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('razonsInput') border-red-500 @enderror"
-                        id="razonsInput" wire:model.defer="razonsInput" placeholder="Escribe tu razón social" />
-                    @error('razonsInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
+            </x-slot>
 
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for="calleInput" class="block text-black text-sm font-bold mb-2">Calle:</label>
-                    <input type="text" maxlength="10"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('calleInput') border-red-500 @enderror"
-                        id="calleInput" wire:model.defer="calleInput" placeholder="Escribe tu calle" />
-                    @error('calleInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2 p-2">
-                    <label for="paisInput" class="block text-black text-sm font-bold mb-2">País:</label>
-                    <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('paisInput') border-red-500 @enderror"
-                        id="paisInput" wire:model.defer="paisInput"
-                        placeholder="Escribe tu país" />
-                    @error('paisInput')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-    </x-slot>
-
-    <x-slot name="footer">
-        <div class="flex-auto w-64 px-4 sm:px-6">
-            {{-- <button wire:click.prevent="editarModal" type="button"
+            <x-slot name="footer">
+                <div class="flex-auto w-64 px-4 sm:px-6">
+                    {{-- <button wire:click.prevent="editarModal" type="button"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                 <svg wire:loading wire:target="editarModal" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -402,27 +409,48 @@
                 </svg>
                 Editar
             </button> --}}
-        </div>
+                </div>
 
-        <div class="flex-auto w-64 px-4 sm:px-6">
-            <button wire:click.prevent="editar" type="button"
-                class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-base leading-6 font-bold shadow-sm text-white focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                <svg wire:loading wire:target="editar" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4">
-                    </circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
-                Actualizar
-            </button>
-        </div>
+                <div class="flex-auto w-64 px-4 sm:px-6">
+                    <button wire:click.prevent="editar" type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-base leading-6 font-bold shadow-sm text-white focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                        <svg wire:loading wire:target="editar" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Actualizar
+                    </button>
+                </div>
 
-    </x-slot>
+            </x-slot>
 
-</x-jet-dialog-modal>
+        </x-jet-dialog-modal>
+
+
+        {{-- MODAL ERRORES --}}
+        <x-jet-dialog-modal wire:model="modalErrors">
+
+            <x-slot name="title">
+                {{-- <h1 class="font-bold text-red-500">Errores</h1> --}}
+            </x-slot>
+
+            <x-slot name="content">
+                <div class="px-4 mb-4 text-center" flex-grow>
+                    <img src="/img/error.png" width="100px" height="100px" alt="logo error">
+                    <br>
+                    <p class="font-bold mt-5 text-red-700">{!! nl2br($d) !!}</p>
+                    <br>
+                </div>
+            </x-slot>
+
+            <x-slot name="footer">
+            </x-slot>
+
+        </x-jet-dialog-modal>
     </div>
 </div>
-

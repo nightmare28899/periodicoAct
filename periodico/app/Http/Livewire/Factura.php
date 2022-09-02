@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Factura extends Component
 {
-    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput;
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0;
 
     public function render()
     {
@@ -40,7 +40,7 @@ class Factura extends Component
             $this->cpGenerico = '58190';
             $this->regimenFisGenerico = '616';
         }
-        return view('livewire.factura.view');
+        return view('livewire.factura.view', [ 'd' => $this->d ]);
     }
 
     public function mount($cliente_id, $idTipo)
@@ -281,6 +281,24 @@ class Factura extends Component
                 $facturama = Storage::url('file.pdf'); */
                 /* dd($facturama->data); */
                 /* return Redirect::to('/tiro'); */
+            } else{
+                $this->d = "";
+
+                foreach ($facturama->errors as $key => $error){
+                    $this->d .= "- $error \n";
+                }
+                /* dd($this->d); */
+
+                $this->modalErrors = true;
+                /* $this->alert('error', $this->d, [
+                    'position' => 'center',
+                    'timer' => '',
+                    'toast' => false,
+                    'timerProgressBar' => true,
+                    'showConfirmButton' => true,
+                    'onConfirmed' => '',
+                ]); */
+
             }
         } catch (\Exception $e) {
             /* dd($e); */
