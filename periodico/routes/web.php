@@ -7,7 +7,7 @@ use App\Http\Livewire\Rutas;
 use App\Http\Livewire\Tiros;
 use App\Http\Livewire\Remisiones;
 use App\Http\Livewire\Remisiones\RmCliente;
-use App\Http\Livewire\VistaPrevia;
+use App\Http\Livewire\VistaFactura;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\Factura;
 
@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('livewire.tiros.generarRemision');
     });
     Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
+    Route::get('/vistaPrevia/{id}', VistaFactura::class);
     /* Route::get('/', [UserController::class, 'index']); */
     // Route::get('/vistaPrevia', [Tiros::class, 'vistaprevia']);
     /* Route::get('/tiro/vistaPrevia', VistaPrevia::class)->name('vista-previa'); */

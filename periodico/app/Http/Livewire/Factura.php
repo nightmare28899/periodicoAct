@@ -274,13 +274,8 @@ class Factura extends Component
                     'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
                 ]);
 
-                return Redirect::to('/tiro', $facturama->data->Id);
+                return redirect('/vistaPrevia/' . $facturama->data->Id);
 
-                /* $facturama = \Crisvegadev\Facturama\Invoice::streamFile('pdf', 'issued', $facturama->data->Id); */
-                /* Storage::disk('public')->put('file.pdf', $facturama);
-                $facturama = Storage::url('file.pdf'); */
-                /* dd($facturama->data); */
-                /* return Redirect::to('/tiro'); */
             } else{
                 $this->d = "";
 

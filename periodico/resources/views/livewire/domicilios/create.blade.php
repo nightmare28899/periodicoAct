@@ -109,7 +109,7 @@
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
                         wire:model.defer="ruta_id" id="ruta" style="width: 100%">
-                        <option value=''>Escoge una opción</option>
+                        <option value='' style="display: none;">Escoge una opción</option>
                         @foreach ($rutas as $id => $ruta)
                             <option value={{ $id }}>
                                 {{ $ruta }}
@@ -129,7 +129,7 @@
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tarifa') border-red-500 @enderror"
                         wire:model.defer="tarifa_id" style="width: 100%">
-                        <option value=''>Escoge una opción</option>
+                        <option value='' style="display: none;">Escoge una opción</option>
                         @foreach ($tarifas as $id => $tarifa)
                             <option value={{ $id }}>
                                 {{ $tarifa }}

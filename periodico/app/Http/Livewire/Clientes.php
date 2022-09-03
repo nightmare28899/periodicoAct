@@ -426,6 +426,7 @@ class Clientes extends Component
         $this->email_cobranza = $Cliente->email_cobranza;
         $this->telefono = $Cliente->telefono;
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
+        $this->razon_social = $Cliente->razon_social;
 
         $Domicilio = Domicilio::find($id);
         $this->domicilio_id = $id;

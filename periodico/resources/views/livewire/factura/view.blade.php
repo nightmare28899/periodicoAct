@@ -441,7 +441,7 @@
 
             <x-slot name="content">
                 <div class="px-4 mb-4 text-center" flex-grow>
-                    <img src="/img/error.png" width="100px" height="100px" alt="logo error">
+                    <img class="object-center" src="/img/error.png" width="100px" height="100px" alt="logo error">
                     <br>
                     <p class="font-bold mt-5 text-red-700">{!! nl2br($d) !!}</p>
                     <br>
