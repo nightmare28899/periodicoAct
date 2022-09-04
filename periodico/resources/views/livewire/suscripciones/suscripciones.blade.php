@@ -37,7 +37,7 @@
                             wire:model="clienteSeleccionado" style="width: 100%">
                             <option value='' style="display: none;">Selecciona un cliente</option>
                             @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                                <option value="{{ $cliente->id }}">{{ $cliente->nombre ? $cliente->nombre : $cliente->razon_social }}</option>
                             @endforeach
                             @error('clienteSeleccionado')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -408,9 +408,9 @@
                         <br>
                         <br>
                         <div class="mt-5 pt-4">
-                            <button wire:click.prevent="suscripciones()"
+                            <button wire:click.prevent="suscripciones"
                                 class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">
-                                <svg wire:loading wire:target="suscripciones()"
+                                <svg wire:loading wire:target="suscripciones"
                                     class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10"

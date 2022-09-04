@@ -13,6 +13,7 @@
                         <input wire:model='keyWord' type="text"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Cliente">
+                        {{-- <livewire:buscador /> --}}
                     </div>
                     <div class="flex-none mx-1">
                         <button wire:click="modalSuscripciones"
@@ -71,10 +72,10 @@
                 @if ($modalDomSubs)
                     @include('livewire.modals.modal-dom-subs')
                 @endif
-                @if($modalFormDom)
+                @if ($modalFormDom)
                     @include('livewire.modals.modal-form-subs')
                 @endif
-                @if($modalV)
+                @if ($modalV)
                     @include('livewire.modals.modal-form-venta')
                 @endif
 
@@ -97,52 +98,54 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($clientes as $cliente)
-                            <tr>
-                                <td class="border">{{ $loop->iteration }}</td>
-                                <td class="border">{{ $cliente->clasificacion }}</td>
-                                <td class="border">{{ $cliente->rfc }}</td>
-                                <td class="border">{{ $cliente->rfc_input }}</td>
-                                <td class="border">{{ $cliente->nombre }}</td>
-                                <td class="border">{{ $cliente->estado }}</td>
-                                <td class="border">{{ $cliente->pais }}</td>
-                                <td class="border">{{ $cliente->email }}</td>
-                                <td class="border">{{ $cliente->email_cobranza }}</td>
-                                <td class="border">{{ $cliente->telefono }}</td>
-                                <td class="border">{{ $cliente->regimen_fiscal }}</td>
-                                <td class="border">{{ $cliente->razon_social }}</td>
-                                <td class="border px-4 py-2 flex-nowrap pt-2">
-                                    <x-jet-dropdown align="right" width="48">
-                                        <x-slot name="trigger">
+                        @if (count($clientes) > 0)
+                            @foreach ($clientes as $cliente)
+                                <tr>
+                                    <td class="border">{{ $loop->iteration }}</td>
+                                    <td class="border">{{ $cliente->clasificacion }}</td>
+                                    <td class="border">{{ $cliente->rfc }}</td>
+                                    <td class="border">{{ $cliente->rfc_input }}</td>
+                                    <td class="border">{{ $cliente->nombre }}</td>
+                                    <td class="border">{{ $cliente->estado }}</td>
+                                    <td class="border">{{ $cliente->pais }}</td>
+                                    <td class="border">{{ $cliente->email }}</td>
+                                    <td class="border">{{ $cliente->email_cobranza }}</td>
+                                    <td class="border">{{ $cliente->telefono }}</td>
+                                    <td class="border">{{ $cliente->regimen_fiscal }}</td>
+                                    <td class="border">{{ $cliente->razon_social }}</td>
+                                    <td class="border px-4 py-2 flex-nowrap pt-2">
+                                        <x-jet-dropdown align="right" width="48">
+                                            <x-slot name="trigger">
 
-                                            <span class="inline-flex rounded-md">
-                                                <button type="button"
-                                                    class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                    Acciones
+                                                <span class="inline-flex rounded-md">
+                                                    <button type="button"
+                                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                                        Acciones
 
-                                                    <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd"
-                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                            clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </x-slot>
+                                                        <svg class="ml-2 -mr-0.5 h-4 w-4"
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </x-slot>
 
-                                        <x-slot name="content">
+                                            <x-slot name="content">
 
-                                            {{-- <button wire:click="detalles({{ $cliente->id }})"
+                                                {{-- <button wire:click="detalles({{ $cliente->id }})"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-green-600 hover:text-white">Detalles</button> --}}
 
-                                            {{-- <div class="border-t border-gray-200"></div> --}}
+                                                {{-- <div class="border-t border-gray-200"></div> --}}
 
-                                            <button wire:click="edit({{ $cliente->id }})"
-                                                class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">Editar</button>
+                                                <button wire:click="edit({{ $cliente->id }})"
+                                                    class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">Editar</button>
 
-                                            {{-- <div class="border-t border-gray-200"></div> --}}
+                                                {{-- <div class="border-t border-gray-200"></div> --}}
 
-                                            {{-- <button wire:click="delete({{ $cliente->id }})"
+                                                {{-- <button wire:click="delete({{ $cliente->id }})"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">
                                                 <svg wire:loading wire:target="delete"
                                                     class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -156,15 +159,22 @@
                                                 </svg>
                                                 Eliminar
                                             </button> --}}
-                                        </x-slot>
-                                    </x-jet-dropdown>
-                                </td>
+                                            </x-slot>
+                                        </x-jet-dropdown>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="13" class="border text-center">No hay registros</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
                 <br>
-                {{ $clientes->links() }}
+                @if (count($clientes) > 0)
+                    {{ $clientes->links() }}
+                @endif
                 <br>
                 <br>
                 <br>

@@ -30,7 +30,7 @@
                         wire:model="clienteSeleccionado" style="width: 100%">
                         <option value='' style="display: none;">Selecciona un cliente</option>
                         @foreach ($clientes as $cliente)
-                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre ? $cliente->nombre : $cliente->razon_social }}</option>
                         @endforeach
                         @error('clienteSeleccionado')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>

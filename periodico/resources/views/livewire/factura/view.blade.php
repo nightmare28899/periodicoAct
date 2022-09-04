@@ -346,7 +346,7 @@
                         <div class="w-1/2 p-2">
                             <label for="regimenfisInput" class="block text-black text-sm font-bold mb-2">Regimen
                                 Fiscal:</label>
-                            <input type="text"
+                            <input type="number"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('regimenfisInput') border-red-500 @enderror"
                                 id="regimenfisInput" wire:model.defer="regimenfisInput"
                                 placeholder="Escribe tu regimen fiscal" />
@@ -441,7 +441,7 @@
 
             <x-slot name="content">
                 <div class="px-4 mb-4 text-center" flex-grow>
-                    <img class="object-center" src="/img/error.png" width="100px" height="100px" alt="logo error">
+                    <img class="mx-auto" src="/img/error.png" width="100px" height="100px" alt="logo error">
                     <br>
                     <p class="font-bold mt-5 text-red-700">{!! nl2br($d) !!}</p>
                     <br>

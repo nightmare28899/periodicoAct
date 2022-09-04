@@ -12,15 +12,16 @@ use App\Models\Suscripcion;
 use App\Models\domicilioSubs;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\ventas;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 use function PHPUnit\Framework\isEmpty;
 
 class Tiros extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro, $modalHistorialFactura = 0, $invoices;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -31,13 +32,14 @@ class Tiros extends Component
         $domicilios = Domicilio::all();
         $this->ruta = Ruta::all();
         $suscripcion = Suscripcion::all();
+        $this->invoices = Invoice::all();
         $ventas = ventas::all();
         $keyWord = '%' . $this->keyWord . '%';
         Carbon::setLocale('es');
         $this->dateF = new Carbon($this->from);
         $this->dateFiltro = new Carbon($this->de);
         $this->tiro = Tiro::all();
-
+        /* este es la primer info que se muestra del primer picker */
         if ($this->from) {
             $this->diaS = $this->dateF->translatedFormat('l');
             try {
@@ -50,7 +52,7 @@ class Tiros extends Component
                         $query->where('desde', '<=', $this->from)
                             ->where('hasta', '>=', $this->from);
                     })
-                    ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
                 $this->suscripcion = Suscripcion
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
@@ -60,7 +62,7 @@ class Tiros extends Component
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from);
                     })
-                    ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
                 /* foreach ($this->suscripcion as $key => $value) {
                     array_push($this->domiciliosIdSacados, $this->domsubs = domicilioSubs
@@ -88,7 +90,7 @@ class Tiros extends Component
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
             $this->suscripcionCopia = Suscripcion
@@ -96,7 +98,7 @@ class Tiros extends Component
                 ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                 ->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
             $this->rutaEncontrada;
         } else {
@@ -109,7 +111,7 @@ class Tiros extends Component
                     $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                         ->where('ventas.tipo', '=', $this->tipoSeleccionada);
                 })
-                ->select("ventas.*", "cliente.nombre", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
 
             $this->suscripcionCopia = Suscripcion
@@ -120,8 +122,16 @@ class Tiros extends Component
                     $query->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                         ->where('suscripciones.tipo', '=', $this->tipoSeleccionada);
                 })
-                ->select("suscripciones.*", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
+        }
+
+        if (count($this->tiro) > 0) {
+            $this->tiroStatus = Tiro
+                ::join("invoices", "invoices.idTipo", "=", "tiro.idTipo")
+                ->select("tiro.status")
+                ->get();
+            /* dd($this->tiro); */
         }
 
         return view('livewire.tiros.tiro', [
@@ -134,6 +144,8 @@ class Tiros extends Component
             'dateF' => $this->dateF,
             'de' => $this->de,
             'hasta' => $this->hasta,
+            'facturas' => $this->invoices,
+            'tiro' => $this->tiroStatus,
         ], compact('domicilios'));
     }
 
@@ -257,7 +269,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->ventas[$i]['nombre'],
+                            'cliente' => $this->ventas[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -269,6 +281,7 @@ class Tiros extends Component
                             'dia' => $this->diaS,
                             'idTipo' => $this->clienteSeleccionado[$i],
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
+                            'status' => 'sin facturar',
                             'tipo' => $this->ventas[$i]['tiporuta'],
                         ]);
                         $this->modalRemision = false;
@@ -288,7 +301,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->suscripcion[$i]['nombre'],
+                            'cliente' => $this->suscripcion[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -300,6 +313,7 @@ class Tiros extends Component
                             'dia' => $this->diaS,
                             'idTipo' => $this->clienteSeleccionado[$i],
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
+                            'status' => 'sin facturar',
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
                         ]);
                         $this->modalRemision = false;
@@ -428,7 +442,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->ventas[$i]['nombre'],
+                            'cliente' => $this->ventas[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -462,6 +476,7 @@ class Tiros extends Component
                         'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
                         'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
                         'dia' => $this->diaS,
+                        'status' => 'sin facturar',
                         'idTipo' => $this->ventas[$i]['idVenta'],
                         'nombreruta' => $this->ventas[$i]['nombreruta'],
                         'tipo' => $this->ventas[$i]['tiporuta'],
@@ -477,7 +492,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->suscripcion[$i]['nombre'],
+                            'cliente' => $this->suscripcion[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -487,6 +502,7 @@ class Tiros extends Component
                             'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
                             'importe' => $this->suscripcion[$i]->total,
                             'dia' => $this->diaS,
+                            'status' => 'sin facturar',
                             'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
@@ -533,7 +549,7 @@ class Tiros extends Component
 
     public function historialFactura()
     {
-        dd('historial factura');
+        $this->modalHistorialFactura = true;
     }
 
     public function historialRemision()

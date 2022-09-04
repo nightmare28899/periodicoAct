@@ -17,6 +17,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('invoice_id');
             $table->string('invoice_date');
+            $table->string('cliente_id');
+            $table->string('cliente');
+            $table->string('idTipo');
             $table->string('serie');
             $table->string('folio');
             $table->string('paymentTerms');

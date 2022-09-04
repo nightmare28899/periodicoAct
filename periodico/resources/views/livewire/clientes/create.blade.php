@@ -147,7 +147,7 @@
                     <label for="regimen_fiscal"
                         class="block text-black text-sm font-bold mb-2">Régimen
                         Fiscal:</label>
-                    <input type="text"
+                    <input type="number"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('regimen_fiscal') border-red-500 @enderror"
                         id="regimen_fiscal" wire:model.defer="regimen_fiscal"
                         placeholder="Escribe tu Régimen Fiscal" />

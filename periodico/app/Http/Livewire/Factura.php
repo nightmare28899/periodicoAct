@@ -40,7 +40,7 @@ class Factura extends Component
             $this->cpGenerico = '58190';
             $this->regimenFisGenerico = '616';
         }
-        return view('livewire.factura.view', [ 'd' => $this->d ]);
+        return view('livewire.factura.view', ['d' => $this->d]);
     }
 
     public function mount($cliente_id, $idTipo)
@@ -202,9 +202,15 @@ class Factura extends Component
             ];
         }
 
+        if ($this->cliente['nombre'] != '') {
+            $nombre = $this->cliente['nombre'];
+        } else if ($this->cliente['razon_social'] != '') {
+            $nombre = $this->cliente['razon_social'];
+        }
+
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
-                "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPUE" :   "VPPUE",
+                "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPUE" : "VPPUE",
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
@@ -216,7 +222,7 @@ class Factura extends Component
                 "Decimals" => "2",
                 "Receiver" => [
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->cliente['rfc_input'],
-                    "Name" => $this->activarCG ? $this->nombreGenerico : $this->cliente['nombre'],
+                    "Name" => $this->activarCG ? $this->nombreGenerico : $nombre,
                     "CfdiUse" => $this->cfdiUse,
                     "TaxZipCode" => $this->activarCG ? $this->cpGenerico : $this->domicilio['cp'],
                     "FiscalRegime" => $this->activarCG ? $this->regimenFisGenerico : $this->cliente['regimen_fiscal'],
@@ -235,7 +241,6 @@ class Factura extends Component
                 'Items' => $items,
             ]);
 
-            /* \Crisvegadev\Facturama\Invoice::cancel($facturama->Folio, $facturama->Serie, 01); */
         } else {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
@@ -243,13 +248,17 @@ class Factura extends Component
             ]);
         }
 
-        try {
-            /* dd($facturama); */
-            if ($facturama->statusCode == 201) {
 
+        /* dd($this->tiro = Tiro::where('cliente_id', $this->clienteid)->first()); */
+
+        try {
+            if ($facturama->statusCode == 201) {
                 Invoice::create([
                     'invoice_id' => $facturama->data->Id,
                     'invoice_date' => $facturama->data->Date,
+                    'cliente_id' => $this->clienteid,
+                    'cliente' => $nombre,
+                    'idTipo' => $this->idTipo,
                     'serie' => $facturama->data->Serie,
                     'folio' => $facturama->data->Folio,
                     'paymentTerms' => $facturama->data->PaymentTerms,
@@ -269,17 +278,21 @@ class Factura extends Component
                     'total' => $facturama->data->Total,
                 ]);
 
+
+                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                    'status' => 'facturado',
+                ]);
+
                 $this->status = 'created';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
                 ]);
 
                 return redirect('/vistaPrevia/' . $facturama->data->Id);
-
-            } else{
+            } else {
                 $this->d = "";
 
-                foreach ($facturama->errors as $key => $error){
+                foreach ($facturama->errors as $key => $error) {
                     $this->d .= "- $error \n";
                 }
                 /* dd($this->d); */
@@ -293,7 +306,6 @@ class Factura extends Component
                     'showConfirmButton' => true,
                     'onConfirmed' => '',
                 ]); */
-
             }
         } catch (\Exception $e) {
             /* dd($e); */

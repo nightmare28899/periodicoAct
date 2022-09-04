@@ -18,9 +18,9 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = null, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = 0, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -96,7 +96,6 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-
         if ($this->diasSuscripcionSeleccionada) {
             if ($this->diasSuscripcionSeleccionada == 'l_v') {
                 $this->lunes = true;
@@ -119,7 +118,6 @@ class Clientes extends Component
             } else if ($this->diasSuscripcionSeleccionada == 'esc_man') {
                 $this->allow = true;
             }
-
         }
 
         if ($this->tarifaSeleccionada) {
@@ -188,22 +186,29 @@ class Clientes extends Component
             $this->total = 0;
             $this->totalDesc = 0;
         }
-
-        return view('livewire.clientes.view', [
-            'clientes' => Cliente::first()
-                ->orWhere('clasificacion', 'LIKE', $keyWord)
-                ->orWhere('rfc', 'LIKE', $keyWord)
-                ->orWhere('rfc_input', 'LIKE', $keyWord)
-                ->orWhere('nombre', 'LIKE', $keyWord)
-                ->orWhere('estado', 'LIKE', $keyWord)
-                ->orWhere('pais', 'LIKE', $keyWord)
-                ->orWhere('email', 'LIKE', $keyWord)
-                ->orWhere('email_cobranza', 'LIKE', $keyWord)
-                ->orWhere('telefono', 'LIKE', $keyWord)
-                ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
-                ->paginate(15),
-            'rfc' => $this->rfc,
-        ], compact('data', 'rutas', 'tarifas', 'formaPago'));
+        $this->clients = Cliente::all();
+        if (count($this->clients) > 0) {
+            return view('livewire.clientes.view', [
+                'clientes' => Cliente::first()
+                    ->orWhere('clasificacion', 'LIKE', $keyWord)
+                    ->orWhere('rfc', 'LIKE', $keyWord)
+                    ->orWhere('rfc_input', 'LIKE', $keyWord)
+                    ->orWhere('nombre', 'LIKE', $keyWord)
+                    ->orWhere('estado', 'LIKE', $keyWord)
+                    ->orWhere('pais', 'LIKE', $keyWord)
+                    ->orWhere('email', 'LIKE', $keyWord)
+                    ->orWhere('email_cobranza', 'LIKE', $keyWord)
+                    ->orWhere('telefono', 'LIKE', $keyWord)
+                    ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
+                    ->paginate(15),
+                'rfc' => $this->rfc,
+            ], compact('data', 'rutas', 'tarifas', 'formaPago'));
+        } else {
+            return view('livewire.clientes.view', [
+                'clientes' => $this->clients,
+                'rfc' => $this->rfc,
+            ], compact('data', 'rutas', 'tarifas', 'formaPago'));
+        }
     }
     public function create()
     {
@@ -237,13 +242,11 @@ class Clientes extends Component
         $this->validate([
             'clasificacion' => 'required',
             'rfc' => 'required',
-            'nombre' => 'required',
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
             'rfc_input' => 'required',
-            'razon_social' => 'required',
         ]);
 
         $this->isModalOpen = false;
@@ -275,8 +278,7 @@ class Clientes extends Component
         $this->suscripciones = true;
     }
     public function modalCrearDomSubs()
-    {
-        {
+    { {
             $this->clienteSeleccionado ? $this->modalDomSubs = true : $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
@@ -350,12 +352,7 @@ class Clientes extends Component
     }
     public function store()
     {
-        {
-            $this->noint ? $this->noint : null;
-        }
-
         $this->validate([
-            'nombre' => 'required',
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
@@ -381,20 +378,20 @@ class Clientes extends Component
             'clasificacion' => $this->clasificacion,
             'rfc' => $this->rfc,
             'rfc_input' => $this->rfc_input,
-            'nombre' => $this->nombre,
+            'nombre' => $this->nombre ? $this->nombre : null,
             'estado' => $this->estado,
             'pais' => $this->pais,
             'email' => $this->email,
             'email_cobranza' => $this->email_cobranza,
             'telefono' => $this->telefono,
             'regimen_fiscal' => $this->regimen_fiscal,
-            'razon_social' => $this->razon_social,
+            'razon_social' => $this->razon_social ? $this->razon_social : null,
         ]);
 
         Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::latest('id')->first()->id,
             'calle' => $this->calle,
-            'noint' => $this?->noint,
+            'noint' => $this->noint ? $this->noint : 0,
             'noext' => $this->noext,
             'colonia' => $this->colonia,
             'cp' => $this->cp,
@@ -525,8 +522,7 @@ class Clientes extends Component
     }
     /* Aqui comienzan las suscripciones */
     public function createSubs()
-    {
-        {
+    { {
             $this->noint ? $this->noint : $this->noint = null;
         }
 
@@ -569,8 +565,7 @@ class Clientes extends Component
     public function crearVenta()
     {
         $this->status = 'created';
-        $this->idSuscrip = Str::random(6);
-        {
+        $this->idSuscrip = Str::random(6); {
             $this->lunesVentas ? $this->lunesVentas : 0;
         } {
             $this->martesVentas ? $this->martesVentas : 0;
@@ -772,54 +767,54 @@ class Clientes extends Component
                     ]);
 
                     /* if ($this->inputCantidad) { */
-                        /* if ($this->inputCantidad <= $this->cantEjem) { */
-                            Suscripcion::Create([
-                                'idSuscripcion' => 'suscri' . $this->idSuscrip,
-                                'tipo' => 'suscripcion',
-                                'cliente_id' => $this->clienteSeleccionado,
-                                'suscripcion' => $this->tipoSubscripcion,
-                                'esUnaSuscripcion' => $this->subscripcionEs,
-                                'tarifa' => $this->tarifaSeleccionada,
-                                'cantEjemplares' => $this->cantEjem,
-                                'precio' => $this->precio,
-                                'contrato' => $this->contrato,
-                                'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
-                                'periodo' => $this->periodoSuscripcionSeleccionada,
-                                'fechaInicio' => $this->from,
-                                'fechaFin' => $this->to,
-                                'dias' => $this->diasSuscripcionSeleccionada,
-                                'estado' => 'Activo',
-                                'cliente_id' => $this->clienteSeleccionado,
-                                'lunes' => $this->lunes,
-                                'martes' => $this->martes,
-                                'miércoles' => $this->miércoles,
-                                'jueves' => $this->jueves,
-                                'viernes' => $this->viernes,
-                                'sábado' => $this->sábado,
-                                'domingo' => $this->domingo,
-                                'descuento' => $this->descuento,
-                                'observaciones' => $this->observacion,
-                                'importe' => $this->total,
-                                'total' => $this->totalDesc,
-                                /* 'formaPago' => $this->formaPagoSeleccionada, */
-                                'domicilio_id' =>  $this->domicilioSeleccionado[0]['id'],
-                            ]);
+                    /* if ($this->inputCantidad <= $this->cantEjem) { */
+                    Suscripcion::Create([
+                        'idSuscripcion' => 'suscri' . $this->idSuscrip,
+                        'tipo' => 'suscripcion',
+                        'cliente_id' => $this->clienteSeleccionado,
+                        'suscripcion' => $this->tipoSubscripcion,
+                        'esUnaSuscripcion' => $this->subscripcionEs,
+                        'tarifa' => $this->tarifaSeleccionada,
+                        'cantEjemplares' => $this->cantEjem,
+                        'precio' => $this->precio,
+                        'contrato' => $this->contrato,
+                        'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                        'periodo' => $this->periodoSuscripcionSeleccionada,
+                        'fechaInicio' => $this->from,
+                        'fechaFin' => $this->to,
+                        'dias' => $this->diasSuscripcionSeleccionada,
+                        'estado' => 'Activo',
+                        'cliente_id' => $this->clienteSeleccionado,
+                        'lunes' => $this->lunes,
+                        'martes' => $this->martes,
+                        'miércoles' => $this->miércoles,
+                        'jueves' => $this->jueves,
+                        'viernes' => $this->viernes,
+                        'sábado' => $this->sábado,
+                        'domingo' => $this->domingo,
+                        'descuento' => $this->descuento,
+                        'observaciones' => $this->observacion,
+                        'importe' => $this->total,
+                        'total' => $this->totalDesc,
+                        /* 'formaPago' => $this->formaPagoSeleccionada, */
+                        'domicilio_id' =>  $this->domicilioSeleccionado[0]['id'],
+                    ]);
 
 
-                            /* 'domicilio_id' =>  json_encode($this->domicilioId), */
+                    /* 'domicilio_id' =>  json_encode($this->domicilioId), */
 
-                            $this->status = 'created';
+                    $this->status = 'created';
 
-                            /* $this->status = 'updated'; */
+                    /* $this->status = 'updated'; */
 
-                            $this->dispatchBrowserEvent('alert', [
-                                'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
-                            ]);
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+                    ]);
 
-                            $this->suscripciones = false;
+                    $this->suscripciones = false;
 
-                            $this->borrar();
-                        /* } else {
+                    $this->borrar();
+                    /* } else {
                             $this->dispatchBrowserEvent('alert', [
                                 'message' => ($this->status == 'created') ? '¡No puedes poner una cantidad mayor a los ejemplares!' : ''
                             ]);

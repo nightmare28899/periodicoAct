@@ -102,7 +102,7 @@
             <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-                {{ $result->nombre }}</p>
+                {{ $result->nombre ? $result->nombre : $result->razon_social }}</p>
             <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
                 {{ $result->rfc_input }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
@@ -349,7 +349,7 @@
             <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-                {{ $result->nombre }}</p>
+                {{ $result->nombre ? $result->nombre : $result->razon_social }}</p>
             <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
                 {{ $result->rfc_input }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>

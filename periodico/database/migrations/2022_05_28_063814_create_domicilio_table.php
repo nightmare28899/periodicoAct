@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('cliente_id')->unsigned();
             $table->string('calle');
-            $table->string('noint')->nullable(); /* este es opcional en el formulario */
+            $table->integer('noint'); /* este es opcional en el formulario */
             $table->integer('noext');
             $table->string('colonia');
             $table->integer('cp');

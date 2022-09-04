@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('clasificacion');
             $table->string('rfc')->nullable();
             $table->string('rfc_input');
-            $table->string('nombre');
-            $table->string('razon_social');
+            $table->string('nombre')->nullable();
+            $table->string('razon_social')->nullable();
             $table->string('estado');
             $table->string('pais');
             $table->string('email')->unique();
