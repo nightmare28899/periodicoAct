@@ -337,10 +337,10 @@
                                             <td class='px-4 py-2'>{{ $faltante }}</td>
                                             <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
                                             <td class='px-4 py-2'>
-                                                {{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                                ${{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
                                             </td>
                                             <td class='px-4 py-2'>
-                                                {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                                ${{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
                                             <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
@@ -370,10 +370,10 @@
                                             <td class='px-4 py-2'>{{ $faltante }}</td>
                                             <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
                                             <td class='px-4 py-2'>
-                                                {{ $suscri->tarifa == 'Base' ? 330 : 300 }}
+                                                ${{ $suscri->tarifa == 'Base' ? 330 : 300 }}
                                             </td>
                                             <td class='px-4 py-2'>
-                                                {{ $suscri->importe }}
+                                                ${{ $suscri->importe }}
                                             </td>
                                             <td class='px-4 py-2'>{{ $diaS }}</td>
                                             <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
@@ -490,8 +490,8 @@
                                             <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->venta }}</td>
-                                            <td class='px-4 py-2'>{{ $tiro->precio }}</td>
-                                            <td class='px-4 py-2'>{{ $tiro->importe }}</td>
+                                            <td class='px-4 py-2'>${{ $tiro->precio }}</td>
+                                            <td class='px-4 py-2'>${{ $tiro->importe }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
