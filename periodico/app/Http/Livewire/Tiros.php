@@ -126,13 +126,12 @@ class Tiros extends Component
                 ->get($this->diaS);
         }
 
-        if (count($this->tiro) > 0) {
+        /* if (count($this->tiro) > 0) {
             $this->tiroStatus = Tiro
                 ::join("invoices", "invoices.idTipo", "=", "tiro.idTipo")
                 ->select("tiro.status")
                 ->get();
-            /* dd($this->tiro); */
-        }
+        } */
 
         return view('livewire.tiros.tiro', [
             'ventas' => $this->ventas,
@@ -144,8 +143,8 @@ class Tiros extends Component
             'dateF' => $this->dateF,
             'de' => $this->de,
             'hasta' => $this->hasta,
-            'facturas' => $this->invoices,
-            'tiro' => $this->tiroStatus,
+            'facturas' => $this->invoices,/*
+            'tiro' => $this->tiroStatus, */
         ], compact('domicilios'));
     }
 

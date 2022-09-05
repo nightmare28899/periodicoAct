@@ -507,28 +507,29 @@
                                                             class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Activar
                                                             suscripción</button>
                                                     @endif
-                                                    @if ($tiro->status == 'facturado')
+
+                                                    {{-- @if ($tiro->status $tiro->status == 'facturado')
                                                         <button
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             disabled>Facturado</button>
-                                                    @else
+                                                    @else --}}
                                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
-                                                    @endif
+                                                    {{-- @endif --}}
                                                 </td>
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
                                                         class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
 
-                                                    @if ($tiro->status == 'facturado')
+                                                    {{-- @if ($tiro->status == 'facturado')
                                                         <button
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             disabled>Facturado</button>
-                                                    @else
+                                                    @else --}}
                                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
-                                                    @endif
+                                                    {{-- @endif --}}
                                                 </td>
                                             @endif
                                         </tr>
@@ -666,15 +667,15 @@
                                     <td class="border">
                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                             href="{{ url('vistaPrevia/' . $invoice->invoice_id) }}">Ver PDF</a>
-                                        @if ($tiroStatus[0]->status == 'cancelado')
+                                        {{-- @if ($tiroStatus[0]->status == 'cancelado')
                                             <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
                                                 disabled>Factura
                                                 cancelada</a>
-                                        @else
+                                        @else --}}
                                             <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline"
                                                 href="{{ url('vistaPrevia/' . $invoice->invoice_id) }}">Cancelar
                                                 factura</a>
-                                        @endif
+                                        {{-- @endif --}}
                                     </td>
                                 </tr>
                             @endforeach

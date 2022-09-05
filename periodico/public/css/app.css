@@ -1019,11 +1019,11 @@ select {
 .float-left {
   float: left;
 }
-.m-2 {
-  margin: 0.5rem;
-}
 .m-5 {
   margin: 1.25rem;
+}
+.m-2 {
+  margin: 0.5rem;
 }
 .mx-auto {
   margin-left: auto;
@@ -1735,10 +1735,6 @@ select {
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
-}
-.object-center {
-  -o-object-position: center;
-     object-position: center;
 }
 .p-2 {
   padding: 0.5rem;
