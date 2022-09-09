@@ -186,6 +186,17 @@ class Clientes extends Component
             $this->total = 0;
             $this->totalDesc = 0;
         }
+
+        if ($this->clasificacion) {
+            if ($this->clasificacion == 'GENÉRICO') {
+                $this->rfc_input = 'XAXX010101000';
+                $this->regimen_fiscal = 616;
+                $this->razon_social = 'PUBLICO EN GENERAL';
+                $this->cp = '58190';
+                $this->rfc = 'Física';
+            }
+        }
+
         $this->clients = Cliente::all();
         if (count($this->clients) > 0) {
             return view('livewire.clientes.view', [
@@ -445,7 +456,7 @@ class Clientes extends Component
     public function update()
     {
         $this->validate([
-            'nombre' => 'required',
+            /* 'nombre' => 'required', */
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
@@ -477,6 +488,7 @@ class Clientes extends Component
             'email_cobranza' => $this->email_cobranza,
             'telefono' => $this->telefono,
             'regimen_fiscal' => $this->regimen_fiscal,
+            'razon_social' => $this->razon_social,
         ]);
 
         $domicilio = Domicilio::find($this->domicilio_id);
@@ -562,7 +574,7 @@ class Clientes extends Component
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
     }
-    public function crearVenta()
+    /* public function crearVenta()
     {
         $this->status = 'created';
         $this->idSuscrip = Str::random(6); {
@@ -620,10 +632,10 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
-    }
-    public function actualizarVenta()
+    } */
+    /* public function actualizarVenta()
     {
-        /* $this->validate([
+        $this->validate([
             'lunesVentas' => 'required',
             'martesVentas' => 'required',
             'miercolesVentas' => 'required',
@@ -631,7 +643,7 @@ class Clientes extends Component
             'viernesVentas' => 'required',
             'sabadoVentas' => 'required',
             'domingoVentas' => 'required',
-        ]); */
+        ]);
 
         $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
         $this->ventas->update([
@@ -651,8 +663,8 @@ class Clientes extends Component
         $this->status = 'created';
         $this->limpiarVentaModal();
         $this->modalV = false;
-    }
-    public function editarVenta()
+    } */
+    /* public function editarVenta()
     {
         if ($this->clienteSeleccionado) {
             $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
@@ -679,7 +691,7 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
-    }
+    } */
     public function limpiarClienteSeleccionado()
     {
         $this->editEnabled = false;
@@ -694,7 +706,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
     }
-    public function limpiarVentaModal()
+    /* public function limpiarVentaModal()
     {
         $this->editEnabled = false;
         $this->clienteSeleccionado = null;
@@ -708,7 +720,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
         $this->modalV = false;
-    }
+    } */
     public function updatedCantDom($field, $value)
     {
         $this->inputCantidad = $field;

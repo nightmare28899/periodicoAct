@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/cliente', Clientes::class);
+    Route::get('/cliente', Clientes::class)->name('cliente');
     Route::get('/tiro', Tiros::class);/*
     Route::get('/tiro/PDF', \App\Http\Livewire\Tiros::class)->name('tiropdf'); */
     Route::get('/tarifa', Tarifas::class);

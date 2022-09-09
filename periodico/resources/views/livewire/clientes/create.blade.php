@@ -25,7 +25,7 @@
                         class="block text-black text-sm font-bold mb-2">Clasificación</label>
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                        wire:model.defer="clasificacion" style="width: 100%">
+                        wire:model="clasificacion" style="width: 100%">
                         <option value='' style="display: none;">Escoge una opción</option>
                         @foreach ($data as $datas)
                             <option value={{ $datas }}>

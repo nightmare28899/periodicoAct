@@ -44,9 +44,9 @@
                             @enderror
                         </select>
                     </div>
-                    <div class="w-1/2 p-2">
+                    {{-- <div class="w-1/2 p-2">
                         <input type="checkbox" name="oferta" wire:model="oferta"> Aplicar oferta
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="flex">
                     <div class="w-1/2 px-2">
@@ -57,11 +57,11 @@
                     </div>
                     <div class="w-1/2">
                         <br>
-                        <p class="font-bold"><input wire:model.defer="tipoSubscripcion" name="tipoSubscripcion"
+                        {{-- <p class="font-bold"><input wire:model.defer="tipoSubscripcion" name="tipoSubscripcion"
                                 id="Semanal" value="Semanal" type="radio"
                                 {{ $tipoSubscripcion == 'Semanal' ? 'checked' : '' }}>
                             <label class="text-black" for="Semanal">Semanal</label>
-                        </p>
+                        </p> --}}
                     </div>
                     <div class="border-l-4 border-black ... px-2"></div>
                     <div class="w-1/2">
@@ -357,7 +357,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex mt-3">
+                {{-- <div class="flex mt-3">
                     @if ($oferta != false)
                         <div class="w-2/5 px-2 flex">
                             DESCUENTO FINAL <input type="number" style="height: 1.7rem; margin-left: 1.3rem;"
@@ -365,7 +365,7 @@
                                 min="0" class="border-0 bg-gray-200">
                         </div>
                     @endif
-                </div>
+                </div> --}}
                 <div class="mt-3">
                     <div class="w-2/5 px-2 flex">
                         OBSERVACIONES(Opcional)

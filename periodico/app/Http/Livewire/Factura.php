@@ -208,6 +208,12 @@ class Factura extends Component
             $nombre = $this->cliente['razon_social'];
         }
 
+        $this->globalInformation = [
+            "Periodicity" => "04",
+            "Months" => "08",
+            "Year" => "2022",
+        ];
+
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
                 "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPUE" : "VPPUE",
@@ -218,7 +224,7 @@ class Factura extends Component
                 "CfdiType" => "I",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
-                "GlobalInformation" => $this->globalInformation,
+                "GlobalInformation" => $this->globalInformation ? $this->globalInformation : [],
                 "Decimals" => "2",
                 "Receiver" => [
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->cliente['rfc_input'],
