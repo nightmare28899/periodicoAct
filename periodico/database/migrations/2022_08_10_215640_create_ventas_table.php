@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('idVenta');
             $table->string('desde');
             $table->string('hasta');
-
+            $table->string('total');
             $table->integer('lunes')->nullable();
             $table->integer('martes')->nullable();
             $table->integer('miércoles')->nullable();

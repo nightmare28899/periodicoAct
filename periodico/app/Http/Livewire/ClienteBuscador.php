@@ -14,7 +14,7 @@ class ClienteBuscador extends Component
 {
     public $query, $clientesBuscados, $highlightIndex, $dataClient = [], $clienteSeleccionado;
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
-    public $editEnabled = false, $status = 'created';
+    public $editEnabled = false, $status = 'created', $modalV = 0;
     public $desde, $hasta, $date, $converHasta;
 
     public function limpiarVentaModal()
@@ -31,6 +31,12 @@ class ClienteBuscador extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
         $this->modalV = false;
+    }
+
+    public function returnClienteView()
+    {
+        $this->limpiarVentaModal();
+        return redirect()->route('cliente');
     }
 
     public function actualizarVenta()
@@ -63,6 +69,8 @@ class ClienteBuscador extends Component
         $this->status = 'created';
         $this->limpiarVentaModal();
         $this->modalV = false;
+
+        $this->returnClienteView();
     }
 
     public function editarVenta()
@@ -96,7 +104,6 @@ class ClienteBuscador extends Component
 
     public function crearVenta()
     {
-        $this->status = 'created';
         $this->idSuscrip = Str::random(6); {
             $this->lunesVentas ? $this->lunesVentas : 0;
         } {
@@ -115,7 +122,17 @@ class ClienteBuscador extends Component
         if ($this->clienteSeleccionado) {
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
-                    /* ventas::Create([
+                    $lunesTotal = (int)$this->lunesVentas * $this->clienteSeleccionado['ordinario'];
+                    $martesTotal = (int)$this->martesVentas * $this->clienteSeleccionado['ordinario'];
+                    $miercolesTotal = (int)$this->miercolesVentas * $this->clienteSeleccionado['ordinario'];
+                    $juevesTotal = (int)$this->juevesVentas * $this->clienteSeleccionado['ordinario'];
+                    $viernesTotal = (int)$this->viernesVentas * $this->clienteSeleccionado['ordinario'];
+                    $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
+                    $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
+
+                    $total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+
+                    ventas::Create([
                         'idVenta' => 'venta' . $this->idSuscrip,
                         'tipo' => 'venta',
                         'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
@@ -129,11 +146,13 @@ class ClienteBuscador extends Component
                         'viernes' => $this->viernesVentas,
                         'sábado' => $this->sabadoVentas,
                         'domingo' => $this->domingoVentas,
-                    ]); */
+                        'total' => $total
+                    ]);
 
-                    dd($this->clienteSeleccionado);
+                    /* dd($this->clienteSeleccionado); */
 
-                    $pdfContent = PDF::loadView('livewire.comprobantePDF', [
+                    $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
+                        'total' => $total,
                         'cliente' => $this->clienteSeleccionado,
                         'desde' => $this->desde,
                         'hasta' => $this->hasta,
@@ -144,9 +163,19 @@ class ClienteBuscador extends Component
                         'viernes' => $this->viernesVentas,
                         'sabado' => $this->sabadoVentas,
                         'domingo' => $this->domingoVentas,
+                        'fecha' => $this->date,
                     ])
                         ->setPaper('A5', 'landscape')
                         ->output();
+
+                    $this->status = 'created';
+                    $this->modalV = false;
+
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
+                    ]);
+
+                    $this->returnClienteView();
 
                     return response()
                         ->streamDownload(
@@ -154,12 +183,10 @@ class ClienteBuscador extends Component
                             "tiros.pdf"
                         );
 
-                    $this->limpiarVentaModal();
 
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
-                    ]);
-                    $this->modalV = false;
+
+                    /* $this->limpiarVentaModal(); */
+
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -177,8 +204,9 @@ class ClienteBuscador extends Component
         }
     }
 
-    public function mount()
+    public function mount($status)
     {
+        $this->modalV = $status;
         $this->resetear();
     }
 
@@ -223,6 +251,7 @@ class ClienteBuscador extends Component
             ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
             ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
             ->where('razon_social', 'like', '%' . $this->query . '%')
+            ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
             ->get()
             ->toArray();
     }

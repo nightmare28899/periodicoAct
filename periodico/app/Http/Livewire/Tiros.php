@@ -441,7 +441,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->ventas[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
+                            'cliente' => $this->ventas[$i]['razon_social'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -465,7 +465,7 @@ class Tiros extends Component
                 } else {
                     Tiro::create([
                         'fecha' => $this->dateF,
-                        'cliente' => $this->ventas[$i]['nombre'],
+                        'cliente' => $this->ventas[$i]['razon_social'],
                         'entregar' => $this->ventas[$i]->{$this->diaS},
                         'devuelto' => $this->devuelto,
                         'faltante' => $this->faltante,
@@ -491,7 +491,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->suscripcion[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
+                            'cliente' => $this->ventas[$i]['razon_social'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -516,7 +516,7 @@ class Tiros extends Component
                 } else {
                     Tiro::create([
                         'fecha' => $this->dateF,
-                        'cliente' => $this->suscripcion[$i]['nombre'],
+                        'cliente' => $this->suscripcion[$i]['razon_social'],
                         'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                         'devuelto' => $this->devuelto,
                         'faltante' => $this->faltante,

@@ -94,10 +94,10 @@
                             <th class="px-4 py-2 w-20">Tipo</th>
                             <th class="px-4 py-2 w-20">Cliente</th>
                             <th class="px-4 py-2 w-20">Día</th>
-                            <th class="px-4 py-2 w-20">Ejemplares</th>
-                            <th class="px-4 py-2 w-20">Domicilio</th>
+                            <th class="px-4 py-2 w-20">Dirección</th>
                             <th class="px-4 py-2 w-20">Referencia</th>
-                            <th class="px-4 py-2 w-20">Fecha</th>
+                            <th class="px-4 py-2 w-20">Ejemplares</th>
+                            {{-- <th class="px-4 py-2 w-20">Fecha</th> --}}
                             {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
                         </tr>
                     </thead>
@@ -112,15 +112,15 @@
                                         <td class="border">{{ $result->razon_social }}</td>
                                     @endif
                                     <td class="border">{{ $diaS }} </td>
-                                    <td class="border">{{ $result->{$diaS} }}</td>
                                     <td class="border">Calle: {{ $result->calle }} <br>
                                         No. Ext:
                                         {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
                                         {{ $result->localidad }}, Municipio: {{ $result->municipio }}
                                     </td>
                                     <td class="border">{{ $result->referencia }}</td>
-                                    <td class="border">
-                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td=>
+                                    <td class="border">{{ $result->{$diaS} }}</td>
+                                    {{-- <td class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td> --}}
                                 </tr>
                             @else
                                 <tr>
@@ -135,21 +135,21 @@
                                     <td>Suscripción</td>
                                     <td class="border">{{ $suscrip->nombre }}</td>
                                     <td class="border">{{ $diaS }} </td>
-                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
                                     <td class="border">Calle: {{ $suscrip->calle }} <br>
                                         No. Ext:
                                         {{ $suscrip->noext }}, CP: {{ $suscrip->cp }}, <br> Localidad:
                                         {{ $suscrip->localidad }}, Ciudad: {{ $suscrip->ciudad }}
                                     </td>
                                     <td wire:model="referencia" class="border">{{ $suscrip->referencia }}</td>
+                                    <td class="border">{{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
                                     {{-- <td class="border">Calle: {{ $domsubs[$key]->calle }} <br>
                                         No. Ext:
                                         {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
                                         {{ $domsubs[$key]->localidad }}, Ciudad: {{ $domsubs[$key]->ciudad }}
                                     </td>
                                     <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td> --}}
-                                    <td wire:model="fecha" class="border">
-                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                    {{-- <td wire:model="fecha" class="border">
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td> --}}
                                 </tr>
                             @else
                                 <tr>

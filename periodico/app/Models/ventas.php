@@ -13,5 +13,5 @@ class ventas extends Model
 
     protected $table = 'ventas';
 
-    protected $fillable = ['idVenta','tipo','cliente_id', 'domicilio_id', 'desde', 'hasta', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+    protected $fillable = ['idVenta','tipo','cliente_id', 'domicilio_id', 'desde', 'hasta', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo', 'total'];
 }

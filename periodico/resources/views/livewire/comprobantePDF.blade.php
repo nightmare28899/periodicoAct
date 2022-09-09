@@ -134,13 +134,13 @@
                     <th class='px-4 py-2' style="width: 100px;">DEL: {{ $desde }}</th>
                     <th class='px-4 py-2' style="width: 100px;">AL: {{ $hasta }}</th>
                     <th class='px-4 py-2' style="width: 50px;">DIAS</th>
-                    <th class='px-4 py-2' style="width: 50px;">LUNES <br> {{ $lunes ? 'Si' : 'No' }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">MARTES {{ $martes ? 'Si' : 'No' }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">MIÉRCOLES {{ $miercoles ? 'Si' : 'No' }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">JUEVES {{ $jueves ? 'Si' : 'No' }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">VIERNES {{ $viernes ? 'Si' : 'No' }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">SÁBADO {{ $sabado ? 'Si' : 'No' }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">DOMINGO {{ $domingo ? 'Si' : 'No' }}</th>
+                    <th class='px-4 py-2' style="width: 50px;">LUNES <br> {{-- {{ $lunes ? 'Si' : 'No' }} --}} {{ $lunesTotal = $lunes ? $lunes * $cliente['ordinario'] : 0 }}</th>
+                    <th class='px-4 py-2' style="width: 50px;">MARTES {{-- {{ $martes ? 'Si' : 'No' }} --}} {{ $martesTotal =  $martes ? $martes * $cliente['ordinario'] : 0 }}</th>
+                    <th class='px-4 py-2' style="width: 50px;">MIÉRCOLES {{-- {{ $miercoles ? 'Si' : 'No' }} --}} {{ $miercolesTotal = $miercoles ? $miercoles * $cliente['ordinario'] : 0}}</th>
+                    <th class='px-4 py-2' style="width: 50px;">JUEVES {{-- {{ $jueves ? 'Si' : 'No' }}  --}}{{ $juevesTotal = $jueves ? $jueves * $cliente['ordinario'] : 0 }}</th>
+                    <th class="px-4 py-2" style="width: 50px;">VIERNES {{-- {{ $viernes ? 'Si' : 'No' }} --}} {{ $viernesTotal = $viernes ? $viernes * $cliente['ordinario'] : 0 }}</th>
+                    <th class="px-4 py-2" style="width: 50px;">SÁBADO {{-- {{ $sabado ? 'Si' : 'No' }} --}} {{ $sabadoTotal = $sabado ? $sabado * $cliente['ordinario'] : 0 }}</th>
+                    <th class="px-4 py-2" style="width: 50px;">DOMINGO {{-- {{ $domingo ? 'Si' : 'No' }} --}} {{ $domingoTotal = $domingo ? $domingo * $cliente['dominical'] : 0 }}</th>
                 </tr>
             </thead>
         </table>
@@ -154,7 +154,7 @@
 
         <br>
         <p><b>IMPORTE</b></p>
-        <p class="move1">1790</p>
+        <p class="move1">{{ sprintf('$ %s', number_format((int)$lunesTotal + (int)$martesTotal + (int)$miercolesTotal + (int)$juevesTotal + (int)$viernesTotal + (int)$sabadoTotal + (int)$domingoTotal, 2)) }}</p>
         <p><b>DESCUENTO</b></p>
         <p class="move1">0</p>
         <p><b>SUBTOTAL</b></p>
