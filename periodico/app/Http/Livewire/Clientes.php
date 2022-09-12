@@ -200,8 +200,8 @@ class Clientes extends Component
         $this->clients = Cliente::all();
         if (count($this->clients) > 0) {
             return view('livewire.clientes.view', [
-                'clientes' => Cliente::first()
-                    ->orWhere('clasificacion', 'LIKE', $keyWord)
+                'clientes' => Cliente
+                    ::orWhere('clasificacion', 'LIKE', $keyWord)
                     ->orWhere('rfc', 'LIKE', $keyWord)
                     ->orWhere('rfc_input', 'LIKE', $keyWord)
                     ->orWhere('nombre', 'LIKE', $keyWord)
@@ -299,10 +299,10 @@ class Clientes extends Component
     {
         $this->modalFormDom = true;
     }
-    /* public function modalVentas()
+    public function modalVentas()
     {
         $this->modalV = true;
-    } */
+    }
     public function detalles($id)
     {
         $Cliente = Cliente::find($id);
@@ -574,7 +574,7 @@ class Clientes extends Component
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
     }
-    /* public function crearVenta()
+    public function crearVenta()
     {
         $this->status = 'created';
         $this->idSuscrip = Str::random(6); {
@@ -632,8 +632,8 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
-    } */
-    /* public function actualizarVenta()
+    }
+    public function actualizarVenta()
     {
         $this->validate([
             'lunesVentas' => 'required',
@@ -663,8 +663,8 @@ class Clientes extends Component
         $this->status = 'created';
         $this->limpiarVentaModal();
         $this->modalV = false;
-    } */
-    /* public function editarVenta()
+    }
+    public function editarVenta()
     {
         if ($this->clienteSeleccionado) {
             $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
@@ -691,7 +691,7 @@ class Clientes extends Component
                 'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
-    } */
+    }
     public function limpiarClienteSeleccionado()
     {
         $this->editEnabled = false;
@@ -706,7 +706,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
     }
-    /* public function limpiarVentaModal()
+    public function limpiarVentaModal()
     {
         $this->editEnabled = false;
         $this->clienteSeleccionado = null;
@@ -720,7 +720,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
         $this->modalV = false;
-    } */
+    }
     public function updatedCantDom($field, $value)
     {
         $this->inputCantidad = $field;
@@ -1000,5 +1000,63 @@ class Clientes extends Component
         $this->ciudad = '';
         $this->referencia = '';
         $this->ruta = '';
+    }
+
+    public function mount()
+    {
+        $this->resetear();
+    }
+
+    public function resetear()
+    {
+        $this->query = '';
+        $this->clientesBuscados = [];
+        $this->highlightIndex = 0;
+    }
+
+    public function incrementHighlight()
+    {
+        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
+            $this->highlightIndex = 0;
+            return;
+        }
+        $this->highlightIndex++;
+    }
+
+    public function decrementHighlight()
+    {
+        if ($this->highlightIndex === 0) {
+            $this->highlightIndex = count($this->clientesBuscados) - 1;
+            return;
+        }
+        $this->highlightIndex--;
+    }
+
+    public function selectContact()
+    {
+        $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
+        if ($this->clienteSeleccionado) {
+            $this->clienteSeleccionado;
+            $this->resetear();
+        }
+    }
+
+    public function updatedQuery()
+    {
+        if ($this->modalV == true) {
+            $this->clientesBuscados = Cliente
+                ::join('domicilio', 'cliente.id', '=', 'domicilio.cliente_id')
+                ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
+                ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
+                ->where('razon_social', 'like', '%' . $this->query . '%')
+                ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
+                ->get()
+                ->toArray();
+        } else {
+            $this->clientesBuscados = Cliente
+                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ->get()
+                ->toArray();
+        }
     }
 }

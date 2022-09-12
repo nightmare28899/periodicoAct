@@ -32,17 +32,45 @@
                 </div>
                 <div class="flex">
                     <div class="w-1/2 p-2">
-                        <select
-                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('clasificacion') border-red-500 @enderror"
-                            wire:model="clienteSeleccionado" style="width: 100%">
-                            <option value='' style="display: none;">Selecciona un cliente</option>
-                            @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}">{{ $cliente->nombre ? $cliente->nombre : $cliente->razon_social }}</option>
-                            @endforeach
-                            @error('clienteSeleccionado')
-                                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                            @enderror
-                        </select>
+                        <style>
+                            .highlight {
+                                background-color: #89caf5;
+                            }
+                        </style>
+                        {{-- The best athlete wants his opponent at his best. --}}
+                        <div class="">
+                            <input type="text"
+                                class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                                name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
+                                wire:keydown.escape="resetear" wire:keydown.tab="resetear"
+                                wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
+                                wire:keydown.enter="selectContact" />
+                        </div>
+
+                        {{-- <div wire:loading class="list-group bg-white w-full rounded-t-none shadow-lg">
+                                    <div class="list-item list-none p-2">Buscando...</div>
+                                </div> --}}
+
+                        @if (!empty($query))
+
+                            <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+
+                            <div class="absolute z-10 list-group bg-white w-1/2 rounded-t-none shadow-lg">
+
+                                @if (!empty($clientesBuscados))
+
+                                    @foreach ($clientesBuscados as $i => $buscado)
+                                        <div wire:model.defer="clienteSeleccionado"
+                                            class="list-item list-none p-2
+                                                    {{ $highlightIndex === $i ? 'highlight' : '' }}">
+                                            {{ $buscado['razon_social'] }}</div>
+                                    @endforeach
+                                @else
+                                    <div class="list-item list-none p-2">No hay resultado</div>
+                                @endif
+                            </div>
+
+                        @endif
                     </div>
                     {{-- <div class="w-1/2 p-2">
                         <input type="checkbox" name="oferta" wire:model="oferta"> Aplicar oferta

@@ -18,10 +18,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('cliente_id')->unsigned();
             $table->string('calle');
-            $table->integer('noint'); /* este es opcional en el formulario */
-            $table->integer('noext');
+            $table->string('noint'); /* este es opcional en el formulario */
+            $table->string('noext');
             $table->string('colonia');
-            $table->integer('cp');
+            $table->string('cp');
             $table->string('localidad');
             $table->string('municipio');
             $table->bigInteger('ruta_id')->unsigned();

@@ -15,17 +15,18 @@
                             name="search" id="search" placeholder="Buscar Cliente">
                     </div>
                     <div class="flex-none mx-1">
+                        {{-- <a href="{{ route('CrearSuscripcion', $suscripciones) }}" class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">Generar suscripción</a> --}}
                         <button wire:click="modalSuscripciones"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
                             Generar Suscripción
                         </button>
                     </div>
                     <div class="flex-none mx-1">
-                        <a class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700" href="{{ route('modal', $modalV) }}">Generar ventas</a>
-                        {{-- <button wire:click="modalVentas"
+                        {{-- <a class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700" href="{{ route('CrearVenta', $modalV) }}">Generar ventas</a> --}}
+                        <button wire:click="modalVentas"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
                             Generar Venta
-                        </button> --}}
+                        </button>
                     </div>
                     <div class="flex-none mx-1">
                         <a href="{{ url('tarifa') }}"><button
@@ -75,9 +76,9 @@
                 @if ($modalFormDom)
                     @include('livewire.modals.modal-form-subs')
                 @endif
-                {{-- @if ($modalV)
+                @if ($modalV)
                     @include('livewire.modals.modal-form-venta')
-                @endif --}}
+                @endif
 
                 <div class="overflow-x-auto w-full">
 
