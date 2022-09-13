@@ -23,7 +23,7 @@
                             name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                             wire:keydown.escape="resetear" wire:keydown.tab="resetear"
                             wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
-                            wire:keydown.enter="selectContact" />
+                            wire:keydown.enter="selectContact" autocomplete="off" />
                     </div>
 
                     {{-- <div wire:loading class="list-group bg-white w-full rounded-t-none shadow-lg">
