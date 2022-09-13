@@ -1273,6 +1273,12 @@ select {
 .w-32 {
   width: 8rem;
 }
+.w-80 {
+  width: 20rem;
+}
+.w-96 {
+  width: 24rem;
+}
 .min-w-0 {
   min-width: 0px;
 }

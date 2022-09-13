@@ -9,9 +9,9 @@ class SuscripcionBuscador extends Component
 {
     public $suscripcion = 0;
 
-    public function mount($status)
+    public function mount()
     {
-        $this->suscripcion = $status;
+        /* $this->suscripcion = $status; */
         $this->resetear();
     }
 
@@ -53,6 +53,7 @@ class SuscripcionBuscador extends Component
     {
         $this->clientesBuscados = Cliente
             ::where('razon_social', 'like', '%' . $this->query . '%')
+            ->limit(6)
             ->get()
             ->toArray();
     }

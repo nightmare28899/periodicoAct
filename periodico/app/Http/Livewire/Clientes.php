@@ -28,6 +28,64 @@ class Clientes extends Component
         'hideMe' => 'hideModal'
     ];
 
+    public function mount()
+    {
+        $this->resetear();
+    }
+
+    public function resetear()
+    {
+        $this->query = '';
+        $this->clientesBuscados = [];
+        $this->highlightIndex = 0;
+    }
+
+    public function incrementHighlight()
+    {
+        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
+            $this->highlightIndex = 0;
+            return;
+        }
+        $this->highlightIndex++;
+    }
+
+    public function decrementHighlight()
+    {
+        if ($this->highlightIndex === 0) {
+            $this->highlightIndex = count($this->clientesBuscados) - 1;
+            return;
+        }
+        $this->highlightIndex--;
+    }
+
+    public function selectContact()
+    {
+        $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
+        if ($this->clienteSeleccionado) {
+            $this->clienteSeleccionado;
+            $this->resetear();
+        }
+    }
+
+    public function updatedQuery()
+    {
+        if ($this->modalV == true) {
+            $this->clientesBuscados = Cliente
+                ::join('domicilio', 'cliente.id', '=', 'domicilio.cliente_id')
+                ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
+                ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
+                ->where('razon_social', 'like', '%' . $this->query . '%')
+                ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
+                ->get()
+                ->toArray();
+        } else {
+            $this->clientesBuscados = Cliente
+                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ->get()
+                ->toArray();
+        }
+    }
+
     public function render()
     {
         $this->date = new Carbon();
@@ -211,7 +269,7 @@ class Clientes extends Component
                     ->orWhere('email_cobranza', 'LIKE', $keyWord)
                     ->orWhere('telefono', 'LIKE', $keyWord)
                     ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
-                    ->paginate(15),
+                    ->paginate(10),
                 'rfc' => $this->rfc,
             ], compact('data', 'rutas', 'tarifas', 'formaPago'));
         } else {
@@ -1002,61 +1060,5 @@ class Clientes extends Component
         $this->ruta = '';
     }
 
-    public function mount()
-    {
-        $this->resetear();
-    }
 
-    public function resetear()
-    {
-        $this->query = '';
-        $this->clientesBuscados = [];
-        $this->highlightIndex = 0;
-    }
-
-    public function incrementHighlight()
-    {
-        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
-            $this->highlightIndex = 0;
-            return;
-        }
-        $this->highlightIndex++;
-    }
-
-    public function decrementHighlight()
-    {
-        if ($this->highlightIndex === 0) {
-            $this->highlightIndex = count($this->clientesBuscados) - 1;
-            return;
-        }
-        $this->highlightIndex--;
-    }
-
-    public function selectContact()
-    {
-        $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
-        if ($this->clienteSeleccionado) {
-            $this->clienteSeleccionado;
-            $this->resetear();
-        }
-    }
-
-    public function updatedQuery()
-    {
-        if ($this->modalV == true) {
-            $this->clientesBuscados = Cliente
-                ::join('domicilio', 'cliente.id', '=', 'domicilio.cliente_id')
-                ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
-                ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
-                ->where('razon_social', 'like', '%' . $this->query . '%')
-                ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
-                ->get()
-                ->toArray();
-        } else {
-            $this->clientesBuscados = Cliente
-                ::where('razon_social', 'like', '%' . $this->query . '%')
-                ->get()
-                ->toArray();
-        }
-    }
 }

@@ -43,8 +43,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
     Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
-    Route::get('/crearVenta/{status}', ClienteBuscador::class)->name('CrearVenta');
-    Route::get('/crearSuscripcion/{status}', SuscripcionBuscador::class)->name('CrearSuscripcion');
+    Route::get('/crearVenta', ClienteBuscador::class)->name('CrearVenta');
+    Route::get('/crearSuscripcion', SuscripcionBuscador::class)->name('CrearSuscripcion');
     /* Route::get('/', [UserController::class, 'index']); */
     // Route::get('/vistaPrevia', [Tiros::class, 'vistaprevia']);
     /* Route::get('/tiro/vistaPrevia', VistaPrevia::class)->name('vista-previa'); */

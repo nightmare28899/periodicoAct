@@ -204,9 +204,9 @@ class ClienteBuscador extends Component
         }
     }
 
-    public function mount($status)
+    public function mount()
     {
-        $this->modalV = $status;
+        /* $this->modalV = $status; */
         $this->resetear();
     }
 
@@ -251,6 +251,7 @@ class ClienteBuscador extends Component
             ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
             ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
             ->where('razon_social', 'like', '%' . $this->query . '%')
+            ->limit(6)
             ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
             ->get()
             ->toArray();

@@ -5,9 +5,6 @@
         </h2>
     </x-slot>
 
-    {{-- <x-slot name="header">
-		<h2 class="text-center">Laravel 9 Livewire CRUD Demo</h2>
-	</x-slot> --}}
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">

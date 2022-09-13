@@ -9,7 +9,7 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div>
-                    <p class="pt-5">Activar cliente Génerico <input wire:model="activarCG" type="checkbox"></p>
+                    {{-- <p class="pt-5">Activar cliente Génerico <input wire:model="activarCG" type="checkbox"></p> --}}
                     <h1 class="font-bold text-4xl text-center py-5">Facturación</h1>
                     {{-- <p class="font-bold">FACTURAR A:</p> --}}
                     <div class="flex mt-2 justify-center">
@@ -190,9 +190,9 @@
                             <label for="">Importe:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ $suscripcion->importe }}" disabled>
+                                    value="{{  sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
                             @else
-                                <input type="text" class="border-0 bg-gray-200" value="{{ $tiro->importe }}"
+                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($tiro->importe)) }}"
                                     disabled>
                             @endif
                         </div>
@@ -218,10 +218,10 @@
                         <div class="w-1/2 px-2">
                             <label for="">Total:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
-                                <input type="text" class="border-0 bg-gray-200" value="{{ $suscripcion->total }}"
+                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($suscripcion->total)) }}"
                                     disabled>
                             @else
-                                <input type="text" class="border-0 bg-gray-200" value="{{ $tiro->importe }}"
+                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($tiro->importe)) }}"
                                     disabled>
                             @endif
                         </div>

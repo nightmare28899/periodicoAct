@@ -46,7 +46,7 @@
                     @if (!empty($clientesBuscados))
 
                         @foreach ($clientesBuscados as $i => $buscado)
-                            <div wire:model.defer="clienteSeleccionado"
+                            <div wire:model="clienteSeleccionado"
                                 class="list-item list-none p-2
                                         {{ $highlightIndex === $i ? 'highlight' : '' }}">
                                 {{ $buscado['razon_social'] }}</div>
