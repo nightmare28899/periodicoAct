@@ -71,7 +71,7 @@
                     <td>CLIENTE: {{ $cliente['id'] }}</td>
                     <td></td>
                     <td>RFC: {{ $cliente['rfc_input'] }}</td>
-                    <td>RUTA:</td>
+                    <td>RUTA: {{ $ruta[0]['nombreruta'] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -79,11 +79,11 @@
         <p><b>NOMBRE:</b></p>
         <p class="move1">{{ $cliente['nombre'] ? $cliente['nombre'] : $cliente['razon_social'] }}</p>
         <p><b>CALLE:</b></p>
-        <p class="move1">{{ $cliente['calle'] }}</p>
+        <p class="move1">{{ $domicilio[0]['calle'] }}</p>
         <p><b>COLONIA:</b></p>
-        <p class="move1">{{ $cliente['colonia'] }}</p>
+        <p class="move1">{{ $domicilio[0]['colonia'] }}</p>
         <p><b>CIUDAD:</b></p>
-        <p class="move1">{{ $cliente['municipio'] }}</p>
+        <p class="move1">{{ $domicilio[0]['ciudad'] }}</p>
         <p><b>ESTADO:</b></p>
         <p class="move1">{{ $cliente['estado'] }}</p>
         <p><b>E-MAIL:</b></p>
@@ -91,11 +91,11 @@
         <p><b>TEL:</b></p>
         <p class="move1">{{ $cliente['telefono'] }}</p>
         <p><b>NUM EXT:</b></p>
-        <p class="move1">{{ $cliente['noext'] }}</p>
+        <p class="move1">{{ $domicilio[0]['noext'] }}</p>
         <p><b>NUM INT:</b></p>
-        <p class="move1">{{ $cliente['noint'] }}</p>
+        <p class="move1">{{ $domicilio[0]['noint'] }}</p>
         <p><b>C.P.:</b></p>
-        <p class="move1">{{ $cliente['cp'] }}</p>
+        <p class="move1">{{ $domicilio[0]['cp'] }}</p>
         <p><b>PAIS:</b></p>
         <p class="move1">{{ $cliente['pais'] }}</p>
 
@@ -115,14 +115,14 @@
             </thead>
             <tbody class="centrado">
                 <tr>
-                    <td>{{ $lunes + $martes + $miercoles + $jueves + $viernes + $sabado + $domingo }}</td>
-                    <td>{{ $cliente['calle'] }}</td>
-                    <td>{{ $cliente['noint'] }}</td>
-                    <td>{{ $cliente['noext'] }}</td>
-                    <td>{{ $cliente['cp'] }}</td>
-                    <td>{{ $cliente['colonia'] }}</td>
-                    <td>{{ $cliente['municipio'] }}</td>
-                    <td>{{ $cliente['referencia'] }}</td>
+                    <td>{{ $cantEjemplares }}</td>
+                    <td>{{ $domicilio[0]['calle'] }}</td>
+                    <td>{{ $domicilio[0]['noint'] }}</td>
+                    <td>{{ $domicilio[0]['noext'] }}</td>
+                    <td>{{ $domicilio[0]['cp'] }}</td>
+                    <td>{{ $domicilio[0]['colonia'] }}</td>
+                    <td>{{ $domicilio[0]['ciudad'] }}</td>
+                    <td>{{ $domicilio[0]['referencia'] }}</td>
                 </tr>
             </tbody>
         </table>
@@ -131,16 +131,12 @@
         <table>
             <thead>
                 <tr>
+                    <th class='px-4 py-2' style="width: 100px;">APERTURA {{ $esUnaSuscripcion == 'Apertura' ? 'X' : '' }}</th>
+                    <th class='px-4 py-2' style="width: 100px;">RENOVACIÓN {{ $esUnaSuscripcion == 'Renovación' ? 'X' : '' }}</th>
+                    <th class='px-4 py-2' style="width: 100px;">REACTIVACIÓN {{ $esUnaSuscripcion == 'Reactivación' ? 'X' : '' }}</th>
+                    <th>PERIODO: {{ $periodo }}</th>
                     <th class='px-4 py-2' style="width: 100px;">DEL: {{ $desde }}</th>
                     <th class='px-4 py-2' style="width: 100px;">AL: {{ $hasta }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">DIAS</th>
-                    <th class='px-4 py-2' style="width: 50px;">LUNES <br> {{-- {{ $lunes ? 'Si' : 'No' }} --}} {{ $lunesTotal = $lunes ? $lunes * $cliente['ordinario'] : 0 }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">MARTES {{-- {{ $martes ? 'Si' : 'No' }} --}} {{ $martesTotal =  $martes ? $martes * $cliente['ordinario'] : 0 }}</th>
-                    <th class='px-4 py-2' style="width: 50px;">MIÉRCOLES {{-- {{ $miercoles ? 'Si' : 'No' }} --}} {{ $miercolesTotal = $miercoles ? $miercoles * $cliente['ordinario'] : 0}}</th>
-                    <th class='px-4 py-2' style="width: 50px;">JUEVES {{-- {{ $jueves ? 'Si' : 'No' }}  --}}{{ $juevesTotal = $jueves ? $jueves * $cliente['ordinario'] : 0 }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">VIERNES {{-- {{ $viernes ? 'Si' : 'No' }} --}} {{ $viernesTotal = $viernes ? $viernes * $cliente['ordinario'] : 0 }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">SÁBADO {{-- {{ $sabado ? 'Si' : 'No' }} --}} {{ $sabadoTotal = $sabado ? $sabado * $cliente['ordinario'] : 0 }}</th>
-                    <th class="px-4 py-2" style="width: 50px;">DOMINGO {{-- {{ $domingo ? 'Si' : 'No' }} --}} {{ $domingoTotal = $domingo ? $domingo * $cliente['dominical'] : 0 }}</th>
                 </tr>
             </thead>
         </table>
@@ -154,18 +150,18 @@
 
         <br>
         <p><b>IMPORTE</b></p>
-        <p class="move1">{{ sprintf('$ %s', number_format((int)$lunesTotal + (int)$martesTotal + (int)$miercolesTotal + (int)$juevesTotal + (int)$viernesTotal + (int)$sabadoTotal + (int)$domingoTotal, 2)) }}</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
         <p><b>DESCUENTO</b></p>
         <p class="move1">0</p>
         <p><b>SUBTOTAL</b></p>
-        <p class="move1">1790</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
         <p><b>IVA</b></p>
         <p class="move1">0</p>
         <p><b>TOTAL</b></p>
-        <p class="move1">1790</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
 
         <p><b>OBSERVACIONES:</b></p>
-        <p class="move1">PRUEBA</p>
+        <p class="move1">{{ $observaciones }}</p>
 
         <p class="firma">Firma del cliente</p>
         <p class="elaboro">Elaboró</p>

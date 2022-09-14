@@ -54,6 +54,7 @@ class Tiros extends Component
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
+
                 $this->suscripcion = Suscripcion
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
@@ -86,7 +87,7 @@ class Tiros extends Component
 
             $this->ventaCopia = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+                ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->where("ventas.tipo", "=", $this->tipoSeleccionada)
@@ -113,6 +114,8 @@ class Tiros extends Component
                 })
                 ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                 ->get($this->diaS);
+
+            dd('else', $this->ventaCopia);
 
             $this->suscripcionCopia = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
@@ -155,7 +158,7 @@ class Tiros extends Component
 
         $this->ventas = ventas
             ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+            ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
             ->select("ventas.*", "cliente.id", "cliente.nombre", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
@@ -196,7 +199,7 @@ class Tiros extends Component
 
             $this->ventas = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+                ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                 ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->whereIn('ventas.idVenta', $this->clienteSeleccionado)
@@ -371,7 +374,7 @@ class Tiros extends Component
     {
         $this->ventas = ventas
             ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-            ->join("domicilio", "domicilio.cliente_id", "=", "ventas.domicilio_id")
+            ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
             ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
             ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
             /* ->where("ventas.tipo", "=", $this->tipoSeleccionada) */
@@ -451,6 +454,7 @@ class Tiros extends Component
                             'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
                             'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
                             'dia' => $this->diaS,
+                            'status' => 'sin facturar',
                             'idTipo' => $this->ventas[$i]['idVenta'],
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
                             'tipo' => $this->ventas[$i]['tiporuta'],
@@ -483,6 +487,11 @@ class Tiros extends Component
                     $this->toast();
                 }
             }
+        } else {
+            $this->status = 'error';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡No hay ventas para generar la remisión!' : ''
+            ]);
         }
 
         if (count($this->suscripcion) > 0) {
@@ -516,7 +525,7 @@ class Tiros extends Component
                 } else {
                     Tiro::create([
                         'fecha' => $this->dateF,
-                        'cliente' => $this->suscripcion[$i]['razon_social'],
+                        'cliente' => $this->ventas[$i]['razon_social'],
                         'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                         'devuelto' => $this->devuelto,
                         'faltante' => $this->faltante,
@@ -526,13 +535,19 @@ class Tiros extends Component
                         'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
                         'importe' => $this->suscripcion[$i]->total,
                         'dia' => $this->diaS,
-                        'idTipo' => $this->clienteSeleccionado[$i],
+                        'status' => 'sin facturar',
+                        'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                         'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                         'tipo' => $this->suscripcion[$i]['tiporuta'],
                     ]);
                     $this->toast();
                 }
             }
+        } else {
+            $this->status = 'error';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡No hay suscripciones para generar la remisión!' : ''
+            ]);
         }
 
         $this->modalRemision = false;

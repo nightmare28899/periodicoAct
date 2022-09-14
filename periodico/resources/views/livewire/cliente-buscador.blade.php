@@ -24,129 +24,130 @@
                             wire:keydown.escape="resetear" wire:keydown.tab="resetear"
                             wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
                             wire:keydown.enter="selectContact" autocomplete="off" />
+
+                        @if (!empty($query))
+
+                            <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+
+                            <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg w-full">
+
+                                @if (!empty($clientesBuscados))
+
+                                    @foreach ($clientesBuscados as $i => $buscado)
+                                        <div wire:click="selectContact({{ $i }})"
+                                            class="list-item list-none p-2 hover:text-white dark:hover:bg-gray-600 cursor-pointer">
+                                            {{ $buscado['razon_social'] }}</div>
+                                    @endforeach
+                                @else
+                                    <div class="list-item list-none p-2">No hay resultado</div>
+                                @endif
+                            </div>
+
+                        @endif
                     </div>
 
                     {{-- <div wire:loading class="list-group bg-white w-full rounded-t-none shadow-lg">
                                 <div class="list-item list-none p-2">Buscando...</div>
                             </div> --}}
 
-                    @if (!empty($query))
 
-                        <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
-
-                        <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg w-full">
-
-                            @if (!empty($clientesBuscados))
-
-                                @foreach ($clientesBuscados as $i => $buscado)
-                                    <div wire:model.defer="clienteSeleccionado"
-                                        class="list-item list-none p-2
-                                                {{ $highlightIndex === $i ? 'highlight' : '' }}">
-                                        {{ $buscado['razon_social'] }}</div>
-                                @endforeach
-                            @else
-                                <div class="list-item list-none p-2">No hay resultado</div>
-                            @endif
-                        </div>
-
-                    @endif
 
                     @if ($clienteSeleccionado != null)
                         {{-- @php
                                     $clienteSeleccionado = (object) $clienteSeleccionado;
                                 @endphp --}}
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>R.F.C.: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['rfc_input'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Nombre: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['nombre'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>E-mail: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['email'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Razón Social: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['razon_social'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Estado: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['estado'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Clasificación: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['clasificacion'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Regimen Fiscal: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['regimen_fiscal'] }}"
                                         class="border-0 bg-gray-200" disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Telefono: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['telefono'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>País: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['pais'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Calle: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['calle'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>No. Int: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['noint'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>No Ext.: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['noext'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Colonia: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['colonia'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>C.P.: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['cp'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>localidad.: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['localidad'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Municipio: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['municipio'] }}" class="border-0 bg-gray-200"
                                         disabled></b>
                             </div>
-                            <div class="px-2">
+                            <div class="w-full px-2">
                                 <b>Referencia: <br> <input type="text" style="height: 1.7rem;"
                                         value="{{ $clienteSeleccionado['referencia'] }}" class="border-0 bg-gray-200"
                                         disabled></b>

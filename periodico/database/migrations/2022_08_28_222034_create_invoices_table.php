@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('idTipo');
             $table->string('serie');
             $table->string('folio');
+            $table->string('status');
             $table->string('paymentTerms');
             $table->string('paymentMethod');
             $table->string('expeditionPlace');

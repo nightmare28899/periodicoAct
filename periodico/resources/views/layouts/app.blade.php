@@ -65,6 +65,7 @@
                 case '¡Venta actualizada exitosamente!':
                 case '¡Renovación generada!':
                 case '¡Se creo exitosamente la factura!':
+                case '¡Se cancelo la factura!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -96,6 +97,9 @@
                 case '¡Ya existe esa remisión!':
                 case '¡Rellena todos los campos!':
                 case '¡Ocurrio un error al crear la factura!':
+                case '¡Primero escoge el motivo!':
+                case '¡No hay ventas para generar la remisión!':
+                case '¡No hay suscripciones para generar la remisión!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

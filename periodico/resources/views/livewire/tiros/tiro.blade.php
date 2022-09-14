@@ -490,8 +490,8 @@
                                             <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->venta }}</td>
-                                            <td class='px-4 py-2'>${{ $tiro->precio }}</td>
-                                            <td class='px-4 py-2'>${{ $tiro->importe }}</td>
+                                            <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->precio)) }}</td>
+                                            <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->importe)) }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
@@ -508,28 +508,28 @@
                                                             suscripción</button>
                                                     @endif
 
-                                                    {{-- @if ($tiro->status $tiro->status == 'facturado')
+                                                    @if ($tiro->status == 'facturado')
                                                         <button
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             disabled>Facturado</button>
-                                                    @else --}}
+                                                    @else
                                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 </td>
                                             @else
                                                 <td>
                                                     <button wire:click="editarRemision({{ $tiro->id }})"
                                                         class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
 
-                                                    {{-- @if ($tiro->status == 'facturado')
+                                                    @if ($tiro->status == 'facturado')
                                                         <button
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             disabled>Facturado</button>
-                                                    @else --}}
+                                                    @else
                                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Factura</a>
-                                                    {{-- @endif --}}
+                                                    @endif
                                                 </td>
                                             @endif
                                         </tr>
@@ -667,15 +667,15 @@
                                     <td class="border">
                                         <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                             href="{{ url('vistaPrevia/' . $invoice->invoice_id) }}">Ver PDF</a>
-                                        {{-- @if ($tiroStatus[0]->status == 'cancelado')
+                                        @if ($invoice->status == 'cancelada')
                                             <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
                                                 disabled>Factura
                                                 cancelada</a>
-                                        @else --}}
+                                        @else
                                             <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline"
-                                                href="{{ url('vistaPrevia/' . $invoice->invoice_id) }}">Cancelar
+                                                href="{{ url('cancelarFactura/' . $invoice->invoice_id) }}">Cancelar
                                                 factura</a>
-                                        {{-- @endif --}}
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

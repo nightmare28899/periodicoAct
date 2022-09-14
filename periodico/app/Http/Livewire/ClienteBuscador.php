@@ -15,7 +15,7 @@ class ClienteBuscador extends Component
     public $query, $clientesBuscados, $highlightIndex, $dataClient = [], $clienteSeleccionado;
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
     public $editEnabled = false, $status = 'created', $modalV = 0;
-    public $desde, $hasta, $date, $converHasta;
+    public $desde, $hasta, $date, $converHasta, $total = 0;
 
     public function limpiarVentaModal()
     {
@@ -130,7 +130,7 @@ class ClienteBuscador extends Component
                     $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
                     $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
 
-                    $total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+                    $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
 
                     ventas::Create([
                         'idVenta' => 'venta' . $this->idSuscrip,
@@ -146,13 +146,13 @@ class ClienteBuscador extends Component
                         'viernes' => $this->viernesVentas,
                         'sábado' => $this->sabadoVentas,
                         'domingo' => $this->domingoVentas,
-                        'total' => $total
+                        'total' => $this->total
                     ]);
 
                     /* dd($this->clienteSeleccionado); */
 
                     $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
-                        'total' => $total,
+                        'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
                         'desde' => $this->desde,
                         'hasta' => $this->hasta,
@@ -235,11 +235,17 @@ class ClienteBuscador extends Component
         $this->highlightIndex--;
     }
 
-    public function selectContact()
+    public function selectContact($pos)
     {
-        $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
+        /* $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
+            $this->resetear();
+        } */
+        $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
+        if ($this->clienteSeleccionado) {
+            $this->clienteSeleccionado;
+
             $this->resetear();
         }
     }

@@ -265,6 +265,7 @@ class Factura extends Component
                     'cliente_id' => $this->clienteid,
                     'cliente' => $nombre,
                     'idTipo' => $this->idTipo,
+                    'status' => 'Vigente',
                     'serie' => $facturama->data->Serie,
                     'folio' => $facturama->data->Folio,
                     'paymentTerms' => $facturama->data->PaymentTerms,

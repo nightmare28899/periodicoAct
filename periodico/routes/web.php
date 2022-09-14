@@ -9,6 +9,7 @@ use App\Http\Livewire\Remisiones;
 use App\Http\Livewire\Remisiones\RmCliente;
 use App\Http\Livewire\VistaFactura;
 use App\Http\Controllers\UserController;
+use App\Http\Livewire\CancelarFactura;
 use App\Http\Livewire\ClienteBuscador;
 use App\Http\Livewire\Factura;
 use App\Http\Livewire\SuscripcionBuscador;
@@ -43,6 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
     Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
+    Route::get('/cancelarFactura/{id}', CancelarFactura::class);
     Route::get('/crearVenta', ClienteBuscador::class)->name('CrearVenta');
     Route::get('/crearSuscripcion', SuscripcionBuscador::class)->name('CrearSuscripcion');
     /* Route::get('/', [UserController::class, 'index']); */

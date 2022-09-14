@@ -13,6 +13,8 @@ use App\Models\Suscripcion;
 use Carbon\Carbon;
 use App\Models\ventas;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Termwind\Components\Dd;
 
 class Clientes extends Component
 {
@@ -20,7 +22,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint = 0, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext = 0, $ruta, $razon_social;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -58,9 +60,9 @@ class Clientes extends Component
         $this->highlightIndex--;
     }
 
-    public function selectContact()
+    public function selectContact($pos)
     {
-        $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
+        $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
             $this->resetear();
@@ -76,11 +78,13 @@ class Clientes extends Component
                 ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
                 ->where('razon_social', 'like', '%' . $this->query . '%')
                 ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
+                ->limit(6)
                 ->get()
                 ->toArray();
         } else {
             $this->clientesBuscados = Cliente
                 ::where('razon_social', 'like', '%' . $this->query . '%')
+                ->limit(6)
                 ->get()
                 ->toArray();
         }
@@ -173,6 +177,15 @@ class Clientes extends Component
                 $this->sábado = true;
                 $this->domingo = true;
                 $this->allow = false;
+            } else if ($this->diasSuscripcionSeleccionada == 'l_s') {
+                $this->lunes = true;
+                $this->martes = true;
+                $this->miércoles = true;
+                $this->jueves = true;
+                $this->viernes = true;
+                $this->sábado = true;
+                $this->domingo = false;
+                $this->allow = false;
             } else if ($this->diasSuscripcionSeleccionada == 'esc_man') {
                 $this->allow = true;
             }
@@ -180,8 +193,16 @@ class Clientes extends Component
 
         if ($this->tarifaSeleccionada) {
             $costo = 0;
+            if ($this->tarifaSeleccionada == 'Person') {
+                $this->personalizado = true;
+            } else {
+                $this->personalizado = false;
+            }
             if ($this->cantEjem >= 1) {
                 $costo = $this->tarifaSeleccionada === 'Base' ? 330 : ($this->tarifaSeleccionada === 'Ejecutiva' ? 300 : 0);
+                if ($this->tarifaSeleccionada === 'Person') {
+                    $costo = $this->costoPerson;
+                }
                 $this->total = $this->cantEjem * $costo;
                 $this->totalDesc = $this->cantEjem * $costo;
             } else {
@@ -653,11 +674,21 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
+                    $lunesTotal = (int)$this->lunesVentas * $this->clienteSeleccionado['ordinario'];
+                    $martesTotal = (int)$this->martesVentas * $this->clienteSeleccionado['ordinario'];
+                    $miercolesTotal = (int)$this->miercolesVentas * $this->clienteSeleccionado['ordinario'];
+                    $juevesTotal = (int)$this->juevesVentas * $this->clienteSeleccionado['ordinario'];
+                    $viernesTotal = (int)$this->viernesVentas * $this->clienteSeleccionado['ordinario'];
+                    $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
+                    $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
+
+                    $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+
                     ventas::Create([
                         'idVenta' => 'venta' . $this->idSuscrip,
                         'tipo' => 'venta',
-                        'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
-                        'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->cliente_id)->first()->id,
+                        'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
+                        'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->clienteSeleccionado['cliente_id'])->first()->id,
                         'desde' => $this->desde,
                         'hasta' => $this->hasta,
                         'lunes' => $this->lunesVentas,
@@ -667,14 +698,42 @@ class Clientes extends Component
                         'viernes' => $this->viernesVentas,
                         'sábado' => $this->sabadoVentas,
                         'domingo' => $this->domingoVentas,
+                        'total' => $this->total
                     ]);
 
-                    $this->limpiarVentaModal();
+                    /* dd($this->clienteSeleccionado); */
+
+                    $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
+                        'total' => $this->total,
+                        'cliente' => $this->clienteSeleccionado,
+                        'desde' => $this->desde,
+                        'hasta' => $this->hasta,
+                        'lunes' => $this->lunesVentas,
+                        'martes' => $this->martesVentas,
+                        'miercoles' => $this->miercolesVentas,
+                        'jueves' => $this->juevesVentas,
+                        'viernes' => $this->viernesVentas,
+                        'sabado' => $this->sabadoVentas,
+                        'domingo' => $this->domingoVentas,
+                        'fecha' => $this->date,
+                    ])
+                        ->setPaper('A5', 'landscape')
+                        ->output();
+
+                    $this->status = 'created';
+                    $this->modalV = false;
 
                     $this->dispatchBrowserEvent('alert', [
                         'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
                     ]);
-                    $this->modalV = false;
+
+                    $this->limpiarVentaModal();
+
+                    return response()
+                        ->streamDownload(
+                            fn () => print($pdfContent),
+                            "tiros.pdf"
+                        );
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -814,89 +873,103 @@ class Clientes extends Component
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             /* dd($this->suscripciones); */
             if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
-                if ($this->domicilioSeleccionado) {
-                    if ($this->cantEjem == '0') {
-                        $this->dispatchBrowserEvent('alert', [
-                            'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
-                        ]);
-                    }
-
-                    /* foreach ($this->domicilioSeleccionado as $key => $value) {
+                if ($this->cantEjem != 0) {
+                    if ($this->domicilioSeleccionado) {
+                        /* foreach ($this->domicilioSeleccionado as $key => $value) {
                         if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
                             array_push($this->domicilioId, $value['id']);
                         }
                     } */
 
-                    $this->validate([
-                        /* 'formaPagoSeleccionada' => 'required', */
-                        'tarifaSeleccionada' => 'required',
-                        'cantEjem' => 'required',
-                        'tipoSuscripcionSeleccionada' => 'required',
-                        'periodoSuscripcionSeleccionada' => 'required',
-                        'diasSuscripcionSeleccionada' => 'required',
-                    ]);
-
-                    /* if ($this->inputCantidad) { */
-                    /* if ($this->inputCantidad <= $this->cantEjem) { */
-                    Suscripcion::Create([
-                        'idSuscripcion' => 'suscri' . $this->idSuscrip,
-                        'tipo' => 'suscripcion',
-                        'cliente_id' => $this->clienteSeleccionado,
-                        'suscripcion' => $this->tipoSubscripcion,
-                        'esUnaSuscripcion' => $this->subscripcionEs,
-                        'tarifa' => $this->tarifaSeleccionada,
-                        'cantEjemplares' => $this->cantEjem,
-                        'precio' => $this->precio,
-                        'contrato' => $this->contrato,
-                        'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
-                        'periodo' => $this->periodoSuscripcionSeleccionada,
-                        'fechaInicio' => $this->from,
-                        'fechaFin' => $this->to,
-                        'dias' => $this->diasSuscripcionSeleccionada,
-                        'estado' => 'Activo',
-                        'cliente_id' => $this->clienteSeleccionado,
-                        'lunes' => $this->lunes,
-                        'martes' => $this->martes,
-                        'miércoles' => $this->miércoles,
-                        'jueves' => $this->jueves,
-                        'viernes' => $this->viernes,
-                        'sábado' => $this->sábado,
-                        'domingo' => $this->domingo,
-                        'descuento' => $this->descuento,
-                        'observaciones' => $this->observacion,
-                        'importe' => $this->total,
-                        'total' => $this->totalDesc,
-                        /* 'formaPago' => $this->formaPagoSeleccionada, */
-                        'domicilio_id' =>  $this->domicilioSeleccionado[0]['id'],
-                    ]);
-
-
-                    /* 'domicilio_id' =>  json_encode($this->domicilioId), */
-
-                    $this->status = 'created';
-
-                    /* $this->status = 'updated'; */
-
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
-                    ]);
-
-                    $this->suscripciones = false;
-
-                    $this->borrar();
-                    /* } else {
-                            $this->dispatchBrowserEvent('alert', [
-                                'message' => ($this->status == 'created') ? '¡No puedes poner una cantidad mayor a los ejemplares!' : ''
-                            ]);
-                        } */
-                    /* } else {
-                        $this->dispatchBrowserEvent('alert', [
-                            'message' => ($this->status == 'created') ? '¡Debes colocar la cantidad en los domicilios!' : ''
+                        $this->validate([
+                            /* 'formaPagoSeleccionada' => 'required', */
+                            'tarifaSeleccionada' => 'required',
+                            'cantEjem' => 'required',
+                            'tipoSuscripcionSeleccionada' => 'required',
+                            'periodoSuscripcionSeleccionada' => 'required',
+                            'diasSuscripcionSeleccionada' => 'required',
                         ]);
-                    } */
+
+                        /* if ($this->inputCantidad) { */
+                        /* if ($this->inputCantidad <= $this->cantEjem) { */
+
+                        Suscripcion::Create([
+                            'idSuscripcion' => 'suscri' . $this->idSuscrip,
+                            'tipo' => 'suscripcion',
+                            'cliente_id' => $this->clienteSeleccionado['id'],
+                            'suscripcion' => $this->tipoSubscripcion,
+                            'esUnaSuscripcion' => $this->subscripcionEs,
+                            'tarifa' => $this->tarifaSeleccionada,
+                            'cantEjemplares' => (int) $this->cantEjem,
+                            'precio' => (int) $this->precio,
+                            'contrato' => $this->contrato,
+                            'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                            'periodo' => $this->periodoSuscripcionSeleccionada,
+                            'fechaInicio' => $this->from,
+                            'fechaFin' => $this->to,
+                            'dias' => $this->diasSuscripcionSeleccionada,
+                            'estado' => 'Activo',
+                            'lunes' => $this->lunes,
+                            'martes' => $this->martes,
+                            'miércoles' => $this->miércoles,
+                            'jueves' => $this->jueves,
+                            'viernes' => $this->viernes,
+                            'sábado' => $this->sábado,
+                            'domingo' => $this->domingo,
+                            'descuento' => $this->descuento,
+                            'observaciones' => $this->observacion,
+                            'importe' => (int) $this->total,
+                            'total' => $this->totalDesc,
+                            /* 'formaPago' => $this->formaPagoSeleccionada, */
+                            'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
+                        ]);
+
+                        $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+                        $ruta = Ruta::where('id', $this->domicilioSeleccionado[0]['ruta'])->get();
+
+                        $pdfContent = PDF::loadView('livewire.comprobantePDF', [
+                            'esUnaSuscripcion' => $this->subscripcionEs,
+                            'periodo' => $this->periodoSuscripcionSeleccionada,
+                            'cantEjemplares' => (int) $this->cantEjem,
+                            'observaciones' => $this->observacion,
+                            'total' => $this->total,
+                            'ruta' => $ruta,
+                            'cliente' => $this->clienteSeleccionado,
+                            'domicilio' => $datosCliente,
+                            'desde' => $this->from,
+                            'hasta' => $this->to,
+                            'fecha' => $this->date,
+                        ])
+                            ->setPaper('A5', 'landscape')
+                            ->output();
+
+                        /* 'domicilio_id' =>  json_encode($this->domicilioId), */
+
+                        $this->status = 'created';
+
+                        /* $this->status = 'updated'; */
+
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+                        ]);
+
+                        $this->suscripciones = false;
+
+                        $this->borrar();
+
+                        return response()
+                            ->streamDownload(
+                                fn () => print($pdfContent),
+                                "tiros.pdf"
+                            );
+                    } else {
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
+                        ]);
+                    }
                 } else {
                     $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''
+                        'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                     ]);
                 }
             } else {
@@ -963,6 +1036,14 @@ class Clientes extends Component
         $this->totalDesc = 0;
         $this->formaPagoSeleccionada = '';
         $this->domicilioSeleccionado = [];
+        $this->lunes = false;
+        $this->martes = false;
+        $this->miércoles = false;
+        $this->jueves = false;
+        $this->viernes = false;
+        $this->sábado = false;
+        $this->domingo = false;
+        $this->allow = true;
     }
     public function datoSeleccionado($id)
     {
@@ -1059,6 +1140,4 @@ class Clientes extends Component
         $this->referencia = '';
         $this->ruta = '';
     }
-
-
 }

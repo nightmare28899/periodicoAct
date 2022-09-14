@@ -31,32 +31,32 @@
                     wire:keydown.escape="resetear" wire:keydown.tab="resetear"
                     wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
                     wire:keydown.enter="selectContact" />
+
+                @if (!empty($query))
+
+                    <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+
+                    <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg w-2/3">
+
+                        @if (!empty($clientesBuscados))
+
+                            @foreach ($clientesBuscados as $i => $buscado)
+                                <div wire:click="selectContact({{ $i }})"
+                                    class="list-item list-none p-2 hover:text-white dark:hover:bg-gray-600 cursor-pointer">
+                                    {{ $buscado['razon_social'] }}
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="list-item list-none p-2">No hay resultado</div>
+                        @endif
+                    </div>
+
+                @endif
             </div>
 
             {{-- <div wire:loading class="list-group bg-white w-full rounded-t-none shadow-lg">
                         <div class="list-item list-none p-2">Buscando...</div>
                     </div> --}}
-
-            @if (!empty($query))
-
-                <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
-
-                <div class="absolute z-10 list-group bg-white w-full rounded-t-none shadow-lg w-2/3">
-
-                    @if (!empty($clientesBuscados))
-
-                        @foreach ($clientesBuscados as $i => $buscado)
-                            <div wire:model="clienteSeleccionado"
-                                class="list-item list-none p-2
-                                        {{ $highlightIndex === $i ? 'highlight' : '' }}">
-                                {{ $buscado['razon_social'] }}</div>
-                        @endforeach
-                    @else
-                        <div class="list-item list-none p-2">No hay resultado</div>
-                    @endif
-                </div>
-
-            @endif
 
             @if ($clienteSeleccionado != null)
                 {{-- @php
@@ -259,12 +259,6 @@
 
     <x-slot name="footer">
         <div class="flex px-4 sm:px-6 mt-5 space-x-4">
-            <div class="w1/2">
-                <a class="inline-flex items-center w-full justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
-                    href="{{ route('cliente') }}">
-                    Regresar
-                </a>
-            </div>
             @if ($editEnabled == true)
                 <div class="w-1/2">
                     <x-jet-secondary-button wire:click.prevent="limpiarVentaModal" type="button"

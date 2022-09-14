@@ -9,7 +9,7 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div>
-                    {{-- <p class="pt-5">Activar cliente Génerico <input wire:model="activarCG" type="checkbox"></p> --}}
+                    <p class="pt-5">Activar cliente Génerico <input wire:model="activarCG" type="checkbox"></p>
                     <h1 class="font-bold text-4xl text-center py-5">Facturación</h1>
                     {{-- <p class="font-bold">FACTURAR A:</p> --}}
                     <div class="flex mt-2 justify-center">

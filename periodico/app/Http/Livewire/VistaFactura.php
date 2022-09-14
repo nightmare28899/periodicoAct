@@ -13,6 +13,7 @@ class VistaFactura extends Component
 
     public function render()
     {
+
         $this->invoice = Invoice::all();
         return view('livewire.factura.vista-factura', ['facturama' => $this->facturama]);
     }
@@ -24,15 +25,5 @@ class VistaFactura extends Component
         Storage::disk('public')->put('file.pdf', base64_decode($this->facturama->data->Content));
         $this->facturama = Storage::url('file.pdf');
 
-    }
-
-    public function cancelar()
-    {
-        $this->facturama =  \Crisvegadev\Facturama\Invoice::cancel($this->idFactura, 'issued', $this->motivo);
-        $this->tiro = Tiro::where('cliente_id', $this->invoice[0]['cliente_id'])->update([
-            'status' => 'cancelado',
-        ]);
-
-        return redirect('/tiro/');
     }
 }
