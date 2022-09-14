@@ -271,7 +271,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->ventas[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
+                            'cliente' => $this->ventas[$i]['razon_social'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
@@ -303,7 +303,7 @@ class Tiros extends Component
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
                             'fecha' => $this->dateF,
-                            'cliente' => $this->suscripcion[$i]['nombre'] ? $this->ventas[$i]['nombre'] : $this->ventas[$i]['razon_social'],
+                            'cliente' => $this->ventas[$i]['razon_social'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
                             'faltante' => $this->faltante,
