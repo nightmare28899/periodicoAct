@@ -279,8 +279,8 @@ class Clientes extends Component
         $this->clients = Cliente::all();
         if (count($this->clients) > 0) {
             return view('livewire.clientes.view', [
-                'clientes' => Cliente
-                    ::orWhere('clasificacion', 'LIKE', $keyWord)
+                'clientes' => Cliente::first()
+                    ->orWhere('clasificacion', 'LIKE', $keyWord)
                     ->orWhere('rfc', 'LIKE', $keyWord)
                     ->orWhere('rfc_input', 'LIKE', $keyWord)
                     ->orWhere('nombre', 'LIKE', $keyWord)
