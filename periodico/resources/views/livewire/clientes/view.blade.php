@@ -28,14 +28,14 @@
                             Generar Venta
                         </button>
                     </div>
-                    <div class="flex-none mx-1">
+                    {{-- <div class="flex-none mx-1">
                         <a href="{{ url('tarifa') }}"><button
                                 class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">{{ __('Tarifa') }}</button></a>
                     </div>
                     <div class="flex-none mx-1">
                         <a href="{{ url('ruta') }}"><button
                                 class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">{{ __('Ruta') }}</button></a>
-                    </div>
+                    </div> --}}
                     <div class="flex-none mx-1">
                         <button wire:click="create"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
@@ -101,7 +101,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (count($clientes) > 0)
+                            {{-- @if (count($clientes) > 0) --}}
                                 @foreach ($clientes as $cliente)
                                     <tr>
                                         <td class="border">{{ $loop->iteration }}</td>
@@ -167,11 +167,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @else
+                            {{-- @else
                                 <tr>
                                     <td colspan="13" class="border text-center">No hay registros</td>
                                 </tr>
-                            @endif
+                            @endif --}}
                         </tbody>
                     </table>
                     <br>

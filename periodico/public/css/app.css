@@ -1273,6 +1273,12 @@ select {
 .w-32 {
   width: 8rem;
 }
+.w-96 {
+  width: 24rem;
+}
+.w-5\/6 {
+  width: 83.333333%;
+}
 .min-w-0 {
   min-width: 0px;
 }
@@ -1590,6 +1596,9 @@ select {
 .border-r {
   border-right-width: 1px;
 }
+.border-solid {
+  border-style: solid;
+}
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -1636,6 +1645,10 @@ select {
 .border-blue-600 {
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
+}
+.border-sky-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(14 165 233 / var(--tw-border-opacity));
 }
 .bg-white {
   --tw-bg-opacity: 1;

@@ -66,6 +66,7 @@
                 case '¡Renovación generada!':
                 case '¡Se creo exitosamente la factura!':
                 case '¡Se cancelo la factura!':
+                case '¡Se realizo el pago!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':

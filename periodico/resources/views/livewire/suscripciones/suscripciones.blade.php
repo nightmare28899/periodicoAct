@@ -50,7 +50,7 @@
                                     @foreach ($clientesBuscados as $i => $buscado)
                                         <div wire:click="selectContact({{ $i }})"
                                             class="list-item list-none p-2 hover:text-white dark:hover:bg-gray-600 cursor-pointer">
-                                            {{ $buscado['razon_social'] }}
+                                            {{ $buscado['nombre'] }}
                                         </div>
                                     @endforeach
                                 @else
@@ -66,8 +66,8 @@
                     <div class="w-1/2 p-2">
                         @if ($personalizado == true)
                             <input type="number"
-                                class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring" wire:model="costoPerson"
-                                name="person" placeholder="Coloca la tarifa">
+                                class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring"
+                                wire:model="costoPerson" name="person" placeholder="Coloca la tarifa">
                         @endif
                     </div>
                 </div>
@@ -261,21 +261,14 @@
                     <div class="w-3/5 px-2">
                         <p class="mt-3">#DÍAS PARA PAGAR</p>
                         <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
-                            @if ($modificarFecha)
-                                <x-jet-input class="w-2/5" type="date" wire:model="from">
-                                </x-jet-input>
-                            @else
-                                <x-jet-input class="w-2/5" type="date" wire:model="from" disabled>
-                                </x-jet-input>
-                            @endif
+
+                            <x-jet-input class="w-2/5" type="date" wire:model="from">
+                            </x-jet-input>
+
                             <kbd class="ml-3 mt-2">AL:</kbd>
-                            @if ($modificarFecha)
-                                <x-jet-input class="w-2/5" type="date" wire:model="to">
-                                </x-jet-input>
-                            @else
-                                <x-jet-input class="w-2/5" type="date" wire:model="to" disabled>
-                                </x-jet-input>
-                            @endif
+                            <x-jet-input class="w-2/5" type="date" wire:model="to">
+                            </x-jet-input>
+
                         </p>
                         <div class="mt-2">
                             @if ($allow == false)

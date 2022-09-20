@@ -43,7 +43,7 @@
                             @foreach ($clientesBuscados as $i => $buscado)
                                 <div wire:click="selectContact({{ $i }})"
                                     class="list-item list-none p-2 hover:text-white dark:hover:bg-gray-600 cursor-pointer">
-                                    {{ $buscado['razon_social'] }}
+                                    {{ $buscado['nombre'] }}
                                 </div>
                             @endforeach
                         @else

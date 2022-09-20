@@ -35,8 +35,12 @@
 
                         <x-slot name="content" class="w-full text-center">
                             <a href="{{ url('cliente') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cliente') }}</button></a>
+                            <a href="{{ url('ruta') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Ruta') }}</button></a>
+                            <a href="{{ url('tarifa') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Tarifa') }}</button></a>
                             <a href="{{ url('tiro') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Tiro') }}</button></a>
-                            {{-- <a href="{{ url('remision') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Remisión') }}</button></a> --}}
+                            <a href="{{ url('remisiones') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Generar Remisión') }}</button></a>
+                            <a href="{{ url('historialR') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Remisiones') }}</button></a>
+                            <a href="{{ url('Facturas') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Facturas') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
                 </div>

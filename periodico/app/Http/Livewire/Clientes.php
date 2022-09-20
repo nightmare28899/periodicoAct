@@ -77,6 +77,7 @@ class Clientes extends Component
                 ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
                 ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
                 ->where('razon_social', 'like', '%' . $this->query . '%')
+                ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
                 ->limit(6)
                 ->get()
@@ -98,7 +99,7 @@ class Clientes extends Component
         $this->converHasta = new Carbon($this->desde);
         $this->dateFiltro = new Carbon($this->to);
         $this->desde = $this->converHasta->format('Y-m-d');
-        $this->from = $this->dateF->format('Y-m-d');
+        /* $this->from = $this->dateF->format('Y-m-d'); */
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
             'Genérico' => 'GENÉRICO',
@@ -134,19 +135,22 @@ class Clientes extends Component
             'Tarjeta de servicios' => 'Tarjeta de servicios',
         ];
 
-        $days = $this->periodoSuscripcionSeleccionada === 'Mensual'
-            ? 1
-            : ($this->periodoSuscripcionSeleccionada === 'Trimestral'
-                ? 3
-                : ($this->periodoSuscripcionSeleccionada === 'Semestral'
-                    ? 6
-                    : ($this->periodoSuscripcionSeleccionada === 'Anual'
-                        ? 12
-                        : 0)));
+        if ($this->periodoSuscripcionSeleccionada == 'Mensual' || $this->periodoSuscripcionSeleccionada == 'Trimestral' || $this->periodoSuscripcionSeleccionada == 'Semestral' || $this->periodoSuscripcionSeleccionada == 'Anual') {
+            $days = $this->periodoSuscripcionSeleccionada === 'Mensual'
+                ? 1
+                : ($this->periodoSuscripcionSeleccionada === 'Trimestral'
+                    ? 3
+                    : ($this->periodoSuscripcionSeleccionada === 'Semestral'
+                        ? 6
+                        : ($this->periodoSuscripcionSeleccionada === 'Anual'
+                            ? 12
+                            : 0)));
 
-        $this->to = $this->dateF->addMonth($days)->format('Y-m-d');
+            $this->to = $this->dateF->addMonth($days)->format('Y-m-d');
 
-        $days > 0 ? $this->modificarFecha = false : $this->modificarFecha = true;
+            $days > 0 ? $this->modificarFecha = false : $this->modificarFecha = true;
+        }
+
 
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('tipo', 'id');
@@ -203,8 +207,8 @@ class Clientes extends Component
                 if ($this->tarifaSeleccionada === 'Person') {
                     $costo = $this->costoPerson;
                 }
-                $this->total = $this->cantEjem * $costo;
-                $this->totalDesc = $this->cantEjem * $costo;
+                $this->total = (int) $this->cantEjem * (int) $costo;
+                $this->totalDesc = (int) $this->cantEjem * (int) $costo;
             } else {
                 $this->total = 0;
                 $this->totalDesc = 0;
@@ -276,29 +280,19 @@ class Clientes extends Component
             }
         }
 
-        $this->clients = Cliente::all();
-        if (count($this->clients) > 0) {
-            return view('livewire.clientes.view', [
-                'clientes' => Cliente::first()
-                    ->orWhere('clasificacion', 'LIKE', $keyWord)
-                    ->orWhere('rfc', 'LIKE', $keyWord)
-                    ->orWhere('rfc_input', 'LIKE', $keyWord)
-                    ->orWhere('nombre', 'LIKE', $keyWord)
-                    ->orWhere('estado', 'LIKE', $keyWord)
-                    ->orWhere('pais', 'LIKE', $keyWord)
-                    ->orWhere('email', 'LIKE', $keyWord)
-                    ->orWhere('email_cobranza', 'LIKE', $keyWord)
-                    ->orWhere('telefono', 'LIKE', $keyWord)
-                    ->orWhere('regimen_fiscal', 'LIKE', $keyWord)
-                    ->paginate(10),
-                'rfc' => $this->rfc,
-            ], compact('data', 'rutas', 'tarifas', 'formaPago'));
-        } else {
+        /* $this->clients = Cliente::all(); */
+        /* if (count($this->clients) > 0) { */
+        return view('livewire.clientes.view', [
+            'clientes' => Cliente::Where('nombre', 'LIKE', $keyWord)
+                ->paginate(10),
+            'rfc' => $this->rfc,
+        ], compact('data', 'rutas', 'tarifas', 'formaPago'));
+        /* } else {
             return view('livewire.clientes.view', [
                 'clientes' => $this->clients,
                 'rfc' => $this->rfc,
             ], compact('data', 'rutas', 'tarifas', 'formaPago'));
-        }
+        } */
     }
     public function create()
     {
@@ -873,6 +867,9 @@ class Clientes extends Component
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             /* dd($this->suscripciones); */
             if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
+
+                dd($this->from, $this->to);
+
                 if ($this->cantEjem != 0) {
                     if ($this->domicilioSeleccionado) {
                         /* foreach ($this->domicilioSeleccionado as $key => $value) {

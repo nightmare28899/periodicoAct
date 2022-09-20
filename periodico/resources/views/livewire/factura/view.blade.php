@@ -21,7 +21,7 @@
                         </div>
                         <div class="w-1/2 text-center border-2 p-3 shadow">
                             {{-- Nombre: <br> --}}
-                            <img src="/img/users.png" width="195px" alt="">
+                            <img src="/img/users.png" width="195px" alt="logo">
                             <p class="text-center"> {{ $cliente->nombre }} {{ $cliente->email }} <br>
                                 <b>Tel:</b> +52 {{ $cliente->telefono }}
                             </p>

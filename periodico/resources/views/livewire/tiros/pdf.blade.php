@@ -21,11 +21,11 @@
            <tr class="bg-gray-500 text-white">
                <th class="px-4 py-2 w-20">Tipo</th>
                <th>Cliente</th>
-               <th>Día</thlass=>
-               <th>Ejemplares</thclass=>
-               <th>Domicilio</thclass=>
-               <th>Referencia</thclass=>
-               <th>Fecha</thclass=>
+               <th>Día</th>
+               <th>Ejemplares</th>
+               <th>Domicilio</th>
+               <th>Referencia</th>
+               <th>Fecha</th>
            </tr>
        </thead>
        <tbody>

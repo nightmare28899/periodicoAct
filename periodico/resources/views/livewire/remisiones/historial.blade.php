@@ -1,156 +1,181 @@
-<div class="container mx-auto">
+<div class="w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Remisión de Venta Periódico ') }}
+            {{ __('Historial de Remisiones') }}
         </h2>
     </x-slot>
-    {{-- The Master doesn't talk, he acts. --}}
+
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
-                <div class="flex">
-                    <div class="flex-none mx-1 mt-3">
-                        <div class="antialiased sans-serif">
-                            <div>
-                                <div class="container mx-auto px-4">
-                                    <div class="">
-                                        <div class="flex" style="width: 100%;">
-                                            <div class="grid mt-1 mr-2">
-                                                <x-jet-input class="w-full" type="date" wire:model="from"
-                                                    placeholder="Desde"></x-jet-input>
-                                            </div>
-                                            <div class="grid mt-1">
-                                                <x-jet-input class="w-full" type="date" wire:model="to"
-                                                    placeholder="Hasta"></x-jet-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex-initial mx-1 mt-4 mr-4" style="width: 68%;">
-                        <input wire:model='keyWord' type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                            name="search" id="search" placeholder="Buscar Remisión">
-                    </div>
-                    <div class="flex-initial x-1 mt-4">
-                        <button wire:click="search"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            venta
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <br>
-                    <div class="flex items-end pt-4 px-4 sm:block sm:p-0">
-                        <div
-                            class="inline-block align-bottom rounded-lg text-left overflow-hidden border-2 shadow-md w-2/5">
-                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-8">
-                                <h5
-                                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black text-center">
-                                    Datos
-                                    del cliente:
-                                </h5>
-                                <div class="flex p-6">
-                                    <div>
-                                        {{-- <p class="font-normal text-gray-600 text-lg">Datos del Domicilio:</p> --}}
-                                        <p class="font-normal text-gray-500">
-                                            <b>Clave:</b> <br>
-                                            <b>Nombre:</b> <br>
-                                            <b>Calle:</b> <br>
-                                            <b>Colonia:</b> <br>
-                                            <b>C.P.:</b> <br>
-                                            <b>Localidad:</b> <br>
-                                            <b>Estado:</b> <br>
-                                            <b>R.F.C.:</b> <br>
-                                            <b>N. Ext:</b> <br>
-                                            <b>Municipio:</b> <br>
-                                            <b>País:</b> <br>
-                                            <b>N. Int:</b>
-                                        </p>
-                                    </div>
+                <br>
+                @if (count($tiros) > 0)
+                    <div class="text-center overflow-x">
+                        <div class="overflow-x-auto w-full">
+                            <table class="table-auto border-solid border-2 border-dark">
+                                <thead>
+                                    <tr class='bg-gray-100'>
+                                        <th class='px-4 py-2'>Fecha</th>
+                                        {{-- <th class="px-6 py-2">idTipo</th> --}}
+                                        <th class='px-4 py-2'>Cliente</th>
+                                        <th class='px-4 py-2'>Entregar</th>
+                                        <th class='px-4 py-2'>Devuelto</th>
+                                        <th class='px-4 py-2'>Faltante</th>
+                                        <th class='px-4 py-2'>Venta</th>
+                                        <th class='px-4 py-2'>Precio</th>
+                                        <th class='px-4 py-2'>Importe</th>
+                                        <th class='px-6 py-2'>Dia</th>
+                                        <th class='px-6 py-2'>Nombre Ruta</th>
+                                        <th class='px-6 py-2'>Tipo</th>
+                                        <th class="px-6 py-2">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tiros as $tiro)
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                            <td class='px-4 py-2'>
+                                                {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->venta }}</td>
+                                            <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $tiro->dia }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
+                                            {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
+                                            @if ($tiro->precio == 330 || $tiro->precio == 300)
+                                                <td>
+                                                    @if ($tiro->estado == 'Activo')
+                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 w-full py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">Pausar
+                                                            suscripción</button>
+                                                    @elseif ($tiro->estado == 'Pausado')
+                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Activar
+                                                            suscripción</button>
+                                                    @endif
 
-                                    {{-- <div>
-                                        <p class="font-normal text-gray-600 text-lg">Cantidad de Ejemplares:</p>
-                                        <p class="font-normal text-gray-500">
-                                            <b>Lunes:</b> {{ $lunes }} <br>
-                                            <b>Martes:</b> {{ $martes }} <br>
-                                            <b>Miércoles:</b> {{ $miércoles }} <br>
-                                            <b>Jueves:</b> {{ $jueves }} <br>
-                                            <b>Viernes:</b> {{ $viernes }} <br>
-                                            <b>Sábado:</b> {{ $sábado }} <br>
-                                            <b>Domingo:</b> {{ $domingo }} <br>
-                                        </p>
-                                    </div> --}}
-                                </div>
-                            </div>
+                                                    @if ($tiro->status == 'Pagado')
+                                                        <button
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                            disabled>Pagado</button>
+                                                    @else
+                                                        <button wire:click="pagar({{ $tiro->cliente_id }})"
+                                                            class="inline-flex
+                                                            items-center h-10 px-4 m-2 text-sm text-white
+                                                            transition-colors duration-150 bg-indigo-500
+                                                            hover:bg-indigo-600 rounded-lg
+                                                            focus:shadow-outline">Pagar</button>
+                                                    @endif
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <button wire:click="editarRemision({{ $tiro->id }})"
+                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">Editar</button>
+
+                                                    @if ($tiro->status == 'Pagado')
+                                                        <button
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                            disabled>Pagado</button>
+                                                    @else
+                                                        <button
+                                                            wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                            class="inline-flex
+                                                            items-center h-10 px-4 m-2 text-sm text-white
+                                                            transition-colors duration-150 bg-indigo-500
+                                                            hover:bg-indigo-600 rounded-lg
+                                                            focus:shadow-outline"
+                                                            target="_blank">Pagar</button>
+                                                    @endif
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
-                <br>
-                <br>
-                <br>
-                @if (session()->has('message'))
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3"
-                        role="alert">
-                        <div class="flex">
-                            <div>
-                                <p class="text-sm">{{ session('message') }}</p>
-                            </div>
-                        </div>
+                @else
+                    <div class="text-center">
+                        <h1 class="text-2xl text-black font-bold">No hay registros</h1>
                     </div>
                 @endif
-                <table class="table-auto w-full text-center">
-                    <thead>
-                        <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">Fecha:</th>
-                            <th class="px-4 py-2 w-20">Entrada:</th>
-                            <th class="px-4 py-2 w-20">Devolución:</th>
-                            <th class="px-4 py-2 w-20">Falta:</th>
-                            <th class="px-4 py-2 w-20">Venta</th>
-                            <th class="px-4 py-2 w-20">Precio</th>
-                            <th class="px-4 py-2 w-20">Importe</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- @foreach ($resultado as $result)
-                            <tr>
-                                <td class="border">{{ $loop->iteration }}</td>
-                                <td class="border">{{ $result->nombre }}</td>
-                                <td class="border">{{ $dia }}</td>
-                                @if ($dia == 'lunes')
-                                    <td class="border">{{ $result->martes }}</td>
-                                @elseIf ($dia == 'martes')
-                                    <td class="border">{{ $result->miércoles }}</td>
-                                @elseIf ($dia == 'miércoles')
-                                    <td class="border">{{ $result->jueves }}</td>
-                                @elseIf ($dia == 'jueves')
-                                    <td class="border">{{ $result->viernes }}</td>
-                                @elseIf ($dia == 'viernes')
-                                    <td class="border">{{ $result->sábado }}</td>
-                                @elseIf ($dia == 'sábado')
-                                    <td class="border">{{ $result->lunes }}</td>
-                                @endif
-                                <td class="border">Calle: {{ $result->calle }} <br> No. Ext:
-                                    {{ $result->noext }}, CP: {{ $result->cp }}, <br> Localidad:
-                                    {{ $result->localidad }}, Municipio: {{ $result->municipio }}
-                                </td>
-                                <td class="border">{{ $result->referencia }}</td>
-                                <td class="border">{{ $dateF }}</td>
-                                <td class="border px-4 py-2 flex-nowrap pt-2">
-                                    <input type="button"
-                                        class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 bg-blue-400 font-medium rounded-md text-white hover:bg-blue-600 focus:outline-none transition cursor-pointer"
-                                        name="imprimir" value="Imprimir" onclick="window.print();">
-                                </td>
-                            </tr>
-                        @endforeach --}}
-                    </tbody>
-                </table>
-                <br>
-                {{-- {{ $resultado->links() }} --}}
-                <br>
             </div>
         </div>
     </div>
+
+    {{-- MODAL EDITAR DEVUELTOS --}}
+    <x-jet-dialog-modal wire:model="modalEditar">
+
+        <x-slot name="title">
+            <div class="flex sm:px-6">
+                <h1 class="mb-3 text-2xl text-black font-bold ml-3">Editar devueltos</h1>
+                <button type="button" wire:click="cerrarEditar" wire:loading.attr="disabled"
+                    class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
+                    data-modal-toggle="defaultModal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            <hr>
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="mb-3">
+                <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Cantidad de
+                    devueltos:</label>
+                <input type="number"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
+                    id="devuelto" wire:model.defer="devuelto" placeholder="Cantidad" min="0" />
+            </div>
+            @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))
+                <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p>
+                <button wire:click.prevent="updateDevueltos" type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Devolver
+                </button>
+            @elseif ($entregar == 0 && $devuelto > 0)
+                <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p>
+                <button wire:click.prevent="updateDevueltos" type="button"
+                    class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                    <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Cancelar devolución
+                </button>
+            @endif
+        </x-slot>
+
+        <x-slot name="footer">
+
+        </x-slot>
+
+    </x-jet-dialog-modal>
 </div>
