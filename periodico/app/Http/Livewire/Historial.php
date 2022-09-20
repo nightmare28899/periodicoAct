@@ -38,15 +38,16 @@ class Historial extends Component
             $this->cliente = Cliente
             ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
             ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+            ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
             ->where('cliente.id', '=',  $this->id_cliente)
             ->get();
         }
         $this->tiro = Tiro::Where('cliente_id', $this->id_cliente)->update(['status' => 'Pagado']);
 
         $this->ventas = ventas::Where('cliente_id', $this->id_cliente)->get();
-        $this->cliente = Cliente::Where('id', $this->id_cliente)->get();
+        /* $this->cliente = Cliente::Where('id', $this->id_cliente)->get();
         $this->domicilio = Domicilio::Where('cliente_id', $this->id_cliente)->get();
-        $this->ruta = Ruta::Where('id', $this->domicilio[0]['ruta_id'])->get();
+        $this->ruta = Ruta::Where('id', $this->domicilio[0]['ruta_id'])->get(); */
 
         $pdf = Pdf::loadView('livewire.pagado', [
             'total' => $this->ventas[0]['total'],

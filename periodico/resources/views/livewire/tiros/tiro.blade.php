@@ -213,7 +213,7 @@
             </x-slot>
 
             <x-slot name="footer">
-                <div class="flex-auto w-64 px-4 sm:px-6">
+                {{-- <div class="flex-auto w-64 px-4 sm:px-6">
                     <button wire:click="historialRemision" id="tiro" wire:loading.attr="disabled"
                         class="p-2 bg-blue-500 rounded-md text-white hover:bg-blue-700">
                         <svg wire:loading wire:target="historialRemision"
@@ -226,7 +226,7 @@
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        Historial de Remisiones</button>
+                        Historial de Remisiones</button> --}}
                 </div>
                 {{-- <div class="flex-auto w-64 px-4 sm:px-6">
                     <button wire:click="generarRemision" id="tiro" wire:loading.attr="disabled"

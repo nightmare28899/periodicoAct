@@ -158,7 +158,7 @@
                             \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Tipo: Venta/Cliente </label>
                     </div>
                 </td>
-                <td>{{ $cliente['ordinario'] }}</td>
+                <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
                 <td>{{ sprintf('$ %s', number_format($total)) }}
                 </td>
             </tr>

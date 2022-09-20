@@ -48,7 +48,6 @@ class GenerarR extends Component
                 ->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
                 ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get($this->diaS);
-            $this->rutaEncontrada;
         } else {
             $this->ventaCopia = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -437,5 +436,12 @@ class GenerarR extends Component
                 fn () => print($pdfContent),
                 "remisiones.pdf"
             );
+    }
+
+    public function toast()
+    {
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Remisión generada exitosamente!' : ''
+        ]);
     }
 }
