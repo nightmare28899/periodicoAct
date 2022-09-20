@@ -30,17 +30,17 @@ class Historial extends Component
         $this->id_cliente = $id_cliente;
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
-            ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
-            ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta_id')
-            ->where('cliente.id', '=',  $this->id_cliente)
-            ->get();
+                ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta_id')
+                ->where('cliente.id', '=',  $this->id_cliente)
+                ->get();
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->cliente = Cliente
-            ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
-            ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
-            ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
-            ->where('cliente.id', '=',  $this->id_cliente)
-            ->get();
+                ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
+                ->where('cliente.id', '=',  $this->id_cliente)
+                ->get();
         }
         $this->tiro = Tiro::Where('cliente_id', $this->id_cliente)->update(['status' => 'Pagado']);
 
@@ -48,7 +48,7 @@ class Historial extends Component
         /* $this->cliente = Cliente::Where('id', $this->id_cliente)->get();
         $this->domicilio = Domicilio::Where('cliente_id', $this->id_cliente)->get();
         $this->ruta = Ruta::Where('id', $this->domicilio[0]['ruta_id'])->get(); */
-
+        /*  me lleva */
         $pdf = Pdf::loadView('livewire.pagado', [
             'total' => $this->ventas[0]['total'],
             'cliente' => $this->cliente[0],
@@ -75,7 +75,7 @@ class Historial extends Component
         ]);
 
 
-        Return Redirect::to('/PDFPago');
+        return Redirect::to('/PDFPago');
     }
 
     public function editarRemision($id)
