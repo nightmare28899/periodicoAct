@@ -12,6 +12,7 @@ use App\Http\Livewire\Factura;
 use App\Http\Livewire\GenerarR;
 use App\Http\Livewire\Historial;
 use App\Http\Livewire\Facturas;
+use App\Http\Livewire\HistorialF;
 use App\Http\Livewire\SuscripcionBuscador;
 use App\Http\Livewire\PDFPago;
 
@@ -49,6 +50,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/historialR', Historial::class);
     Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/Facturas', Facturas::class)->name('Facturas');
+    Route::get('/historialF', HistorialF::class)->name('historialF');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

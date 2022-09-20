@@ -56,6 +56,30 @@
                                                         href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Facturar</a>
                                                 </td>
                                             </tr>
+                                        @elseif ($tiro->status == 'facturado')
+                                            <tr>
+                                                <td class='px-4 py-2'>
+                                                    {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                                <td class='px-4 py-2'>
+                                                    {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->venta }}</td>
+                                                <td class='px-4 py-2'>
+                                                    {{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                                </td>
+                                                <td class='px-4 py-2'>
+                                                    {{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                                </td>
+                                                <td class='px-4 py-2'>{{ $tiro->dia }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
+                                                <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
+                                                <td><a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        disabled>Facturado</a>
+                                                </td>
+                                            </tr>
                                         @else
                                             <tr>
                                                 <td></td>
