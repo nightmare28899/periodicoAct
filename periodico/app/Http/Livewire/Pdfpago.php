@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 
-class Pdfpago extends Component
+class PDFPago extends Component
 {
     public $pdf;
 
