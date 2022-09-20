@@ -85,6 +85,7 @@ class Clientes extends Component
         } else {
             $this->clientesBuscados = Cliente
                 ::where('razon_social', 'like', '%' . $this->query . '%')
+                ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->limit(6)
                 ->get()
                 ->toArray();
