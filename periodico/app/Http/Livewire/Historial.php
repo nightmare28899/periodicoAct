@@ -31,9 +31,26 @@ class Historial extends Component
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
                 ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
-                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta_id')
                 ->where('cliente.id', '=',  $this->id_cliente)
                 ->get();
+
+            $this->ventas = Suscripcion::Where('cliente_id', $this->id_cliente)->get();
+            $pdf = Pdf::loadView('livewire.pagado', [
+                'total' => $this->ventas[0]['total'],
+                'cliente' => $this->cliente[0],
+                'desde' => $this->ventas[0]['desde'],
+                'hasta' => $this->ventas[0]['hasta'],
+                'lunes' => $this->ventas[0]['lunes'],
+                'martes' => $this->ventas[0]['martes'],
+                'miercoles' => $this->ventas[0]['miercoles'],
+                'jueves' => $this->ventas[0]['jueves'],
+                'viernes' => $this->ventas[0]['viernes'],
+                'sabado' => $this->ventas[0]['sabado'],
+                'domingo' => $this->ventas[0]['domingo'],
+                'fecha' => $this->date,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->cliente = Cliente
                 ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
@@ -41,30 +58,28 @@ class Historial extends Component
                 ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
                 ->where('cliente.id', '=',  $this->id_cliente)
                 ->get();
+
+            $this->ventas = ventas::Where('cliente_id', $this->id_cliente)->get();
+            $pdf = Pdf::loadView('livewire.pagado', [
+                'total' => $this->ventas[0]['total'],
+                'cliente' => $this->cliente[0],
+                'desde' => $this->ventas[0]['desde'],
+                'hasta' => $this->ventas[0]['hasta'],
+                'lunes' => $this->ventas[0]['lunes'],
+                'martes' => $this->ventas[0]['martes'],
+                'miercoles' => $this->ventas[0]['miercoles'],
+                'jueves' => $this->ventas[0]['jueves'],
+                'viernes' => $this->ventas[0]['viernes'],
+                'sabado' => $this->ventas[0]['sabado'],
+                'domingo' => $this->ventas[0]['domingo'],
+                'fecha' => $this->date,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
         }
         $this->tiro = Tiro::Where('cliente_id', $this->id_cliente)->update(['status' => 'Pagado']);
 
-        $this->ventas = ventas::Where('cliente_id', $this->id_cliente)->get();
-        /* $this->cliente = Cliente::Where('id', $this->id_cliente)->get();
-        $this->domicilio = Domicilio::Where('cliente_id', $this->id_cliente)->get();
-        $this->ruta = Ruta::Where('id', $this->domicilio[0]['ruta_id'])->get(); */
-        /*  me lleva */
-        $pdf = Pdf::loadView('livewire.pagado', [
-            'total' => $this->ventas[0]['total'],
-            'cliente' => $this->cliente[0],
-            'desde' => $this->ventas[0]['desde'],
-            'hasta' => $this->ventas[0]['hasta'],
-            'lunes' => $this->ventas[0]['lunes'],
-            'martes' => $this->ventas[0]['martes'],
-            'miercoles' => $this->ventas[0]['miercoles'],
-            'jueves' => $this->ventas[0]['jueves'],
-            'viernes' => $this->ventas[0]['viernes'],
-            'sabado' => $this->ventas[0]['sabado'],
-            'domingo' => $this->ventas[0]['domingo'],
-            'fecha' => $this->date,
-        ])
-            ->setPaper('A5', 'landscape')
-            ->output();
+
 
         Storage::disk('public')->put('pagado.pdf', $pdf);
 

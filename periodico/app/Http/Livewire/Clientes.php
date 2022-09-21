@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cliente;
@@ -696,7 +698,7 @@ class Clientes extends Component
                         'total' => $this->total
                     ]);
 
-                    $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
+                    $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
                         'desde' => $this->desde,
@@ -713,6 +715,8 @@ class Clientes extends Component
                         ->setPaper('A5', 'landscape')
                         ->output();
 
+                    Storage::disk('public')->put('venta.pdf', $pdf);
+
                     $this->status = 'created';
                     $this->modalV = false;
 
@@ -722,11 +726,7 @@ class Clientes extends Component
 
                     $this->limpiarVentaModal();
 
-                    return response()
-                        ->streamDownload(
-                            fn () => print($pdfContent),
-                            "tiros.pdf"
-                        );
+                    return Redirect::to('/PDFVenta');
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -745,7 +745,7 @@ class Clientes extends Component
     }
     public function actualizarVenta()
     {
-        $this->validate([
+       /* $this->validate([
             'lunesVentas' => 'required',
             'martesVentas' => 'required',
             'miercolesVentas' => 'required',
@@ -753,9 +753,20 @@ class Clientes extends Component
             'viernesVentas' => 'required',
             'sabadoVentas' => 'required',
             'domingoVentas' => 'required',
-        ]);
+        ]);*/
 
         $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
+
+        $lunesTotal = (int)$this->lunesVentas * $this->clienteSeleccionado['ordinario'];
+        $martesTotal = (int)$this->martesVentas * $this->clienteSeleccionado['ordinario'];
+        $miercolesTotal = (int)$this->miercolesVentas * $this->clienteSeleccionado['ordinario'];
+        $juevesTotal = (int)$this->juevesVentas * $this->clienteSeleccionado['ordinario'];
+        $viernesTotal = (int)$this->viernesVentas * $this->clienteSeleccionado['ordinario'];
+        $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
+        $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
+
+        $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+
         $this->ventas->update([
             'desde' => $this->desde,
             'hasta' => $this->hasta,
@@ -766,13 +777,36 @@ class Clientes extends Component
             'viernes' => $this->viernesVentas,
             'sábado' => $this->sabadoVentas,
             'domingo' => $this->domingoVentas,
+            'total' => $this->total
         ]);
+
+        $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
+            'total' => $this->total,
+            'cliente' => $this->clienteSeleccionado,
+            'desde' => $this->desde,
+            'hasta' => $this->hasta,
+            'lunes' => $this->lunesVentas,
+            'martes' => $this->martesVentas,
+            'miercoles' => $this->miercolesVentas,
+            'jueves' => $this->juevesVentas,
+            'viernes' => $this->viernesVentas,
+            'sabado' => $this->sabadoVentas,
+            'domingo' => $this->domingoVentas,
+            'fecha' => $this->date,
+        ])
+            ->setPaper('A5', 'landscape')
+            ->output();
+
+        Storage::disk('public')->put('venta.pdf', $pdf);
+
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
         ]);
         $this->status = 'created';
         $this->limpiarVentaModal();
         $this->modalV = false;
+
+        return Redirect::to('/PDFVenta');
     }
     public function editarVenta()
     {
@@ -920,7 +954,7 @@ class Clientes extends Component
                         $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
                         $ruta = Ruta::where('id', $this->domicilioSeleccionado[0]['ruta'])->get();
 
-                        $pdfContent = PDF::loadView('livewire.comprobantePDF', [
+                        $pdf = PDF::loadView('livewire.comprobantePDF', [
                             'esUnaSuscripcion' => $this->subscripcionEs,
                             'periodo' => $this->periodoSuscripcionSeleccionada,
                             'cantEjemplares' => (int) $this->cantEjem,
@@ -936,6 +970,8 @@ class Clientes extends Component
                             ->setPaper('A5', 'landscape')
                             ->output();
 
+                        Storage::disk('public')->put('suscripcion.pdf', $pdf);
+
                         /* 'domicilio_id' =>  json_encode($this->domicilioId), */
 
                         $this->status = 'created';
@@ -950,11 +986,13 @@ class Clientes extends Component
 
                         $this->borrar();
 
-                        return response()
+                        return Redirect::to('/PDFSuscripcion');
+
+                        /*return response()
                             ->streamDownload(
                                 fn () => print($pdfContent),
                                 "tiros.pdf"
-                            );
+                            );*/
                     } else {
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''

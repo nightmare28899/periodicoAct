@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use App\Models\Tiro;
 use App\Models\Domicilio;
@@ -115,7 +117,7 @@ class Tiros extends Component
             ->select("suscripciones.*", "cliente.id", "cliente.nombre", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
             ->get($this->diaS);
 
-        $pdfContent = PDF::loadView('livewire.tiros.pdf', [
+        $pdf = PDF::loadView('livewire.tiros.pdf', [
             'ventas' => $this->ventas,
             'suscripcion' => $this->suscripcion,
             'diaS' => $this->diaS,
@@ -124,16 +126,20 @@ class Tiros extends Component
             /* ->setPaper('A5', 'landscape') */
             ->output();
 
+        Storage::disk('public')->put('tiro.pdf', $pdf);
+
         $this->status = 'created';
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Tiro generado exitosamente!' : ''
         ]);
 
-        return response()
+        return Redirect::to('/PDFTiro');
+
+        /*return response()
             ->streamDownload(
                 fn () => print($pdfContent),
                 "tiros.pdf"
-            );
+            );*/
     }
 
     public function historialFactura()
