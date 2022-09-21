@@ -13,6 +13,6 @@ class PDFPago extends Component
     {
         $this->pdf = Storage::url('pagado.pdf');
 
-        return view('livewire.pdfpago', ['pdf' => $this->pdf]);
+        return view('livewire.PDFPago', ['pdf' => $this->pdf]);
     }
 }

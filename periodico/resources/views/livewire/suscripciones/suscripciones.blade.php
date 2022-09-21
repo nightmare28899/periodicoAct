@@ -259,7 +259,7 @@
                         @enderror
                     </div>
                     <div class="w-3/5 px-2">
-                        <p class="mt-3">#DÍAS PARA PAGAR</p>
+                        <p class="mt-3">#DÍAS INICIO</p>
                         <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
 
                             <x-jet-input class="w-2/5" type="date" wire:model="from">

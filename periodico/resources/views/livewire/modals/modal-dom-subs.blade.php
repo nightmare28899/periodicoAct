@@ -66,7 +66,7 @@
                     </thead>
                     <tbody>
                         @foreach ($domiciliosSubs as $domicilio)
-                            {{-- @if ($domicilio->cliente_id == $clienteSeleccionado) --}}
+                            @if ($domicilio->cliente_id == $clienteSeleccionado['id'])
                                 <tr
                                     class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
                                     <td class="border" wire:click="datoSeleccionado({{ $domicilio->id }})">
@@ -93,12 +93,12 @@
                                         <button class="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
                                             wire:click="eliminarSubs({{ $domicilio->id }})">Borrar</button>
                                     </td>
-                                </tr>{{--
+                                </tr>
                             @else
                                 <tr>
 
                                 </tr>
-                            @endif --}}
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

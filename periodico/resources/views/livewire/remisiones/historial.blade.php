@@ -67,7 +67,7 @@
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                             disabled>Pagado</button>
                                                     @else
-                                                        <button wire:click="pagar({{ $tiro->cliente_id }})"
+                                                        <button wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
                                                             class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500

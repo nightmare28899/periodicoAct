@@ -696,8 +696,6 @@ class Clientes extends Component
                         'total' => $this->total
                     ]);
 
-                    /* dd($this->clienteSeleccionado); */
-
                     $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
@@ -868,9 +866,6 @@ class Clientes extends Component
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             /* dd($this->suscripciones); */
             if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
-
-                dd($this->from, $this->to);
-
                 if ($this->cantEjem != 0) {
                     if ($this->domicilioSeleccionado) {
                         /* foreach ($this->domicilioSeleccionado as $key => $value) {
