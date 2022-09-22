@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use App\Models\ventas;
 use App\Models\Suscripcion;
@@ -115,7 +117,7 @@ class GenerarR extends Component
             } */
 
             if ($this->de && $this->hasta) {
-                $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
+                $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                     'ventas' => $this->ventas,
                     'suscripcion' => $this->suscripcion,
                     'diaS' => $this->diaS,
@@ -134,7 +136,7 @@ class GenerarR extends Component
                 $this->de = '';
                 $this->hasta = '';
             } else {
-                $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+                $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
                     'ventas' => $this->ventas,
                     'suscripcion' => $this->suscripcion,
                     'diaS' => $this->diaS,
@@ -215,11 +217,16 @@ class GenerarR extends Component
             }
 
             $this->clienteSeleccionado = [];
-            return response()
+
+            Storage::disk('public')->put('remision.pdf', $pdf);
+
+            return Redirect::to('/PDFRemision');
+
+            /*return response()
                 ->streamDownload(
                     fn () => print($pdfContent),
                     "remisiones.pdf"
-                );
+                );*/
         } else {
             $this->status = 'error';
             return $this->dispatchBrowserEvent('alert', [
@@ -280,7 +287,7 @@ class GenerarR extends Component
         } */
 
         if ($this->de && $this->hasta) {
-            $pdfContent = PDF::loadView('livewire.tiros.remisionesPDFP', [
+            $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                 'ventas' => $this->ventas,
                 'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
@@ -299,7 +306,7 @@ class GenerarR extends Component
             $this->de = '';
             $this->hasta = '';
         } else {
-            $pdfContent = PDF::loadView('livewire.tiros.remisionPDF', [
+            $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
                 'ventas' => $this->ventas,
                 'suscripcion' => $this->suscripcion,
                 'diaS' => $this->diaS,
@@ -375,6 +382,7 @@ class GenerarR extends Component
             for ($i = 0; $i < count($this->suscripcion); $i++) {
                 if (count($this->tiro) > 0) {
                     if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
+                        dd($this->suscripcion[$i]['cantEjemplares']);
                         Tiro::create([
                             'fecha' => $this->dateF,
                             'cliente' => $this->suscripcion[$i]['nombre'],
@@ -431,11 +439,15 @@ class GenerarR extends Component
         $this->showingModal = true;
         $this->clienteSeleccionado = [];
 
-        return response()
+        Storage::disk('public')->put('remision.pdf', $pdf);
+
+        return Redirect::to('/PDFRemision');
+
+        /*return response()
             ->streamDownload(
                 fn () => print($pdfContent),
                 "remisiones.pdf"
-            );
+            );*/
     }
 
     public function toast()

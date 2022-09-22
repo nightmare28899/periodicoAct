@@ -33,7 +33,6 @@ class Historial extends Component
                 ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
                 ->where('cliente.id', '=',  $this->id_cliente)
                 ->get();
-
             $this->ventas = Suscripcion::Where('cliente_id', $this->id_cliente)->get();
             $pdf = Pdf::loadView('livewire.pagado', [
                 'total' => $this->ventas[0]['total'],
@@ -79,8 +78,6 @@ class Historial extends Component
         }
         $this->tiro = Tiro::Where('cliente_id', $this->id_cliente)->update(['status' => 'Pagado']);
 
-
-
         Storage::disk('public')->put('pagado.pdf', $pdf);
 
         $this->status = 'created';
@@ -88,7 +85,6 @@ class Historial extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Se realizo el pago!' : ''
         ]);
-
 
         return Redirect::to('/PDFPago');
     }

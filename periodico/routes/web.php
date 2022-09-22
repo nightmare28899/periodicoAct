@@ -14,10 +14,11 @@ use App\Http\Livewire\Historial;
 use App\Http\Livewire\Facturas;
 use App\Http\Livewire\HistorialF;
 use App\Http\Livewire\SuscripcionBuscador;
-use App\Http\Livewire\PDFPago;
 use App\Http\Livewire\PDFVenta;
 use App\Http\Livewire\PDFSuscripcion;
 use App\Http\Livewire\PDFTiro;
+use App\Http\Livewire\PDFPago;
+use App\Http\Livewire\PDFRemision;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,12 +52,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/crearSuscripcion', SuscripcionBuscador::class)->name('CrearSuscripcion');
     Route::get('/remisiones', GenerarR::class);
     Route::get('/historialR', Historial::class);
-    Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/Facturas', Facturas::class)->name('Facturas');
     Route::get('/historialF', HistorialF::class)->name('historialF');
     Route::get('/PDFVenta', PDFVenta::class)->name('PDFVenta');
     Route::get('/PDFSuscripcion', PDFSuscripcion::class)->name('PDFSuscripcion');
     Route::get('/PDFTiro', PDFTiro::class)->name('PDFTiro');
+    Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
+    Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
 
     Route::get('/dashboard', function () {
         return view('dashboard');
