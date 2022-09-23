@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div class="w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Lista de Tarifas') }}
@@ -14,7 +14,7 @@
                             class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Tarifa">
                     </div>
-                    <div class="flex-none mx-1">
+                    {{--<div class="flex-none mx-1">
                         <a href="{{ url('cliente') }}"><button
                                 class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">{{ __('Cliente') }}</button></a>
                     </div>
@@ -27,7 +27,7 @@
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
                             Crear tarifa
                         </button>
-                    </div>
+                    </div>--}}
                 </div>
                 <br>
                 @if (session()->has('message'))

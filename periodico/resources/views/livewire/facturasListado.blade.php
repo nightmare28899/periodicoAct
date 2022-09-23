@@ -8,6 +8,34 @@
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+                <div class="w-1/2 p-2">
+                    <input type="text"
+                           class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                           name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
+                           wire:keydown.escape="resetear" wire:keydown.tab="resetear"
+                           wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
+                           wire:keydown.enter="selectContact" autocomplete="off" />
+
+                    @if (!empty($query))
+
+                        <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+
+                        <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg">
+
+                            @if (!empty($clientesBuscados))
+
+                                @foreach ($clientesBuscados as $i => $buscado)
+                                    <div wire:click="selectContact({{ $i }})"
+                                         class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer w-full">
+                                        {{ $buscado['nombre'] }}
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="list-item list-none p-2">No hay resultado</div>
+                            @endif
+                        </div>
+                    @endif
+                </div>
                 <br>
                 @if (count($tiros) > 0)
                     <div class="text-center overflow-x">

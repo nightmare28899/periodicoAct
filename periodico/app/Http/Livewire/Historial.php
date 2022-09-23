@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class Historial extends Component
 {
     public $tiros, $id_cliente, $status, $ventas, $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar;
+
     public function render()
     {
         $this->date = Carbon::now()->format('d-m-Y');
