@@ -67,6 +67,7 @@ class Clientes extends Component
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
+            $this->domicilioSeleccionado = [];
             $this->resetear();
         }
     }
@@ -363,6 +364,7 @@ class Clientes extends Component
     public function modalSuscripciones()
     {
         $this->suscripciones = true;
+        $this->clienteSeleccionado = [];
     }
     public function modalCrearDomSubs()
     { {
@@ -378,6 +380,7 @@ class Clientes extends Component
     public function modalVentas()
     {
         $this->modalV = true;
+        $this->clienteSeleccionado = [];
     }
     public function detalles($id)
     {

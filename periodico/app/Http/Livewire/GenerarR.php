@@ -16,7 +16,7 @@ use Carbon\Carbon;
 
 class GenerarR extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'error', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [];
 
     public function mount()
     {
@@ -59,6 +59,7 @@ class GenerarR extends Component
 
     public function updatedQuery()
     {
+        $this->clienteBarraBuscadora = [];
         $this->clientesBuscados = Cliente
             ::where('razon_social', 'like', '%' . $this->query . '%')
             ->orWhere('nombre', 'like', '%' . $this->query . '%')
@@ -76,10 +77,9 @@ class GenerarR extends Component
         $this->dateFiltro = new Carbon($this->de);
         $this->tiro = Tiro::all();
 
-        if ($this->rutaSeleccionada == "Todos") {
+        if ($this->rutaSeleccionada == "Todos" && $this->clienteBarraBuscadora) {
             $this->diaS = $this->dateF->translatedFormat('l');
 
-            if ($this->clienteBarraBuscadora) {
                 $this->ventaCopia = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
@@ -102,8 +102,34 @@ class GenerarR extends Component
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
+
+            if ($this->tipoSeleccionada == 'venta') {
+
+                if (count($this->ventaCopia) > 0 && $this->ventaCopia != null) {
+                    $this->status = 'created';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Si tiene ventas!' : ''
+                    ]);
+                } else {
+                    $this->status = 'error';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'error') ? '¡No tiene ventas!' : ''
+                    ]);
+                }
+            } else {
+                if (count($this->suscripcionCopia) > 0 && $this->suscripcionCopia != null ) {
+                    $this->status = 'created';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Si tiene suscripciones!' : ''
+                    ]);
+                } else {
+                    $this->status = 'error';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'error') ? '¡No tiene suscripciones!' : ''
+                    ]);
+                }
             }
-        } else {
+        } else if ($this->clienteBarraBuscadora) {
             $this->ventaCopia = ventas
                 ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                 ->join("domicilio", "domicilio.cliente_id", "=", "ventas.cliente_id")
