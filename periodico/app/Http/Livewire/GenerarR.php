@@ -85,7 +85,10 @@ class GenerarR extends Component
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where("ventas.tipo", "=", $this->tipoSeleccionada)
+                    ->where(function ($query) {
+                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
+                            ->where('cliente.id', '=', $this->clienteBarraBuscadora['id']);
+                    })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
