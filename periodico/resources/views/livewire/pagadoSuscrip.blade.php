@@ -28,8 +28,8 @@
             z-index: 9999 !important;
             background-repeat: no-repeat;
             position: absolute;
-            top: 10%;
-            left: 15%;
+            top: 20%;
+            left: 30%;
         }
 
         .centrado {
@@ -101,7 +101,7 @@
     remisionado de clientes
 </h3>
 <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-    {{ $cliente['nombreruta'] }}
+    {{ ruta['nombreruta'] }}
 </p>
 <h3
     style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
@@ -115,20 +115,20 @@
 <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
     {{ $cliente['rfc_input'] }}</p>
 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-    {{ $cliente['calle'] }}</p>
+    {{ $domicilio['calle'] }}</p>
 <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
-    {{ $cliente['colonia'] }}</p>
+    {{ $domicilio['colonia'] }}</p>
 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
-    {{ $cliente['municipio'] }}</p>
+    {{ $domicilio['municipio'] }}</p>
 <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
-    {{ $cliente['estado'] }}</p>
+    {{ $domicilio['estado'] }}</p>
 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-    {{ $cliente['noext'] }}</p>
+    {{ $domicilio['noext'] }}</p>
 <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
         int</b>
-    {{ $cliente['noint'] }}</p>
+    {{ $domicilio['noint'] }}</p>
 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-    {{ $cliente['cp'] }}</p>
+    {{ $domicilio['cp'] }}</p>
 <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
     {{ $cliente['pais'] }}</p>
 <div style="padding-top: 8px;">
@@ -137,7 +137,7 @@
         concepto</p>
 </div>
 <div class="logoCentrado">
-    <img src="img/pagado.png" alt="logo">
+    <img src="img/pagado.png" width="260" height="260" alt="logo">
 </div>
 <table>
     <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
@@ -150,16 +150,16 @@
     </thead>
     <tbody class="centrado">
     <tr>
-        <td>{{ $lunes + $martes + $miercoles + $jueves + $viernes + $sabado + $domingo }}</td>
+        <td>{{ $suscripcion['lunes'] + $suscripcion['martes'] + $suscripcion['miercoles'] + $suscripcion['jueves'] + $suscripcion['viernes'] + $suscripcion['sabado'] + $suscripcion['domingo'] }}</td>
         <td>
             <div class="form-group">
                 <label class="text-black" for="Física"> Fecha: De:
-                    {{ \Carbon\Carbon::parse($desde)->format('d/m/Y') }}, Hasta: {{
-                            \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Tipo: Suscripcion </label>
+                    {{ \Carbon\Carbon::parse($suscripcion['fechaInicio'])->format('d/m/Y') }}, Hasta: {{
+                            \Carbon\Carbon::parse($suscripcionp['fechaFin'])->format('d/m/Y') }}, Tipo: Suscripcion </label>
             </div>
         </td>
-        <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
-        <td>{{ sprintf('$ %s', number_format($total)) }}
+        <td>{{ sprintf('$ %s', number_format($costo = $suscripcion['total'] % $suscripcion['cantEjemplares'] )) }}</td>
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}
         </td>
     </tr>
     </tbody>
@@ -171,7 +171,7 @@
         <td></td>
         <td></td>
         <td>IMPORTE</td>
-        <td>{{ sprintf('$ %s', number_format($total)) }}</td>
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}</td>
         </td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@
         <td></td>
         <td></td>
         <td>SUBTOTAL</td>
-        <td>{{ sprintf('$ %s', number_format($total)) }}
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}
         </td>
     </tr>
     <tr>
@@ -197,11 +197,10 @@
     <thead>
     <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $lunes + $martes + $miercoles + $jueves
-                    + $viernes + $sabado + $domingo }}</th>
+        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $suscripcion['cantEjemplares'] }}</th>
         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-            {{ sprintf('$ %s', number_format($total)) }}
+            {{ sprintf('$ %s', number_format($suscripcion['total'])) }}
         </th>
     </tr>
     </thead>

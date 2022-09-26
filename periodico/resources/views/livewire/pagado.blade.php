@@ -28,8 +28,8 @@
             z-index: 9999 !important;
             background-repeat: no-repeat;
             position: absolute;
-            top: 10%;
-            left: 15%;
+            top: 20%;
+            left: 30%;
         }
 
         .centrado {
@@ -137,7 +137,7 @@
             concepto</p>
     </div>
     <div class="logoCentrado">
-        <img src="img/pagado.png" alt="logo">
+        <img src="img/pagado.png" width="260" height="260" alt="logo">
     </div>
     <table>
         <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">

@@ -71,11 +71,11 @@
                                                         class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                         disabled>Pagado
                                                     </button>
-                                                    <button
+                                                    {{--<button
                                                         wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
                                                         class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                     >Ver PDF
-                                                    </button>
+                                                    </button>--}}
                                                 @else
                                                     <button
                                                         wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
@@ -90,7 +90,7 @@
                                         @else
                                             <td>
                                                 <button wire:click="editarRemision({{ $tiro->id }})"
-                                                        class="px-2 w-full py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                        class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                     Editar
                                                 </button>
 

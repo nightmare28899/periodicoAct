@@ -187,14 +187,25 @@ class Historial extends Component
     public function generarPDF($id, $idTipo) {
         if (substr($idTipo, 0 , 6) == 'suscri') {
             $this->suscri = Suscripcion::where('cliente_id', '=', $id)->get();
+            $cliente = Cliente::find($id);
+            dd($this->suscri[0]);
             $domSubs = domicilioSubs::where('id', '=', $this->suscri[0]['domicilio_id'])->get();
             $ruta = Ruta::where('id', '=', $domSubs[0]['ruta'])->get();
 
             $pdf = PDF::loadView('livewire.pdf-suscripcion', [
-
+                "cliente" => $cliente,
+                "domicilio" => $domSubs[0],
+                "suscripcion" => $this->suscri[0],
+                "ruta" => $ruta[0],
+                'fecha' => $this->date,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
+
+
+            Storage::disk('public')->put('suscripcionPagada.pdf', $pdf);
+
+            return Redirect::to('/PDFPago');
 
         }
     }
