@@ -170,45 +170,21 @@
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="lunes" class="block text-black text-sm font-bold mb-2">Lunes(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunes') border-red-500 @enderror"
-                        id="lunes" wire:model="lunesVentas" placeholder="Escribe la cantidad" />
-                    @error('lunes')
+                    <label for="lunesVentas" class="block text-black text-sm font-bold mb-2">Lunes:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('lunesVentas') border-red-500 @enderror"
+                        id="lunesVentas" wire:model="lunesVentas" placeholder="Escribe la cantidad" />
+                    @error('lunesVentas')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="martes" class="block text-black text-sm font-bold mb-2">Martes(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martes') border-red-500 @enderror"
-                        id="martes" wire:model="martesVentas" placeholder="Escribe la cantidad" />
-                    @error('martes')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2"></div>
-            </div>
-            <div class="flex">
-                <div class="w-1/2 p-2">
-                    <label for="miércoles"
-                        class="block text-black text-sm font-bold mb-2">Miércoles(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miércoles') border-red-500 @enderror"
-                        id="miércoles" wire:model="miercolesVentas" placeholder="Escribe la cantidad" />
-                    @error('miércoles')
-                        <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="w-1/2 p-2">
-                    <label for="jueves" class="block text-black text-sm font-bold mb-2">Jueves(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('jueves') border-red-500 @enderror"
-                        id="jueves" wire:model="juevesVentas" placeholder="Escribe la cantidad" />
-                    @error('jueves')
+                    <label for="martesVentas" class="block text-black text-sm font-bold mb-2">Martes:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('martesVentas') border-red-500 @enderror"
+                        id="martesVentas" wire:model="martesVentas" placeholder="Escribe la cantidad" />
+                    @error('martesVentas')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
@@ -217,21 +193,22 @@
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="viernes" class="block text-black text-sm font-bold mb-2">Viernes(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernes') border-red-500 @enderror"
-                        id="viernes" wire:model="viernesVentas" placeholder="Escribe la cantidad" />
-                    @error('viernes')
+                    <label for="miercolesVentas"
+                        class="block text-black text-sm font-bold mb-2">Miércoles:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('miercolesVentas') border-red-500 @enderror"
+                        id="miercolesVentas" wire:model="miercolesVentas" placeholder="Escribe la cantidad" />
+                    @error('miercolesVentas')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
-                    <label for="sábado" class="block text-black text-sm font-bold mb-2">Sábado(Opcional):</label>
-                    <input type="number" min="0"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sábado') border-red-500 @enderror"
-                        id="sábado" wire:model="sabadoVentas" placeholder="Escribe la cantidad" />
-                    @error('sábado')
+                    <label for="juevesVentas" class="block text-black text-sm font-bold mb-2">Jueves:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('juevesVentas') border-red-500 @enderror"
+                        id="juevesVentas" wire:model="juevesVentas" placeholder="Escribe la cantidad" />
+                    @error('juevesVentas')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
@@ -240,11 +217,34 @@
             </div>
             <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label for="domingo" class="block text-black text-sm font-bold mb-2">Domingo(Opcional):</label>
-                    <input type="number" min="0"
+                    <label for="viernesVentas" class="block text-black text-sm font-bold mb-2">Viernes:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('viernesVentas') border-red-500 @enderror"
+                        id="viernesVentas" wire:model="viernesVentas" placeholder="Escribe la cantidad" />
+                    @error('viernesVentas')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-1/2 p-2">
+                    <label for="sabadoVentas" class="block text-black text-sm font-bold mb-2">Sábado:</label>
+                    <input type="number" min="0" max="1000"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('sabadoVentas') border-red-500 @enderror"
+                        id="sabadoVentas" wire:model="sabadoVentas" placeholder="Escribe la cantidad" />
+                    @error('sabadoVentas')
+                        <span
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-1/2"></div>
+            </div>
+            <div class="flex">
+                <div class="w-1/2 p-2">
+                    <label for="domingoVentas" class="block text-black text-sm font-bold mb-2">Domingo:</label>
+                    <input type="number" min="0" max="1000"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('domingo') border-red-500 @enderror"
-                        id="domingo" wire:model="domingoVentas" placeholder="Escribe la cantidad" />
-                    @error('domingo')
+                        id="domingoVentas" wire:model="domingoVentas" placeholder="Escribe la cantidad" />
+                    @error('domingoVentas')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror

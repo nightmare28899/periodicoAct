@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas, $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar;
+    public $tiros, $id_cliente, $status, $ventas, $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri;
 
     public function render()
     {
@@ -181,6 +181,21 @@ class Historial extends Component
                     'message' => ($this->status == 'error') ? '¡No puedes devolver más cantidad de la que hay!' : ''
                 ]);
             }
+        }
+    }
+
+    public function generarPDF($id, $idTipo) {
+        if (substr($idTipo, 0 , 6) == 'suscri') {
+            $this->suscri = Suscripcion::where('cliente_id', '=', $id)->get();
+            $domSubs = domicilioSubs::where('id', '=', $this->suscri[0]['domicilio_id'])->get();
+            $ruta = Ruta::where('id', '=', $domSubs[0]['ruta'])->get();
+
+            $pdf = PDF::loadView('livewire.pdf-suscripcion', [
+
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
+
         }
     }
 }

@@ -1,4 +1,4 @@
-<div class="w-3/5 mx-auto">
+<div class="mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Lista de Remisiones') }}
@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+        <div class="grid justify-items-start">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4 justify-self-center">
                 <div class="flex">
                     <div class="flex-none">
                         <h4>Busca el cliente:</h4>

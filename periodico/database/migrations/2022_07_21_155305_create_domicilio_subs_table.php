@@ -18,8 +18,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('cliente_id')->unsigned();
             $table->string('calle');
-            $table->integer('noint')->nullable();
-            $table->integer('noext');
+            $table->string('noint')->nullable();
+            $table->string('noext');
             $table->integer('ejemplares')->nullable();
             $table->string('colonia');
             $table->integer('cp');

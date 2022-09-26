@@ -262,8 +262,13 @@
                         <p class="mt-3">#DÍAS INICIO</p>
                         <p class="mt-3 mr-3 flex"><kbd class="mt-2">DEL:</kbd>
 
-                            <x-jet-input class="w-2/5" type="date" wire:model="from">
+                            <x-jet-input class="w-2/5 border-blue-500 @error('from') border-red-500 @enderror" type="date" wire:model="from">
                             </x-jet-input>
+                            @error('from')
+                            <span class="text-red-500 text-xs italic">
+                                {{ $message }}
+                            </span>
+                            @enderror
 
                             <kbd class="ml-3 mt-2">AL:</kbd>
                             <x-jet-input class="w-2/5" type="date" wire:model="to">

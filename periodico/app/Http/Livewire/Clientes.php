@@ -684,6 +684,17 @@ class Clientes extends Component
 
                     $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
 
+                    $this->validate([
+                        'lunesVentas' => 'required|numeric|min:0',
+                        'martesVentas' => 'required|numeric|min:0',
+                        'miercolesVentas' => 'required|numeric|min:0',
+                        'juevesVentas' => 'required|numeric|min:0',
+                        'viernesVentas' => 'required|numeric|min:0',
+                        'sabadoVentas' => 'required|numeric|min:0',
+                        'domingoVentas' => 'required|numeric|min:0',
+                        'hasta' => 'required',
+                    ]);
+
                     ventas::Create([
                         'idVenta' => 'venta' . $this->idSuscrip,
                         'tipo' => 'venta',
@@ -905,97 +916,105 @@ class Clientes extends Component
             if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
                 if ($this->cantEjem != 0) {
                     if ($this->domicilioSeleccionado) {
-                        /* foreach ($this->domicilioSeleccionado as $key => $value) {
-                        if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
-                            array_push($this->domicilioId, $value['id']);
+                        if ($this->from && $this->to) {
+                            $this->validate([
+                                'tarifaSeleccionada.*' => 'required',
+                                'cantEjem' => 'required',
+                                'tipoSuscripcionSeleccionada.*' => 'required',
+                                'periodoSuscripcionSeleccionada.*' => 'required',
+                                'diasSuscripcionSeleccionada.*' => 'required',
+                                'from' => 'required',
+                                'to' => 'required',
+                            ]);
+
+                            /* if ($this->inputCantidad) { */
+                            /* if ($this->inputCantidad <= $this->cantEjem) { */
+
+                            Suscripcion::Create([
+                                'idSuscripcion' => 'suscri' . $this->idSuscrip,
+                                'tipo' => 'suscripcion',
+                                'cliente_id' => $this->clienteSeleccionado['id'],
+                                'suscripcion' => $this->tipoSubscripcion,
+                                'esUnaSuscripcion' => $this->subscripcionEs,
+                                'tarifa' => $this->tarifaSeleccionada,
+                                'cantEjemplares' => (int) $this->cantEjem,
+                                'precio' => (int) $this->precio,
+                                'contrato' => $this->contrato,
+                                'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
+                                'periodo' => $this->periodoSuscripcionSeleccionada,
+                                'fechaInicio' => $this->from,
+                                'fechaFin' => $this->to,
+                                'dias' => $this->diasSuscripcionSeleccionada,
+                                'estado' => 'Activo',
+                                'lunes' => $this->lunes,
+                                'martes' => $this->martes,
+                                'miércoles' => $this->miércoles,
+                                'jueves' => $this->jueves,
+                                'viernes' => $this->viernes,
+                                'sábado' => $this->sábado,
+                                'domingo' => $this->domingo,
+                                'descuento' => $this->descuento,
+                                'observaciones' => $this->observacion,
+                                'importe' => (int) $this->total,
+                                'total' => $this->totalDesc,
+                                /* 'formaPago' => $this->formaPagoSeleccionada, */
+                                'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
+                            ]);
+
+                            $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+                            $ruta = Ruta::where('id', $this->domicilioSeleccionado[0]['ruta'])->get();
+
+                            $pdf = PDF::loadView('livewire.comprobantePDF', [
+                                'esUnaSuscripcion' => $this->subscripcionEs,
+                                'periodo' => $this->periodoSuscripcionSeleccionada,
+                                'cantEjemplares' => (int) $this->cantEjem,
+                                'observaciones' => $this->observacion,
+                                'total' => $this->total,
+                                'ruta' => $ruta,
+                                'cliente' => $this->clienteSeleccionado,
+                                'domicilio' => $datosCliente,
+                                'desde' => $this->from,
+                                'hasta' => $this->to,
+                                'fecha' => $this->date,
+                            ])
+                                ->setPaper('A5', 'landscape')
+                                ->output();
+
+                            Storage::disk('public')->put('suscripcion.pdf', $pdf);
+
+                            /* 'domicilio_id' =>  json_encode($this->domicilioId), */
+
+                            $this->status = 'created';
+
+                            /* $this->status = 'updated'; */
+
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
+                            ]);
+
+                            $this->suscripciones = false;
+
+                            $this->borrar();
+
+                            return Redirect::to('/PDFSuscripcion');
+
+                            /* foreach ($this->domicilioSeleccionado as $key => $value) {
+                            if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
+                                array_push($this->domicilioId, $value['id']);
+                            }
+                        } */
+
+
+                            /*return response()
+                                ->streamDownload(
+                                    fn () => print($pdfContent),
+                                    "tiros.pdf"
+                                );*/
+                        } else {
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => '¡Debes seleccionar la fecha!'
+                            ]);
                         }
-                    } */
-
-                        $this->validate([
-                            /* 'formaPagoSeleccionada' => 'required', */
-                            'tarifaSeleccionada' => 'required',
-                            'cantEjem' => 'required',
-                            'tipoSuscripcionSeleccionada' => 'required',
-                            'periodoSuscripcionSeleccionada' => 'required',
-                            'diasSuscripcionSeleccionada' => 'required',
-                        ]);
-
-                        /* if ($this->inputCantidad) { */
-                        /* if ($this->inputCantidad <= $this->cantEjem) { */
-
-                        Suscripcion::Create([
-                            'idSuscripcion' => 'suscri' . $this->idSuscrip,
-                            'tipo' => 'suscripcion',
-                            'cliente_id' => $this->clienteSeleccionado['id'],
-                            'suscripcion' => $this->tipoSubscripcion,
-                            'esUnaSuscripcion' => $this->subscripcionEs,
-                            'tarifa' => $this->tarifaSeleccionada,
-                            'cantEjemplares' => (int) $this->cantEjem,
-                            'precio' => (int) $this->precio,
-                            'contrato' => $this->contrato,
-                            'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
-                            'periodo' => $this->periodoSuscripcionSeleccionada,
-                            'fechaInicio' => $this->from,
-                            'fechaFin' => $this->to,
-                            'dias' => $this->diasSuscripcionSeleccionada,
-                            'estado' => 'Activo',
-                            'lunes' => $this->lunes,
-                            'martes' => $this->martes,
-                            'miércoles' => $this->miércoles,
-                            'jueves' => $this->jueves,
-                            'viernes' => $this->viernes,
-                            'sábado' => $this->sábado,
-                            'domingo' => $this->domingo,
-                            'descuento' => $this->descuento,
-                            'observaciones' => $this->observacion,
-                            'importe' => (int) $this->total,
-                            'total' => $this->totalDesc,
-                            /* 'formaPago' => $this->formaPagoSeleccionada, */
-                            'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
-                        ]);
-
-                        $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
-                        $ruta = Ruta::where('id', $this->domicilioSeleccionado[0]['ruta'])->get();
-
-                        $pdf = PDF::loadView('livewire.comprobantePDF', [
-                            'esUnaSuscripcion' => $this->subscripcionEs,
-                            'periodo' => $this->periodoSuscripcionSeleccionada,
-                            'cantEjemplares' => (int) $this->cantEjem,
-                            'observaciones' => $this->observacion,
-                            'total' => $this->total,
-                            'ruta' => $ruta,
-                            'cliente' => $this->clienteSeleccionado,
-                            'domicilio' => $datosCliente,
-                            'desde' => $this->from,
-                            'hasta' => $this->to,
-                            'fecha' => $this->date,
-                        ])
-                            ->setPaper('A5', 'landscape')
-                            ->output();
-
-                        Storage::disk('public')->put('suscripcion.pdf', $pdf);
-
-                        /* 'domicilio_id' =>  json_encode($this->domicilioId), */
-
-                        $this->status = 'created';
-
-                        /* $this->status = 'updated'; */
-
-                        $this->dispatchBrowserEvent('alert', [
-                            'message' => ($this->status == 'created') ? '¡Suscripción generada correctamente!' : ''
-                        ]);
-
-                        $this->suscripciones = false;
-
-                        $this->borrar();
-
-                        return Redirect::to('/PDFSuscripcion');
-
-                        /*return response()
-                            ->streamDownload(
-                                fn () => print($pdfContent),
-                                "tiros.pdf"
-                            );*/
                     } else {
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡Seleccione un domicilio!' : ''

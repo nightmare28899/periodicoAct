@@ -471,7 +471,6 @@ class GenerarR extends Component
                 for ($i = 0; $i < count($this->suscripcion); $i++) {
                     if (count($this->tiro) > 0) {
                         if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
-                            dd($this->suscripcion[$i]['cantEjemplares']);
                             Tiro::create([
                                 'fecha' => $this->dateF,
                                 'cliente' => $this->suscripcion[$i]['nombre'],

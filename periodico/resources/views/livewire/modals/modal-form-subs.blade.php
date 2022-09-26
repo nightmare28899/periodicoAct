@@ -30,7 +30,7 @@
             </div>
             <div class="w-1/2 p-2">
                 <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.(Opcional):</label>
-                <input type="number"
+                <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noint') border-red-500 @enderror"
                     id="noint" wire:model.defer="noint" placeholder="Escribe tu No. Int" min="0" />
                 @error('noint')
@@ -43,7 +43,7 @@
         <div class="flex">
             <div class="w-1/2 p-2">
                 <label for="noext" class="block text-black text-sm font-bold mb-2">No. Ext.:</label>
-                <input type="number" min="0"
+                <input type="text" min="0"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noext') border-red-500 @enderror"
                     id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                 @error('noext')
