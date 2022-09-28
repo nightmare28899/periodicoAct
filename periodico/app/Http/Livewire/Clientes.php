@@ -24,7 +24,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [];
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -74,7 +74,7 @@ class Clientes extends Component
 
     public function updatedQuery()
     {
-        if ($this->modalV == true) {
+        if ($this->modalV == true && $this->query != '') {
             $this->clientesBuscados = Cliente
                 ::join('domicilio', 'cliente.id', '=', 'domicilio.cliente_id')
                 ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
@@ -85,13 +85,25 @@ class Clientes extends Component
                 ->limit(6)
                 ->get()
                 ->toArray();
-        } else {
+        } else if ($this->suscripciones == true && $this->query != '') {
             $this->clientesBuscados = Cliente
                 ::where('razon_social', 'like', '%' . $this->query . '%')
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->limit(6)
                 ->get()
                 ->toArray();
+        } else if ($this->query != '') {
+            $this->buscarPrincipal = Cliente
+                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ->orWhere('nombre', 'like', '%' . $this->query . '%')
+                ->orWhere('rfc', 'like', '%' . $this->query . '%')
+                ->orWhere('email', 'like', '%' . $this->query . '%')
+                ->orWhere('telefono', 'like', '%' . $this->query . '%')
+                ->limit(10)
+                ->get();
+        } else if ($this->query == '') {
+            $this->buscarPrincipal = [];
+            $this->clientesBuscados = [];
         }
     }
 
@@ -287,8 +299,7 @@ class Clientes extends Component
         /* $this->clients = Cliente::all(); */
         /* if (count($this->clients) > 0) { */
         return view('livewire.clientes.view', [
-            'clientes' => Cliente::Where('nombre', 'LIKE', $keyWord)
-                ->paginate(10),
+            'clientes' => $this->buscarPrincipal,
             'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
         /* } else {
@@ -712,7 +723,7 @@ class Clientes extends Component
                         'total' => $this->total
                     ]);
 
-                    $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
+                    /*$pdf = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
                         'desde' => $this->desde,
@@ -729,7 +740,7 @@ class Clientes extends Component
                         ->setPaper('A5', 'landscape')
                         ->output();
 
-                    Storage::disk('public')->put('venta.pdf', $pdf);
+                    Storage::disk('public')->put('venta.pdf', $pdf);*/
 
                     $this->status = 'created';
                     $this->modalV = false;
@@ -740,7 +751,7 @@ class Clientes extends Component
 
                     $this->limpiarVentaModal();
 
-                    return Redirect::to('/PDFVenta');
+                    /*return Redirect::to('/PDFVenta');*/
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -913,7 +924,7 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             /* dd($this->suscripciones); */
-            if ($this->suscripciones->isEmpty() && $this->subscripcionEs == 'Apertura') {
+            if (/*$this->suscripciones->isEmpty() &&*/ $this->subscripcionEs == 'Apertura') {
                 if ($this->cantEjem != 0) {
                     if ($this->domicilioSeleccionado) {
                         if ($this->from && $this->to) {
