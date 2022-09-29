@@ -76,12 +76,8 @@ class Clientes extends Component
     {
         if ($this->modalV == true && $this->query != '') {
             $this->clientesBuscados = Cliente
-                ::join('domicilio', 'cliente.id', '=', 'domicilio.cliente_id')
-                ->join('ruta', 'domicilio.ruta_id', '=', 'ruta.id')
-                ->join('tarifa', 'domicilio.tarifa_id', '=', 'tarifa.id')
-                ->where('razon_social', 'like', '%' . $this->query . '%')
+                ::where('razon_social', 'like', '%' . $this->query . '%')
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->select('cliente.*', 'domicilio.cp', 'domicilio.calle', 'domicilio.localidad', 'domicilio.noint', 'domicilio.noext', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.referencia', 'domicilio.ruta_id', 'domicilio.tarifa_id', 'domicilio.cliente_id', 'ruta.nombreruta', 'tarifa.ordinario', 'tarifa.dominical', 'tarifa.tipo')
                 ->limit(6)
                 ->get()
                 ->toArray();

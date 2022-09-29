@@ -9,6 +9,10 @@
         <div class="grid justify-items-start">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4 justify-self-center">
                 <div class="flex">
+                    <div class="flex-none mx-1">
+                        <h4>Elige la fecha:</h4>
+                        <x-jet-input type="date" wire:model="fechaRemision"></x-jet-input>
+                    </div>
                     <div class="flex-none">
                         <h4>Busca el cliente:</h4>
                         <input type="text"

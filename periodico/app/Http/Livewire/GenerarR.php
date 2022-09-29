@@ -16,7 +16,7 @@ use Carbon\Carbon;
 
 class GenerarR extends Component
 {
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'venta', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision;
 
     public function mount()
     {
@@ -73,12 +73,16 @@ class GenerarR extends Component
         $this->ruta = Ruta::all();
         $this->invoices = Invoice::all();
         Carbon::setLocale('es');
-        $this->dateF = new Carbon($this->from);
+        $this->dateF = new Carbon();
         $this->dateFiltro = new Carbon($this->de);
         $this->tiro = Tiro::all();
 
         if ($this->rutaSeleccionada == "Todos" && $this->clienteBarraBuscadora) {
             $this->diaS = $this->dateF->translatedFormat('l');
+
+            if ($this->fechaRemision) {
+                $this->dateF = new Carbon($this->fechaRemision);
+                $this->diaS = $this->dateF->translatedFormat('l');
 
                 $this->ventaCopia = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -102,7 +106,30 @@ class GenerarR extends Component
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
+            } else {
+                $this->ventaCopia = ventas
+                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                    ->where(function ($query) {
+                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
+                            ->where('cliente.id', '=', $this->clienteBarraBuscadora['id']);
+                    })
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->get($this->diaS);
 
+                $this->suscripcionCopia = Suscripcion
+                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                    ->where(function ($query) {
+                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
+                            ->where('cliente.id', '=', $this->clienteBarraBuscadora['id']);
+                    })
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->get($this->diaS);
+            }
             if ($this->tipoSeleccionada == 'venta') {
 
                 if (count($this->ventaCopia) > 0 && $this->ventaCopia != null) {
@@ -117,7 +144,7 @@ class GenerarR extends Component
                     ]);
                 }
             } else {
-                if (count($this->suscripcionCopia) > 0 && $this->suscripcionCopia != null ) {
+                if (count($this->suscripcionCopia) > 0 && $this->suscripcionCopia != null) {
                     $this->status = 'created';
                     $this->dispatchBrowserEvent('alert', [
                         'message' => ($this->status == 'created') ? '¡Si tiene suscripciones!' : ''
