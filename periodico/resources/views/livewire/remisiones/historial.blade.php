@@ -99,21 +99,21 @@
                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                     disabled>Pagado
                                                 </button>
-                                                <button
+                                                {{--<button
                                                     wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                 >Ver PDF
-                                                </button>
+                                                </button>--}}
                                             @elseif ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta')
                                                 <button
                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                     disabled>Pagado
                                                 </button>
-                                                <button
+                                                {{--<button
                                                     wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                 >Ver PDF
-                                                </button>
+                                                </button>--}}
                                             @else
                                                 <button
                                                     wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
