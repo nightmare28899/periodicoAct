@@ -8,13 +8,13 @@
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
-                <div class="w-1/2 p-2">
+                <div class="w-64 p-2">
                     <input type="text"
                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                            name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                            wire:keydown.escape="resetear" wire:keydown.tab="resetear"
                            wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
-                           wire:keydown.enter="selectContact" autocomplete="off" />
+                           wire:keydown.enter="selectContact" autocomplete="off"/>
 
                     @if (!empty($query))
 
@@ -37,91 +37,104 @@
                     @endif
                 </div>
                 <br>
+
                 @if (count($tiros) > 0)
                     <div class="text-center overflow-x">
                         <div class="overflow-x-auto w-full">
                             <table class="table-auto border-solid border-2 border-dark">
                                 <thead>
-                                    <tr class='bg-gray-100'>
-                                        <th class='px-4 py-2'>Fecha</th>
-                                        {{-- <th class="px-6 py-2">idTipo</th> --}}
-                                        <th class='px-4 py-2'>Cliente</th>
-                                        <th class='px-4 py-2'>Entregar</th>
-                                        <th class='px-4 py-2'>Devuelto</th>
-                                        <th class='px-4 py-2'>Faltante</th>
-                                        <th class='px-4 py-2'>Venta</th>
-                                        <th class='px-4 py-2'>Precio</th>
-                                        <th class='px-4 py-2'>Importe</th>
-                                        <th class='px-6 py-2'>Dia</th>
-                                        <th class='px-6 py-2'>Nombre Ruta</th>
-                                        <th class='px-6 py-2'>Tipo</th>
-                                        <th class="px-6 py-2">Acciones</th>
-                                    </tr>
+                                <tr class='bg-gray-100'>
+                                    <th class='px-4 py-2'>Fecha</th>
+                                    {{-- <th class="px-6 py-2">idTipo</th> --}}
+                                    <th class='px-4 py-2'>Cliente</th>
+                                    <th class='px-4 py-2'>Entregar</th>
+                                    <th class='px-4 py-2'>Devuelto</th>
+                                    <th class='px-4 py-2'>Faltante</th>
+                                    <th class='px-4 py-2'>Venta</th>
+                                    <th class='px-4 py-2'>Precio</th>
+                                    <th class='px-4 py-2'>Importe</th>
+                                    <th class='px-6 py-2'>Dia</th>
+                                    <th class='px-6 py-2'>Nombre Ruta</th>
+                                    <th class='px-6 py-2'>Tipo</th>
+                                    <th class="px-6 py-2">Acciones</th>
+                                </tr>
                                 </thead>
+
                                 <tbody>
-                                    @foreach ($tiros as $tiro)
-                                        @if ($tiro->status == 'Pagado')
-                                            <tr>
-                                                <td class='px-4 py-2'>
-                                                    {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
-                                                <td class='px-4 py-2'>
-                                                    {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->venta }}</td>
-                                                <td class='px-4 py-2'>
-                                                    {{ sprintf('$ %s', number_format($tiro->precio)) }}
-                                                </td>
-                                                <td class='px-4 py-2'>
-                                                    {{ sprintf('$ %s', number_format($tiro->importe)) }}
-                                                </td>
-                                                <td class='px-4 py-2'>{{ $tiro->dia }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
-                                                <td><a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                        href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Facturar</a>
-                                                </td>
-                                            </tr>
-                                        @elseif ($tiro->status == 'facturado')
-                                            <tr>
-                                                <td class='px-4 py-2'>
-                                                    {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
-                                                <td class='px-4 py-2'>
-                                                    {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->venta }}</td>
-                                                <td class='px-4 py-2'>
-                                                    {{ sprintf('$ %s', number_format($tiro->precio)) }}
-                                                </td>
-                                                <td class='px-4 py-2'>
-                                                    {{ sprintf('$ %s', number_format($tiro->importe)) }}
-                                                </td>
-                                                <td class='px-4 py-2'>{{ $tiro->dia }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
-                                                <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
-                                                <td><a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                        disabled>Facturado</a>
-                                                </td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td></td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
+                                @foreach ($tiros as $tiro)
+                                    @if ($tiro->status == 'Pagado')
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                            <td class='px-4 py-2'>
+                                                {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->venta }}</td>
+                                            <td class='px-4 py-2'>
+                                                {{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $tiro->dia }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
+                                            <td>
+                                                <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                   href="{{ url('factura/' . $tiro->cliente_id . '/' . $tiro->idTipo) }}">Facturar</a>
+                                            </td>
+                                        </tr>
+                                    @elseif ($tiro->status == 'facturado')
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                            {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                            <td class='px-4 py-2'>
+                                                {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->venta }}</td>
+                                            <td class='px-4 py-2'>
+                                                {{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $tiro->dia }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
+                                            <td>
+                                                <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                   disabled>Facturado</a>
+                                            </td>
+                                        </tr>
+                                    @elseif (count($tiros) > 0 && $tiro->status != 'Pagado')
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center">No tiene facturas</td>
+
+                                        @break($tiro->status != 'Pagado')
+                                    @endif
+                                @endforeach
+
                                 </tbody>
+
                             </table>
+
                         </div>
                     </div>
                 @else
-                    <div class="text-center">
-                        <h1 class="text-2xl text-black font-bold">No hay registros</h1>
-                    </div>
+                    <p class="text-center">
+                        No tiene facturas
+                    </p>
                 @endif
             </div>
         </div>

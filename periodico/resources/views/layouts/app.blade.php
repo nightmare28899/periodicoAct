@@ -107,6 +107,7 @@
             case '¡No tiene ventas!':
             case '¡No tiene suscripciones!':
             case '¡Debes seleccionar la fecha!':
+            case '¡El cliente no tiene domicilio!':
                 toastr.error(event.detail.message, '¡Alerta!');
                 break;
             case '¡El cliente no tiene ningúna venta registrada!':

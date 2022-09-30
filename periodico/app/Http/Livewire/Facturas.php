@@ -8,7 +8,7 @@ use App\Models\Tiro;
 
 class Facturas extends Component
 {
-    public $query = '', $clienteSeleccionado, $tiros = [];
+    public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [];
     public function mount()
     {
         $this->resetear();
@@ -63,8 +63,10 @@ class Facturas extends Component
         if ($this->clienteSeleccionado) {
             $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
         } else {
-            $this->tiros = [];
+            $this->tiros = Tiro::all();
         }
-        return view('livewire.facturasListado');
+        return view('livewire.facturasListado', [
+            'tiros' => $this->tiros,
+        ]);
     }
 }

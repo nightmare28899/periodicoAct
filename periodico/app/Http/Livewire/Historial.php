@@ -14,15 +14,71 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas, $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri;
+    public $tiros, $id_cliente, $status, $ventas, $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri, $clienteSeleccionado, $clientesBuscados;
+
+    public function mount()
+    {
+        $this->resetear();
+    }
+
+    public function resetear()
+    {
+        $this->query = '';
+        $this->clientesBuscados = [];
+        $this->highlightIndex = 0;
+    }
+
+    public function incrementHighlight()
+    {
+        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
+            $this->highlightIndex = 0;
+            return;
+        }
+        $this->highlightIndex++;
+    }
+
+    public function decrementHighlight()
+    {
+        if ($this->highlightIndex === 0) {
+            $this->highlightIndex = count($this->clientesBuscados) - 1;
+            return;
+        }
+        $this->highlightIndex--;
+    }
+
+    public function selectContact($pos)
+    {
+        $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
+        if ($this->clienteSeleccionado) {
+            $this->clienteSeleccionado;
+            $this->domicilioSeleccionado = [];
+            $this->resetear();
+        }
+    }
+
+    public function updatedQuery()
+    {
+        $this->clientesBuscados = Cliente
+            ::where('razon_social', 'like', '%' . $this->query . '%')
+            ->orWhere('nombre', 'like', '%' . $this->query . '%')
+            ->limit(6)
+            ->get()
+            ->toArray();
+
+    }
 
     public function render()
     {
         $this->date = Carbon::now()->format('d-m-Y');
-        $this->tiros = Tiro::all();
+        if ($this->clienteSeleccionado) {
+            $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+        } else {
+            $this->tiros = Tiro::all();
+        }
         return view('livewire.remisiones.historial');
     }
 
@@ -32,31 +88,36 @@ class Historial extends Component
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
                 ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
-                ->where('cliente.id', '=',  $this->id_cliente)
+                ->where('cliente.id', '=', $this->id_cliente)
                 ->get();
-            $this->ventas = Suscripcion::Where('cliente_id', $this->id_cliente)->get();
+            $this->suscripcion = Suscripcion::Where('cliente_id', $this->id_cliente)->get();
             $pdf = Pdf::loadView('livewire.pagado', [
-                'total' => $this->ventas[0]['total'],
+                'total' => $this->suscripcion[0]['total'],
                 'cliente' => $this->cliente[0],
-                'desde' => $this->ventas[0]['desde'],
-                'hasta' => $this->ventas[0]['hasta'],
-                'lunes' => $this->ventas[0]['lunes'],
-                'martes' => $this->ventas[0]['martes'],
-                'miercoles' => $this->ventas[0]['miercoles'],
-                'jueves' => $this->ventas[0]['jueves'],
-                'viernes' => $this->ventas[0]['viernes'],
-                'sabado' => $this->ventas[0]['sabado'],
-                'domingo' => $this->ventas[0]['domingo'],
+                'desde' => $this->suscripcion[0]['desde'],
+                'hasta' => $this->suscripcion[0]['hasta'],
+                'lunes' => $this->suscripcion[0]['lunes'],
+                'martes' => $this->suscripcion[0]['martes'],
+                'miercoles' => $this->suscripcion[0]['miercoles'],
+                'jueves' => $this->suscripcion[0]['jueves'],
+                'viernes' => $this->suscripcion[0]['viernes'],
+                'sabado' => $this->suscripcion[0]['sabado'],
+                'domingo' => $this->suscripcion[0]['domingo'],
                 'fecha' => $this->date,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
+
+            $this->tiro = Tiro
+                ::where('cliente_id', $this->id_cliente)
+                ->where('idTipo', '=', $idTipo)
+                ->update(['status' => 'Pagado']);
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->cliente = Cliente
                 ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
-                ->where('cliente.id', '=',  $this->id_cliente)
+                ->where('cliente.id', '=', $this->id_cliente)
                 ->get();
 
             $this->ventas = ventas::Where('cliente_id', $this->id_cliente)->get();
@@ -76,8 +137,13 @@ class Historial extends Component
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
+
+            $this->tiro = Tiro
+                ::where('cliente_id', $this->id_cliente)
+                ->where('idTipo', '=', $idTipo)
+                ->update(['status' => 'Pagado']);
         }
-        $this->tiro = Tiro::Where('cliente_id', $this->id_cliente)->update(['status' => 'Pagado']);
+
 
         Storage::disk('public')->put('pagado.pdf', $pdf);
 
@@ -184,8 +250,9 @@ class Historial extends Component
         }
     }
 
-    public function generarPDF($id, $idTipo) {
-        if (substr($idTipo, 0 , 6) == 'suscri') {
+    public function generarPDF($id, $idTipo)
+    {
+        if (substr($idTipo, 0, 6) == 'suscri') {
             $this->suscri = Suscripcion::where('cliente_id', '=', $id)->get();
             $cliente = Cliente::find($id);
             dd($this->suscri[0]);

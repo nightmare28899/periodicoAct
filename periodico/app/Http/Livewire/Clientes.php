@@ -456,8 +456,11 @@ class Clientes extends Component
             'telefono' => 'required|max:10',
             'email' => 'required|string|unique:users',
             'email_cobranza' => 'required|string',
+            'rfc' => 'required',
+            'rfc_input' => 'required',
+            'clasificacion' => 'required',
 
-            'calle' => 'required',
+            /*'calle' => 'required',
             'noext' => 'required|numeric',
             'colonia' => 'required',
             'cp' => 'required|numeric',
@@ -465,10 +468,7 @@ class Clientes extends Component
             'municipio' => 'required',
             'referencia' => 'required',
             'ruta_id' => 'required',
-            'tarifa_id' => 'required',
-            'clasificacion' => 'required',
-            'rfc' => 'required',
-            'rfc_input' => 'required',
+            'tarifa_id' => 'required',*/
         ]);
 
         Cliente::Create([
@@ -485,7 +485,7 @@ class Clientes extends Component
             'razon_social' => $this->razon_social ? $this->razon_social : null,
         ]);
 
-        Domicilio::Create([
+        /*Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::latest('id')->first()->id,
             'calle' => $this->calle,
             'noint' => $this->noint ? $this->noint : 0,
@@ -497,7 +497,7 @@ class Clientes extends Component
             'ruta_id' => $this->ruta_id,
             'tarifa_id' => $this->tarifa_id,
             'referencia' => $this->referencia,
-        ]);
+        ]);*/
 
         /* $this->resetInput(); */
         $this->emit('closeModal');
@@ -660,6 +660,67 @@ class Clientes extends Component
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
     }
+    public function abrirModalDomicilio(){
+        {
+            $this->clienteSeleccionado ? $this->clienteModalOpen = true : $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
+            ]);
+            $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
+
+            if ($domicilio) {
+                $Domicilio = Domicilio::find($this->clienteSeleccionado['id']);
+                $this->domicilio_id = $this->clienteSeleccionado['id'];
+                $this->calle = $Domicilio->calle;
+                $this->noint = $Domicilio->noint;
+                $this->noext = $Domicilio->noext;
+                $this->colonia = $Domicilio->colonia;
+                $this->cp = $Domicilio->cp;
+                $this->localidad = $Domicilio->localidad;
+                $this->municipio = $Domicilio->municipio;
+                $this->referencia = $Domicilio->referencia;
+                $this->ruta_id = $Domicilio->ruta_id;
+                $this->tarifa_id = $Domicilio->tarifa_id;
+
+                $this->status = 'updated';
+            }
+        }
+    }
+    public function crearDomicilio(){
+        $this->validate(
+            [
+                'calle' => 'required',
+                'noext' => 'required',
+                'colonia' => 'required',
+                'cp' => 'required',
+                'localidad' => 'required',
+                'municipio' => 'required',
+                'ruta_id' => 'required',
+                'tarifa_id' => 'required',
+                'referencia' => 'required',
+            ]
+        );
+
+        Domicilio::Create([
+            'cliente_id' => $this->cliente_id = Cliente::latest('id')->first()->id,
+            'calle' => $this->calle,
+            'noint' => $this->noint ? $this->noint : 0,
+            'noext' => $this->noext,
+            'colonia' => $this->colonia,
+            'cp' => $this->cp,
+            'localidad' => $this->localidad,
+            'municipio' => $this->municipio,
+            'ruta_id' => $this->ruta_id,
+            'tarifa_id' => $this->tarifa_id,
+            'referencia' => $this->referencia,
+        ]);
+
+        $this->status = 'created';
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Domicilio creado correctamente!' : ''
+        ]);
+
+        $this->clienteModalOpen = false;
+    }
     public function crearVenta()
     {
         $this->status = 'created';
@@ -681,44 +742,62 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
-                    $lunesTotal = (int)$this->lunesVentas * $this->clienteSeleccionado['ordinario'];
-                    $martesTotal = (int)$this->martesVentas * $this->clienteSeleccionado['ordinario'];
-                    $miercolesTotal = (int)$this->miercolesVentas * $this->clienteSeleccionado['ordinario'];
-                    $juevesTotal = (int)$this->juevesVentas * $this->clienteSeleccionado['ordinario'];
-                    $viernesTotal = (int)$this->viernesVentas * $this->clienteSeleccionado['ordinario'];
-                    $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
-                    $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
+                    /*i need to know if the client has a domicilio*/
+                    $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
+                   if ($domicilio) {
+                       $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
+                       $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
+                       $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
+                       $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
+                       $juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
+                       $viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
+                       $sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
+                       $domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
 
-                    $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+                       $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
 
-                    $this->validate([
-                        'lunesVentas' => 'required|numeric|min:0',
-                        'martesVentas' => 'required|numeric|min:0',
-                        'miercolesVentas' => 'required|numeric|min:0',
-                        'juevesVentas' => 'required|numeric|min:0',
-                        'viernesVentas' => 'required|numeric|min:0',
-                        'sabadoVentas' => 'required|numeric|min:0',
-                        'domingoVentas' => 'required|numeric|min:0',
-                        'hasta' => 'required',
-                    ]);
+                       $this->validate([
+                           'lunesVentas' => 'required|numeric|min:0',
+                           'martesVentas' => 'required|numeric|min:0',
+                           'miercolesVentas' => 'required|numeric|min:0',
+                           'juevesVentas' => 'required|numeric|min:0',
+                           'viernesVentas' => 'required|numeric|min:0',
+                           'sabadoVentas' => 'required|numeric|min:0',
+                           'domingoVentas' => 'required|numeric|min:0',
+                           'hasta' => 'required',
+                       ]);
 
-                    ventas::Create([
-                        'idVenta' => 'venta' . $this->idSuscrip,
-                        'tipo' => 'venta',
-                        'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
-                        'domicilio_id' => $this->domicilio_id = Domicilio::where('cliente_id', $this->clienteSeleccionado['cliente_id'])->first()->id,
-                        'desde' => $this->desde,
-                        'hasta' => $this->hasta,
-                        'lunes' => $this->lunesVentas,
-                        'martes' => $this->martesVentas,
-                        'miércoles' => $this->miercolesVentas,
-                        'jueves' => $this->juevesVentas,
-                        'viernes' => $this->viernesVentas,
-                        'sábado' => $this->sabadoVentas,
-                        'domingo' => $this->domingoVentas,
-                        'total' => $this->total
-                    ]);
+                       ventas::Create([
+                           'idVenta' => 'venta' . $this->idSuscrip,
+                           'tipo' => 'venta',
+                           'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
+                           'domicilio_id' =>  $domicilio->id,
+                           'desde' => $this->desde,
+                           'hasta' => $this->hasta,
+                           'lunes' => $this->lunesVentas,
+                           'martes' => $this->martesVentas,
+                           'miércoles' => $this->miercolesVentas,
+                           'jueves' => $this->juevesVentas,
+                           'viernes' => $this->viernesVentas,
+                           'sábado' => $this->sabadoVentas,
+                           'domingo' => $this->domingoVentas,
+                           'total' => $this->total
+                       ]);
 
+                       $this->status = 'created';
+                       $this->modalV = false;
+
+                       $this->dispatchBrowserEvent('alert', [
+                           'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
+                       ]);
+
+                       $this->limpiarVentaModal();
+                   } else {
+                       $this->status = 'error';
+                       $this->dispatchBrowserEvent('alert', [
+                           'message' => ($this->status == 'error') ? '¡El cliente no tiene domicilio!' : ''
+                       ]);
+                   }
                     /*$pdf = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
@@ -737,16 +816,6 @@ class Clientes extends Component
                         ->output();
 
                     Storage::disk('public')->put('venta.pdf', $pdf);*/
-
-                    $this->status = 'created';
-                    $this->modalV = false;
-
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
-                    ]);
-
-                    $this->limpiarVentaModal();
-
                     /*return Redirect::to('/PDFVenta');*/
                 } else {
                     $this->dispatchBrowserEvent('alert', [

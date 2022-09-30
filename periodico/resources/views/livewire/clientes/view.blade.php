@@ -64,9 +64,6 @@
                 @if ($isModalOpen)
                     @include('livewire.clientes.create')
                 @endif
-                @if ($clienteModalOpen)
-                    @include('livewire.domicilios.create')
-                @endif
                 @if ($ejemplarModalOpen)
                     @include('livewire.ejemplares.create')
                 @endif
@@ -84,6 +81,9 @@
                 @endif
                 @if ($modalV)
                     @include('livewire.modals.modal-form-venta')
+                @endif
+                @if ($clienteModalOpen)
+                    @include('livewire.domicilios.create')
                 @endif
 
                 <div class="overflow-x-auto w-full">

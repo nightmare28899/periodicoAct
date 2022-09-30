@@ -134,73 +134,86 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($ventaCopia as $result)
-                                @if ($result->{$diaS} != 0)
-                                    <tr>
-                                        <td class='px-4 py-2'>
-                                            <div class="form-group">
-                                                <input wire:model="clienteSeleccionado" type="checkbox"
-                                                       value={{ $result->idVenta }}>
-                                                <label class="text-black"
-                                                       for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-2'>
-                                            {{ $result->nombre ? $result->nombre : $result->razon_social }}</td>
-                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                        <td class='px-4 py-2'>{{ $devuelto }}</td>
-                                        <td class='px-4 py-2'>{{ $faltante }}</td>
-                                        <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                        <td class='px-4 py-2'>
-                                            ${{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
-                                        </td>
-                                        <td class='px-4 py-2'>
-                                            ${{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
-                                        </td>
-                                        <td class='px-4 py-2'>{{ $diaS }}</td>
-                                        <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
-                                        <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
-                                    </tr>
-                                @else
-                                    <tr>
-
-                                    </tr>
-                                @endif
-                            @endforeach
-                            @foreach ($suscripcionCopia as $suscri)
-                                @if ($suscri->{$diaS} != 0)
-                                    <tr>
-                                        <td class='px-4 py-2'>
-                                            <div class="form-group">
-                                                <input wire:model="clienteSeleccionado" type="checkbox"
-                                                       value={{ $suscri->idSuscripcion }}>
-                                                <label class="text-black"
-                                                       for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-2'>
-                                            {{ $suscri->nombre ? $suscri->nombre : $suscri->razon_social }}</td>
-                                        <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
-                                        <td class='px-4 py-2'>{{ $devuelto }}</td>
-                                        <td class='px-4 py-2'>{{ $faltante }}</td>
-                                        <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
-                                        <td class='px-4 py-2'>
-                                            ${{ $suscri->tarifa == 'Base' ? 330 : 300 }}
-                                        </td>
-                                        <td class='px-4 py-2'>
-                                            ${{ $suscri->importe }}
-                                        </td>
-                                        <td class='px-4 py-2'>{{ $diaS }}</td>
-                                        <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
-                                        <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
-
-                                    </tr>
-                                @else
-                                    <tr>
-
-                                    </tr>
-                                @endif
-                            @endforeach
+                            @if (count($this->ventaCopia) > 0)
+                                @foreach ($ventaCopia as $result)
+                                    @if ($result->{$diaS} != 0)
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                <div class="form-group">
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                           value={{ $result->idVenta }}>
+                                                    <label class="text-black"
+                                                           for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ $result->nombre ? $result->nombre : $result->razon_social }}</td>
+                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>{{ $devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2'>
+                                                ${{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                ${{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $diaS }}</td>
+                                            <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="11" class="text-center">
+                                                No tiene ventas para este dia
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @else
+                                <tr>
+                                </tr>
+                            @endif
+                            @if (count($suscripcionCopia) > 0)
+                                @foreach ($suscripcionCopia as $suscri)
+                                    @if ($suscri->{$diaS} != 0)
+                                        <tr>
+                                            <td class='px-4 py-2'>
+                                                <div class="form-group">
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                           value={{ $suscri->idSuscripcion }}>
+                                                    <label class="text-black"
+                                                           for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                {{ $suscri->nombre ? $suscri->nombre : $suscri->razon_social }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
+                                            <td class='px-4 py-2'>{{ $devuelto }}</td>
+                                            <td class='px-4 py-2'>{{ $faltante }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->cantEjemplares }}</td>
+                                            <td class='px-4 py-2'>
+                                                ${{ $suscri->tarifa == 'Base' ? 330 : 300 }}
+                                            </td>
+                                            <td class='px-4 py-2'>
+                                                ${{ $suscri->importe }}
+                                            </td>
+                                            <td class='px-4 py-2'>{{ $diaS }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
+                                            <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="11" class="text-center">
+                                                No tiene suscripcion
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @else
+                                <tr>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>
