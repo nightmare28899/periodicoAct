@@ -18,7 +18,7 @@ use App\Http\Livewire\PDFVenta;
 use App\Http\Livewire\PDFSuscripcion;
 use App\Http\Livewire\PDFTiro;
 use App\Http\Livewire\PDFPago;
-use App\Http\Livewire\PdfRemision;
+use App\Http\Livewire\PDFRemision;
 use App\Http\Livewire\PdfRemisionesP;
 
 /*
