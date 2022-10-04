@@ -14,8 +14,23 @@
     .centrado {
         text-align: center;
     }
+
+    #movido {
+        position: absolute;
+        left: 1320px;
+        margin-top: -45px;
+    }
 </style>
-<h1>Lista del Tiro</h1>
+<h3>Lista del Tiro, del
+    dia: {{ $diaS }}</h3>
+    @if($filtro != '')
+        @if(count($ventas) > 0)
+            <h3>De la ruta: {{$ventas[0]['nombreruta']}} </h3>
+        @elseif (count($suscripcion) > 0)
+            <h3>De la ruta: {{$suscripcion[0]['nombreruta']}}</h3>
+        @endif
+    @endif
+<h3 id="movido">Fecha: {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</h3>
 <table class="a centrado">
     <thead>
     <tr class="bg-gray-500 text-white">
@@ -33,7 +48,8 @@
     @foreach ($ventas as $result)
         @if ($result->{$diaS} != 0)
             <tr>
-                <td>{{ $result->nombreruta }}, Tipo: {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }}, Cobrador: {{ $result->cobrador }}</td>
+                <td>{{ $result->nombreruta }}, Tipo: {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }},
+                    Cobrador: {{ $result->cobrador }}</td>
                 <td>{{ $diaS }} </td>
                 <td>Venta/Cliente</td>
                 @if ($result->nombre)
@@ -56,7 +72,8 @@
     @foreach ($suscripcion as $suscri)
         @if ($suscri->{$diaS} != 0)
             <tr>
-                <td class="border">{{ $suscri->nombreruta }}, Tipo: {{ $suscri->tiporuta }}, Repartidor: {{ $suscri->repartidor }}, Cobrador: {{ $suscri->cobrador }}</td>
+                <td class="border">{{ $suscri->nombreruta }}, Tipo: {{ $suscri->tiporuta }},
+                    Repartidor: {{ $suscri->repartidor }}, Cobrador: {{ $suscri->cobrador }}</td>
                 <td class="border">{{ $diaS }} </td>
                 <td>Suscripción</td>
                 <td class="border">{{ $suscri->nombre }}</td>

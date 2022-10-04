@@ -137,9 +137,7 @@
             style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
             concepto</p>
     </div>
-    <div class="logoCentrado">
-        <img src="img/pagado.png" width="260" height="260" alt="logo">
-    </div>
+
     <table>
         <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
         <tr>
@@ -262,9 +260,7 @@
             style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
             concepto</p>
     </div>
-    <div class="logoCentrado">
-        <img src="img/pagado.png" width="260" height="260" alt="logo">
-    </div>
+
     <table>
         <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
         <tr>

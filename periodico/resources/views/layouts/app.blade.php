@@ -116,6 +116,7 @@
             case '¡Cliente actualizado correctamente!':
             case '¡Ruta actualizada correctamente!':
             case '¡Tarifa actualizada correctamente!':
+            case '¡Domicilio actualizado correctamente!':
                 toastr.info(event.detail.message, '¡Actualizado!');
                 break;
             default:

@@ -452,7 +452,6 @@ class GenerarR extends Component
                                 'nombreruta' => $this->ventas[$i]['nombreruta'],
                                 'tipo' => $this->ventas[$i]['tiporuta'],
                             ]);
-                            $this->toast();
                         } else {
                             $this->status = 'error';
                             $this->dispatchBrowserEvent('alert', [
@@ -477,7 +476,6 @@ class GenerarR extends Component
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
                             'tipo' => $this->ventas[$i]['tiporuta'],
                         ]);
-                        $this->toast();
                     }
                 }
             } /* else {
@@ -508,7 +506,6 @@ class GenerarR extends Component
                                 'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                                 'tipo' => $this->suscripcion[$i]['tiporuta'],
                             ]);
-                            $this->toast();
                         } else {
                             $this->status = 'error';
                             $this->dispatchBrowserEvent('alert', [
@@ -533,7 +530,6 @@ class GenerarR extends Component
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
                         ]);
-                        $this->toast();
                     }
                 }
             } /* else {
@@ -548,6 +544,8 @@ class GenerarR extends Component
             $this->clienteSeleccionado = [];
 
             Storage::disk('public')->put('remision.pdf', $pdf);
+
+            $this->toast();
 
             return Redirect::to('/PDFRemision');
         } else {

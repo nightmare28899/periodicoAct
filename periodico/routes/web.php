@@ -18,7 +18,8 @@ use App\Http\Livewire\PDFVenta;
 use App\Http\Livewire\PDFSuscripcion;
 use App\Http\Livewire\PDFTiro;
 use App\Http\Livewire\PDFPago;
-use App\Http\Livewire\PDFRemision;
+use App\Http\Livewire\PdfRemision;
+use App\Http\Livewire\PdfRemisionesP;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFTiro', PDFTiro::class)->name('PDFTiro');
     Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
+    Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

@@ -449,6 +449,8 @@ class Clientes extends Component
     }
     public function store()
     {
+
+        dd($this->regimen_fiscal);
         $this->validate([
             'estado' => 'required',
             'pais' => 'required',
