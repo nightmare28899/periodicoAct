@@ -93,6 +93,7 @@ class Clientes extends Component
             $this->buscarPrincipal = Cliente
                 ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
+                ->limit(10)
                 ->get();
         } else if ($this->query == '') {
             $this->buscarPrincipal = [];
