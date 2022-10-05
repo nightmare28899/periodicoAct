@@ -91,7 +91,7 @@
                     <table class="table-auto w-full text-center">
                         <thead>
                             <tr class="bg-gray-500 text-white">
-                                <th class="px-4 py-2 w-20">No.</th>
+                                <th class="px-4 py-2 w-20">ID</th>
                                 <th class="px-4 py-2 w-20">Clasificación</th>
                                 <th class="px-4 py-2 w-20">RFC</th>
                                 <th class="px-4 py-2 w-20">RFC Escrito</th>
@@ -110,7 +110,7 @@
                              @if ($clientes)
                                 @foreach ($clientes as $cliente)
                                     <tr>
-                                        <td class="border">{{ $loop->iteration }}</td>
+                                        <td class="border">{{ $cliente->id }}</td>
                                         <td class="border">{{ $cliente->clasificacion }}</td>
                                         <td class="border">{{ $cliente->rfc }}</td>
                                         <td class="border">{{ $cliente->rfc_input }}</td>

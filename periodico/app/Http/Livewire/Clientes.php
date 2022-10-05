@@ -89,10 +89,10 @@ class Clientes extends Component
                 ->get()
                 ->toArray();
         } else if ($this->query != '') {
+            $encontrado = Cliente::find($this->query);
             $this->buscarPrincipal = Cliente
                 ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->limit(10)
                 ->get();
         } else if ($this->query == '') {
             $this->buscarPrincipal = [];
