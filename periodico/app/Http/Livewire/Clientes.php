@@ -90,11 +90,8 @@ class Clientes extends Component
                 ->toArray();
         } else if ($this->query != '') {
             $this->buscarPrincipal = Cliente
-                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->orWhere('rfc', 'like', '%' . $this->query . '%')
-                ->orWhere('email', 'like', '%' . $this->query . '%')
-                ->orWhere('telefono', 'like', '%' . $this->query . '%')
                 ->limit(10)
                 ->get();
         } else if ($this->query == '') {

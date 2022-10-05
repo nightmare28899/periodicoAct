@@ -25,11 +25,7 @@ class Tarifas extends Component
     {
         $keyWord = '%' . $this->keyWord . '%';
         return view('livewire.tarifas.view', [
-            'tarifas' => Tarifa::first()
-                ->orWhere('tipo', 'LIKE', $keyWord)
-                ->orWhere('ordinario', 'LIKE', $keyWord)
-                ->orWhere('dominical', 'LIKE', $keyWord)
-                ->orWhere('created_at', 'LIKE', $keyWord)
+            'tarifas' => Tarifa::Where('id', '=', $keyWord)
                 ->paginate(10),
         ]);
     }

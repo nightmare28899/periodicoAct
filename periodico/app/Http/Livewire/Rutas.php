@@ -20,12 +20,8 @@ class Rutas extends Component
     {
         $keyWord = '%' . $this->keyWord . '%';
         return view('livewire.rutas.view', [
-            'rutas' => Ruta::first()
+            'rutas' => Ruta::Where('id', '=', $keyWord)
                 ->orWhere('nombreruta', 'LIKE', $keyWord)
-                ->orWhere('tiporuta', 'LIKE', $keyWord)
-                ->orWhere('repartidor', 'LIKE', $keyWord)
-                ->orWhere('cobrador', 'LIKE', $keyWord)
-                ->orWhere('ctaespecial', 'LIKE', $keyWord)
                 ->paginate(10),
         ]);
     }

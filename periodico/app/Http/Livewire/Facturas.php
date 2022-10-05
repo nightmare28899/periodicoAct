@@ -51,7 +51,7 @@ class Facturas extends Component
     public function updatedQuery()
     {
         $this->clientesBuscados = Cliente
-            ::where('razon_social', 'like', '%' . $this->query . '%')
+            ::where('id', '=',  $this->query)
             ->orWhere('nombre', 'like', '%' . $this->query . '%')
             ->limit(6)
             ->get()
