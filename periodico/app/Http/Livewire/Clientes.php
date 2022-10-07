@@ -76,14 +76,14 @@ class Clientes extends Component
     {
         if ($this->modalV == true && $this->query != '') {
             $this->clientesBuscados = Cliente
-                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->limit(6)
                 ->get()
                 ->toArray();
         } else if ($this->suscripciones == true && $this->query != '') {
             $this->clientesBuscados = Cliente
-                ::where('razon_social', 'like', '%' . $this->query . '%')
+                ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->limit(6)
                 ->get()
