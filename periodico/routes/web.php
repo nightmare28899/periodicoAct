@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/crearVenta', ClienteBuscador::class)->name('CrearVenta');
     Route::get('/crearSuscripcion', SuscripcionBuscador::class)->name('CrearSuscripcion');
     Route::get('/remisiones', GenerarR::class);
-    Route::get('/historialR', Historial::class);
+    Route::get('/historialR/{editar}', Historial::class);
     Route::get('/Facturas', Facturas::class)->name('Facturas');
     Route::get('/historialF', HistorialF::class)->name('historialF');
     Route::get('/PDFVenta', PDFVenta::class)->name('PDFVenta');

@@ -14,11 +14,8 @@
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Cliente">--}}
                         <input type="text"
-                               class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                               name="search" placeholder="Buscar Cliente por nombre o id" wire:model="query"
-                               wire:keydown.escape="resetear" wire:keydown.tab="resetear"
-                               wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
-                               wire:keydown.enter="selectContact" autocomplete="off" />
+                               class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                               name="search" placeholder="Buscar Cliente por Nombre o ID" wire:model="query" autocomplete="off" />
                     </div>
                     <div class="flex-none mx-1">
                         {{-- <a href="{{ route('CrearSuscripcion') }}" class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">Generar suscripción</a> --}}
@@ -93,8 +90,8 @@
                             <tr class="bg-gray-500 text-white">
                                 <th class="px-4 py-2 w-20">ID</th>
                                 <th class="px-4 py-2 w-20">Clasificación</th>
+                                <th class="px-4 py-2 w-20">Persona</th>
                                 <th class="px-4 py-2 w-20">RFC</th>
-                                <th class="px-4 py-2 w-20">RFC Escrito</th>
                                 <th class="px-4 py-2 w-20">Nombre</th>
                                 <th class="px-4 py-2 w-20">Estado</th>
                                 <th class="px-4 py-2 w-20">País</th>
@@ -175,7 +172,7 @@
                                 @endforeach
                              @else
                                 <tr>
-                                    <td colspan="13" class="border text-center">No hay registros</td>
+                                    <td colspan="13" class="border text-center font-bold">Busca Registros</td>
                                 </tr>
                             @endif
                         </tbody>

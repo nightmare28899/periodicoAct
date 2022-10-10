@@ -44,7 +44,7 @@ class CancelarFactura extends Component
                 'message' => ($this->status == 'created') ? '¡Se cancelo la factura!' : ''
             ]);
 
-            return redirect('/tiro/');
+            return redirect('/historialF');
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Primero escoge el motivo!' : ''

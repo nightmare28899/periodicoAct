@@ -8,7 +8,7 @@ use App\Models\Tiro;
 
 class Facturas extends Component
 {
-    public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [];
+    public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [], $fechaRemision;
     public function mount()
     {
         $this->resetear();
@@ -60,8 +60,15 @@ class Facturas extends Component
 
     public function render()
     {
-        if ($this->clienteSeleccionado) {
+        if ($this->clienteSeleccionado && $this->fechaRemision) {
+            $this->tiros = Tiro::where(function ($query) {
+                $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                    ->where('fecha', $this->fechaRemision);
+            })->get();
+        } else if ($this->clienteSeleccionado) {
             $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+        } else if ($this->fechaRemision) {
+            $this->tiros = Tiro::where('fecha', $this->fechaRemision)->get();
         } else {
             $this->tiros = Tiro::all();
         }

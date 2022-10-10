@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Carbon;
 use Livewire\Component;
 use App\Models\Cliente;
 use App\Models\domicilioSubs;
@@ -259,6 +260,8 @@ class Factura extends Component
 
         try {
             if ($facturama->statusCode == 201) {
+
+                $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
                 Invoice::create([
                     'invoice_id' => $facturama->data->Id,
                     'invoice_date' => $facturama->data->Date,

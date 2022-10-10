@@ -257,7 +257,7 @@ class GenerarR extends Component
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
-                            'fecha' => $this->dateF,
+                            'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->ventas[$i]['nombre'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
@@ -272,6 +272,7 @@ class GenerarR extends Component
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
                             'status' => 'sin pagar',
                             'tipo' => $this->ventas[$i]['tiporuta'],
+                            'domicilio_id' => $this->ventas[$i]->domicilio_id,
                         ]);
                         $this->modalRemision = false;
                         $this->showingModal = true;
@@ -289,7 +290,7 @@ class GenerarR extends Component
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
                         Tiro::create([
-                            'fecha' => $this->dateF,
+                            'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->suscripcion[$i]['nombre'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
@@ -304,6 +305,7 @@ class GenerarR extends Component
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                             'status' => 'sin pagar',
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
+                            'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                         ]);
                         $this->modalRemision = false;
                         $this->showingModal = true;
@@ -436,7 +438,7 @@ class GenerarR extends Component
                     if (count($this->tiro) > 0) {
                         if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) {
                             Tiro::create([
-                                'fecha' => $this->dateF,
+                                'fecha' => $this->dateF->format('Y-m-d'),
                                 'cliente' => $this->ventas[$i]['nombre'],
                                 'entregar' => $this->ventas[$i]->{$this->diaS},
                                 'devuelto' => $this->devuelto,
@@ -451,6 +453,7 @@ class GenerarR extends Component
                                 'idTipo' => $this->ventas[$i]['idVenta'],
                                 'nombreruta' => $this->ventas[$i]['nombreruta'],
                                 'tipo' => $this->ventas[$i]['tiporuta'],
+                                'domicilio_id' => $this->ventas[$i]['domicilio_id'],
                             ]);
                         } else {
                             $this->status = 'error';
@@ -460,7 +463,7 @@ class GenerarR extends Component
                         }
                     } else {
                         Tiro::create([
-                            'fecha' => $this->dateF,
+                            'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->ventas[$i]['nombre'],
                             'entregar' => $this->ventas[$i]->{$this->diaS},
                             'devuelto' => $this->devuelto,
@@ -475,6 +478,7 @@ class GenerarR extends Component
                             'idTipo' => $this->ventas[$i]['idVenta'],
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
                             'tipo' => $this->ventas[$i]['tiporuta'],
+                            'domicilio_id' => $this->ventas[$i]['domicilio_id'],
                         ]);
                     }
                 }
@@ -490,7 +494,7 @@ class GenerarR extends Component
                     if (count($this->tiro) > 0) {
                         if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
                             Tiro::create([
-                                'fecha' => $this->dateF,
+                                'fecha' => $this->dateF->format('Y-m-d'),
                                 'cliente' => $this->suscripcion[$i]['nombre'],
                                 'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                                 'devuelto' => $this->devuelto,
@@ -505,6 +509,7 @@ class GenerarR extends Component
                                 'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                                 'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                                 'tipo' => $this->suscripcion[$i]['tiporuta'],
+                                'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                             ]);
                         } else {
                             $this->status = 'error';
@@ -514,7 +519,7 @@ class GenerarR extends Component
                         }
                     } else {
                         Tiro::create([
-                            'fecha' => $this->dateF,
+                            'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->suscripcion[$i]['nombre'],
                             'entregar' => $this->suscripcion[$i]['cantEjemplares'],
                             'devuelto' => $this->devuelto,
@@ -529,6 +534,7 @@ class GenerarR extends Component
                             'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
+                            'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                         ]);
                     }
                 }

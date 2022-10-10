@@ -14,7 +14,7 @@
                 <div class="flex">
                     <div class="flex-initial mx-1 mt-4" style="width: 100%;">
                         <input wire:model='keyWord' type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                             name="search" id="search" placeholder="Buscar Ruta">
                     </div>
                     {{--<div class="flex-none mx-1">

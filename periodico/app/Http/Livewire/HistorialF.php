@@ -8,7 +8,7 @@ use App\Models\Cliente;
 
 class HistorialF extends Component
 {
-    public $invoices, $clientes, $cliente_id, $fecha, $total, $invoice_id, $clienteSeleccionado;
+    public $invoices, $clientes, $cliente_id, $fecha, $total, $invoice_id, $clienteSeleccionado, $fechaFactura;
 
     public function mount()
     {
@@ -62,8 +62,15 @@ class HistorialF extends Component
 
     public function render()
     {
-        if ($this->clienteSeleccionado) {
+        if ($this->clienteSeleccionado && $this->fechaRemision) {
+            $this->invoices = Invoice::where(function ($query) {
+                $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                    ->where('fecha', $this->fechaFactura);
+            })->get();
+        } else if ($this->clienteSeleccionado) {
             $this->invoices = Invoice::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+        } else if ($this->fechaFactura) {
+            $this->invoices = Invoice::where('invoice_date', $this->fechaFactura)->get();
         } else {
             $this->invoices = Invoice::all();
         }

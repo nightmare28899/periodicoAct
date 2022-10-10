@@ -18,10 +18,13 @@ use Illuminate\Support\Facades\DB;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad;
+    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio;
 
-    public function mount()
+    public function mount($editar)
     {
+        if ($editar != 'normal') {
+            $this->state = true;
+        }
         $this->resetear();
     }
 
@@ -63,22 +66,83 @@ class Historial extends Component
     public function updatedQuery()
     {
         $this->clientesBuscados = Cliente
-            ::where('id','=', $this->query . '%')
+            ::where('id', '=', $this->query . '%')
             ->orWhere('nombre', 'like', '%' . $this->query . '%')
             ->limit(6)
             ->get()
             ->toArray();
-
     }
 
     public function render()
     {
         $this->rutas = Ruta::pluck('nombreruta', 'id');
         $this->date = Carbon::now()->format('d-m-Y');
-        if ($this->clienteSeleccionado) {
-            $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+
+        if ($this->state != true) {
+            if ($this->clienteSeleccionado && $this->fechaRemision) {
+                $this->tiros = Tiro::where(function ($query) {
+                    $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                        ->where('fecha', $this->fechaRemision);
+                })->get();
+            } else if ($this->clienteSeleccionado) {
+                $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+            } else if ($this->fechaRemision) {
+                $this->tiros = Tiro::where('fecha', $this->fechaRemision)->get();
+            } else {
+                $this->tiros = Tiro::all();
+            }
         } else {
-            $this->tiros = Tiro::all();
+            if ($this->clienteSeleccionado && $this->fechaRemision) {
+                $this->datos = Tiro::where(function ($query) {
+                    $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                        ->where('fecha', $this->fechaRemision);
+                })->get();
+                for ($i = 0; $i < count($this->datos); $i++) {
+                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
+                        $this->type = $this->datos[$i]->idTipo;
+
+                        $this->tiros = Tiro::where(function ($query) {
+                            $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                                ->where('fecha', $this->fechaRemision)
+                                ->where('idTipo', $this->type);
+                        })->get();
+                    }
+                }
+            } else if ($this->clienteSeleccionado) {
+                $this->datos = Tiro::all();
+                for ($i = 0; $i < count($this->datos); $i++) {
+                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
+                        array_push($this->type, $this->datos[$i]->idTipo);
+
+                        $this->tiros = Tiro::where(function ($query) {
+                            $query->whereIn('idTipo', $this->type)
+                                ->where('cliente_id', $this->clienteSeleccionado['id']);
+                        })->get();
+                    }
+                }
+            } else if ($this->fechaRemision) {
+                $this->datos = Tiro::all();
+                for ($i = 0; $i < count($this->datos); $i++) {
+                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
+                        array_push($this->type, $this->datos[$i]->idTipo);
+
+                        $this->tiros = Tiro::where(function ($query) {
+                            $query->whereIn('idTipo', $this->type)
+                                ->where('fecha', $this->fechaRemision);
+                        })->get();
+                    }
+                }
+            } else {
+                $this->datos = Tiro::all();
+                for ($i = 0; $i < count($this->datos); $i++) {
+                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
+                        array_push($this->type, $this->datos[$i]->idTipo);
+                        $this->tiros = Tiro::where(function ($query) {
+                            $query->whereIn('idTipo', $this->type);
+                        })->get();
+                    }
+                }
+            }
         }
         return view('livewire.remisiones.historial');
     }
@@ -316,25 +380,27 @@ class Historial extends Component
         }
     }
 
-    public function editarDomicilio($id) {
+    public function editarDomicilio($id)
+    {
         $this->modalDomicilio = true;
-        $this->domicilio = domicilioSubs::where('cliente_id', $id)->first();
-        $this->id_cliente = $id;
-        $this->calle = $this->domicilio->calle;
-        $this->noint = $this->domicilio->noint;
-        $this->noext = $this->domicilio->noext;
-        $this->colonia = $this->domicilio->colonia;
-        $this->cp = $this->domicilio->cp;
-        $this->localidad = $this->domicilio->localidad;
-        $this->ciudad = $this->domicilio->ciudad;
-        $this->referencia = $this->domicilio->referencia;
-        $this->ruta = $this->domicilio->ruta;
+        $this->domicilio = domicilioSubs::where('id', $id)->get();
+        $this->id_domicilio = $id;
+        $this->calle = $this->domicilio[0]->calle;
+        $this->noint = $this->domicilio[0]->noint;
+        $this->noext = $this->domicilio[0]->noext;
+        $this->colonia = $this->domicilio[0]->colonia;
+        $this->cp = $this->domicilio[0]->cp;
+        $this->localidad = $this->domicilio[0]->localidad;
+        $this->ciudad = $this->domicilio[0]->ciudad;
+        $this->referencia = $this->domicilio[0]->referencia;
+        $this->ruta = $this->domicilio[0]->ruta;
 
     }
 
-    public function actualizarDomicilioSubs() {
+    public function actualizarDomicilioSubs()
+    {
 
-        $this->domicilio = domicilioSubs::where('cliente_id', $this->id_cliente)->first();
+        $this->domicilio = domicilioSubs::where('id', $this->id_domicilio)->first();
         $this->domicilio->update([
             'calle' => $this->calle,
             'colonia' => $this->colonia,

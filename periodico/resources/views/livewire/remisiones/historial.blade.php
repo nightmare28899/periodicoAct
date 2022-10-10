@@ -1,46 +1,50 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Historial de Remisiones') }}
+            {{ $state == 0 ? __('Historial de Remisiones') : __('Editar domicilio suscripciones') }}
         </h2>
     </x-slot>
 
     <div class="py-12 mx-auto px-4 container">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
-            <div class="w-64">
-                <input type="text"
-                       class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                       name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
-                       wire:keydown.escape="resetear" wire:keydown.tab="resetear"
-                       wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
-                       wire:keydown.enter="selectContact"/>
+            <div class="flex">
+                <div class="w-64 mr-5">
+                    <h4>Elige la fecha:</h4>
+                    <x-jet-input class="w-full" type="date" wire:model="fechaRemision"></x-jet-input>
+                </div>
+                <div class="w-64 mt-6">
+                    <input type="text"
+                           class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                           name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
+                           autocomplete="off"/>
 
-                @if (!empty($query))
+                    @if (!empty($query))
 
-                    <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+                        <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
 
-                    <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg">
+                        <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg">
 
-                        @if (!empty($clientesBuscados))
+                            @if (!empty($clientesBuscados))
 
-                            @foreach ($clientesBuscados as $i => $buscado)
-                                <div wire:click="selectContact({{ $i }})"
-                                     class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
-                                    {{ $buscado['nombre'] }}
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="list-item list-none p-2">No hay resultado</div>
-                        @endif
-                    </div>
+                                @foreach ($clientesBuscados as $i => $buscado)
+                                    <div wire:click="selectContact({{ $i }})"
+                                         class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
+                                        {{ $buscado['nombre'] }}
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="list-item list-none p-2">No hay resultado</div>
+                            @endif
+                        </div>
 
-                @endif
+                    @endif
+                </div>
             </div>
             <br>
-            @if (count($tiros) > 0)
+            @if ($tiros)
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto">
-                        <table class="table-auto border-solid border-2 border-dark w-full">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full">
                             <thead>
                             <tr class='bg-gray-100'>
                                 <th class='px-4 py-2'>Fecha</th>
@@ -60,62 +64,124 @@
                             </thead>
                             <tbody>
                             @foreach ($tiros as $tiro)
-                                <tr>
-                                    <td class='px-4 py-2'>
-                                        {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                    {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
-                                    <td class='px-4 py-2'>
-                                        {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->entregar }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->devuelto }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->faltante }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->venta }}</td>
-                                    <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->precio)) }}
-                                    </td>
-                                    <td class='px-4 py-2'>{{ sprintf('$ %s', number_format($tiro->importe)) }}
-                                    </td>
-                                    <td class='px-4 py-2'>{{ $tiro->dia }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->nombreruta }}</td>
-                                    <td class='px-4 py-2'>{{ $tiro->tipo }}</td>
-                                    {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
-                                    @if ($tiro->precio == 330 || $tiro->precio == 300)
-                                        <td>
-                                            @if ($tiro->estado == 'Activo')
-                                                <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                        class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
-                                                    Pausar
-                                                    suscripción
-                                                </button>
-                                            @elseif ($tiro->estado == 'Pausado')
-                                                <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
-                                                        class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
-                                                    Activar
-                                                    suscripción
-                                                </button>
-                                            @endif
+                                @if($state == 0)
+                                    <tr>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                        {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->devuelto }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>{{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
+                                        {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
+                                        @if ($tiro->precio == 330 || $tiro->precio == 300)
+                                            <td class="border border-dark">
+                                                @if ($tiro->estado == 'Activo')
+                                                    <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                        Pausar
+                                                        suscripción
+                                                    </button>
+                                                @elseif ($tiro->estado == 'Pausado')
+                                                    <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                            class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                        Activar
+                                                        suscripción
+                                                    </button>
+                                                @endif
 
-                                            @if ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri')
-                                                <button
-                                                    class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                    disabled>Pagado
-                                                </button>
-                                                <button
-                                                    wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
-                                                    class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
-                                                >Ver PDF
-                                                </button>
-                                            @else
-                                                <button
-                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
-                                                    class="inline-flex
+                                                @if ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri' || $tiro->status == 'facturado')
+                                                    <button
+                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        disabled>Pagado
+                                                    </button>
+                                                    <button
+                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
+                                                    >Ver PDF
+                                                    </button>
+                                                @else
+                                                    <button
+                                                        wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500
                                                             hover:bg-indigo-600 rounded-lg
                                                             focus:shadow-outline">Pagar
-                                                </button>
-                                            @endif
+                                                    </button>
+                                                @endif
+                                                {{--<button
+                                                    wire:click="editarDomicilio({{ $tiro->cliente_id }})"
+                                                    class="inline-flex
+                                                            items-center h-10 px-4 m-2 text-sm text-white
+                                                            transition-colors duration-150 bg-blue-500
+                                                            hover:bg-blue-600 rounded-lg
+                                                            focus:shadow-outline"
+                                                >
+                                                    Editar domicilio
+                                                </button>--}}
+                                            </td>
+                                        @else
+                                            <td class="border border-dark">
+                                                @if ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta' || $tiro->status == 'facturado')
+                                                    <button
+                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        disabled>Pagado
+                                                    </button>
+                                                    <button
+                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
+                                                    >Ver PDF
+                                                    </button>
+                                                @else
+                                                    <button wire:click="editarRemision({{ $tiro->id }})"
+                                                            class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                        Editar
+                                                    </button>
+                                                    <button
+                                                        wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        class="inline-flex
+                                                            items-center h-10 px-4 m-2 text-sm text-white
+                                                            transition-colors duration-150 bg-indigo-500
+                                                            hover:bg-indigo-600 rounded-lg
+                                                            focus:shadow-outline"
+                                                        target="_blank">Pagar
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @elseif($state == 1)
+                                    <tr>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                        {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->devuelto }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>{{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
+                                        {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
+                                        <td class="border border-dark">
                                             <button
-                                                wire:click="editarDomicilio({{ $tiro->cliente_id }})"
+                                                wire:click="editarDomicilio({{ $tiro->domicilio_id }})"
                                                 class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-blue-500
@@ -125,37 +191,8 @@
                                                 Editar domicilio
                                             </button>
                                         </td>
-                                    @else
-                                        <td>
-                                            <button wire:click="editarRemision({{ $tiro->id }})"
-                                                    class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
-                                                Editar
-                                            </button>
-
-                                            @if ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta')
-                                                <button
-                                                    class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                    disabled>Pagado
-                                                </button>
-                                                <button
-                                                    wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
-                                                    class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline"
-                                                >Ver PDF
-                                                </button>
-                                            @else
-                                                <button
-                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
-                                                    class="inline-flex
-                                                            items-center h-10 px-4 m-2 text-sm text-white
-                                                            transition-colors duration-150 bg-indigo-500
-                                                            hover:bg-indigo-600 rounded-lg
-                                                            focus:shadow-outline"
-                                                    target="_blank">Pagar
-                                                </button>
-                                            @endif
-                                        </td>
-                                    @endif
-                                </tr>
+                                    </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>
