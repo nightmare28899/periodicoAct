@@ -57,7 +57,7 @@
                         <label for='Física' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu
                             RFC:</label>
                         <input type='text' name='rfc_input'
-                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('rfc_input') border-red-500 @enderror'
+                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror'
                                maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)'
                                wire:model.defer='rfc_input'>
                         @error('rfc_input')
@@ -68,7 +68,7 @@
                         <label for='Moral' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu
                             RFC:</label>
                         <input type='text' name='rfc_input'
-                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('rfc_input') border-red-500 @enderror'
+                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror'
                                maxlength='12' placeholder='Escribe tu RFC (son 12 digitos)'
                                wire:model.defer='rfc_input'>
                         @error('rfc_input')
@@ -81,7 +81,7 @@
                     <label for="nombre"
                            class="block text-black text-sm font-bold mb-2">Nombre:</label>
                     <input type="text"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('nombre') border-red-500 @enderror"
                            id="nombre" wire:model.defer="nombre" placeholder="Escribe tu Nombre"/>
                     @error('nombre')
                     <span
@@ -95,7 +95,7 @@
                     <label for="estado"
                            class="block text-black text-sm font-bold mb-2">Estado:</label>
                     <input type="text"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('estado') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('estado') border-red-500 @enderror"
                            id="estado" wire:model.defer="estado" placeholder="Escribe tu Estado"/>
                     @error('estado')
                     <span
@@ -106,7 +106,7 @@
                     <label for="pais"
                            class="block text-black text-sm font-bold mb-2">País:</label>
                     <input type="text"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('pais') border-red-500 @enderror"
                            id="pais" wire:model.defer="pais" placeholder="Escribe tu País"/>
                     @error('pais')
                     <span
@@ -120,7 +120,7 @@
                     <label for="email"
                            class="block text-black text-sm font-bold mb-2">E-mail:</label>
                     <input type="email"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('email') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('email') border-red-500 @enderror"
                            id="email" wire:model.defer="email" placeholder="Escribe tu Correo"/>
                     @error('email')
                     <span
@@ -131,7 +131,7 @@
                     <label for="email_cobranza" class="block text-black text-sm font-bold mb-2">E-mail
                         de Cobranza:</label>
                     <input type="email"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('email_cobranza') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('email_cobranza') border-red-500 @enderror"
                            id="email_cobranza" wire:model.defer="email_cobranza" placeholder="Escribe tu Correo"/>
                     @error('email_cobranza')
                     <span
@@ -145,7 +145,7 @@
                     <label for="telefono"
                            class="block text-black text-sm font-bold mb-2">Teléfono:</label>
                     <input type="number" maxlength="10"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('telefono') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('telefono') border-red-500 @enderror"
                            id="telefono" wire:model.defer="telefono" placeholder="Escribe tu Teléfono"/>
                     @error('telefono')
                     <span
@@ -161,7 +161,7 @@
                         id="regimen_fiscal" wire:model.defer="regimen_fiscal"
                         placeholder="Escribe tu Régimen Fiscal" />--}}
                     <select
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ruta') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('ruta') border-red-500 @enderror"
                         wire:model.defer="regimen_fiscal" id="ruta" style="width: 100%">
                         <option value='' style="display: none;">Escoge una opción</option>
                         <option value="601">601 - General de Ley Personas Morales</option>
@@ -207,7 +207,7 @@
                     <label for="razon_social"
                            class="block text-black text-sm font-bold mb-2">Razón Social:</label>
                     <input type="text"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('razon_social') border-red-500 @enderror"
+                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('razon_social') border-red-500 @enderror"
                            id="razon_social" wire:model.defer="razon_social"
                            placeholder="Escribe tu Razón Social"/>
                     @error('razon_social')

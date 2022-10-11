@@ -3,7 +3,7 @@
     <x-slot name="title">
         <div class="flex sm:px-6">
             <h1 class="mb-3 text-2xl text-black font-bold ml-3">Suscripciones</h1>
-            <button type="button" wire:click="$set('suscripciones', false)" wire:loading.attr="disabled"
+            <button type="button" wire:click="cerrarModalSuscripciones()" wire:loading.attr="disabled"
                     class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                     data-modal-toggle="defaultModal">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

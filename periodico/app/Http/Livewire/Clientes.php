@@ -22,9 +22,9 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo,  $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -217,8 +217,8 @@ class Clientes extends Component
                 if ($this->tarifaSeleccionada === 'Person') {
                     $costo = $this->costoPerson;
                 }
-                $this->total = (int) $this->cantEjem * (int) $costo;
-                $this->totalDesc = (int) $this->cantEjem * (int) $costo;
+                $this->total = (int)$this->cantEjem * (int)$costo;
+                $this->totalDesc = (int)$this->cantEjem * (int)$costo;
             } else {
                 $this->total = 0;
                 $this->totalDesc = 0;
@@ -239,39 +239,47 @@ class Clientes extends Component
 
         if ($this->clienteSeleccionado && $this->subscripcionEs == 'Renovación') {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+            if (!$this->suscripciones->isEmpty()) {
+                $this->domicilioId = $this->suscripciones[0]->domicilio_id;
+                $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
+                $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
+                /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
+                $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
+                $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
+                /* $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo; */
+                $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
+                /* $this->from = $this->suscripciones[0]->fechaInicio;
+                $this->to = $this->suscripciones[0]->fechaFin; */
+                $this->contrato = $this->suscripciones[0]->contrato;
+                $this->lunes = $this->suscripciones[0]->lunes;
+                $this->martes = $this->suscripciones[0]->martes;
+                $this->miércoles = $this->suscripciones[0]->miércoles;
+                $this->jueves = $this->suscripciones[0]->jueves;
+                $this->viernes = $this->suscripciones[0]->viernes;
+                $this->sábado = $this->suscripciones[0]->sábado;
+                $this->domingo = $this->suscripciones[0]->domingo;
+                $this->descuento = $this->suscripciones[0]->descuento;
+                $this->observacion = $this->suscripciones[0]->observaciones;
+                $this->total = $this->suscripciones[0]->importe;
+                $this->totalDesc = $this->suscripciones[0]->total;
+                $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
+                $this->siTieneSus = true;
+                /* $this->domicilioS = domicilioSubs
+                    ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                    ->where('cliente_id', $this->clienteSeleccionado)
+                    ->select('domicilio_subs.*', 'ruta.nombreruta')
+                    ->get();
+                $this->domicilioSeleccionado = $this->domicilioS;
 
-            $this->domicilioId = $this->suscripciones[0]->domicilio_id;
-            $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
-            $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
-            /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
-            $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
-            $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
-            /* $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo; */
-            $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
-            /* $this->from = $this->suscripciones[0]->fechaInicio;
-            $this->to = $this->suscripciones[0]->fechaFin; */
-            $this->contrato = $this->suscripciones[0]->contrato;
-            $this->lunes = $this->suscripciones[0]->lunes;
-            $this->martes = $this->suscripciones[0]->martes;
-            $this->miércoles = $this->suscripciones[0]->miércoles;
-            $this->jueves = $this->suscripciones[0]->jueves;
-            $this->viernes = $this->suscripciones[0]->viernes;
-            $this->sábado = $this->suscripciones[0]->sábado;
-            $this->domingo = $this->suscripciones[0]->domingo;
-            $this->descuento = $this->suscripciones[0]->descuento;
-            $this->observacion = $this->suscripciones[0]->observaciones;
-            $this->total = $this->suscripciones[0]->importe;
-            $this->totalDesc = $this->suscripciones[0]->total;
-            $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
-            /* $this->domicilioS = domicilioSubs
-                ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
-                ->where('cliente_id', $this->clienteSeleccionado)
-                ->select('domicilio_subs.*', 'ruta.nombreruta')
-                ->get();
-            $this->domicilioSeleccionado = $this->domicilioS;
-
-            $this->inputCantidad = $this->domicilioS[0]->ejemplares;
-            $this->cantDom = $this->inputCantidad; */
+                $this->inputCantidad = $this->domicilioS[0]->ejemplares;
+                $this->cantDom = $this->inputCantidad; */
+            } else {
+                $this->siTieneSus = false;
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡El cliente no tiene suscripciones!' : ''
+                ]);
+            }
         }
 
         if ($this->clienteSeleccionado && $this->contrato == 'Cortesía') {
@@ -303,26 +311,37 @@ class Clientes extends Component
             ], compact('data', 'rutas', 'tarifas', 'formaPago'));
         } */
     }
+
+    public function cerrarModalSuscripciones()
+    {
+        $this->suscripciones = false;
+        $this->borrar();
+    }
+
     public function create()
     {
         $this->resetInput();
         $this->openModalPopover();
         /* $this->status = 'created'; */
     }
+
     public function primerModal()
     {
         $this->openModalPopover();
     }
+
     public function estadoRFC()
     {
         $this->rfc_input = '';
     }
+
     public function openModalPopover()
     {
         $this->isModalOpen = true;
         $this->clienteModalOpen = false;
         $this->ejemplarModalOpen = false;
     }
+
     public function closeModalPopover()
     {
         $this->isModalOpen = false;
@@ -330,6 +349,7 @@ class Clientes extends Component
         $this->ejemplarModalOpen = false;
         $this->resetInput();
     }
+
     public function openClientModal()
     {
         $this->validate([
@@ -346,31 +366,37 @@ class Clientes extends Component
         $this->ejemplarModalOpen = false;
         $this->clienteModalOpen = true;
     }
+
     public function closeClientModal()
     {
         $this->clienteModalOpen = false;
     }
+
     public function openEjemplarModal()
     {
         $this->isModalOpen = false;
         $this->clienteModalOpen = false;
         $this->ejemplarModalOpen = true;
     }
+
     public function closeEjemplarModal()
     {
         $this->ejemplarModalOpen = false;
     }
+
     public function openModalAnterior()
     {
         $this->isModalOpen = false;
         $this->clienteModalOpen = true;
         $this->ejemplarModalOpen = false;
     }
+
     public function modalSuscripciones()
     {
         $this->suscripciones = true;
         $this->clienteSeleccionado = [];
     }
+
     public function modalCrearDomSubs()
     { {
             $this->clienteSeleccionado ? $this->modalDomSubs = true : $this->dispatchBrowserEvent('alert', [
@@ -378,15 +404,18 @@ class Clientes extends Component
             ]);
         }
     }
+
     public function modalCrearDom()
     {
         $this->modalFormDom = true;
     }
+
     public function modalVentas()
     {
         $this->modalV = true;
         $this->clienteSeleccionado = [];
     }
+
     public function detalles($id)
     {
         $Cliente = Cliente::find($id);
@@ -417,10 +446,12 @@ class Clientes extends Component
 
         $this->detallesModalOpen = true;
     }
+
     public function closeDetallesModal()
     {
         $this->detallesModalOpen = false;
     }
+
     private function resetInput()
     {
         $this->clasificacion = '';
@@ -445,10 +476,9 @@ class Clientes extends Component
         $this->ruta_id = '';
         $this->tarifa_id = '';
     }
+
     public function store()
     {
-
-        dd($this->regimen_fiscal);
         $this->validate([
             'estado' => 'required',
             'pais' => 'required',
@@ -506,6 +536,7 @@ class Clientes extends Component
         $this->clienteModalOpen = false;
         $this->toast();
     }
+
     public function edit($id)
     {
         $Cliente = Cliente::find($id);
@@ -539,6 +570,7 @@ class Clientes extends Component
 
         $this->status = 'updated';
     }
+
     public function update()
     {
         $this->validate([
@@ -547,8 +579,10 @@ class Clientes extends Component
             'pais' => 'required',
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
-
-            'calle' => 'required',
+            'clasificacion' => 'required',
+            'rfc' => 'required',
+            'rfc_input' => 'required',
+            /* 'calle' => 'required',
             'noext' => 'required',
             'colonia' => 'required',
             'cp' => 'required',
@@ -556,10 +590,7 @@ class Clientes extends Component
             'municipio' => 'required',
             'referencia' => 'required',
             'ruta_id' => 'required',
-            'tarifa_id' => 'required',
-            'clasificacion' => 'required',
-            'rfc' => 'required',
-            'rfc_input' => 'required',
+            'tarifa_id' => 'required' */
         ]);
 
         $cliente = Cliente::find($this->cliente_id);
@@ -577,31 +608,20 @@ class Clientes extends Component
             'razon_social' => $this->razon_social,
         ]);
 
-        $domicilio = Domicilio::find($this->domicilio_id);
-        $domicilio->update([
-            'calle' => $this->calle,
-            'noint' => $this->noint,
-            'noext' => $this->noext,
-            'colonia' => $this->colonia,
-            'cp' => $this->cp,
-            'localidad' => $this->localidad,
-            'municipio' => $this->municipio,
-            'ruta_id' => $this->ruta_id,
-            'tarifa_id' => $this->tarifa_id,
-            'referencia' => $this->referencia,
-        ]);
         $this->status = 'created';
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');
         $this->closeModalPopover();
     }
+
     public function toast()
     {
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Cliente creado correctamente!' : '¡Cliente actualizado correctamente!'
         ]);
     }
+
     public function delete($id)
     {
 
@@ -618,6 +638,7 @@ class Clientes extends Component
             dd('No existe');
         }
     }
+
     /* Aqui comienzan las suscripciones */
     public function createSubs()
     { {
@@ -660,32 +681,34 @@ class Clientes extends Component
         $this->modalFormDom = false;
         $this->modalDomSubs = false;
     }
-    public function abrirModalDomicilio(){
-        {
+
+    public function abrirModalDomicilio()
+    { {
             $this->clienteSeleccionado ? $this->clienteModalOpen = true : $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
             ]);
             $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
 
             if ($domicilio) {
-                $Domicilio = Domicilio::find($this->clienteSeleccionado['id']);
                 $this->domicilio_id = $this->clienteSeleccionado['id'];
-                $this->calle = $Domicilio->calle;
-                $this->noint = $Domicilio->noint;
-                $this->noext = $Domicilio->noext;
-                $this->colonia = $Domicilio->colonia;
-                $this->cp = $Domicilio->cp;
-                $this->localidad = $Domicilio->localidad;
-                $this->municipio = $Domicilio->municipio;
-                $this->referencia = $Domicilio->referencia;
-                $this->ruta_id = $Domicilio->ruta_id;
-                $this->tarifa_id = $Domicilio->tarifa_id;
+                $this->calle = $domicilio->calle;
+                $this->noint = $domicilio->noint;
+                $this->noext = $domicilio->noext;
+                $this->colonia = $domicilio->colonia;
+                $this->cp = $domicilio->cp;
+                $this->localidad = $domicilio->localidad;
+                $this->municipio = $domicilio->municipio;
+                $this->referencia = $domicilio->referencia;
+                $this->ruta_id = $domicilio->ruta_id;
+                $this->tarifa_id = $domicilio->tarifa_id;
 
                 $this->status = 'updated';
             }
         }
     }
-    public function crearDomicilio(){
+
+    public function crearDomicilio()
+    {
         $this->validate(
             [
                 'calle' => 'required',
@@ -721,6 +744,33 @@ class Clientes extends Component
 
         $this->clienteModalOpen = false;
     }
+
+    public function actualizarDomicilio()
+    {
+        $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
+
+        $domicilio->update([
+            'calle' => $this->calle,
+            'noint' => $this->noint,
+            'noext' => $this->noext,
+            'colonia' => $this->colonia,
+            'cp' => $this->cp,
+            'localidad' => $this->localidad,
+            'municipio' => $this->municipio,
+            'ruta_id' => $this->ruta_id,
+            'tarifa_id' => $this->tarifa_id,
+            'referencia' => $this->referencia,
+        ]);
+
+        $this->status = 'created';
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Domicilio actualizado correctamente!' : ''
+        ]);
+        $this->resetInput();
+        $this->emit('closeModal');
+        $this->clienteModalOpen = false;
+    }
+
     public function crearVenta()
     {
         $this->status = 'created';
@@ -744,60 +794,60 @@ class Clientes extends Component
                 if ($this->hasta) {
                     /*i need to know if the client has a domicilio*/
                     $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
-                   if ($domicilio) {
-                       $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
-                       $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
-                       $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
-                       $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
-                       $juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
-                       $viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
-                       $sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
-                       $domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
+                    if ($domicilio) {
+                        $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
+                        $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
+                        $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
+                        $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
+                        $juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
+                        $viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
+                        $sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
+                        $domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
 
-                       $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+                        $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
 
-                       $this->validate([
-                           'lunesVentas' => 'required|numeric|min:0',
-                           'martesVentas' => 'required|numeric|min:0',
-                           'miercolesVentas' => 'required|numeric|min:0',
-                           'juevesVentas' => 'required|numeric|min:0',
-                           'viernesVentas' => 'required|numeric|min:0',
-                           'sabadoVentas' => 'required|numeric|min:0',
-                           'domingoVentas' => 'required|numeric|min:0',
-                           'hasta' => 'required',
-                       ]);
+                        $this->validate([
+                            'lunesVentas' => 'required|numeric|min:0',
+                            'martesVentas' => 'required|numeric|min:0',
+                            'miercolesVentas' => 'required|numeric|min:0',
+                            'juevesVentas' => 'required|numeric|min:0',
+                            'viernesVentas' => 'required|numeric|min:0',
+                            'sabadoVentas' => 'required|numeric|min:0',
+                            'domingoVentas' => 'required|numeric|min:0',
+                            'hasta' => 'required',
+                        ]);
 
-                       ventas::Create([
-                           'idVenta' => 'venta' . $this->idSuscrip,
-                           'tipo' => 'venta',
-                           'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
-                           'domicilio_id' =>  $domicilio->id,
-                           'desde' => $this->desde,
-                           'hasta' => $this->hasta,
-                           'lunes' => $this->lunesVentas,
-                           'martes' => $this->martesVentas,
-                           'miércoles' => $this->miercolesVentas,
-                           'jueves' => $this->juevesVentas,
-                           'viernes' => $this->viernesVentas,
-                           'sábado' => $this->sabadoVentas,
-                           'domingo' => $this->domingoVentas,
-                           'total' => $this->total
-                       ]);
+                        ventas::Create([
+                            'idVenta' => 'venta' . $this->idSuscrip,
+                            'tipo' => 'venta',
+                            'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
+                            'domicilio_id' => $domicilio->id,
+                            'desde' => $this->desde,
+                            'hasta' => $this->hasta,
+                            'lunes' => $this->lunesVentas,
+                            'martes' => $this->martesVentas,
+                            'miércoles' => $this->miercolesVentas,
+                            'jueves' => $this->juevesVentas,
+                            'viernes' => $this->viernesVentas,
+                            'sábado' => $this->sabadoVentas,
+                            'domingo' => $this->domingoVentas,
+                            'total' => $this->total
+                        ]);
 
-                       $this->status = 'created';
-                       $this->modalV = false;
+                        $this->status = 'created';
+                        $this->modalV = false;
 
-                       $this->dispatchBrowserEvent('alert', [
-                           'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
-                       ]);
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
+                        ]);
 
-                       $this->limpiarVentaModal();
-                   } else {
-                       $this->status = 'error';
-                       $this->dispatchBrowserEvent('alert', [
-                           'message' => ($this->status == 'error') ? '¡El cliente no tiene domicilio!' : ''
-                       ]);
-                   }
+                        $this->limpiarVentaModal();
+                    } else {
+                        $this->status = 'error';
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'error') ? '¡El cliente no tiene domicilio!' : ''
+                        ]);
+                    }
                     /*$pdf = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,
@@ -833,71 +883,77 @@ class Clientes extends Component
             ]);
         }
     }
+
     public function actualizarVenta()
     {
-       /* $this->validate([
-            'lunesVentas' => 'required',
-            'martesVentas' => 'required',
-            'miercolesVentas' => 'required',
-            'juevesVentas' => 'required',
-            'viernesVentas' => 'required',
-            'sabadoVentas' => 'required',
-            'domingoVentas' => 'required',
-        ]);*/
+        /* $this->validate([
+             'lunesVentas' => 'required',
+             'martesVentas' => 'required',
+             'miercolesVentas' => 'required',
+             'juevesVentas' => 'required',
+             'viernesVentas' => 'required',
+             'sabadoVentas' => 'required',
+             'domingoVentas' => 'required',
+         ]);*/
 
         $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
+        $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
 
-        $lunesTotal = (int)$this->lunesVentas * $this->clienteSeleccionado['ordinario'];
-        $martesTotal = (int)$this->martesVentas * $this->clienteSeleccionado['ordinario'];
-        $miercolesTotal = (int)$this->miercolesVentas * $this->clienteSeleccionado['ordinario'];
-        $juevesTotal = (int)$this->juevesVentas * $this->clienteSeleccionado['ordinario'];
-        $viernesTotal = (int)$this->viernesVentas * $this->clienteSeleccionado['ordinario'];
-        $sabadoTotal = (int)$this->sabadoVentas * $this->clienteSeleccionado['ordinario'];
-        $domingoTotal = (int)$this->domingoVentas * $this->clienteSeleccionado['dominical'];
+        if ($domicilio) {
+            $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
+            $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
+            $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
+            $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
+            $juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
+            $viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
+            $sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
+            $domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
 
-        $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+            $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
 
-        $this->ventas->update([
-            'desde' => $this->desde,
-            'hasta' => $this->hasta,
-            'lunes' => $this->lunesVentas,
-            'martes' => $this->martesVentas,
-            'miércoles' => $this->miercolesVentas,
-            'jueves' => $this->juevesVentas,
-            'viernes' => $this->viernesVentas,
-            'sábado' => $this->sabadoVentas,
-            'domingo' => $this->domingoVentas,
-            'total' => $this->total
-        ]);
+            $this->ventas->update([
+                'desde' => $this->desde,
+                'hasta' => $this->hasta,
+                'lunes' => $this->lunesVentas,
+                'martes' => $this->martesVentas,
+                'miércoles' => $this->miercolesVentas,
+                'jueves' => $this->juevesVentas,
+                'viernes' => $this->viernesVentas,
+                'sábado' => $this->sabadoVentas,
+                'domingo' => $this->domingoVentas,
+                'total' => $this->total
+            ]);
 
-        $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
-            'total' => $this->total,
-            'cliente' => $this->clienteSeleccionado,
-            'desde' => $this->desde,
-            'hasta' => $this->hasta,
-            'lunes' => $this->lunesVentas,
-            'martes' => $this->martesVentas,
-            'miercoles' => $this->miercolesVentas,
-            'jueves' => $this->juevesVentas,
-            'viernes' => $this->viernesVentas,
-            'sabado' => $this->sabadoVentas,
-            'domingo' => $this->domingoVentas,
-            'fecha' => $this->date,
-        ])
-            ->setPaper('A5', 'landscape')
-            ->output();
+            /* $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
+                'total' => $this->total,
+                'cliente' => $this->clienteSeleccionado,
+                'desde' => $this->desde,
+                'hasta' => $this->hasta,
+                'lunes' => $this->lunesVentas,
+                'martes' => $this->martesVentas,
+                'miercoles' => $this->miercolesVentas,
+                'jueves' => $this->juevesVentas,
+                'viernes' => $this->viernesVentas,
+                'sabado' => $this->sabadoVentas,
+                'domingo' => $this->domingoVentas,
+                'fecha' => $this->date,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
 
-        Storage::disk('public')->put('venta.pdf', $pdf);
+            Storage::disk('public')->put('venta.pdf', $pdf); */
 
-        $this->dispatchBrowserEvent('alert', [
-            'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
-        ]);
-        $this->status = 'created';
-        $this->limpiarVentaModal();
-        $this->modalV = false;
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
+            ]);
+            $this->status = 'created';
+            $this->limpiarVentaModal();
+            $this->modalV = false;
 
-        return Redirect::to('/PDFVenta');
+            /* return Redirect::to('/PDFVenta'); */
+        }
     }
+
     public function editarVenta()
     {
         if ($this->clienteSeleccionado) {
@@ -926,6 +982,7 @@ class Clientes extends Component
             ]);
         }
     }
+
     public function limpiarClienteSeleccionado()
     {
         $this->editEnabled = false;
@@ -940,6 +997,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
     }
+
     public function limpiarVentaModal()
     {
         $this->editEnabled = false;
@@ -955,6 +1013,7 @@ class Clientes extends Component
         $this->domingoVentas = null;
         $this->modalV = false;
     }
+
     public function updatedCantDom($field, $value)
     {
         $this->inputCantidad = $field;
@@ -983,13 +1042,14 @@ class Clientes extends Component
             ]);
         }
     }
+
     public function suscripciones()
     {
         $this->idSuscrip = Str::random(6);
         if ($this->clienteSeleccionado) {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             /* dd($this->suscripciones); */
-            if (/*$this->suscripciones->isEmpty() &&*/ $this->subscripcionEs == 'Apertura') {
+            if (/*$this->suscripciones->isEmpty() &&*/$this->subscripcionEs == 'Apertura') {
                 if ($this->cantEjem != 0) {
                     if ($this->domicilioSeleccionado) {
                         if ($this->from && $this->to) {
@@ -1013,8 +1073,8 @@ class Clientes extends Component
                                 'suscripcion' => $this->tipoSubscripcion,
                                 'esUnaSuscripcion' => $this->subscripcionEs,
                                 'tarifa' => $this->tarifaSeleccionada,
-                                'cantEjemplares' => (int) $this->cantEjem,
-                                'precio' => (int) $this->precio,
+                                'cantEjemplares' => (int)$this->cantEjem,
+                                'precio' => (int)$this->precio,
                                 'contrato' => $this->contrato,
                                 'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
                                 'periodo' => $this->periodoSuscripcionSeleccionada,
@@ -1031,7 +1091,7 @@ class Clientes extends Component
                                 'domingo' => $this->domingo,
                                 'descuento' => $this->descuento,
                                 'observaciones' => $this->observacion,
-                                'importe' => (int) $this->total,
+                                'importe' => (int)$this->total,
                                 'total' => $this->totalDesc,
                                 /* 'formaPago' => $this->formaPagoSeleccionada, */
                                 'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
@@ -1043,7 +1103,7 @@ class Clientes extends Component
                             $pdf = PDF::loadView('livewire.comprobantePDF', [
                                 'esUnaSuscripcion' => $this->subscripcionEs,
                                 'periodo' => $this->periodoSuscripcionSeleccionada,
-                                'cantEjemplares' => (int) $this->cantEjem,
+                                'cantEjemplares' => (int)$this->cantEjem,
                                 'observaciones' => $this->observacion,
                                 'total' => $this->total,
                                 'ruta' => $ruta,
@@ -1101,40 +1161,42 @@ class Clientes extends Component
                         'message' => ($this->status == 'created') ? '¡No puedes poner cero!' : ''
                     ]);
                 }
-            } else {
-
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡El cliente ya tiene una suscripción!' : ''
-                ]);
             }
 
-            if ($this->subscripcionEs == 'Renovación') {
-                $suscrip = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+            if ($this->subscripcionEs == 'Renovación' && $this->siTieneSus == true) {
+                if ($this->from && $this->to) {
+                    $suscrip = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
 
-                $suscrip = Suscripcion::find($suscrip[0]->id);
-                /* dd($suscrip); */
-                $suscrip->update([
-                    'periodo' => $this->periodoSuscripcionSeleccionada,
-                    'fechaInicio' => $this->from,
-                    'fechaFin' => $this->to,
-                ]);
 
-                $this->status = 'created';
+                    $suscrip = Suscripcion::find($suscrip[0]->id);
 
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Renovación generada!' : ''
-                ]);
+                    /* dd($suscrip); */
+                    $suscrip->update([
+                        'periodo' => $this->periodoSuscripcionSeleccionada,
+                        'fechaInicio' => $this->from,
+                        'fechaFin' => $this->to,
+                    ]);
 
-                $this->suscripciones = false;
+                    $this->status = 'created';
 
-                $this->borrar();
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Renovación generada!' : ''
+                    ]);
+
+                    $this->suscripciones = false;
+
+                    $this->borrar();
+                }
             }
         } else {
+            $this->status = 'created';
             $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Seleccione un cliente!' : ''
+                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
             ]);
         }
     }
+
+
     public function eliminarSubs($id)
     {
         $this->status = 'delete';
@@ -1145,6 +1207,7 @@ class Clientes extends Component
 
         $this->modalDomSubs = false;
     }
+
     public function borrar()
     {
         $this->clienteSeleccionado = '';
@@ -1174,6 +1237,7 @@ class Clientes extends Component
         $this->domingo = false;
         $this->allow = true;
     }
+
     public function datoSeleccionado($id)
     {
         if ($this->domicilioSeleccionado) {
@@ -1206,6 +1270,7 @@ class Clientes extends Component
             $this->modalDomSubs = false;
         }
     }
+
     public function eliminarDatoSeleccionado($id)
     {
         foreach ($this->domicilioSeleccionado as $key => $value) {
@@ -1217,6 +1282,7 @@ class Clientes extends Component
             }
         }
     }
+
     public function editarDomicilioSubs($id)
     {
         $this->status = 'updated';
@@ -1236,6 +1302,7 @@ class Clientes extends Component
         $this->modalDomSubs = true;
         $this->modalCrearDom();
     }
+
     public function actualizarDomicilioSubs()
     {
         $DomicilioSubs = DomicilioSubs::find($this->domicilioSubsId);
@@ -1257,6 +1324,7 @@ class Clientes extends Component
         $this->status = 'created';
         $this->modalFormDom = false;
     }
+
     public function resetInputSubs()
     {
         $this->calle = '';

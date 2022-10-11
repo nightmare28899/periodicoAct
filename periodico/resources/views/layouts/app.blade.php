@@ -62,7 +62,6 @@
             case '¡Domicilio creado exitosamente!':
             case '¡Suscripción generada correctamente!':
             case '¡Venta generada exitosamente!':
-            case '¡Venta actualizada exitosamente!':
             case '¡Renovación generada!':
             case '¡Se creo exitosamente la factura!':
             case '¡Se cancelo la factura!':
@@ -111,12 +110,14 @@
                 toastr.error(event.detail.message, '¡Alerta!');
                 break;
             case '¡El cliente no tiene ningúna venta registrada!':
+            case '¡El cliente no tiene suscripciones!':
                 toastr.warning(event.detail.message, '¡Alerta!');
                 break;
             case '¡Cliente actualizado correctamente!':
             case '¡Ruta actualizada correctamente!':
             case '¡Tarifa actualizada correctamente!':
             case '¡Domicilio actualizado correctamente!':
+            case '¡Venta actualizada exitosamente!':
                 toastr.info(event.detail.message, '¡Actualizado!');
                 break;
             default:
