@@ -27,9 +27,9 @@ class Factura extends Component
         if ($this->activarCG) {
             $this->cliente['nombre'] = 'PUBLICO EN GENERAL';
             $this->cliente['rfc_input'] = 'XAXX010101000';
-            $this->cfdiUse = 'S01';
+            /* $this->cfdiUse = 'S01'; */
             $this->cliente['regimen_fiscal'] = '616';
-            $this->PaymentForm = '03';
+            /* $this->PaymentForm = '03'; */
             $this->domicilio['cp'] = '58190';
             $this->globalInformation = [
                 "Periodicity" => "04",

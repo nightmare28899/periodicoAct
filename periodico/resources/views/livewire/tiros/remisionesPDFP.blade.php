@@ -100,7 +100,7 @@
         <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
             {{ $result->nombre }}</p>
         <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-            {{ $result->rfc }}</p>
+            {{ $result->rfc_input }}</p>
         <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
             {{ $result->calle }}</p>
         <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
@@ -142,8 +142,8 @@
                                 {{ $result->{$diaS} }} </label>
                         </div>
                     </td>
-                    <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}</td>
-                    <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
+                    <td>{{ sprintf('$ %s', number_format($diaS == 'domingo' ? $result->dominical : $result->ordinario)) }}</td>
+                    <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -154,7 +154,7 @@
                     <td></td>
                     <td></td>
                     <td>IMPORTE</td>
-                    <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
+                    <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -166,7 +166,7 @@
                     <td></td>
                     <td></td>
                     <td>SUBTOTAL</td>
-                    <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</td>
+                    <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -181,7 +181,7 @@
                     <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->{$diaS} }}</th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                        {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}</th>
+                        {{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}</th>
                 </tr>
             </thead>
         </table>
@@ -389,8 +389,8 @@
                                 {{ $result->cantEjemplares }} </label>
                         </div>
                     </td>
-                    <td>{{ $result->tarifa == 'Base' ? 330 : 300 }}</td>
-                    <td>{{ $result->importe }}</td>
+                    <td>{{ sprintf('$ %s', number_format($result->tarifa == 'Base' ? 330 : 300)) }}</td>
+                    <td>{{ sprintf('$ %s', number_format($result->importe)) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -401,19 +401,19 @@
                     <td></td>
                     <td></td>
                     <td>IMPORTE</td>
-                    <td>{{ $result->importe }}</td>
+                    <td>{{ sprintf('$ %s', number_format($result->importe)) }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>DESCUENTO</td>
-                    <td>{{ $result->descuento }}</td>
+                    <td>{{ sprintf('$ %s', number_format($result->descuento)) }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>SUBTOTAL</td>
-                    <td>{{ $result->total }}</td>
+                    <td>{{ sprintf('$ %s', number_format($result->total)) }}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -429,7 +429,7 @@
                     </th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                        {{ $result->total }}</th>
+                        {{ sprintf('$ %s', number_format($result->total)) }}</th>
                 </tr>
             </thead>
         </table>

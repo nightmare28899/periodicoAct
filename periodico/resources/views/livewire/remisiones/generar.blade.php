@@ -131,7 +131,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if (count($this->ventaCopia) > 0)
+                            @if ($this->ventaCopia)
                                 @foreach ($ventaCopia as $result)
                                     @if ($result->{$diaS} != 0)
                                         <tr>
@@ -140,7 +140,7 @@
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
                                                            value={{ $result->idVenta }}>
                                                     <label class="text-black"
-                                                           for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                           for="Física">{{ \Carbon\Carbon::parse($result->created_at)->format('d/m/Y') }}</label>
                                                 </div>
                                             </td>
                                             <td class='px-4 py-2'>
@@ -159,28 +159,22 @@
                                             <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
                                         </tr>
-                                    @else
-                                        <tr>
-                                            <td colspan="11" class="text-center">
-                                                No tiene ventas para este dia
-                                            </td>
-                                        </tr>
                                     @endif
                                 @endforeach
                             @else
                                 <tr>
                                 </tr>
                             @endif
-                            @if (count($suscripcionCopia) > 0)
+                            @if ($suscripcionCopia)
                                 @foreach ($suscripcionCopia as $suscri)
-                                    @if ($suscri->{$diaS} != 0)
+                                    {{-- @if ($suscri->{$diaS} != 0) --}}
                                         <tr>
                                             <td class='px-4 py-2'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
                                                            value={{ $suscri->idSuscripcion }}>
                                                     <label class="text-black"
-                                                           for="Física">{{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</label>
+                                                           for="Física">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
                                                 </div>
                                             </td>
                                             <td class='px-4 py-2'>
@@ -199,13 +193,13 @@
                                             <td class='px-4 py-2'>{{ $suscri->nombreruta }}</td>
                                             <td class='px-4 py-2'>{{ $suscri->tiporuta }}</td>
                                         </tr>
-                                    @else
+                                    {{-- @else
                                         <tr>
                                             <td colspan="11" class="text-center">
                                                 No tiene suscripcion
                                             </td>
                                         </tr>
-                                    @endif
+                                    @endif --}}
                                 @endforeach
                             @else
                                 <tr>

@@ -146,8 +146,8 @@
                                     {{ $result->{$diaS} }}, Tipo: Venta/Cliente </label>
                             </div>
                         </td>
-                        <td>{{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}</td>
-                        <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                        <td>{{ sprintf('$ %s', number_format($diaS == 'domingo' ? $result->dominical : $result->ordinario)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}
                         </td>
                     </tr>
                 </tbody>
@@ -159,7 +159,7 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}
                         </td>
                     </tr>
                     <tr>
@@ -172,7 +172,7 @@
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}
                         </td>
                     </tr>
                     <tr>
@@ -188,7 +188,7 @@
                         <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->{$diaS} }}</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                            {{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                            {{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS})) }}
                         </th>
                     </tr>
                 </thead>
@@ -397,8 +397,8 @@
                                     {{ $result->cantEjemplares }}, Tipo: Suscripción </label>
                             </div>
                         </td>
-                        <td>{{ $result->tarifa == 'Base' ? 330 : 300 }}</td>
-                        <td>{{ $result->importe }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->tarifa == 'Base' ? 330 : 300)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->importe)) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -409,7 +409,7 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ $result->importe }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->importe)) }}</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -421,7 +421,7 @@
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ $result->total }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->total)) }}</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -437,7 +437,7 @@
                         </th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                            {{ $result->total }}</th>
+                            {{ sprintf('$ %s', number_format($result->total)) }}</th>
                     </tr>
                 </thead>
             </table>
