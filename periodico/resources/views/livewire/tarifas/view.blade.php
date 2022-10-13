@@ -44,26 +44,26 @@
                 @if ($isModalOpen)
                     @include('livewire.tarifas.create')
                 @endif
-                <table class="table-auto w-full text-center">
+                <table class="table-auto border-separate border-spacing-2 border border-dark w-full text-center">
                     <thead>
-                        <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">No.</th>
-                            <th class="px-4 py-2 w-20">Tipo</th>
-                            <th class="px-4 py-2 w-20">Ordinario</th>
-                            <th class="px-4 py-2 w-20">Dominical</th>
-                            <th class="px-4 py-2 w-20">Fecha creación</th>
-                            <th class="px-4 py-2 w-20">Acciones</th>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2 w-20 uppercase">No.</th>
+                            <th class="px-4 py-2 w-20 uppercas">Tipo</th>
+                            <th class="px-4 py-2 w-20 uppercas">Ordinario</th>
+                            <th class="px-4 py-2 w-20 uppercas">Dominical</th>
+                            <th class="px-4 py-2 w-20 uppercas">Fecha creación</th>
+                            <th class="px-4 py-2 w-20 uppercas">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tarifas as $tarifa)
                             <tr>
-                                <td class="border">{{ $tarifa->id }}</td>
-                                <td class="border">{{ $tarifa->tipo }}</td>
-                                <td class="border">{{ $tarifa->ordinario }}</td>
-                                <td class="border">{{ $tarifa->dominical }}</td>
-                                <td class="border">{{ $tarifa->created_at }}</td>
-                                <td class="border px-4 py-2 flex-nowrap pt-2">
+                                <td class="px-4 py-2 border border-dark">{{ $tarifa->id }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $tarifa->tipo }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $tarifa->ordinario }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $tarifa->dominical }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $tarifa->created_at }}</td>
+                                <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                     <x-jet-dropdown align="right" width="48">
                                         <x-slot name="trigger">
 

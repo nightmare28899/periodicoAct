@@ -85,41 +85,41 @@
 
                 <div class="overflow-x-auto w-full">
 
-                    <table class="table-auto w-full text-center">
+                    <table class="table-auto border-separate border-spacing-2 border border-dark text-center">
                         <thead>
-                            <tr class="bg-gray-500 text-white">
-                                <th class="px-4 py-2 w-20">ID</th>
-                                <th class="px-4 py-2 w-20">Clasificación</th>
-                                <th class="px-4 py-2 w-20">Persona</th>
-                                <th class="px-4 py-2 w-20">RFC</th>
-                                <th class="px-4 py-2 w-20">Nombre</th>
-                                <th class="px-4 py-2 w-20">Estado</th>
-                                <th class="px-4 py-2 w-20">País</th>
-                                <th class="px-4 py-2 w-20">Email</th>
-                                <th class="px-4 py-2 w-20">Email Cobranza</th>
-                                <th class="px-4 py-2 w-20">Teléfono</th>
-                                <th class="px-4 py-2 w-20">Régimen Fiscal</th>
-                                <th class="px-4 py-2 w-20">Razón Social</th>
-                                <th class="px-4 py-2 w-20">Acciones</th>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-2 w-20 uppercase">ID</th>
+                                <th class="px-4 py-2 w-20 uppercase">Clasificación</th>
+                                <th class="px-4 py-2 w-20 uppercase">Persona</th>
+                                <th class="px-4 py-2 w-20 uppercase">RFC</th>
+                                <th class="px-4 py-2 w-20 uppercase">Nombre</th>
+                                <th class="px-4 py-2 w-20 uppercase">Estado</th>
+                                <th class="px-4 py-2 w-20 uppercase">País</th>
+                                <th class="px-4 py-2 w-20 uppercase">Email</th>
+                                <th class="px-4 py-2 w-20 uppercase">Email Cobranza</th>
+                                <th class="px-4 py-2 w-20 uppercase">Teléfono</th>
+                                <th class="px-4 py-2 w-20 uppercase">Régimen Fiscal</th>
+                                <th class="px-4 py-2 w-20 uppercase">Razón Social</th>
+                                <th class="px-4 py-2 w-20 uppercase">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                              @if ($clientes)
                                 @foreach ($clientes as $cliente)
                                     <tr>
-                                        <td class="border">{{ $cliente->id }}</td>
-                                        <td class="border">{{ $cliente->clasificacion }}</td>
-                                        <td class="border">{{ $cliente->rfc }}</td>
-                                        <td class="border">{{ $cliente->rfc_input }}</td>
-                                        <td class="border">{{ $cliente->nombre }}</td>
-                                        <td class="border">{{ $cliente->estado }}</td>
-                                        <td class="border">{{ $cliente->pais }}</td>
-                                        <td class="border">{{ $cliente->email }}</td>
-                                        <td class="border">{{ $cliente->email_cobranza }}</td>
-                                        <td class="border">{{ $cliente->telefono }}</td>
-                                        <td class="border">{{ $cliente->regimen_fiscal }}</td>
-                                        <td class="border">{{ $cliente->razon_social }}</td>
-                                        <td class="border px-4 py-2 flex-nowrap pt-2">
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->id }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->clasificacion }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->rfc }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->rfc_input }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->nombre }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->estado }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->pais }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->email }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->email_cobranza }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->telefono }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->regimen_fiscal }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->razon_social }}</td>
+                                        <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                             <x-jet-dropdown align="right" width="48">
                                                 <x-slot name="trigger">
 

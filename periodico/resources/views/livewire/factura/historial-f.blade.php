@@ -48,12 +48,12 @@
                         <table class="table-auto border-separate border-spacing-2 border border-dark">
                             <thead>
                             <tr class="bg-gray-100">
-                                <th class="px-4 py-2">Fecha</th>
-                                <th class="px-4 py-2">Tipo</th>
-                                <th class="px-4 py-2">Cliente</th>
-                                <th class="px-4 py-2">Ejemplares</th>
-                                <th class="px-4 py-2">Total</th>
-                                <th class="px-4 py-2">Acciones</th>
+                                <th class="px-4 py-2 uppercase">Fecha</th>
+                                <th class="px-4 py-2 uppercase">Tipo</th>
+                                <th class="px-4 py-2 uppercase">Cliente</th>
+                                <th class="px-4 py-2 uppercase">Ejemplares</th>
+                                <th class="px-4 py-2 uppercase">Total</th>
+                                <th class="px-4 py-2 uppercase">Acciones</th>
                             </tr>
                             </thead>
                             <tbody>

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio;
+    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch;
 
     public function mount($editar)
     {
@@ -144,6 +144,12 @@ class Historial extends Component
                 }
             }
         }
+
+        if ($this->remisionIdSearch) {
+            $this->tiros = Tiro::where('id', $this->remisionIdSearch)->get();
+        }
+
+
         return view('livewire.remisiones.historial');
     }
 

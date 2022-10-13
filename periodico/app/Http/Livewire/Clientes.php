@@ -553,7 +553,7 @@ class Clientes extends Component
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
         $this->razon_social = $Cliente->razon_social;
 
-        $Domicilio = Domicilio::find($id);
+        /* $Domicilio = Domicilio::find($id);
         $this->domicilio_id = $id;
         $this->calle = $Domicilio->calle;
         $this->noint = $Domicilio->noint;
@@ -564,7 +564,7 @@ class Clientes extends Component
         $this->municipio = $Domicilio->municipio;
         $this->referencia = $Domicilio->referencia;
         $this->ruta_id = $Domicilio->ruta_id;
-        $this->tarifa_id = $Domicilio->tarifa_id;
+        $this->tarifa_id = $Domicilio->tarifa_id; */
 
         $this->openModalPopover();
 
@@ -608,7 +608,7 @@ class Clientes extends Component
             'razon_social' => $this->razon_social,
         ]);
 
-        $this->status = 'created';
+        $this->status = 'updated';
         $this->toast();
         $this->resetInput();
         $this->emit('closeModal');

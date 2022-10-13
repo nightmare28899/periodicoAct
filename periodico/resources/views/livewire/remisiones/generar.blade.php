@@ -114,20 +114,20 @@
                 <br>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto">
-                        <table class="table-auto border-solid border-2 border-dark">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full">
                             <thead>
-                            <tr class='text-white bg-gray-500'>
-                                <th class='px-4 py-2'>Fecha</th>
-                                <th class='px-4 py-2'>Cliente</th>
-                                <th class='px-4 py-2'>Entregar</th>
-                                <th class='px-4 py-2'>Devuelto</th>
-                                <th class='px-4 py-2'>Faltante</th>
-                                <th class='px-4 py-2'>Venta</th>
-                                <th class='px-4 py-2'>Precio</th>
-                                <th class='px-4 py-2'>Importe</th>
-                                <th class='px-6 py-2'>Dia</th>
-                                <th class='px-6 py-2'>Nombre Ruta</th>
-                                <th class='px-6 py-2'>Tipo</th>
+                            <tr class='bg-gray-100'>
+                                <th class='px-4 py-2 uppercase'>Fecha</th>
+                                <th class='px-4 py-2 uppercase'>Cliente</th>
+                                <th class='px-4 py-2 uppercase'>Entregar</th>
+                                <th class='px-4 py-2 uppercase'>Devuelto</th>
+                                <th class='px-4 py-2 uppercase'>Faltante</th>
+                                <th class='px-4 py-2 uppercase'>Venta</th>
+                                <th class='px-4 py-2 uppercase'>Precio</th>
+                                <th class='px-4 py-2 uppercase'>Importe</th>
+                                <th class='px-6 py-2 uppercase'>Dia</th>
+                                <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
+                                <th class='px-6 py-2 uppercase'>Tipo</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -135,7 +135,7 @@
                                 @foreach ($ventaCopia as $result)
                                     @if ($result->{$diaS} != 0)
                                         <tr>
-                                            <td class='px-4 py-2'>
+                                            <td class='px-4 py-2 border border-dark'>
                                                 <div class="form-group">
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
                                                            value={{ $result->idVenta }}>
@@ -143,21 +143,21 @@
                                                            for="Física">{{ \Carbon\Carbon::parse($result->created_at)->format('d/m/Y') }}</label>
                                                 </div>
                                             </td>
-                                            <td class='px-4 py-2'>
+                                            <td class='px-4 py-2 border border-dark'>
                                                 {{ $result->nombre ? $result->nombre : $result->razon_social }}</td>
-                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                            <td class='px-4 py-2'>{{ $devuelto }}</td>
-                                            <td class='px-4 py-2'>{{ $faltante }}</td>
-                                            <td class='px-4 py-2'>{{ $result->{$diaS} }}</td>
-                                            <td class='px-4 py-2'>
+                                            <td class='px-4 py-2 border border-dark'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $devuelto }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $faltante }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $result->{$diaS} }}</td>
+                                            <td class='px-4 py-2 border border-dark'>
                                                 ${{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
                                             </td>
-                                            <td class='px-4 py-2'>
+                                            <td class='px-4 py-2 border border-dark'>
                                                 ${{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
                                             </td>
-                                            <td class='px-4 py-2'>{{ $diaS }}</td>
-                                            <td class='px-4 py-2'>{{ $result->nombreruta }}</td>
-                                            <td class='px-4 py-2'>{{ $result->tiporuta }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $result->nombreruta }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $result->tiporuta }}</td>
                                         </tr>
                                     @endif
                                 @endforeach

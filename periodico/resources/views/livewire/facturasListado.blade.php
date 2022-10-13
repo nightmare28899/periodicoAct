@@ -48,19 +48,19 @@
                             <table class="table-auto border-separate border-spacing-2 border border-dark">
                                 <thead>
                                 <tr class='bg-gray-100'>
-                                    <th class='px-4 py-2'>Fecha</th>
+                                    <th class='px-4 py-2 uppercase'>Fecha</th>
                                     {{-- <th class="px-6 py-2">idTipo</th> --}}
-                                    <th class='px-4 py-2'>Cliente</th>
-                                    <th class='px-4 py-2'>Entregar</th>
-                                    <th class='px-4 py-2'>Devuelto</th>
-                                    <th class='px-4 py-2'>Faltante</th>
-                                    <th class='px-4 py-2'>Venta</th>
-                                    <th class='px-4 py-2'>Precio</th>
-                                    <th class='px-4 py-2'>Importe</th>
-                                    <th class='px-6 py-2'>Dia</th>
-                                    <th class='px-6 py-2'>Nombre Ruta</th>
-                                    <th class='px-6 py-2'>Tipo</th>
-                                    <th class="px-6 py-2">Acciones</th>
+                                    <th class='px-4 py-2 uppercase'>Cliente</th>
+                                    <th class='px-4 py-2 uppercase'>Entregar</th>
+                                    <th class='px-4 py-2 uppercase'>Devuelto</th>
+                                    <th class='px-4 py-2 uppercase'>Faltante</th>
+                                    <th class='px-4 py-2 uppercase'>Venta</th>
+                                    <th class='px-4 py-2 uppercase'>Precio</th>
+                                    <th class='px-4 py-2 uppercase'>Importe</th>
+                                    <th class='px-6 py-2 uppercase'>Dia</th>
+                                    <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
+                                    <th class='px-6 py-2 uppercase'>Tipo</th>
+                                    <th class="px-6 py-2 uppercase">Acciones</th>
                                 </tr>
                                 </thead>
 

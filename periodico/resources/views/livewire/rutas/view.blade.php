@@ -47,28 +47,28 @@
                 @if ($isModalOpen)
                     @include('livewire.rutas.create')
                 @endif
-                <table class="table-auto w-full text-center">
+                <table class="table-auto border-separate border-spacing-2 border border-dark w-full text-center">
                     <thead>
-                        <tr class="bg-gray-500 text-white">
-                            <th class="px-4 py-2 w-20">No.</th>
-                            <th class="px-4 py-2 w-20">Nombre</th>
-                            <th class="px-4 py-2 w-20">Tipo</th>
-                            <th class="px-4 py-2 w-20">Repartidor</th>
-                            <th class="px-4 py-2 w-20">Cobrador</th>
-                            <th class="px-4 py-2 w-20">Ctaespecial</th>
-                            <th class="px-4 py-2 w-20">Acciones</th>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2 w-20 uppercase">No.</th>
+                            <th class="px-4 py-2 w-20 uppercase">Nombre</th>
+                            <th class="px-4 py-2 w-20 uppercase">Tipo</th>
+                            <th class="px-4 py-2 w-20 uppercase">Repartidor</th>
+                            <th class="px-4 py-2 w-20 uppercase">Cobrador</th>
+                            <th class="px-4 py-2 w-20 uppercase">Ctaespecial</th>
+                            <th class="px-4 py-2 w-20 uppercase">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($rutas as $ruta)
                             <tr>
-                                <td class="border">{{ $ruta->id }}</td>
-                                <td class="border">{{ $ruta->nombreruta }}</td>
-                                <td class="border">{{ $ruta->tiporuta }}</td>
-                                <td class="border">{{ $ruta->repartidor }}</td>
-                                <td class="border">{{ $ruta->cobrador }}</td>
-                                <td class="border">{{ $ruta->ctaespecial }}</td>
-                                <td class="border px-4 py-2 flex-nowrap pt-2">
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->id }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->nombreruta }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->tiporuta }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->repartidor }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->cobrador }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ $ruta->ctaespecial }}</td>
+                                <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                     <x-jet-dropdown align="right" width="48">
                                         <x-slot name="trigger">
 
