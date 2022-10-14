@@ -16,7 +16,6 @@ use Carbon\Carbon;
 use App\Models\ventas;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Termwind\Components\Dd;
 
 class Clientes extends Component
 {
@@ -724,7 +723,7 @@ class Clientes extends Component
         );
 
         Domicilio::Create([
-            'cliente_id' => $this->cliente_id = Cliente::latest('id')->first()->id,
+            'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
             'calle' => $this->calle,
             'noint' => $this->noint ? $this->noint : 0,
             'noext' => $this->noext,

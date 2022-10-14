@@ -148,12 +148,13 @@
                                                             disabled>Pagado
                                                         </button>
                                                     @else
-                                                        <button wire:click="editarRemision({{ $tiro->id }})"
+                                                        <button
+                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
                                                             class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                             Editar
                                                         </button>
                                                         <button
-                                                            wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                            wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
                                                             class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500
@@ -163,7 +164,7 @@
                                                         </button>
                                                     @endif
                                                     <button
-                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
                                                         class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                         PDF
                                                     </button>
@@ -416,8 +417,8 @@
                     id="devuelto" wire:model.defer="devuelto" placeholder="Cantidad" min="0" />
             </div>
             @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))
-                <p>devuelto: {{ $devuelto }}</p>
-                <p>entregar: {{ $entregar }}</p>
+                {{-- <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p> --}}
                 <button wire:click.prevent="updateDevueltos" type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -432,8 +433,8 @@
                     Devolver
                 </button>
             @elseif ($entregar == 0 && $devuelto > 0)
-                <p>devuelto: {{ $devuelto }}</p>
-                <p>entregar: {{ $entregar }}</p>
+                {{-- <p>devuelto: {{ $devuelto }}</p>
+                <p>entregar: {{ $entregar }}</p> --}}
                 <button wire:click.prevent="updateDevueltos" type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="updateDevueltos" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

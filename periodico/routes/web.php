@@ -20,6 +20,8 @@ use App\Http\Livewire\PDFTiro;
 use App\Http\Livewire\PDFPago;
 use App\Http\Livewire\PDFRemision;
 use App\Http\Livewire\PdfRemisionesP;
+use App\Http\Livewire\ReportePDFrelacionCR;
+use App\Http\Livewire\ReporteRelacionCR;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +63,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
     Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
+
+    Route::get('/reporte-relacionCR', ReporteRelacionCR::class)->name('reporte-relacionCR');
+    Route::get('/PDFReporteRCR', ReportePDFrelacionCR::class)->name('PDFReporteRCR');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

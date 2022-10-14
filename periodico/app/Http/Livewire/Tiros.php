@@ -107,55 +107,63 @@ class Tiros extends Component
         $this->isGenerateTiro = true;
         $this->modalRemision = false;
 
-        if ($this->rutaSeleccionada != 'Todos') {
-            $this->ventas = ventas
-                ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                ->where(function ($query) {
-                    $query->where('desde', '<=', $this->from)
-                        ->where('hasta', '>=', $this->from)
-                        ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
-                })
-                ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS);
+        if ($this->from) {
+            if ($this->rutaSeleccionada != 'Todos') {
+                $this->ventas = ventas
+                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                    ->where(function ($query) {
+                        $query->where('desde', '<=', $this->from)
+                            ->where('hasta', '>=', $this->from)
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                    })
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->get($this->diaS);
 
-            $this->suscripcion = Suscripcion
-                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                ->where(function ($query) {
-                    $query->where('fechaInicio', '<=', $this->from)
-                        ->where('fechaFin', '>=', $this->from)
-                        ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
-                })
-                ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
-                ->get($this->diaS);
+                $this->suscripcion = Suscripcion
+                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                    ->where(function ($query) {
+                        $query->where('fechaInicio', '<=', $this->from)
+                            ->where('fechaFin', '>=', $this->from)
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                    })
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
+                    ->get($this->diaS);
+            } else {
+                $this->ventas = ventas
+                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                    ->where(function ($query) {
+                        $query->where('desde', '<=', $this->from)
+                            ->where('hasta', '>=', $this->from);
+                    })
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->get($this->diaS);
+
+                $this->suscripcion = Suscripcion
+                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                    ->where(function ($query) {
+                        $query->where('fechaInicio', '<=', $this->from)
+                            ->where('fechaFin', '>=', $this->from);
+                    })
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
+                    ->get($this->diaS);
+            }
         } else {
-            $this->ventas = ventas
-                ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                ->where(function ($query) {
-                    $query->where('desde', '<=', $this->from)
-                        ->where('hasta', '>=', $this->from);
-                })
-                ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get($this->diaS);
-
-            $this->suscripcion = Suscripcion
-                ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                ->where(function ($query) {
-                    $query->where('fechaInicio', '<=', $this->from)
-                        ->where('fechaFin', '>=', $this->from);
-                })
-                ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
-                ->get($this->diaS);
+            $this->status = 'error';
+            return $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡Debes escoger una fecha primero!' : ''
+            ]);
         }
+
 
         $pdf = PDF::loadView('livewire.tiros.pdf', [
             'ventas' => $this->ventas,
@@ -164,7 +172,7 @@ class Tiros extends Component
             'dateF' => $this->dateF,
             'filtro' => $this->rutaSeleccionada != 'Todos' ? $this->rutaSeleccionada : '',
         ])
-             ->setPaper('A3', 'landscape')
+            ->setPaper('A3', 'landscape')
             ->output();
 
         Storage::disk('public')->put('tiro.pdf', $pdf);

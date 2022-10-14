@@ -81,259 +81,261 @@
 </head>
 
 <body>
-@if ($tipo === 'suscri')
-    <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
-        <img src="img/logo.jpe" alt="logo la voz" height="36px">
-    </div>
-    <br>
-    <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
-        Lavín
-        1270
-        Col. Agustín Arriaga Rivera.</h5>
-    <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00
-        Fax
-        Ext.
-        1038
-    </h5>
-    <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">RFC: VMI-600516-JG7, REG. EDO. 124026-9.
-    </h5>
-    <h3
-        style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px;">
-        remisionado de clientes
-    </h3>
-    <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-        {{ $ruta['nombreruta'] }}
-    </p>
-    <h3
-        style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
-        remision
-        {{ $cliente['id'] }}
-    </h3>
-    <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
-        {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-        {{ $cliente['razon_social'] }}</p>
-    <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-        {{ $cliente['rfc_input'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-        {{ $cliente['calle'] }}</p>
-    <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
-        {{ $cliente['colonia'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
-        {{ $cliente['ciudad'] }}</p>
-    <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
-        {{ $cliente['estado'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-        {{ $cliente['noext'] }}</p>
-    <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
-            int</b>
-        {{ $cliente['noint'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-        {{ $cliente['cp'] }}</p>
-    <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
-        {{ $cliente['pais'] }}</p>
-    <div style="padding-top: 8px;">
-        <p
-            style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
-            concepto</p>
-    </div>
-    <div class="logoCentrado">
-        <img src="img/pagado.png" width="260" height="260" alt="logo">
-    </div>
-    <table>
-        <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
-        <tr>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
-            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">concepto</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">val. unitario</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">importe</th>
-        </tr>
-        </thead>
-        <tbody class="centrado">
-        <tr>
-            <td>{{ $suscripcion['cantEjemplares'] }}</td>
-            <td>
-                <div class="form-group">
-                    <label class="text-black" for="Física"> Fecha: De:
-                        {{ \Carbon\Carbon::parse($desde)->format('d/m/Y') }}, Hasta: {{
-                            \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Suscripcion </label>
-                </div>
-            </td>
-            <td>{{ $suscripcion['tarifa'] == 'ejecutiva' ? 300 : ($suscripcion['tarifa'] == 'base' ? 330 : ( 'personalizado' ))  }}</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr>
-    <table>
-        <tbody class="centrado">
-        <tr>
-            <td></td>
-            <td></td>
-            <td>IMPORTE</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}</td>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>DESCUENTO</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>SUBTOTAL</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>IVA</td>
-            <td>0</td>
-        </tr>
-        </tbody>
-        <thead>
-        <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $suscripcion['cantEjemplares'] }}</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                {{ sprintf('$ %s', number_format($total)) }}
-            </th>
-        </tr>
-        </thead>
-    </table>
-@elseif ($tipo == 'venta')
-    <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
-        <img src="img/logo.jpe" alt="logo la voz" height="36px">
-    </div>
-    <br>
-    <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
-        Lavín
-        1270
-        Col. Agustín Arriaga Rivera.</h5>
-    <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00
-        Fax
-        Ext.
-        1038
-    </h5>
-    <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">RFC: VMI-600516-JG7, REG. EDO. 124026-9.
-    </h5>
-    <h3
-        style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px;">
-        remisionado de clientes
-    </h3>
-    <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-        {{ $ruta['nombreruta'] }}
-    </p>
-    <h3
-        style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
-        remision
-        {{ $cliente['id'] }}
-    </h3>
-    <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
-        {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-        {{ $cliente['razon_social'] }}</p>
-    <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-        {{ $cliente['rfc_input'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-        {{ $cliente['calle'] }}</p>
-    <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
-        {{ $cliente['colonia'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
-        {{ $cliente['municipio'] }}</p>
-    <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
-        {{ $cliente['estado'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-        {{ $cliente['noext'] }}</p>
-    <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
-            int</b>
-        {{ $cliente['noint'] }}</p>
-    <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-        {{ $cliente['cp'] }}</p>
-    <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
-        {{ $cliente['pais'] }}</p>
-    <div style="padding-top: 8px;">
-        <p
-            style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
-            concepto</p>
-    </div>
-    <div class="logoCentrado">
-        <img src="img/pagado.png" width="260" height="260" alt="logo">
-    </div>
-    <table>
-        <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
-        <tr>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
-            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">concepto</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">val. unitario</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">importe</th>
-        </tr>
-        </thead>
-        <tbody class="centrado">
-        <tr>
-            <td>{{ $lunes + $martes + $miercoles + $jueves + $viernes + $sabado + $domingo }}</td>
-            <td>
-                <div class="form-group">
-                    <label class="text-black" for="Física"> Fecha: De:
-                        {{ \Carbon\Carbon::parse($desde)->format('d/m/Y') }}, Hasta: {{
-                            \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Venta/cliente </label>
-                </div>
-            </td>
-            <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <hr>
-    <table>
-        <tbody class="centrado">
-        <tr>
-            <td></td>
-            <td></td>
-            <td>IMPORTE</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}</td>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>DESCUENTO</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>SUBTOTAL</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>IVA</td>
-            <td>0</td>
-        </tr>
-        </tbody>
-        <thead>
-        <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $lunes + $martes + $miercoles + $jueves
-                    + $viernes + $sabado + $domingo }}</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
-            <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                {{ sprintf('$ %s', number_format($total)) }}
-            </th>
-        </tr>
-        </thead>
-    </table>
-@endif
+    @if ($tipo === 'suscri')
+        <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
+            <img src="img/logo.jpe" alt="logo la voz" height="36px">
+        </div>
+        <br>
+        <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
+            Lavín
+            1270
+            Col. Agustín Arriaga Rivera.</h5>
+        <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00
+            Fax
+            Ext.
+            1038
+        </h5>
+        <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">RFC: VMI-600516-JG7, REG. EDO. 124026-9.
+        </h5>
+        <h3
+            style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px;">
+            remisionado de clientes
+        </h3>
+        <p id="movido" style="font-size: 16px;"><b>RUTA</b>
+            {{ $ruta['nombreruta'] }}
+        </p>
+        <h3
+            style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
+            remision
+            {{ $cliente['id'] }}
+        </h3>
+        <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
+            {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
+            {{ $cliente['razon_social'] }}</p>
+        <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
+            {{ $cliente['rfc_input'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
+            {{ $cliente['calle'] }}</p>
+        <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
+            {{ $cliente['colonia'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
+            {{ $cliente['ciudad'] }}</p>
+        <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
+            {{ $cliente['estado'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
+            {{ $cliente['noext'] }}</p>
+        <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
+                int</b>
+            {{ $cliente['noint'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
+            {{ $cliente['cp'] }}</p>
+        <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
+            {{ $cliente['pais'] }}</p>
+        <div style="padding-top: 8px;">
+            <p
+                style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
+                concepto</p>
+        </div>
+        <div class="logoCentrado">
+            <img src="img/pagado.png" width="260" height="260" alt="logo">
+        </div>
+        <table>
+            <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+                <tr>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
+                    <th class='px-4 py-2' style="width: 266px; font-size: 14px;">concepto</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">val. unitario</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">importe</th>
+                </tr>
+            </thead>
+            <tbody class="centrado">
+                <tr>
+                    <td>{{ $suscripcion['cantEjemplares'] }}</td>
+                    <td>
+                        <div class="form-group">
+                            <label class="text-black" for="Física"> Fecha: De:
+                                {{ \Carbon\Carbon::parse($desde)->format('d/m/Y') }}, Hasta:
+                                {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Suscripcion </label>
+                        </div>
+                    </td>
+                    <td>{{ $suscripcion['tarifa'] == 'ejecutiva' ? 300 : ($suscripcion['tarifa'] == 'base' ? 330 : 'personalizado') }}
+                    </td>
+                    <td>{{ sprintf('$ %s', number_format($total)) }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <table>
+            <tbody class="centrado">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>IMPORTE</td>
+                    <td>{{ sprintf('$ %s', number_format($total)) }}</td>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>DESCUENTO</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>SUBTOTAL</td>
+                    <td>{{ sprintf('$ %s', number_format($total)) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>IVA</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
+                    <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $suscripcion['cantEjemplares'] }}
+                    </th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
+                        {{ sprintf('$ %s', number_format($total)) }}
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    @elseif ($tipo == 'venta')
+        <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
+            <img src="img/logo.jpe" alt="logo la voz" height="36px">
+        </div>
+        <br>
+        <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
+            Lavín
+            1270
+            Col. Agustín Arriaga Rivera.</h5>
+        <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00
+            Fax
+            Ext.
+            1038
+        </h5>
+        <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">RFC: VMI-600516-JG7, REG. EDO. 124026-9.
+        </h5>
+        <h3
+            style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px;">
+            remisionado de clientes
+        </h3>
+        <p id="movido" style="font-size: 16px;"><b>RUTA</b>
+            {{ $ruta['nombreruta'] }}
+        </p>
+        <h3
+            style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
+            remision
+            {{ $cliente['id'] }}
+        </h3>
+        <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
+            {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
+            {{ $cliente['razon_social'] }}</p>
+        <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
+            {{ $cliente['rfc_input'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
+            {{ $cliente['calle'] }}</p>
+        <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>colonia</b>
+            {{ $cliente['colonia'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
+            {{ $cliente['municipio'] }}</p>
+        <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado</b>
+            {{ $cliente['estado'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
+            {{ $cliente['noext'] }}</p>
+        <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
+                int</b>
+            {{ $cliente['noint'] }}</p>
+        <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
+            {{ $cliente['cp'] }}</p>
+        <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
+            {{ $cliente['pais'] }}</p>
+        <div style="padding-top: 8px;">
+            <p
+                style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
+                concepto</p>
+        </div>
+        <div class="logoCentrado">
+            <img src="img/pagado.png" width="260" height="260" alt="logo">
+        </div>
+        <table>
+            <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+                <tr>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
+                    <th class='px-4 py-2' style="width: 266px; font-size: 14px;">concepto</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">val. unitario</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">importe</th>
+                </tr>
+            </thead>
+            <tbody class="centrado">
+                <tr>
+                    <td>{{ $ventas[0][$diaS] }}</td>
+                    <td>
+                        <div class="form-group">
+                            <label class="text-black" for="Física"> Fecha: De:
+                                {{ \Carbon\Carbon::parse($desde)->format('d/m/Y') }}, Hasta:
+                                {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Venta/cliente </label>
+                        </div>
+                    </td>
+                    <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <table>
+            <tbody class="centrado">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>IMPORTE</td>
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}</td>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>DESCUENTO</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>SUBTOTAL</td>
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>IVA</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
+                    <th class='px-4 py-2' style="width: 266px; font-size: 14px;">
+                        {{ $ventas[0][$diaS] }}
+                    </th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
+                    <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
+                        {{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    @endif
 </body>
 
 </html>
-

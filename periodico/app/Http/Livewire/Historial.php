@@ -14,11 +14,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch;
+    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf;
 
     public function mount($editar)
     {
@@ -149,12 +148,14 @@ class Historial extends Component
             $this->tiros = Tiro::where('id', $this->remisionIdSearch)->get();
         }
 
-
-        return view('livewire.remisiones.historial');
+        return view('livewire.remisiones.historial', [
+            'entregar' => $this->entregar,
+        ]);
     }
 
-    public function pagar($id_cliente, $idTipo)
+    public function pagar($id_cliente, $idTipo, $dia)
     {
+        $this->diaPdf = $dia;
         $this->id_cliente = $id_cliente;
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
@@ -193,6 +194,7 @@ class Historial extends Component
             $this->domicilio = Domicilio::Where('cliente_id', $this->id_cliente)->first();
             $this->Ruta = Ruta::Where('id', $this->domicilio->ruta_id)->get();
             $pdf = Pdf::loadView('livewire.pagado', [
+                'ventas' => $this->ventas,
                 'total' => $this->ventas[0]['total'],
                 'cliente' => $this->cliente[0],
                 'desde' => $this->ventas[0]['desde'],
@@ -204,6 +206,7 @@ class Historial extends Component
                 'viernes' => $this->ventas[0]['viernes'],
                 'sabado' => $this->ventas[0]['sabado'],
                 'domingo' => $this->ventas[0]['domingo'],
+                'diaS' => $this->diaPdf,
                 'fecha' => $this->date,
                 'tipo' => 'venta',
                 'ruta' => $this->Ruta[0],
@@ -228,7 +231,7 @@ class Historial extends Component
         return Redirect::to('/PDFPago');
     }
 
-    public function editarRemision($id)
+    public function editarRemision($id, $idVenta, $dia)
     {
         $this->modalEditar = true;
         $this->modalHistorial = false;
@@ -237,6 +240,8 @@ class Historial extends Component
         $tiros = Tiro::find($id);
         $this->tiros_id = $id;
         $this->devuelto = $tiros->devuelto;
+        $this->idVentaEditar = $idVenta;
+        $this->diaDevolucion = $dia;
     }
 
     public function cerrarEditar()
@@ -280,6 +285,8 @@ class Historial extends Component
     public function updateDevueltos()
     {
         $tiros = Tiro::find($this->tiros_id);
+        $this->entregar = $tiros->entregar;
+        $ventas = ventas::where('idVenta', $this->idVentaEditar)->first();
         if ($this->devuelto) {
             if ($tiros->entregar >= $this->devuelto) {
                 $tiros->update([
@@ -288,6 +295,15 @@ class Historial extends Component
                     'venta' => $tiros->venta - $this->devuelto,
                     'importe' => $tiros->importe = ($tiros->entregar - $this->devuelto) * $tiros->precio,
                 ]);
+
+                $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
+
+                $ventas->update([
+                    $this->diaDevolucion => $cant[0][$this->diaDevolucion] - $this->devuelto,
+                ]);
+
+                /* dd($ventas = ventas::where('idVenta', $this->idVentaEditar)->get()); */
+
                 $this->status = 'updated';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'updated') ? '¡Se generó exitosamente la devolución!' : ''
@@ -304,6 +320,13 @@ class Historial extends Component
                     'venta' => $tiros->venta + $this->devuelto,
                     'importe' => $tiros->importe = ($tiros->entregar + $this->devuelto) * $tiros->precio,
                 ]);
+
+                $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
+
+                $ventas->update([
+                    $this->diaDevolucion => $cant[0][$this->diaDevolucion] + $this->devuelto,
+                ]);
+
                 $this->status = 'adjust';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'adjust') ? '¡Ajuste realizado!' : ''
@@ -322,7 +345,7 @@ class Historial extends Component
         }
     }
 
-    public function generarPDF($id, $idTipo)
+    public function generarPDF($id, $idTipo, $dia)
     {
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
@@ -348,7 +371,6 @@ class Historial extends Component
             Storage::disk('public')->put('verRemision.pdf', $pdf);
 
             return Redirect::to('/PDFRemisionesP');
-
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->cliente = Cliente
                 ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
@@ -362,6 +384,7 @@ class Historial extends Component
             $this->Ruta = Ruta::Where('id', $this->domicilio->ruta_id)->get();
 
             $pdf = Pdf::loadView('livewire.pdfRemisionVer', [
+                'ventas' => $this->ventas,
                 'total' => $this->ventas[0]['total'],
                 'cliente' => $this->cliente[0],
                 'desde' => $this->ventas[0]['desde'],
@@ -373,6 +396,7 @@ class Historial extends Component
                 'viernes' => $this->ventas[0]['viernes'],
                 'sabado' => $this->ventas[0]['sabado'],
                 'domingo' => $this->ventas[0]['domingo'],
+                'diaS' => $dia,
                 'fecha' => $this->date,
                 'tipo' => 'venta',
                 'ruta' => $this->Ruta[0],
@@ -400,7 +424,6 @@ class Historial extends Component
         $this->ciudad = $this->domicilio[0]->ciudad;
         $this->referencia = $this->domicilio[0]->referencia;
         $this->ruta = $this->domicilio[0]->ruta;
-
     }
 
     public function actualizarDomicilioSubs()

@@ -272,7 +272,7 @@
         </thead>
         <tbody class="centrado">
         <tr>
-            <td>{{ $lunes + $martes + $miercoles + $jueves + $viernes + $sabado + $domingo }}</td>
+            <td>{{ $ventas[0][$diaS] }}</td>
             <td>
                 <div class="form-group">
                     <label class="text-black" for="Física"> Fecha: De:
@@ -281,7 +281,7 @@
                 </div>
             </td>
             <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
+            <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
             </td>
         </tr>
         </tbody>
@@ -293,7 +293,7 @@
             <td></td>
             <td></td>
             <td>IMPORTE</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}</td>
+            <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}</td>
             </td>
         </tr>
         <tr>
@@ -306,7 +306,7 @@
             <td></td>
             <td></td>
             <td>SUBTOTAL</td>
-            <td>{{ sprintf('$ %s', number_format($total)) }}
+            <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
             </td>
         </tr>
         <tr>
@@ -319,11 +319,10 @@
         <thead>
         <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $lunes + $martes + $miercoles + $jueves
-                    + $viernes + $sabado + $domingo }}</th>
+            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $ventas[0][$diaS] }}</th>
             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                {{ sprintf('$ %s', number_format($total)) }}
+                {{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
             </th>
         </tr>
         </thead>
