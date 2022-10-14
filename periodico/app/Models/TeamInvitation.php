@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
+use Haruncpi\LaravelUserActivity\Traits\Loggable; // Importacion
 
 class TeamInvitation extends JetstreamTeamInvitation
 {
+    use Loggable; // Uso
     /**
      * The attributes that are mass assignable.
      *

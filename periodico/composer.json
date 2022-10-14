@@ -11,9 +11,11 @@
         "crisvegadev/facturama-php-sdk": "dev-main",
         "flightsadmin/livewire-crud": "^0.0.17",
         "guzzlehttp/guzzle": "^7.2",
+        "haruncpi/laravel-user-activity": "^1.0",
         "laravel/framework": "^9.11",
         "laravel/jetstream": "^2.8",
         "laravel/sanctum": "^2.14.1",
+        "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
         "laraveles/spanish": "^1.5",
         "livewire/livewire": "^2.5"
