@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ $state == 0 ? __('Historial de Remisiones') : __('Editar domicilio suscripciones') }}
+            {{ $state == 0 ? __('Historial de Remisiones') : __('Editar domicilio de suscripciones activas') }}
         </h2>
     </x-slot>
 
@@ -42,7 +42,7 @@
                 <div class="w-64 ml-5 mt-6">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                        name="search" id="search" placeholder="Buscar Remision por id" wire:model="remisionIdSearch"
+                        name="search" id="search" placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}" wire:model="remisionIdSearch"
                         autocomplete="off" />
                 </div>
             </div>
@@ -96,13 +96,13 @@
                                             @if ($tiro->precio == 330 || $tiro->precio == 300)
                                                 <td class="border border-dark">
                                                     @if ($tiro->estado == 'Activo')
-                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                        <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
                                                             class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
                                                             Pausar
                                                             suscripción
                                                         </button>
                                                     @elseif ($tiro->estado == 'Pausado')
-                                                        <button wire:click="pausarRemision({{ $tiro->cliente_id }})"
+                                                        <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
                                                             class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                             Activar
                                                             suscripción

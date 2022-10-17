@@ -45,10 +45,16 @@
     <tbody>
         @foreach ($ventas as $result)
             <tr>
-                <td>{{ $result->cliente_id == $clientes[$loop->index]['id'] ? $clientes[$loop->index]['id'] : '' }}</td>
-                <td>{{ $result->cliente_id == $clientes[$loop->index]['id'] ? $clientes[$loop->index]['nombre'] : $clientes[$loop->index]['razon_social'] }}</td>
-                <td>{{ 'Morelia' }}</td>
-                <td>{{ $result->domicilio_id == $domicilios[$loop->index]['id'] ? $domicilios[$loop->index]['referencia'] : '' }}</td>
+                <td>
+                    {{ $result['id'] }}
+                </td>
+                <td>
+                    {{ $result['nombre'] }}
+                </td>
+                <td>{{ $result['localidad'] }}</td>
+                <td>
+                    {{ $result['referencia'] }}
+                </td>
                 <td>{{ $result->lunes }}</td>
                 <td>{{ $result->martes }}</td>
                 <td>{{ $result->miércoles }}</td>

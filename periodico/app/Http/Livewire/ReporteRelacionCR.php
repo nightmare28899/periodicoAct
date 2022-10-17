@@ -26,30 +26,55 @@ class ReporteRelacionCR extends Component
         $this->diaS = $this->date->translatedFormat('l');
 
         if ($this->rutaSeleccionada != 'TODOS') {
-            /* $this->ventas = ventas::whereIn('domicilio_id', $domicilio['id'])->get();
-            dd($this->ventas); */
+            $this->ventas = ventas
+                ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
+                ->get();
         } else {
-            $this->ventas = ventas::all();
+            $this->ventas = ventas
+                ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
+                ->get();
         }
 
-        foreach ($this->ventas as $venta) {
-            /* dd($venta); */
+        /* foreach ($this->ventas as $venta) {
             $cliente = Cliente::find($venta->cliente_id);
             array_push($this->clientes, $cliente);
             $domicilio = Domicilio::find($venta->domicilio_id);
             array_push($this->domicilios, $domicilio);
-        }
+        } */
 
         return view('livewire.reportes.relacionClienteRuta.reporte-relacion-c-r', [
             'ruta' => $this->ruta,
         ]);
     }
 
-    public function generarPDF() {
+    public function generarPDF()
+    {
+        if ($this->rutaSeleccionada != 'TODOS') {
+            $this->ventas = ventas
+                ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
+                ->get();
+        } else {
+            $this->ventas = ventas
+                ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
+                ->get();
+        }
+
         $pdf = PDF::loadView('livewire.reportes.relacionClienteRuta.reportePDF', [
             'ventas' => $this->ventas,
-            'clientes' => $this->clientes,
-            'domicilios' => $this->domicilios,
             'date' => $this->date->format('d/m/Y'),
             'time' => $this->time,
             'diaS' => $this->diaS,

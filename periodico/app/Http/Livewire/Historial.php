@@ -252,23 +252,23 @@ class Historial extends Component
     public function pausarRemision($id)
     {
         $tiro = Tiro
-            ::join('suscripciones', 'suscripciones.cliente_id', '=', 'tiro.cliente_id')
-            ->where('suscripciones.cliente_id', '=', $id)
+            ::join('suscripciones', 'suscripciones.idSuscripcion', '=', 'tiro.idTipo')
+            ->where('suscripciones.idSuscripcion', $id)
             ->select('suscripciones.*')
             ->get();
 
         if ($tiro[0]->estado == 'Pausado') {
-            Tiro::where('cliente_id', $id)->update([
+            Tiro::where('idTipo', $id)->update([
                 'estado' => 'Activo'
             ]);
-            Suscripcion::where('cliente_id', $id)->update([
+            Suscripcion::where('idSuscripcion', $id)->update([
                 'estado' => 'Activo'
             ]);
         } else {
-            Tiro::where('cliente_id', $id)->update([
+            Tiro::where('idTipo', $id)->update([
                 'estado' => 'Pausado'
             ]);
-            Suscripcion::where('cliente_id', $id)->update([
+            Suscripcion::where('idSuscripcion', $id)->update([
                 'estado' => 'Pausado'
             ]);
         }
