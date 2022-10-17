@@ -64,13 +64,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $sum_lunes = 0; ?>
+                            <?php $sum_martes = 0; ?>
+                            <?php $sum_miercoles = 0; ?>
+                            <?php $sum_jueves = 0; ?>
+                            <?php $sum_viernes = 0; ?>
+                            <?php $sum_sabado = 0; ?>
+                            <?php $sum_domingo = 0; ?>
                             @foreach ($ventas as $result)
                                 <tr>
                                     <td class='px-4 py-2 border border-dark'>
                                         {{ $result['id'] }}
                                     </td>
                                     <td class='px-4 py-2 border border-dark'>
-                                        {{ $result['nombre']  }}
+                                        {{ $result['nombre'] }}
                                     </td>
                                     <td class='px-4 py-2 border border-dark'>{{ $result['localidad'] }}</td>
                                     <td class='px-4 py-2 border border-dark'>
@@ -84,8 +91,30 @@
                                     <td class='px-4 py-2 border border-dark'>{{ $result->sábado }}</td>
                                     <td class='px-4 py-2 border border-dark'>{{ $result->domingo }}</td>
                                 </tr>
+                                <?php $sum_lunes += $result->lunes; ?>
+                                <?php $sum_martes += $result->martes; ?>
+                                <?php $sum_miercoles += $result->miércoles; ?>
+                                <?php $sum_jueves += $result->jueves; ?>
+                                <?php $sum_viernes += $result->viernes; ?>
+                                <?php $sum_sabado += $result->sábado; ?>
+                                <?php $sum_domingo += $result->domingo; ?>
                             @endforeach
                         </tbody>
+                        <thead>
+                            <tr>
+                                <th class='px-4 py-2 uppercase'>{{ count($ventas) }}</th>
+                                <th class='px-4 py-2 uppercase'>Totales</th>
+                                <th class='px-4 py-2 uppercase'></th>
+                                <th class='px-4 py-2 uppercase'></th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_lunes }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_martes }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_miercoles }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_jueves }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_viernes }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_sabado }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ $sum_domingo }}</th>
+                            </tr>
+                        </thead>
                     </table>
                 </div>
 
