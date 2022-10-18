@@ -113,12 +113,13 @@ class Clientes extends Component
         $data = [
             'Genérico' => 'GENÉRICO',
             'Gobierno' => 'GOBIERNO',
-            'T/O' => 'T/O',
+            /* 'T/O' => 'T/O', */
+            'Credito' => 'CRÉDITO',
             'Libre' => 'LIBRE',
             'Municipio' => 'MUNICIPIO',
-            'S-A' => 'S-A',
-            'T-E' => 'T-E',
-            'Sanborn' => 'SANBORN',
+            /* 'S-A' => 'S-A',
+            'T-E' => 'T-E', */
+            /* 'Sanborn' => 'SANBORN', */
         ];
 
         $formaPago = [

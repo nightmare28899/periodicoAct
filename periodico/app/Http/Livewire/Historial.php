@@ -79,16 +79,27 @@ class Historial extends Component
 
         if ($this->state != true) {
             if ($this->clienteSeleccionado && $this->fechaRemision) {
-                $this->tiros = Tiro::where(function ($query) {
-                    $query->where('cliente_id', $this->clienteSeleccionado['id'])
-                        ->where('fecha', $this->fechaRemision);
-                })->get();
+                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->where(function ($query) {
+                        $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                            ->where('fecha', $this->fechaRemision);
+                    })
+                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->get();
             } else if ($this->clienteSeleccionado) {
-                $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->where('cliente.id', $this->clienteSeleccionado['id'])
+                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->get();
             } else if ($this->fechaRemision) {
-                $this->tiros = Tiro::where('fecha', $this->fechaRemision)->get();
+                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->where('fecha', $this->fechaRemision)
+                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->get();
             } else {
-                $this->tiros = Tiro::all();
+                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->get();
             }
         } else {
             if ($this->clienteSeleccionado && $this->fechaRemision) {
@@ -448,5 +459,31 @@ class Historial extends Component
         $this->dispatchBrowserEvent('alert', [
             'message' => ($this->status == 'created') ? '¡Domicilio actualizado correctamente!' : ''
         ]);
+    }
+
+    public function cancelar($idTipo)
+    {
+        $tiro = Tiro
+            ::join('ventas', 'ventas.idVenta', '=', 'tiro.idTipo')
+            ->where('ventas.idVenta', '=', $idTipo)
+            ->select('ventas.*')
+            ->get();
+
+        if ($tiro[0]->estado == 'Cancelado') {
+            Tiro::where('idTipo', $idTipo)->update([
+                'estado' => 'Activo'
+            ]);
+            Ventas::where('idVenta', $idTipo)->update([
+                'estado' => 'Activo'
+            ]);
+        } else {
+            Tiro::where('idTipo', $idTipo)->update([
+                'estado' => 'Cancelado'
+            ]);
+            Ventas::where('idVenta', $idTipo)->update([
+                'estado' => 'Cancelado'
+            ]);
+        }
+        $this->modalHistorial = false;
     }
 }

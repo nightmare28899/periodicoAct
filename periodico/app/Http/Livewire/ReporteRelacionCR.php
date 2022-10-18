@@ -7,15 +7,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Models\ventas;
-use App\Models\Cliente;
-use App\Models\Domicilio;
 use App\Models\Ruta;
+use App\Models\Suscripcion;
 
 use Livewire\Component;
 
 class ReporteRelacionCR extends Component
 {
-    public $pdf, $ventas, $clientes = [], $domicilios = [], $date, $time, $diaS, $ruta, $rutaSeleccionada = 'TODOS';
+    public $pdf, $ventas, $clientes = [], $domicilios = [], $date, $time, $diaS, $ruta, $rutaSeleccionada = 'TODOS', $suscripciones;
     public function render()
     {
         $this->ruta = Ruta::all();
@@ -33,6 +32,14 @@ class ReporteRelacionCR extends Component
                 ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                 ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
                 ->get();
+
+            $this->suscripciones = Suscripcion
+                ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
+                ->join('domicilio_subs', 'domicilio_subs.id', '=', 'suscripciones.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                ->select('suscripciones.*', 'domicilio_subs.*', 'ruta.*', 'cliente.*')
+                ->get();
         } else {
             $this->ventas = ventas
                 ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
@@ -40,14 +47,14 @@ class ReporteRelacionCR extends Component
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
                 ->get();
-        }
 
-        /* foreach ($this->ventas as $venta) {
-            $cliente = Cliente::find($venta->cliente_id);
-            array_push($this->clientes, $cliente);
-            $domicilio = Domicilio::find($venta->domicilio_id);
-            array_push($this->domicilios, $domicilio);
-        } */
+            $this->suscripciones = Suscripcion
+                ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
+                ->join('domicilio_subs', 'domicilio_subs.id', '=', 'suscripciones.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->select('suscripciones.*', 'domicilio_subs.*', 'ruta.*', 'cliente.*')
+                ->get();
+        }
 
         return view('livewire.reportes.relacionClienteRuta.reporte-relacion-c-r', [
             'ruta' => $this->ruta,
@@ -64,6 +71,14 @@ class ReporteRelacionCR extends Component
                 ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                 ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
                 ->get();
+
+            $this->suscripciones = Suscripcion
+                ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
+                ->join('domicilio_subs', 'domicilio_subs.id', '=', 'suscripciones.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                ->select('suscripciones.*', 'domicilio_subs.*', 'ruta.*', 'cliente.*')
+                ->get();
         } else {
             $this->ventas = ventas
                 ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
@@ -71,10 +86,18 @@ class ReporteRelacionCR extends Component
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->select('ventas.*', 'domicilio.*', 'ruta.*', 'cliente.*')
                 ->get();
+
+            $this->suscripciones = Suscripcion
+                ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
+                ->join('domicilio_subs', 'domicilio_subs.id', '=', 'suscripciones.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->select('suscripciones.*', 'domicilio_subs.*', 'ruta.*', 'cliente.*')
+                ->get();
         }
 
         $pdf = PDF::loadView('livewire.reportes.relacionClienteRuta.reportePDF', [
             'ventas' => $this->ventas,
+            'suscripciones' => $this->suscripciones,
             'date' => $this->date->format('d/m/Y'),
             'time' => $this->time,
             'diaS' => $this->diaS,

@@ -42,8 +42,9 @@
                 <div class="w-64 ml-5 mt-6">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                        name="search" id="search" placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}" wire:model="remisionIdSearch"
-                        autocomplete="off" />
+                        name="search" id="search"
+                        placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
+                        wire:model="remisionIdSearch" autocomplete="off" />
                 </div>
             </div>
             <br>
@@ -142,27 +143,55 @@
                                                 </td>
                                             @else
                                                 <td class="border border-dark">
-                                                    @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta') || $tiro->status == 'facturado')
-                                                        <button
-                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                            disabled>Pagado
+
+                                                    @if ($tiro->estado != 'Cancelado')
+                                                        <button wire:click="cancelar('{{ $tiro->idTipo }}')"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline">Cancelar
+                                                            venta
                                                         </button>
+                                                    @else
+                                                        <button
+                                                            class="inline-flex
+                                                        items-center h-10 px-4 m-2 text-sm text-white
+                                                        transition-colors duration-150 bg-red-500
+                                                        hover:bg-red-600 rounded-lg
+                                                        focus:shadow-outline"
+                                                            disabled>Cancelada
+                                                        </button>
+                                                    @endif
+
+                                                    @if ($tiro->clasificacion != 'CRÉDITO')
+                                                        @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta') || $tiro->status == 'facturado')
+                                                            <button
+                                                                class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                                disabled>Pagado
+                                                            </button>
+                                                        @else
+                                                            <button
+                                                                wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
+                                                                class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                                Editar
+                                                            </button>
+                                                            @if ($tiro->estado != 'Cancelado')
+                                                                <button
+                                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
+                                                                    class="inline-flex
+                                                            items-center h-10 px-4 m-2 text-sm text-white
+                                                            transition-colors duration-150 bg-indigo-500
+                                                            hover:bg-indigo-600 rounded-lg
+                                                            focus:shadow-outline"
+                                                                    target="_blank">Pagar
+                                                                </button>
+                                                            @endif
+                                                        @endif
                                                     @else
                                                         <button
                                                             wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
                                                             class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                             Editar
                                                         </button>
-                                                        <button
-                                                            wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
-                                                            class="inline-flex
-                                                            items-center h-10 px-4 m-2 text-sm text-white
-                                                            transition-colors duration-150 bg-indigo-500
-                                                            hover:bg-indigo-600 rounded-lg
-                                                            focus:shadow-outline"
-                                                            target="_blank">Pagar
-                                                        </button>
                                                     @endif
+
                                                     <button
                                                         wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
                                                         class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver

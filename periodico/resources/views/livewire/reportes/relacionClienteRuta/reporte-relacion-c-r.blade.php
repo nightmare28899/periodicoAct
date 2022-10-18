@@ -99,6 +99,34 @@
                                 <?php $sum_sabado += $result->sábado; ?>
                                 <?php $sum_domingo += $result->domingo; ?>
                             @endforeach
+                            @foreach ($suscripciones as $susc)
+                                <tr>
+                                    <td class='px-4 py-2 border border-dark'>
+                                        {{ $susc['id'] }}
+                                    </td>
+                                    <td class='px-4 py-2 border border-dark'>
+                                        {{ $susc['nombre'] }}
+                                    </td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc['localidad'] }}</td>
+                                    <td class='px-4 py-2 border border-dark'>
+                                        {{ $susc['referencia'] }}
+                                    </td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->lunes == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->martes == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->miércoles == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->jueves == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->viernes == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->sábado == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                    <td class='px-4 py-2 border border-dark'>{{ $susc->domingo == 1 ? $susc->cantEjemplares : 0 }}</td>
+                                </tr>
+                                <?php $sum_lunes += $susc->lunes == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_martes += $susc->martes == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_miercoles += $susc->miércoles == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_jueves += $susc->jueves == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_viernes += $susc->viernes == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_sabado += $susc->sábado == 1 ? $susc->cantEjemplares : 0; ?>
+                                <?php $sum_domingo += $susc->domingo == 1 ? $susc->cantEjemplares : 0; ?>
+                            @endforeach
                         </tbody>
                         <thead>
                             <tr>
