@@ -356,7 +356,7 @@ class Historial extends Component
         }
     }
 
-    public function generarPDF($id, $idTipo, $dia)
+    public function generarPDF($id, $idTipo, $dia, $idRemision)
     {
         if (substr($idTipo, 0, 6) == 'suscri') {
             $this->cliente = Cliente
@@ -375,6 +375,7 @@ class Historial extends Component
                 'hasta' => $this->suscri[0]['hasta'],
                 'fecha' => $this->date,
                 'tipo' => 'suscri',
+                'idRemision' => $idRemision,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
@@ -411,6 +412,7 @@ class Historial extends Component
                 'fecha' => $this->date,
                 'tipo' => 'venta',
                 'ruta' => $this->Ruta[0],
+                'idRemision' => $idRemision,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();

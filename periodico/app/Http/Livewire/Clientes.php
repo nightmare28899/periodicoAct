@@ -831,7 +831,8 @@ class Clientes extends Component
                             'viernes' => $this->viernesVentas,
                             'sábado' => $this->sabadoVentas,
                             'domingo' => $this->domingoVentas,
-                            'total' => $this->total
+                            'total' => $this->total,
+                            'estado' => 'Activo',
                         ]);
 
                         $this->status = 'created';

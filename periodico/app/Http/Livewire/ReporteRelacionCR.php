@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class ReporteRelacionCR extends Component
 {
-    public $pdf, $ventas, $clientes = [], $domicilios = [], $date, $time, $diaS, $ruta, $rutaSeleccionada = 'TODOS', $suscripciones;
+    public $pdf, $ventas, $clientes = [], $domicilios = [], $date, $time, $diaS, $ruta, $rutaSeleccionada = 'Todos', $suscripciones;
     public function render()
     {
         $this->ruta = Ruta::all();
@@ -24,7 +24,7 @@ class ReporteRelacionCR extends Component
         $this->time = $this->date->format('H:i:s');
         $this->diaS = $this->date->translatedFormat('l');
 
-        if ($this->rutaSeleccionada != 'TODOS') {
+        if ($this->rutaSeleccionada != 'Todos') {
             $this->ventas = ventas
                 ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                 ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
@@ -63,7 +63,7 @@ class ReporteRelacionCR extends Component
 
     public function generarPDF()
     {
-        if ($this->rutaSeleccionada != 'TODOS') {
+        if ($this->rutaSeleccionada != 'Todos') {
             $this->ventas = ventas
                 ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                 ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')

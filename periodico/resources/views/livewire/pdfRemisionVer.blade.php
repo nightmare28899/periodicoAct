@@ -107,7 +107,7 @@
     <h3
         style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
         remision
-        {{ $cliente['id'] }}
+        {{ $idRemision }}
     </h3>
     <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
         {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>
@@ -230,7 +230,7 @@
     <h3
         style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
         remision
-        {{ $cliente['id'] }}
+        {{ $idRemision }}
     </h3>
     <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
         {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</p>

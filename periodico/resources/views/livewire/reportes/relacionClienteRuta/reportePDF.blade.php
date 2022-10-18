@@ -109,7 +109,7 @@
     </tbody>
     <thead>
         <tr>
-            <th>{{ count($ventas) }}</th>
+            <th>{{ count($ventas) + count($suscripciones) }}</th>
             <th>Totales</th>
             <th></th>
             <th></th>

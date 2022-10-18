@@ -130,7 +130,7 @@
                         </tbody>
                         <thead>
                             <tr>
-                                <th class='px-4 py-2 uppercase'>{{ count($ventas) }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ count($ventas) + count($suscripciones) }}</th>
                                 <th class='px-4 py-2 uppercase'>Totales</th>
                                 <th class='px-4 py-2 uppercase'></th>
                                 <th class='px-4 py-2 uppercase'></th>

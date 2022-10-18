@@ -93,7 +93,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($ventas as $result)
-                                    @if ($result->{$diaS} != 0)
+                                    @if ($result->{$diaS} != 0 && $result->estado == 'Activo')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombreruta }}, Tipo:
                                                 {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }},

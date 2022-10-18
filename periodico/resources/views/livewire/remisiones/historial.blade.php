@@ -15,6 +15,13 @@
                 <div class="w-64 mt-6">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        name="search" id="search"
+                        placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
+                        wire:model="remisionIdSearch" autocomplete="off" />
+                </div>
+                <div class="w-64 mt-6 ml-5">
+                    <input type="text"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                         autocomplete="off" />
 
@@ -38,13 +45,6 @@
                         </div>
 
                     @endif
-                </div>
-                <div class="w-64 ml-5 mt-6">
-                    <input type="text"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                        name="search" id="search"
-                        placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
-                        wire:model="remisionIdSearch" autocomplete="off" />
                 </div>
             </div>
             <br>
@@ -126,7 +126,7 @@
                                                         </button>
                                                     @endif
                                                     <button
-                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}')"
+                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ '' }}', {{ $tiro->id }})"
                                                         class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                         PDF
                                                     </button>
@@ -168,7 +168,7 @@
                                                             </button>
                                                         @else
                                                             <button
-                                                                wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
+                                                                wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}', {{ $tiro->id }})"
                                                                 class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                                 Editar
                                                             </button>
