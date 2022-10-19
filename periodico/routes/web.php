@@ -22,6 +22,7 @@ use App\Http\Livewire\PDFRemision;
 use App\Http\Livewire\PdfRemisionesP;
 use App\Http\Livewire\ReportePDFrelacionCR;
 use App\Http\Livewire\ReporteRelacionCR;
+use App\Http\Livewire\FacturaPPD;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/reporte-relacionCR', ReporteRelacionCR::class)->name('reporte-relacionCR');
     Route::get('/PDFReporteRCR', ReportePDFrelacionCR::class)->name('PDFReporteRCR');
+
+    Route::get('/FacturasPPD', FacturaPPD::class)->name('FacturasPPD');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

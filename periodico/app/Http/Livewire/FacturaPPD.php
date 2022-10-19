@@ -6,7 +6,8 @@ use App\Models\Cliente;
 use Livewire\Component;
 use App\Models\Tiro;
 
-class Facturas extends Component
+
+class FacturaPPD extends Component
 {
     public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [], $fechaRemision, $idCliente;
     public function mount()
@@ -61,29 +62,50 @@ class Facturas extends Component
     public function render()
     {
         if ($this->clienteSeleccionado && $this->fechaRemision) {
-            $this->tiros = Tiro::where(function ($query) {
-                $query->where('cliente_id', $this->clienteSeleccionado['id'])
-                    ->where('fecha', $this->fechaRemision);
-            })->get();
+            $this->tiros = Tiro
+                ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where(function ($query) {
+                    $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                        ->where('fecha', $this->fechaRemision);
+                })
+                ->select('tiro.*', 'cliente.clasificacion')
+                ->get();
         } else if ($this->clienteSeleccionado) {
-            $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+            $this->tiros = Tiro
+                ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente_id', $this->clienteSeleccionado['id'])
+                ->select('tiro.*', 'cliente.clasificacion')
+                ->get();
         } else if ($this->fechaRemision) {
-            $this->tiros = Tiro::where('fecha', $this->fechaRemision)->get();
+            $this->tiros = Tiro
+                ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('fecha', $this->fechaRemision)
+                ->select('tiro.*', 'cliente.clasificacion')
+                ->get();
         } else {
-            $this->tiros = Tiro::all();
+            $this->tiros = Tiro
+                ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->select('tiro.*', 'cliente.clasificacion')
+                ->get();
         }
 
         if ($this->idCliente && $this->fechaRemision) {
-            $this->tiros = Tiro::where(function ($query) {
+            $this->tiros = Tiro
+            ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+            ->where(function ($query) {
                 $query->where('cliente_id', $this->idCliente)
                     ->where('fecha', $this->fechaRemision);
-            })->get();
+            })
+            ->select('tiro.*', 'cliente.clasificacion')
+            ->get();
         } else if ($this->idCliente) {
-            $this->tiros = Tiro::where('cliente_id', $this->idCliente)->get();
+            $this->tiros = Tiro
+                ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente_id', $this->idCliente)
+                ->select('tiro.*', 'cliente.clasificacion')
+                ->get();
         }
 
-        return view('livewire.facturasListado', [
-            'tiros' => $this->tiros,
-        ]);
+        return view('livewire.factura-p-p-d');
     }
 }

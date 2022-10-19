@@ -255,9 +255,6 @@ class Factura extends Component
             ]);
         }
 
-
-        /* dd($this->tiro = Tiro::where('cliente_id', $this->clienteid)->first()); */
-
         try {
             if ($facturama->statusCode == 201) {
 
@@ -305,7 +302,6 @@ class Factura extends Component
                 foreach ($facturama->errors as $key => $error) {
                     $this->d .= "- $error \n";
                 }
-                /* dd($this->d); */
 
                 $this->modalErrors = true;
                 /* $this->alert('error', $this->d, [
@@ -318,7 +314,10 @@ class Factura extends Component
                 ]); */
             }
         } catch (\Exception $e) {
-            /* dd($e); */
+            $this->status = 'error';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
+            ]);
         }
     }
 }

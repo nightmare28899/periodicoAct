@@ -8,7 +8,7 @@ use App\Models\Cliente;
 
 class HistorialF extends Component
 {
-    public $invoices, $clientes, $cliente_id, $fecha, $total, $invoice_id, $clienteSeleccionado, $fechaFactura;
+    public $invoices, $clientes, $cliente_id, $fecha, $total, $invoice_id, $clienteSeleccionado, $fechaFactura, $idCliente, $fechaRemision;
 
     public function mount()
     {
@@ -74,6 +74,16 @@ class HistorialF extends Component
         } else {
             $this->invoices = Invoice::all();
         }
+
+        if ($this->idCliente && $this->fechaRemision) {
+            $this->invoices = Invoice::where(function ($query) {
+                $query->where('cliente_id', $this->idCliente)
+                    ->where('fecha', $this->fechaFactura);
+            })->get();
+        } else if ($this->idCliente) {
+            $this->invoices = Invoice::where('cliente_id', $this->idCliente)->get();
+        }
+
         return view('livewire.factura.historial-f');
     }
 }

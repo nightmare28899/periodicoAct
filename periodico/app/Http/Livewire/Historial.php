@@ -313,8 +313,6 @@ class Historial extends Component
                     $this->diaDevolucion => $cant[0][$this->diaDevolucion] - $this->devuelto,
                 ]);
 
-                /* dd($ventas = ventas::where('idVenta', $this->idVentaEditar)->get()); */
-
                 $this->status = 'updated';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'updated') ? '¡Se generó exitosamente la devolución!' : ''

@@ -149,8 +149,6 @@ class ClienteBuscador extends Component
                         'total' => $this->total
                     ]);
 
-                    /* dd($this->clienteSeleccionado); */
-
                     $pdfContent = PDF::loadView('livewire.remisionVentaGenerada', [
                         'total' => $this->total,
                         'cliente' => $this->clienteSeleccionado,

@@ -13,7 +13,7 @@
                     <x-jet-input class="w-full" type="date" wire:model="fechaRemision"></x-jet-input>
                 </div>
                 <div class="w-64 mt-6">
-                    <input type="text"
+                    <input type="number"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search"
                         placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"

@@ -190,10 +190,10 @@
                             <label for="">Importe:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{  sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
                             @else
-                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($tiro->importe)) }}"
-                                    disabled>
+                                <input type="text" class="border-0 bg-gray-200"
+                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
                             @endif
                         </div>
                     </div>
@@ -218,11 +218,11 @@
                         <div class="w-1/2 px-2">
                             <label for="">Total:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
-                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($suscripcion->total)) }}"
-                                    disabled>
+                                <input type="text" class="border-0 bg-gray-200"
+                                    value="{{ sprintf('$ %s', number_format($suscripcion->total)) }}" disabled>
                             @else
-                                <input type="text" class="border-0 bg-gray-200" value="{{  sprintf('$ %s', number_format($tiro->importe)) }}"
-                                    disabled>
+                                <input type="text" class="border-0 bg-gray-200"
+                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
                             @endif
                         </div>
                     </div>
