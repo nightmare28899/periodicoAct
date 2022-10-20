@@ -274,6 +274,47 @@ class Clientes extends Component
                 $this->domingo = true;
                 $this->allow = false;
             } else if ($this->diasSuscripcionSeleccionada == 'l_s') {
+                if ($this->tipoSuscripcionSeleccionada == 'Impresa') {
+                    if ($this->cantEjem >= 1) {
+                        if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
+                            $costo = $this->precio === 'Normal' ? 300 : 300;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
+                            $costo = $this->precio === 'Normal' ? 770 : 770;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
+                            $costo = $this->precio === 'Normal' ? 1400 : 1400;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
+                            $costo = $this->precio === 'Normal' ? 2900 : 2900;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        }
+                        $this->totalDesc = (int)$this->cantEjem * (int)$costo;
+                    } else {
+                        $this->total = 0;
+                        $this->totalDesc = 0;
+                    }
+                } else if ($this->tipoSuscripcionSeleccionada == 'Digital') {
+                    if ($this->cantEjem >= 1) {
+                        if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
+                            $costo = 150;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
+                            $costo = 435;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
+                            $costo = 800;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
+                            $costo = 1550;
+                            $this->total = (int)$this->cantEjem * (int)$costo;
+                        }
+                        $this->totalDesc = (int)$this->cantEjem * (int)$costo;
+                    } else {
+                        $this->total = 0;
+                        $this->totalDesc = 0;
+                    }
+                }
                 $this->lunes = true;
                 $this->martes = true;
                 $this->miércoles = true;
@@ -287,15 +328,13 @@ class Clientes extends Component
             }
         }
 
-        /* if ($this->tarifaSeleccionada) {
+        if ($this->tarifaSeleccionada == 'Person') {
             $costo = 0;
-            if ($this->tarifaSeleccionada == 'Person') {
-                $this->personalizado = true;
-            } else {
-                $this->personalizado = false;
-            }
+
+            $this->personalizado = true;
+
             if ($this->cantEjem >= 1) {
-                $costo = $this->tarifaSeleccionada === 'Base' ? 330 : ($this->tarifaSeleccionada === 'Ejecutiva' ? 300 : 0);
+                /* $costo = $this->tarifaSeleccionada === 'Base' ? 330 : ($this->tarifaSeleccionada === 'Ejecutiva' ? 300 : 0); */
                 if ($this->tarifaSeleccionada === 'Person') {
                     $costo = $this->costoPerson;
                 }
@@ -311,7 +350,9 @@ class Clientes extends Component
                     ]);
                 }
             }
-        } */
+        } else {
+            $this->personalizado = false;
+        }
 
         $this->domiciliosSubs = DomicilioSubs
             ::join("cliente", "cliente.id", "=", "domicilio_subs.cliente_id")

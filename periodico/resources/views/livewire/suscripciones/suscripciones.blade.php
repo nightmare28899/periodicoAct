@@ -171,7 +171,7 @@
                         <option value='' style="display: none;">Selecciona una tarifa</option>
                         <option value="Base">Base</option>
                         <option value="Ejecutiva">Ejecutiva</option>
-                        {{-- <option value="Person">Personalizado</option> --}}
+                        <option value="Person">Personalizado</option>
                     </select>
                     @error('tarifaSeleccionada')
                         <span class="text-red-500 text-xs italic">
@@ -243,7 +243,7 @@
                         {{-- <option value="" style="display: none;">...</option> --}}
                         <option value="esc_man" style="display: none;">Selecciona una opción</option>
                         <option value="l_v">Lunes a Viernes</option>
-                        {{-- <option value="l_s">Lunes a Sábado</option> --}}
+                        <option value="l_s">Lunes a Sábado</option>
                         <option value='l_d'>Lunes a Domingo</option>
                     </select>
                     @error('diasSuscripcionSeleccionada')
