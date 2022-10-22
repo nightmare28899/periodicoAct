@@ -954,6 +954,7 @@ class Clientes extends Component
                             'domingo' => $this->domingoVentas,
                             'total' => $this->total,
                             'estado' => 'Activo',
+                            'remisionStatus' => 'Pendiente',
                         ]);
 
                         $this->status = 'created';
@@ -1217,6 +1218,7 @@ class Clientes extends Component
                                 'total' => $this->totalDesc,
                                 /* 'formaPago' => $this->formaPagoSeleccionada, */
                                 'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
+                                'remisionStatus' => 'Pendiente',
                             ]);
 
                             $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
