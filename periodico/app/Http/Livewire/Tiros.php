@@ -47,7 +47,8 @@ class Tiros extends Component
                     ->where(function ($query) {
                         $query->where('desde', '<=', $this->from)
                             ->where('hasta', '>=', $this->from)
-                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                            ->where('ventas.tiroStatus', '=', 'Activo');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -59,7 +60,8 @@ class Tiros extends Component
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
-                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                            ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
@@ -71,7 +73,8 @@ class Tiros extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where('desde', '<=', $this->from)
-                            ->where('hasta', '>=', $this->from);
+                            ->where('hasta', '>=', $this->from)
+                            ->where('ventas.tiroStatus', '=', 'Activo');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -82,7 +85,8 @@ class Tiros extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
-                            ->where('fechaFin', '>=', $this->from);
+                            ->where('fechaFin', '>=', $this->from)
+                            ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
@@ -102,6 +106,24 @@ class Tiros extends Component
         ], compact('domicilios'));
     }
 
+    public function pausarVenta($idVenta)
+    {
+        $venta = ventas::where('idVenta', $idVenta)->first();
+
+        $venta->update([
+            'tiroStatus' => 'inactivo',
+        ]);
+    }
+
+    public function pausarSuscripcion($idSuscripcion)
+    {
+        $suscripcion = Suscripcion::where('idSuscripcion', $idSuscripcion)->first();
+
+        $suscripcion->update([
+            'tiroStatus' => 'inactivo',
+        ]);
+    }
+
     public function descarga()
     {
         $this->isGenerateTiro = true;
@@ -117,7 +139,8 @@ class Tiros extends Component
                     ->where(function ($query) {
                         $query->where('desde', '<=', $this->from)
                             ->where('hasta', '>=', $this->from)
-                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                            ->where('ventas.tiroStatus', '=', 'Activo');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -129,7 +152,8 @@ class Tiros extends Component
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
-                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada);
+                            ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
+                            ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
@@ -141,7 +165,8 @@ class Tiros extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where('desde', '<=', $this->from)
-                            ->where('hasta', '>=', $this->from);
+                            ->where('hasta', '>=', $this->from)
+                            ->where('ventas.tiroStatus', '=', 'Activo');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -152,7 +177,8 @@ class Tiros extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
-                            ->where('fechaFin', '>=', $this->from);
+                            ->where('fechaFin', '>=', $this->from)
+                            ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);

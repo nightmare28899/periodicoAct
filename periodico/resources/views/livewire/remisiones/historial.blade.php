@@ -24,27 +24,6 @@
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                         autocomplete="off" />
-
-                    @if (!empty($query))
-
-                        <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
-
-                        <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg">
-
-                            @if (!empty($clientesBuscados))
-
-                                @foreach ($clientesBuscados as $i => $buscado)
-                                    <div wire:click="selectContact({{ $i }})"
-                                        class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
-                                        {{ $buscado['nombre'] }}
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="list-item list-none p-2">No hay resultado</div>
-                            @endif
-                        </div>
-
-                    @endif
                 </div>
             </div>
             <br>
@@ -144,7 +123,7 @@
                                             @else
                                                 <td class="border border-dark">
 
-                                                    @if ($tiro->estado != 'Cancelado')
+                                                    {{-- @if ($tiro->estado != 'Cancelado')
                                                         <button wire:click="cancelar('{{ $tiro->idTipo }}')"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline">Cancelar
                                                             venta
@@ -158,7 +137,7 @@
                                                         focus:shadow-outline"
                                                             disabled>Cancelada
                                                         </button>
-                                                    @endif
+                                                    @endif --}}
 
                                                     @if ($tiro->clasificacion != 'CRÉDITO')
                                                         @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta') || $tiro->status == 'facturado')
@@ -237,6 +216,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{-- {{ $tiros->links() }} --}}
                     </div>
                 </div>
             @else
@@ -253,7 +233,7 @@
         <x-slot name="title">
             <div class="flex sm:px-6">
                 <h1 class="mb-3 text-2xl text-black font-bold ml-3">Editar domicilio</h1>
-                <button type="button" wire:click="cerrarEditar" wire:loading.attr="disabled"
+                <button type="button" wire:click="$set('modalDomicilio', false)" wire:loading.attr="disabled"
                     class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                     data-modal-toggle="defaultModal">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

@@ -20,7 +20,7 @@
         <div class="px-4 mb-4" flex-grow>
             <div class="flex">
                 <div class="w-1/2 px-2">
-                    <p class="font-bold">La suscripción es para el cliente</p>
+                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ $idSuscripcionSig['id'] + 1 }}</p>
                 </div>
                 <div class="w-1/2">
                     <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
@@ -227,6 +227,7 @@
                         wire:model="periodoSuscripcionSeleccionada" style="width: 80%">
                         {{-- <option value="" style="display: none;">...</option> --}}
                         <option value='esco' style="display: none;">Selecciona una opción</option>
+                        <option value="Semanal">Otro</option>
                         <option value='Mensual'>Mensual</option>
                         <option value='Trimestral'>Trimestral</option>
                         <option value='Semestral'>Semestral</option>

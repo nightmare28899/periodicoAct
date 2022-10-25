@@ -14,5 +14,5 @@ class Suscripcion extends Model
 
     protected $table = 'suscripciones';
 
-    protected $fillable = ['idSuscripcion', 'tipo', 'suscripcion', 'esUnaSuscripcion', 'cliente_id', 'tarifa', 'cantEjemplares', 'precio', 'contrato', 'tipoSuscripcion', 'periodo', 'fechaInicio', 'fechaFin', 'dias', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo', 'descuento', 'observaciones', 'importe', 'total', 'domicilio_id', 'estado', 'remisionStatus'];
+    protected $fillable = ['idSuscripcion', 'tipo', 'suscripcion', 'esUnaSuscripcion', 'cliente_id', 'tarifa', 'cantEjemplares', 'precio', 'contrato', 'tipoSuscripcion', 'periodo', 'fechaInicio', 'fechaFin', 'dias', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo', 'descuento', 'observaciones', 'importe', 'total', 'domicilio_id', 'estado', 'remisionStatus', 'tiroStatus'];
 }

@@ -23,7 +23,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false;
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig;
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -66,6 +66,19 @@ class Clientes extends Component
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
+            $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
+            if (count($this->ventas) > 0) {
+                $this->desde = $this->ventas[0]['desde'];
+                $this->hasta = $this->ventas[0]['hasta'];
+                $this->lunesVentas = $this->ventas[0]['lunes'];
+                $this->martesVentas = $this->ventas[0]['martes'];
+                $this->miercolesVentas = $this->ventas[0]['miércoles'];
+                $this->juevesVentas = $this->ventas[0]['jueves'];
+                $this->viernesVentas = $this->ventas[0]['viernes'];
+                $this->sabadoVentas = $this->ventas[0]['sábado'];
+                $this->domingoVentas = $this->ventas[0]['domingo'];
+                $this->editEnabled = true;
+            }
             $this->domicilioSeleccionado = [];
             $this->resetear();
         }
@@ -87,13 +100,15 @@ class Clientes extends Component
                 ->limit(6)
                 ->get()
                 ->toArray();
-        } else if ($this->query != '') {
+            /* } else if ($this->query != '') {
             $encontrado = Cliente::find($this->query);
+            $this->buscarPrincipal = Cliente::paginate(10);
+            $links = $this->buscarPrincipal;
             $this->buscarPrincipal = Cliente
                 ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
                 ->limit(10)
-                ->get();
+                ->get(); */
         } else if ($this->query == '') {
             $this->buscarPrincipal = [];
             $this->clientesBuscados = [];
@@ -108,6 +123,7 @@ class Clientes extends Component
         $this->converHasta = new Carbon($this->desde);
         $this->dateFiltro = new Carbon($this->to);
         $this->desde = $this->converHasta->format('Y-m-d');
+        $this->idSuscripcionSig = Suscripcion::latest('id')->first();
         /* $this->from = $this->dateF->format('Y-m-d'); */
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
@@ -146,6 +162,7 @@ class Clientes extends Component
         ];
 
         if ($this->periodoSuscripcionSeleccionada == 'Mensual' || $this->periodoSuscripcionSeleccionada == 'Trimestral' || $this->periodoSuscripcionSeleccionada == 'Semestral' || $this->periodoSuscripcionSeleccionada == 'Anual') {
+
             $days = $this->periodoSuscripcionSeleccionada === 'Mensual'
                 ? 1
                 : ($this->periodoSuscripcionSeleccionada === 'Trimestral'
@@ -161,6 +178,12 @@ class Clientes extends Component
             $days > 0 ? $this->modificarFecha = false : $this->modificarFecha = true;
         }
 
+        if ($this->periodoSuscripcionSeleccionada === 'Semanal') {
+            $this->modificarFecha = true;
+            /* $days = $this->periodoSuscripcionSeleccionada == 'Semanal' ? 4 : 0;
+
+            $this->to = $this->dateF->addDays($days)->format('Y-m-d'); */
+        }
 
         $rutas = Ruta::pluck('nombreruta', 'id');
         $tarifas = Tarifa::pluck('tipo', 'id');
@@ -178,17 +201,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 270 : 230;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 750 : 630;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 1480 : 1250;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 2720 : 2450;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -198,17 +218,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -228,17 +245,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 370 : 330;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 1060 : 920;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 2000 : 1790;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 3920 : 3500;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -248,17 +262,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -278,17 +289,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 300 : 300;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 770 : 770;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 1400 : 1400;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 2900 : 2900;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -298,17 +306,14 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
-                            $this->total = (int)$this->cantEjem * (int)$costo;
                         }
+                        $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
                         $this->total = 0;
@@ -424,7 +429,8 @@ class Clientes extends Component
         /* $this->clients = Cliente::all(); */
         /* if (count($this->clients) > 0) { */
         return view('livewire.clientes.view', [
-            'clientes' => $this->buscarPrincipal,
+            'clientes' => Cliente::where('id', '=', $this->query)
+                ->orWhere('nombre', 'like', '%' . $this->query . '%')->paginate(10),
             'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
         /* } else {
@@ -955,6 +961,7 @@ class Clientes extends Component
                             'total' => $this->total,
                             'estado' => 'Activo',
                             'remisionStatus' => 'Pendiente',
+                            'tiroStatus' => 'Activo',
                         ]);
 
                         $this->status = 'created';
@@ -1219,6 +1226,7 @@ class Clientes extends Component
                                 /* 'formaPago' => $this->formaPagoSeleccionada, */
                                 'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
                                 'remisionStatus' => 'Pendiente',
+                                'tiroStatus' => 'Activo',
                             ]);
 
                             $datosCliente = domicilioSubs::where('cliente_id', $this->clienteSeleccionado['id'])->get();
@@ -1236,6 +1244,7 @@ class Clientes extends Component
                                 'desde' => $this->from,
                                 'hasta' => $this->to,
                                 'fecha' => $this->date,
+                                'idSuscripcionSig' => $this->idSuscripcionSig,
                             ])
                                 ->setPaper('A5', 'landscape')
                                 ->output();

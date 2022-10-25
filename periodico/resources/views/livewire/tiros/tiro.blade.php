@@ -88,12 +88,12 @@
                                     <th class="px-4 py-2 uppercase">Referencia</th>
                                     <th class="px-4 py-2 uppercase">Ejemplares</th>
                                     <th class="px-4 py-2 uppercase">Fecha</th>
-                                    {{-- <th class="px-4 py-2 w-20">Acciones</th> --}}
+                                    <th class="px-4 py-2 w-20">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($ventas as $result)
-                                    @if ($result->{$diaS} != 0 && $result->estado == 'Activo')
+                                    @if ($result->{$diaS} != 0 && $result->estado == 'Activo' && $result->tiroStatus == 'Activo')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombreruta }}, Tipo:
                                                 {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }},
@@ -115,6 +115,12 @@
                                             <td class="px-4 py-2 border border-dark">{{ $result->{$diaS} }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                <button wire:click="pausarVenta('{{ $result->idVenta }}')"
+                                                    class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                    Quitar
+                                                </button>
+                                            </td>
                                         </tr>
                                     @else
                                         <tr>
@@ -124,13 +130,13 @@
                                 @endforeach
 
                                 @foreach ($suscripcion as $suscrip)
-                                    @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo') || $suscrip->contrato == 'Cortesía')
+                                    @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo' && $suscrip->tiroStatus == 'Activo') || ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
                                                 Cobrador: {{ $suscrip->cobrador }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $diaS }} </td>
-                                            <td>Suscripción</td>
+                                            <td class="px-4 py-2 border border-dark"">Suscripción</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombre }}</td>
                                             <td class="px-4 py-2 border border-dark">Calle: {{ $suscrip->calle }} <br>
                                                 No. Ext:
@@ -143,13 +149,18 @@
                                                 {{ $suscrip->{$diaS} != 0 ? $suscrip->cantEjemplares : 0 }}</td>
                                             <td wire:model="fecha" class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                <button wire:click="pausarSuscripcion('{{ $suscrip->idSuscripcion }}')"
+                                                    class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                    Quitar
+                                                </button>
+                                            </td>
                                             {{-- <td class="border">Calle: {{ $domsubs[$key]->calle }} <br>
                                     No. Ext:
                                     {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
                                     {{ $domsubs[$key]->localidad }}, Ciudad: {{ $domsubs[$key]->ciudad }}
                                 </td>
                                 <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td> --}}
-
                                         </tr>
                                     @else
                                         <tr>

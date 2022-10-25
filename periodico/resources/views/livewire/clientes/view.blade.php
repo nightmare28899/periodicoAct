@@ -179,9 +179,9 @@
                     </table>
                     <br>
                     <br>
-                    {{--@if (count($clientes) > 0)
+                    @if (count($clientes) > 0)
                         {{ $clientes->links() }}
-                    @endif--}}
+                    @endif
                     <br>
                     <br>
                 </div>

@@ -69,6 +69,7 @@
                 case '¡Si tiene ventas!':
                 case '¡Si tiene suscripciones!':
                 case '¡Domicilio creado correctamente!':
+                case '¡Días agregados exitosamente!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -108,6 +109,7 @@
                 case '¡No tiene suscripciones!':
                 case '¡Debes seleccionar la fecha!':
                 case '¡El cliente no tiene domicilio!':
+                case '¡No tiene ventas!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

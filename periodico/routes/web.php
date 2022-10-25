@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\AgregarDiasSuscripcion;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Clientes;
 use App\Http\Livewire\Tarifas;
@@ -64,6 +65,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
     Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
+
+    Route::get('/agregarDiasSuscripcion', AgregarDiasSuscripcion::class)->name('agregarDiasSuscripcion');
 
     Route::get('/reporte-relacionCR', ReporteRelacionCR::class)->name('reporte-relacionCR');
     Route::get('/PDFReporteRCR', ReportePDFrelacionCR::class)->name('PDFReporteRCR');

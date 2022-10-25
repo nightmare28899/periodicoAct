@@ -19,26 +19,6 @@
                             class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                             name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                             autocomplete="off" />
-
-                        @if (!empty($query))
-
-                            <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
-
-                            <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg w-26">
-
-                                @if (!empty($clientesBuscados))
-
-                                    @foreach ($clientesBuscados as $i => $buscado)
-                                        <div wire:click="selectContact({{ $i }})"
-                                            class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
-                                            {{ $buscado['nombre'] }}
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <div class="list-item list-none p-2">No hay resultado</div>
-                                @endif
-                            </div>
-                        @endif
                     </div>
                     <br>
                     <div class="flex-none mx-1">
@@ -133,7 +113,7 @@
                             <tbody>
                                 @if ($this->ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if ($result->{$diaS} != 0 && $result->remisionStatus == 'Pendiente')
+                                        @if (/* $result->{$diaS} != 0 &&  */$result->remisionStatus == 'Pendiente')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">

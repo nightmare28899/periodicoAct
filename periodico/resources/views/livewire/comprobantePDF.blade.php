@@ -59,16 +59,16 @@
             <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                 <tr>
                     <th class='px-4 py-2' style="width: 100px;">CONTRATO</th>
-                    <th class='px-4 py-2' style="width: 100px;">ID VENTA</th>
+                    <th class='px-4 py-2' style="width: 100px;">ID SUSCRIPCION</th>
                     <th class='px-4 py-2' style="width: 100px;"></th>
-                    <th class='px-4 py-2' style="width: 200px;">TIPO  VENTA</th>
+                    <th class='px-4 py-2' style="width: 200px;">TIPO  SUSCRIPCION</th>
                     <th class='px-4 py-2' style="width: 200px;">FECHA  06/09/2022</th>
                 </tr>
             </thead>
             <tbody class="">
                 <tr>
                     <td>FACTURA A:</td>
-                    <td>CLIENTE: {{ $cliente['id'] }}</td>
+                    <td>ID: {{ $idSuscripcionSig['id'] + 1 }}</td>
                     <td></td>
                     <td>RFC: {{ $cliente['rfc_input'] }}</td>
                     <td>RUTA: {{ $ruta[0]['nombreruta'] }}</td>
