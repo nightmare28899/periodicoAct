@@ -354,5 +354,26 @@
 
 </x-jet-dialog-modal>
 
+{{-- MODAL ERRORES --}}
+<x-jet-dialog-modal wire:model="modalErrors">
+
+    <x-slot name="title">
+        {{-- <h1 class="font-bold text-red-500">Errores</h1> --}}
+    </x-slot>
+
+    <x-slot name="content">
+        <div class="px-4 mb-4 text-center" flex-grow>
+            <img class="mx-auto" src="/img/error.png" width="100px" height="100px" alt="logo error">
+            <br>
+            <p class="font-bold mt-5 text-red-700">{!! nl2br($d) !!}</p>
+            <br>
+        </div>
+    </x-slot>
+
+    <x-slot name="footer">
+    </x-slot>
+
+</x-jet-dialog-modal>
+
 
 

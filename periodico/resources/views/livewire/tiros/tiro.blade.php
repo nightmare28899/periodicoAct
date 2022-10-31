@@ -92,6 +92,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php $sum_ejemplares = 0; ?>
                                 @foreach ($ventas as $result)
                                     @if ($result->{$diaS} != 0 && $result->estado == 'Activo' && $result->tiroStatus == 'Activo')
                                         <tr>
@@ -127,10 +128,12 @@
 
                                         </tr>
                                     @endif
+                                    <?php $sum_ejemplares += $result->{$diaS}; ?>
                                 @endforeach
 
+                                <?php $sum_ejemplaressus = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
-                                    @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo' && $suscrip->tiroStatus == 'Activo') || ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
+                                    @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo' && $suscrip->tiroStatus == 'Activo' && $suscrip->id != $suscrip->idsus) || ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
@@ -167,10 +170,14 @@
 
                                         </tr>
                                     @endif
+                                    <?php $sum_ejemplaressus += $suscrip->cantEjemplares; ?>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    <p class="uppercase">Total vta. periodico &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplares }} &nbsp;&nbsp; clientes: {{ count($ventas) }}</b> </p>
+                    <p class="uppercase">Total vta. suscripciones &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplaressus }} &nbsp;&nbsp; clientes: {{ count($suscripcion) }}</b> </p>
+                    <p class="uppercase text-blue-700">Totales <b class="text-red-700">ejemplares</b> {{ $sum_ejemplares + $sum_ejemplaressus }} <b class="text-red-700">clientes</b> {{ count($ventas) + count($suscripcion) }}</p>
                 </div>
                 <br>
                 {{-- {{ $resultado->links() }} --}}

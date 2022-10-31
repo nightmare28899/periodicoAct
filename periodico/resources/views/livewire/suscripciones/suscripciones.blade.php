@@ -20,7 +20,7 @@
         <div class="px-4 mb-4" flex-grow>
             <div class="flex">
                 <div class="w-1/2 px-2">
-                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ $idSuscripcionSig['id'] + 1 }}</p>
+                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ $idSuscripcionSig ? $idSuscripcionSig['id'] + 1 : 1 }}</p>
                 </div>
                 <div class="w-1/2">
                     <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
@@ -383,20 +383,20 @@
             </div>
             <div class="flex">
                 <div class="w-1/4 px-2">
-                    <p class="mt-2 flex">IMPORTE <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-left: 5.9rem;" value="{{ $total }}" disabled>
+                    <p class="mt-2 flex">IMPORTE <input class="border-0 bg-gray-200 pl-3"
+                            style="height: 1.7rem; margin-left: 5.9rem;" value="{{ sprintf('$ %s', number_format($total)) }}" disabled>
                     </p>
-                    <p class="mt-2 flex">DESCUENTO <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-left: 4.3rem;" value="{{ $descuento }}" disabled>
+                    <p class="mt-2 flex">DESCUENTO <input class="border-0 bg-gray-200 pl-3"
+                            style="height: 1.7rem; margin-left: 4.3rem;" value="{{ sprintf('$ %s', number_format($descuento)) }}" disabled>
                     </p>
-                    <p class="mt-2 flex">SUBTOTAL <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-left: 5.1rem;" value="{{ $total }}" disabled>
+                    <p class="mt-2 flex">SUBTOTAL <input class="border-0 bg-gray-200 pl-3"
+                            style="height: 1.7rem; margin-left: 5.1rem;" value="{{ sprintf('$ %s', number_format($total)) }}" disabled>
                     </p>
-                    <p class="mt-2 flex">IVA <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-left: 8.5rem;" value="{{ $iva }}" disabled>
+                    <p class="mt-2 flex">IVA <input class="border-0 bg-gray-200 pl-3"
+                            style="height: 1.7rem; margin-left: 8.5rem;" value="{{ sprintf('$ %s', number_format($iva)) }}" disabled>
                     </p>
-                    <p class="mt-2 flex">TOTAL <input type="number" class="border-0 bg-gray-200"
-                            style="height: 1.7rem; margin-left: 7rem;" value="{{ $totalDesc }}" disabled></p>
+                    <p class="mt-2 flex">TOTAL <input class="border-0 bg-gray-200 pl-3"
+                            style="height: 1.7rem; margin-left: 7rem;" value="{{ sprintf('$ %s', number_format($totalDesc)) }}" disabled></p>
                 </div>
                 <div class="w-1/2 px-2 ml-5" style="margin-left: 400px;">
                     {{-- <p>FORMA DE PAGO</p>
@@ -428,7 +428,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
-                            Guardar contrato
+                            Crear contrato
                         </button>
                         {{-- <button
                             class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button> --}}

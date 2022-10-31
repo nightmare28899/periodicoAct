@@ -16,7 +16,7 @@
                     <div class="w-64 ml-5 pt-6">
                         <input type="text"
                             class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                            name="search" placeholder="Buscar por ID" wire:model="idCliente"
+                            name="search" placeholder="Buscar por ID cliente" wire:model="idCliente"
                             autocomplete="off" />
                     </div>
                     <div class="w-64 ml-5 pt-6">
@@ -76,7 +76,7 @@
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                                <td class='px-4 py-2 border border-dark'>{{ $tiro->cliente_id }}</td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $tiro->idTipo }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
@@ -101,7 +101,7 @@
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                                <td class='px-4 py-2'>{{ $tiro->idTipo }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>

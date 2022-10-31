@@ -9,6 +9,7 @@
         "ascsoftw/livewire-toast": "^1.0",
         "barryvdh/laravel-dompdf": "^1.0",
         "crisvegadev/facturama-php-sdk": "dev-main",
+        "doctrine/dbal": "^3.5",
         "flightsadmin/livewire-crud": "^0.0.17",
         "guzzlehttp/guzzle": "^7.2",
         "haruncpi/laravel-user-activity": "^1.0",

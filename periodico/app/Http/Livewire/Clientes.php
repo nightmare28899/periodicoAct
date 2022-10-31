@@ -16,12 +16,14 @@ use Carbon\Carbon;
 use App\Models\ventas;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Invoice;
+use App\Models\Tiro;
 
 class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social, $d, $modalErrors = 0;
 
     public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig;
 
@@ -919,7 +921,8 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
-                    /*i need to know if the client has a domicilio*/
+
+
                     $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
                     if ($domicilio) {
                         $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
@@ -964,14 +967,139 @@ class Clientes extends Component
                             'tiroStatus' => 'Activo',
                         ]);
 
+
+
                         $this->status = 'created';
                         $this->modalV = false;
+
+
+                        $this->limpiarVentaModal();
 
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
                         ]);
 
-                        $this->limpiarVentaModal();
+
+                        /* if ($this->clienteSeleccionado['clasificacion'] == 'CRÉDITO') {
+                            $this->globalInformation = [
+                                "Periodicity" => "04",
+                                "Months" => "08",
+                                "Year" => "2022",
+                            ];
+
+                            $items = [
+                                [
+                                    "Serie" => "PPD",
+                                    "ProductCode" => "55101504",
+                                    "IdentificationNumber" => "EDL",
+                                    "Description" => "VENTA PERIODICO FACTURA",
+                                    "Unit" => "Pieza",
+                                    "UnitCode" => "H87",
+                                    "UnitPrice" => $tarifa['ordinario'],
+                                    "Discount" => 0,
+                                    "Quantity" => $this->lunesVentas + $this->martesVentas + $this->miercolesVentas + $this->juevesVentas + $this->viernesVentas + $this->sabadoVentas + $this->domingoVentas,
+                                    "Subtotal" => $this->total,
+                                    "ObjetoImp" => "02",
+                                    "TaxObject" => "02",
+                                    "Taxes" => [
+                                        [
+                                            "Total" => 0.0,
+                                            "Name" => "IVA",
+                                            "Base" => $this->total,
+                                            "Rate" => 0,
+                                            "IsRetention" => false
+                                        ]
+                                    ],
+                                    "Total" => $this->total
+                                ]
+                            ];
+
+                            $facturama =  \Crisvegadev\Facturama\Invoice::create([
+                                "Serie" => "PPD",
+                                "Currency" => "MXN",
+                                "ExpeditionPlace" => "58190",
+                                "PaymentConditions" => "CREDITO A SIETE DIAS",
+                                "Folio" => "1",
+                                "CfdiType" => "E",
+                                "PaymentForm" => "03",
+                                "PaymentMethod" => "PPD",
+                                "GlobalInformation" => $this->globalInformation ? $this->globalInformation : [],
+                                "Decimals" => "2",
+                                "Receiver" => [
+                                    "Rfc" => $this->clienteSeleccionado['rfc'],
+                                    "Name" => $this->clienteSeleccionado['nombre'] ? $this->clienteSeleccionado['nombre'] : $this->clienteSeleccionado['razonSocial'],
+                                    "CfdiUse" => "G03",
+                                    "TaxZipCode" => $domicilio['cp'],
+                                    "FiscalRegime" => $this->clienteSeleccionado['regimen_fiscal'],
+                                    "email" => $this->clienteSeleccionado['email'],
+                                    "Address" => [
+                                        "Street" => $domicilio['calle'],
+                                        "ExteriorNumber" => (string) $domicilio['noext'],
+                                        "InteriorNumber" => (string) $domicilio['noint'],
+                                        "Neighborhood" => $domicilio['colonia'],
+                                        "Locality" => $domicilio['localidad'],
+                                        "State" => $this->clienteSeleccionado['estado'],
+                                        "Country" => $this->clienteSeleccionado['pais'],
+                                        "ZipCode" => (string) $domicilio['cp'],
+                                    ]
+                                ],
+                                'Items' => $items,
+                            ]);
+
+                            try {
+                                if ($facturama->statusCode == 201) {
+
+                                    $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
+                                    Invoice::create([
+                                        'invoice_id' => $facturama->data->Id,
+                                        'invoice_date' => $facturama->data->Date,
+                                        'cliente_id' => $this->clienteid,
+                                        'cliente' => $this->clienteSeleccionado['nombre'] ? $this->clienteSeleccionado['nombre'] : $this->clienteSeleccionado['razonSocial'],
+                                        'idTipo' => $this->idTipo,
+                                        'status' => 'Vigente',
+                                        'serie' => $facturama->data->Serie,
+                                        'folio' => $facturama->data->Folio,
+                                        'paymentTerms' => $facturama->data->PaymentTerms,
+                                        'paymentMethod' => $facturama->data->PaymentMethod,
+                                        'expeditionPlace' => $facturama->data->ExpeditionPlace,
+                                        'currency' => $facturama->data->Currency,
+                                        'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
+                                        'rfc' => $facturama->data->Issuer->Rfc,
+                                        'productCode' => $facturama->data->Items[0]->ProductCode,
+                                        'unitCode' => $facturama->data->Items[0]->UnitCode,
+                                        'quantity' => $facturama->data->Items[0]->Quantity,
+                                        'unit' => $facturama->data->Items[0]->Unit,
+                                        'description' => $facturama->data->Items[0]->Description,
+                                        'unitValue' => $facturama->data->Items[0]->UnitValue,
+                                        'subtotal' => $facturama->data->Subtotal,
+                                        'discount' => $facturama->data->Discount,
+                                        'total' => $facturama->data->Total,
+                                    ]);
+
+
+
+
+
+
+                                    $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                                        'status' => 'facturado',
+                                    ]);
+                                } else {
+                                    $this->d = "";
+
+                                    foreach ($facturama->errors as $key => $error) {
+                                        $this->d .= "- $error \n";
+                                    }
+
+                                    $this->modalErrors = true;
+                                }
+                            } catch (\Exception $e) {
+                                $this->status = 'error';
+                                $this->dispatchBrowserEvent('alert', [
+                                    'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
+                                ]);
+                            }
+                        }*/
                     } else {
                         $this->status = 'error';
                         $this->dispatchBrowserEvent('alert', [

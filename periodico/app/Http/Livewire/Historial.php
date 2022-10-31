@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status, $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto = 0, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf;
+    public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0;
 
     public function mount($editar)
     {
@@ -32,24 +32,6 @@ class Historial extends Component
         $this->query = '';
         $this->clientesBuscados = [];
         $this->highlightIndex = 0;
-    }
-
-    public function incrementHighlight()
-    {
-        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
-            $this->highlightIndex = 0;
-            return;
-        }
-        $this->highlightIndex++;
-    }
-
-    public function decrementHighlight()
-    {
-        if ($this->highlightIndex === 0) {
-            $this->highlightIndex = count($this->clientesBuscados) - 1;
-            return;
-        }
-        $this->highlightIndex--;
     }
 
     public function selectContact($pos)
@@ -78,17 +60,19 @@ class Historial extends Component
         $this->date = Carbon::now()->format('d-m-Y');
 
         if ($this->state != true) {
-            if ($this->clienteSeleccionado && $this->fechaRemision) {
+            if ($this->query && $this->fechaRemision) {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->where(function ($query) {
-                        $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                        $query->where('cliente.id', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
                             ->where('fecha', $this->fechaRemision);
                     })
                     ->select('tiro.*', 'cliente.clasificacion')
                     ->get();
-            } else if ($this->clienteSeleccionado) {
+            } else if ($this->query) {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->where('cliente.id', $this->clienteSeleccionado['id'])
+                    ->where('cliente.id', 'like', '%' . $this->query . '%')
+                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
                     ->select('tiro.*', 'cliente.clasificacion')
                     ->get();
             } else if ($this->fechaRemision) {
@@ -102,9 +86,9 @@ class Historial extends Component
                     ->get();
             }
         } else {
-            if ($this->clienteSeleccionado && $this->fechaRemision) {
+            if ($this->query && $this->fechaRemision) {
                 $this->datos = Tiro::where(function ($query) {
-                    $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                    $query->where('cliente.id', 'like', '%' . $this->query . '%')
                         ->where('fecha', $this->fechaRemision);
                 })->get();
                 for ($i = 0; $i < count($this->datos); $i++) {
@@ -112,7 +96,8 @@ class Historial extends Component
                         $this->type = $this->datos[$i]->idTipo;
 
                         $this->tiros = Tiro::where(function ($query) {
-                            $query->where('cliente_id', $this->clienteSeleccionado['id'])
+                            $query->where('cliente_id',)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
                                 ->where('fecha', $this->fechaRemision)
                                 ->where('idTipo', $this->type);
                         })->get();
@@ -253,6 +238,9 @@ class Historial extends Component
         $this->devuelto = $tiros->devuelto;
         $this->idVentaEditar = $idVenta;
         $this->diaDevolucion = $dia;
+        $this->cantActual = $tiros->entregar;
+        $this->entregar = $tiros->entregar;
+        $this->cantCancelar = false;
     }
 
     public function cerrarEditar()
@@ -298,7 +286,9 @@ class Historial extends Component
         $tiros = Tiro::find($this->tiros_id);
         $this->entregar = $tiros->entregar;
         $ventas = ventas::where('idVenta', $this->idVentaEditar)->first();
+        $this->devuelto = $this->cantDevueltos;
         if ($this->devuelto) {
+            $this->cantCancelar = false;
             if ($tiros->entregar >= $this->devuelto) {
                 $tiros->update([
                     'devuelto' => $tiros->devuelto + $this->devuelto,
@@ -317,12 +307,15 @@ class Historial extends Component
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'updated') ? '¡Se generó exitosamente la devolución!' : ''
                 ]);
+
                 $this->entregar = $tiros->entregar;
                 $this->modalEditar = false;
                 $this->modalHistorial = false;
                 $this->showingModal = true;
-                $this->devuelto = 0;
+                $this->devuelto = null;
+                $this->cantDevueltos = null;
             } else if (($tiros->entregar + $this->devuelto) <= $tiros->devuelto) {
+                $this->cantCancelar = true;
                 $tiros->update([
                     'devuelto' => $tiros->devuelto - $this->devuelto,
                     'entregar' => $tiros->entregar + $this->devuelto,
@@ -345,12 +338,44 @@ class Historial extends Component
                 $this->modalHistorial = false;
                 $this->showingModal = true;
                 $this->devuelto = 0;
+                $this->cantDevueltos = null;
             } else {
                 $this->status = 'error';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'error') ? '¡No puedes devolver más cantidad de la que hay!' : ''
                 ]);
             }
+        }
+    }
+
+    public function modalCapturarPeriodicos($id)
+    {
+        $this->capturarPeriodicos_id = $id;
+        $this->modalCapturar = true;
+        $tiros = Tiro::find($id);
+        $this->cantActual = $tiros->entregar;
+    }
+
+    public function capturarPeriodicos()
+    {
+        if ($this->cantAgregar != 0) {
+            $tiros = Tiro::find($this->capturarPeriodicos_id);
+            $tiros->update([
+                'entregar' => $tiros->entregar + $this->cantAgregar,
+                'venta' => $tiros->entregar + $this->cantAgregar,
+                'importe' => ($tiros->entregar + $this->cantAgregar) * $tiros->precio,
+            ]);
+            $this->status = 'created';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Se agregaron con éxito!' : ''
+            ]);
+            $this->cantAgregar = null;
+            $this->modalCapturar = false;
+        } else {
+            $this->status = 'error';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡No puedes capturar 0 periodicos!' : ''
+            ]);
         }
     }
 
