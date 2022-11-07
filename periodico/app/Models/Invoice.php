@@ -16,5 +16,5 @@ class Invoice extends Model
 
     protected $table = 'invoices';
 
-    protected $fillable = ['invoice_id', 'invoice_date', 'cliente_id', 'cliente', 'idTipo', 'serie', 'folio', 'paymentTerms', 'paymentMethod', 'expeditionPlace', 'currency', 'fiscalRegime', 'rfc', 'productCode', 'unitCode', 'quantity', 'unit', 'description', 'unitValue', 'subtotal', 'discount', 'total', 'status'];
+    protected $fillable = ['invoice_id', 'uuid', 'invoice_date', 'cliente_id', 'cliente', 'idTipo', 'serie', 'folio', 'paymentTerms', 'paymentMethod', 'expeditionPlace', 'currency', 'fiscalRegime', 'rfc', 'productCode', 'unitCode', 'quantity', 'unit', 'description', 'unitValue', 'subtotal', 'discount', 'total', 'status'];
 }

@@ -80,6 +80,16 @@ class Clientes extends Component
                 $this->sabadoVentas = $this->ventas[0]['sábado'];
                 $this->domingoVentas = $this->ventas[0]['domingo'];
                 $this->editEnabled = true;
+            } else {
+                $this->hasta = null;
+                $this->lunesVentas = null;
+                $this->martesVentas = null;
+                $this->miercolesVentas = null;
+                $this->juevesVentas = null;
+                $this->viernesVentas = null;
+                $this->sabadoVentas = null;
+                $this->domingoVentas = null;
+                $this->editEnabled = false;
             }
             $this->domicilioSeleccionado = [];
             $this->resetear();
@@ -182,9 +192,6 @@ class Clientes extends Component
 
         if ($this->periodoSuscripcionSeleccionada === 'Semanal') {
             $this->modificarFecha = true;
-            /* $days = $this->periodoSuscripcionSeleccionada == 'Semanal' ? 4 : 0;
-
-            $this->to = $this->dateF->addDays($days)->format('Y-m-d'); */
         }
 
         $rutas = Ruta::pluck('nombreruta', 'id');
@@ -394,15 +401,6 @@ class Clientes extends Component
                 $this->totalDesc = $this->suscripciones[0]->total;
                 $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
                 $this->siTieneSus = true;
-                /* $this->domicilioS = domicilioSubs
-                    ::join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
-                    ->where('cliente_id', $this->clienteSeleccionado)
-                    ->select('domicilio_subs.*', 'ruta.nombreruta')
-                    ->get();
-                $this->domicilioSeleccionado = $this->domicilioS;
-
-                $this->inputCantidad = $this->domicilioS[0]->ejemplares;
-                $this->cantDom = $this->inputCantidad; */
             } else {
                 $this->siTieneSus = false;
                 $this->status = 'created';
@@ -428,19 +426,11 @@ class Clientes extends Component
             }
         }
 
-        /* $this->clients = Cliente::all(); */
-        /* if (count($this->clients) > 0) { */
         return view('livewire.clientes.view', [
             'clientes' => Cliente::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')->paginate(10),
             'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
-        /* } else {
-            return view('livewire.clientes.view', [
-                'clientes' => $this->clients,
-                'rfc' => $this->rfc,
-            ], compact('data', 'rutas', 'tarifas', 'formaPago'));
-        } */
     }
 
     public function cerrarModalSuscripciones()
@@ -453,7 +443,6 @@ class Clientes extends Component
     {
         $this->resetInput();
         $this->openModalPopover();
-        /* $this->status = 'created'; */
     }
 
     public function primerModal()
@@ -620,47 +609,22 @@ class Clientes extends Component
             'rfc' => 'required',
             'rfc_input' => 'required',
             'clasificacion' => 'required',
-
-            /*'calle' => 'required',
-            'noext' => 'required|numeric',
-            'colonia' => 'required',
-            'cp' => 'required|numeric',
-            'localidad' => 'required',
-            'municipio' => 'required',
-            'referencia' => 'required',
-            'ruta_id' => 'required',
-            'tarifa_id' => 'required',*/
         ]);
 
         Cliente::Create([
-            'clasificacion' => $this->clasificacion,
-            'rfc' => $this->rfc,
-            'rfc_input' => $this->rfc_input,
-            'nombre' => $this->nombre ? $this->nombre : null,
-            'estado' => $this->estado,
-            'pais' => $this->pais,
-            'email' => $this->email,
-            'email_cobranza' => $this->email_cobranza,
-            'telefono' => $this->telefono,
-            'regimen_fiscal' => $this->regimen_fiscal,
-            'razon_social' => $this->razon_social ? $this->razon_social : null,
+            'clasificacion' => strtoupper($this->clasificacion),
+            'rfc' => strtoupper($this->rfc),
+            'rfc_input' => strtoupper($this->rfc_input),
+            'nombre' => strtoupper($this->nombre) ? strtoupper($this->nombre) : null,
+            'estado' => strtoupper($this->estado),
+            'pais' => strtoupper($this->pais),
+            'email' => strtoupper($this->email),
+            'email_cobranza' => strtoupper($this->email_cobranza),
+            'telefono' => strtoupper($this->telefono),
+            'regimen_fiscal' => strtoupper($this->regimen_fiscal),
+            'razon_social' => strtoupper($this->razon_social) ? strtoupper($this->razon_social) : null,
         ]);
 
-        /*Domicilio::Create([
-            'cliente_id' => $this->cliente_id = Cliente::latest('id')->first()->id,
-            'calle' => $this->calle,
-            'noint' => $this->noint ? $this->noint : 0,
-            'noext' => $this->noext,
-            'colonia' => $this->colonia,
-            'cp' => $this->cp,
-            'localidad' => $this->localidad,
-            'municipio' => $this->municipio,
-            'ruta_id' => $this->ruta_id,
-            'tarifa_id' => $this->tarifa_id,
-            'referencia' => $this->referencia,
-        ]);*/
-
-        /* $this->resetInput(); */
         $this->emit('closeModal');
         $this->updateMode = false;
         $this->closeModalPopover();
@@ -684,19 +648,6 @@ class Clientes extends Component
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
         $this->razon_social = $Cliente->razon_social;
 
-        /* $Domicilio = Domicilio::find($id);
-        $this->domicilio_id = $id;
-        $this->calle = $Domicilio->calle;
-        $this->noint = $Domicilio->noint;
-        $this->noext = $Domicilio->noext;
-        $this->colonia = $Domicilio->colonia;
-        $this->cp = $Domicilio->cp;
-        $this->localidad = $Domicilio->localidad;
-        $this->municipio = $Domicilio->municipio;
-        $this->referencia = $Domicilio->referencia;
-        $this->ruta_id = $Domicilio->ruta_id;
-        $this->tarifa_id = $Domicilio->tarifa_id; */
-
         $this->openModalPopover();
 
         $this->status = 'updated';
@@ -705,7 +656,6 @@ class Clientes extends Component
     public function update()
     {
         $this->validate([
-            /* 'nombre' => 'required', */
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
@@ -713,15 +663,6 @@ class Clientes extends Component
             'clasificacion' => 'required',
             'rfc' => 'required',
             'rfc_input' => 'required',
-            /* 'calle' => 'required',
-            'noext' => 'required',
-            'colonia' => 'required',
-            'cp' => 'required',
-            'localidad' => 'required',
-            'municipio' => 'required',
-            'referencia' => 'required',
-            'ruta_id' => 'required',
-            'tarifa_id' => 'required' */
         ]);
 
         $cliente = Cliente::find($this->cliente_id);
@@ -789,14 +730,14 @@ class Clientes extends Component
 
         domicilioSubs::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
-            'calle' => $this->calle,
+            'calle' => strtoupper($this->calle),
             'noint' => $this?->noint,
             'noext' => $this->noext,
-            'colonia' => $this->colonia,
+            'colonia' => strtoupper($this->colonia),
             'cp' => $this->cp,
-            'localidad' => $this->localidad,
-            'ciudad' => $this->ciudad,
-            'referencia' => $this->referencia,
+            'localidad' => strtoupper($this->localidad),
+            'ciudad' => strtoupper($this->ciudad),
+            'referencia' => strtoupper($this->referencia),
             'ruta' => $this->ruta,
             'ejemplares' => 0,
         ]);
@@ -854,16 +795,16 @@ class Clientes extends Component
 
         Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
-            'calle' => $this->calle,
+            'calle' => strtoupper($this->calle),
             'noint' => $this->noint ? $this->noint : 0,
             'noext' => $this->noext,
-            'colonia' => $this->colonia,
+            'colonia' => strtoupper($this->colonia),
             'cp' => $this->cp,
-            'localidad' => $this->localidad,
-            'municipio' => $this->municipio,
+            'localidad' => strtoupper($this->localidad),
+            'municipio' => strtoupper($this->municipio),
             'ruta_id' => $this->ruta_id,
             'tarifa_id' => $this->tarifa_id,
-            'referencia' => $this->referencia,
+            'referencia' => strtoupper($this->referencia),
         ]);
 
         $this->status = 'created';
@@ -879,16 +820,16 @@ class Clientes extends Component
         $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
 
         $domicilio->update([
-            'calle' => $this->calle,
+            'calle' => strtoupper($this->calle),
             'noint' => $this->noint,
             'noext' => $this->noext,
-            'colonia' => $this->colonia,
+            'colonia' => strtoupper($this->colonia),
             'cp' => $this->cp,
-            'localidad' => $this->localidad,
-            'municipio' => $this->municipio,
+            'localidad' => strtoupper($this->localidad),
+            'municipio' => strtoupper($this->municipio),
             'ruta_id' => $this->ruta_id,
             'tarifa_id' => $this->tarifa_id,
-            'referencia' => $this->referencia,
+            'referencia' => strtoupper($this->referencia),
         ]);
 
         $this->status = 'created';
@@ -979,152 +920,12 @@ class Clientes extends Component
                             'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
                         ]);
 
-
-                        /* if ($this->clienteSeleccionado['clasificacion'] == 'CRÉDITO') {
-                            $this->globalInformation = [
-                                "Periodicity" => "04",
-                                "Months" => "08",
-                                "Year" => "2022",
-                            ];
-
-                            $items = [
-                                [
-                                    "Serie" => "PPD",
-                                    "ProductCode" => "55101504",
-                                    "IdentificationNumber" => "EDL",
-                                    "Description" => "VENTA PERIODICO FACTURA",
-                                    "Unit" => "Pieza",
-                                    "UnitCode" => "H87",
-                                    "UnitPrice" => $tarifa['ordinario'],
-                                    "Discount" => 0,
-                                    "Quantity" => $this->lunesVentas + $this->martesVentas + $this->miercolesVentas + $this->juevesVentas + $this->viernesVentas + $this->sabadoVentas + $this->domingoVentas,
-                                    "Subtotal" => $this->total,
-                                    "ObjetoImp" => "02",
-                                    "TaxObject" => "02",
-                                    "Taxes" => [
-                                        [
-                                            "Total" => 0.0,
-                                            "Name" => "IVA",
-                                            "Base" => $this->total,
-                                            "Rate" => 0,
-                                            "IsRetention" => false
-                                        ]
-                                    ],
-                                    "Total" => $this->total
-                                ]
-                            ];
-
-                            $facturama =  \Crisvegadev\Facturama\Invoice::create([
-                                "Serie" => "PPD",
-                                "Currency" => "MXN",
-                                "ExpeditionPlace" => "58190",
-                                "PaymentConditions" => "CREDITO A SIETE DIAS",
-                                "Folio" => "1",
-                                "CfdiType" => "E",
-                                "PaymentForm" => "03",
-                                "PaymentMethod" => "PPD",
-                                "GlobalInformation" => $this->globalInformation ? $this->globalInformation : [],
-                                "Decimals" => "2",
-                                "Receiver" => [
-                                    "Rfc" => $this->clienteSeleccionado['rfc'],
-                                    "Name" => $this->clienteSeleccionado['nombre'] ? $this->clienteSeleccionado['nombre'] : $this->clienteSeleccionado['razonSocial'],
-                                    "CfdiUse" => "G03",
-                                    "TaxZipCode" => $domicilio['cp'],
-                                    "FiscalRegime" => $this->clienteSeleccionado['regimen_fiscal'],
-                                    "email" => $this->clienteSeleccionado['email'],
-                                    "Address" => [
-                                        "Street" => $domicilio['calle'],
-                                        "ExteriorNumber" => (string) $domicilio['noext'],
-                                        "InteriorNumber" => (string) $domicilio['noint'],
-                                        "Neighborhood" => $domicilio['colonia'],
-                                        "Locality" => $domicilio['localidad'],
-                                        "State" => $this->clienteSeleccionado['estado'],
-                                        "Country" => $this->clienteSeleccionado['pais'],
-                                        "ZipCode" => (string) $domicilio['cp'],
-                                    ]
-                                ],
-                                'Items' => $items,
-                            ]);
-
-                            try {
-                                if ($facturama->statusCode == 201) {
-
-                                    $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
-                                    Invoice::create([
-                                        'invoice_id' => $facturama->data->Id,
-                                        'invoice_date' => $facturama->data->Date,
-                                        'cliente_id' => $this->clienteid,
-                                        'cliente' => $this->clienteSeleccionado['nombre'] ? $this->clienteSeleccionado['nombre'] : $this->clienteSeleccionado['razonSocial'],
-                                        'idTipo' => $this->idTipo,
-                                        'status' => 'Vigente',
-                                        'serie' => $facturama->data->Serie,
-                                        'folio' => $facturama->data->Folio,
-                                        'paymentTerms' => $facturama->data->PaymentTerms,
-                                        'paymentMethod' => $facturama->data->PaymentMethod,
-                                        'expeditionPlace' => $facturama->data->ExpeditionPlace,
-                                        'currency' => $facturama->data->Currency,
-                                        'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
-                                        'rfc' => $facturama->data->Issuer->Rfc,
-                                        'productCode' => $facturama->data->Items[0]->ProductCode,
-                                        'unitCode' => $facturama->data->Items[0]->UnitCode,
-                                        'quantity' => $facturama->data->Items[0]->Quantity,
-                                        'unit' => $facturama->data->Items[0]->Unit,
-                                        'description' => $facturama->data->Items[0]->Description,
-                                        'unitValue' => $facturama->data->Items[0]->UnitValue,
-                                        'subtotal' => $facturama->data->Subtotal,
-                                        'discount' => $facturama->data->Discount,
-                                        'total' => $facturama->data->Total,
-                                    ]);
-
-
-
-
-
-
-                                    $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
-                                        'status' => 'facturado',
-                                    ]);
-                                } else {
-                                    $this->d = "";
-
-                                    foreach ($facturama->errors as $key => $error) {
-                                        $this->d .= "- $error \n";
-                                    }
-
-                                    $this->modalErrors = true;
-                                }
-                            } catch (\Exception $e) {
-                                $this->status = 'error';
-                                $this->dispatchBrowserEvent('alert', [
-                                    'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
-                                ]);
-                            }
-                        }*/
                     } else {
                         $this->status = 'error';
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'error') ? '¡El cliente no tiene domicilio!' : ''
                         ]);
                     }
-                    /*$pdf = PDF::loadView('livewire.remisionVentaGenerada', [
-                        'total' => $this->total,
-                        'cliente' => $this->clienteSeleccionado,
-                        'desde' => $this->desde,
-                        'hasta' => $this->hasta,
-                        'lunes' => $this->lunesVentas,
-                        'martes' => $this->martesVentas,
-                        'miercoles' => $this->miercolesVentas,
-                        'jueves' => $this->juevesVentas,
-                        'viernes' => $this->viernesVentas,
-                        'sabado' => $this->sabadoVentas,
-                        'domingo' => $this->domingoVentas,
-                        'fecha' => $this->date,
-                    ])
-                        ->setPaper('A5', 'landscape')
-                        ->output();
-
-                    Storage::disk('public')->put('venta.pdf', $pdf);*/
-                    /*return Redirect::to('/PDFVenta');*/
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -1144,16 +945,6 @@ class Clientes extends Component
 
     public function actualizarVenta()
     {
-        /* $this->validate([
-             'lunesVentas' => 'required',
-             'martesVentas' => 'required',
-             'miercolesVentas' => 'required',
-             'juevesVentas' => 'required',
-             'viernesVentas' => 'required',
-             'sabadoVentas' => 'required',
-             'domingoVentas' => 'required',
-         ]);*/
-
         $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
         $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
 
@@ -1181,25 +972,6 @@ class Clientes extends Component
                 'domingo' => $this->domingoVentas,
                 'total' => $this->total
             ]);
-
-            /* $pdf = PDF::loadView('livewire.remisionVentaGenerada', [
-                'total' => $this->total,
-                'cliente' => $this->clienteSeleccionado,
-                'desde' => $this->desde,
-                'hasta' => $this->hasta,
-                'lunes' => $this->lunesVentas,
-                'martes' => $this->martesVentas,
-                'miercoles' => $this->miercolesVentas,
-                'jueves' => $this->juevesVentas,
-                'viernes' => $this->viernesVentas,
-                'sabado' => $this->sabadoVentas,
-                'domingo' => $this->domingoVentas,
-                'fecha' => $this->date,
-            ])
-                ->setPaper('A5', 'landscape')
-                ->output();
-
-            Storage::disk('public')->put('venta.pdf', $pdf); */
 
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
@@ -1244,7 +1016,6 @@ class Clientes extends Component
     public function limpiarClienteSeleccionado()
     {
         $this->editEnabled = false;
-        /* $this->clienteSeleccionado = null; */
         $this->desde = null;
         $this->hasta = null;
         $this->lunesVentas = null;
@@ -1321,9 +1092,6 @@ class Clientes extends Component
                                 'to' => 'required',
                             ]);
 
-                            /* if ($this->inputCantidad) { */
-                            /* if ($this->inputCantidad <= $this->cantEjem) { */
-
                             Suscripcion::Create([
                                 'idSuscripcion' => 'suscri' . $this->idSuscrip,
                                 'tipo' => 'suscripcion',
@@ -1351,7 +1119,6 @@ class Clientes extends Component
                                 'observaciones' => $this->observacion,
                                 'importe' => (int)$this->total,
                                 'total' => $this->totalDesc,
-                                /* 'formaPago' => $this->formaPagoSeleccionada, */
                                 'domicilio_id' => $this->domicilioSeleccionado[0]['id'],
                                 'remisionStatus' => 'Pendiente',
                                 'tiroStatus' => 'Activo',
@@ -1379,8 +1146,6 @@ class Clientes extends Component
 
                             Storage::disk('public')->put('suscripcion.pdf', $pdf);
 
-                            /* 'domicilio_id' =>  json_encode($this->domicilioId), */
-
                             $this->status = 'created';
 
                             /* $this->status = 'updated'; */
@@ -1394,19 +1159,6 @@ class Clientes extends Component
                             $this->borrar();
 
                             return Redirect::to('/PDFSuscripcion');
-
-                            /* foreach ($this->domicilioSeleccionado as $key => $value) {
-                            if ($value['id'] == $this->domicilioSeleccionado[$key]['id']) {
-                                array_push($this->domicilioId, $value['id']);
-                            }
-                        } */
-
-
-                            /*return response()
-                                ->streamDownload(
-                                    fn () => print($pdfContent),
-                                    "tiros.pdf"
-                                );*/
                         } else {
                             $this->dispatchBrowserEvent('alert', [
                                 'message' => '¡Debes seleccionar la fecha!'

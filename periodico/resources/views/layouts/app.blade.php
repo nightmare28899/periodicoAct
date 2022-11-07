@@ -72,6 +72,7 @@
                 case '¡Días agregados exitosamente!':
                 case '¡Se agregaron con éxito!':
                 case '¡Suspendida correctamente!':
+                case '¡Si tiene facturas!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -115,6 +116,9 @@
                 case '¡No puedes capturar 0 periodicos!':
                 case '¡Llena todos los campos!':
                 case '¡Esa suscripción ya está suspendida!':
+                case '¡No dejes los campos vacios!':
+                case '¡No puedes escoger la misma factura!':
+                case '¡No tiene facturas!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

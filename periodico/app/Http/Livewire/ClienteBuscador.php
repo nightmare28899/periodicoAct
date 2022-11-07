@@ -181,10 +181,6 @@ class ClienteBuscador extends Component
                             "tiros.pdf"
                         );
 
-
-
-                    /* $this->limpiarVentaModal(); */
-
                 } else {
                     $this->dispatchBrowserEvent('alert', [
                         'message' => '¡Falta ingresar la fecha hasta!'
@@ -235,11 +231,6 @@ class ClienteBuscador extends Component
 
     public function selectContact($pos)
     {
-        /* $this->clienteSeleccionado = $this->clientesBuscados[$this->highlightIndex] ?? null;
-        if ($this->clienteSeleccionado) {
-            $this->clienteSeleccionado;
-            $this->resetear();
-        } */
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;

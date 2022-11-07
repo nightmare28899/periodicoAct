@@ -11,14 +11,8 @@ use App\Models\Tiro;
 use App\Models\ventas;
 use App\Models\Domicilio;
 use App\Models\Invoice;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use Termwind\Components\Dd;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
-
-class Factura extends Component
+class FacturarPPD extends Component
 {
     public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0;
 
@@ -41,7 +35,8 @@ class Factura extends Component
             $this->cpGenerico = '58190';
             $this->regimenFisGenerico = '616';
         }
-        return view('livewire.factura.view', ['d' => $this->d]);
+
+        return view('livewire.facturar-p-p-d', ['d' => $this->d]);
     }
 
     public function mount($cliente_id, $idTipo)
@@ -55,7 +50,7 @@ class Factura extends Component
             $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->first();
             $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
 
-            $this->tipoFactura = 'PUE';
+            $this->tipoFactura = 'PPD';
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->clienteid = $cliente_id;
             $this->idTipo = $idTipo;
@@ -63,7 +58,7 @@ class Factura extends Component
             $this->cliente = Cliente::find($cliente_id);
             $this->suscripcion = ventas::where('idVenta', $idTipo)->first();
             $this->domicilio = Domicilio::where('id', $this->suscripcion['domicilio_id'])->first();
-            $this->tipoFactura = 'PUE';
+            $this->tipoFactura = 'PPD';
             $this->tiro = Tiro::where('cliente_id', $cliente_id)->first();
             /* $this->globalInformation[] = []; */
         }
@@ -150,13 +145,13 @@ class Factura extends Component
         if (substr($this->idTipo, 0, 6) == 'suscri') {
             $items = [
                 [
-                    "Serie" => "SUSPUE",
+                    "Serie" => "PPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->suscripcion->tarifa == 'Base' ? "330" : "300",
+                    "UnitPrice" => $this->suscripcion->importe / $this->suscripcion->cantEjemplares,
                     "Discount" => $this->suscripcion->descuento,
                     "Quantity" => $this->suscripcion->cantEjemplares,
                     "Subtotal" => $this->suscripcion->importe,
@@ -177,7 +172,7 @@ class Factura extends Component
         } else {
             $items = [
                 [
-                    "Serie" => "VPPUE",
+                    "Serie" => "PPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
@@ -217,12 +212,12 @@ class Factura extends Component
 
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
-                "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPUE" : "VPPUE",
+                "Serie" => "PPD",
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
                 "Folio" => substr($this->idTipo, 0, 6) == 'suscri' ? "2" : "1",
-                "CfdiType" => "I",
+                "CfdiType" => "E",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
                 "GlobalInformation" => $this->globalInformation ? $this->globalInformation : [],
@@ -247,7 +242,6 @@ class Factura extends Component
                 ],
                 'Items' => $items,
             ]);
-
         } else {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
@@ -257,7 +251,6 @@ class Factura extends Component
 
         try {
             if ($facturama->statusCode == 201) {
-                dd($facturama);
                 $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
                 Invoice::create([
                     'invoice_id' => $facturama->data->Id,
@@ -265,7 +258,7 @@ class Factura extends Component
                     'cliente_id' => $this->clienteid,
                     'cliente' => $nombre,
                     'idTipo' => $this->idTipo,
-                    'status' => 'Vigente',
+                    'status' => 'CREDITO',
                     'serie' => $facturama->data->Serie,
                     'folio' => $facturama->data->Folio,
                     'paymentTerms' => $facturama->data->PaymentTerms,
@@ -283,8 +276,8 @@ class Factura extends Component
                     'subtotal' => $facturama->data->Subtotal,
                     'discount' => $facturama->data->Discount,
                     'total' => $facturama->data->Total,
+                    'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
                 ]);
-
 
                 $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
                     'status' => 'facturado',

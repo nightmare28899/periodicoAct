@@ -75,40 +75,43 @@
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             @if ($tiro->precio == 330 || $tiro->precio == 300)
                                                 <td class="border border-dark">
-                                                    @if ($tiro->estado == 'Activo')
-                                                        <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
-                                                            class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
-                                                            Pausar
-                                                            suscripción
-                                                        </button>
-                                                    @elseif ($tiro->estado == 'Pausado')
-                                                        <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
-                                                            class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
-                                                            Activar
-                                                            suscripción
-                                                        </button>
-                                                    @endif
+                                                    @if ($tiro->clasificacion != 'CRÉDITO')
+                                                        @if ($tiro->estado == 'Activo')
+                                                            <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
+                                                                class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                                Pausar
+                                                                suscripción
+                                                            </button>
+                                                        @elseif ($tiro->estado == 'Pausado')
+                                                            <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
+                                                                class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                                Activar
+                                                                suscripción
+                                                            </button>
+                                                        @endif
 
-                                                    @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') || $tiro->status == 'facturado')
-                                                        <button
-                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                            disabled>Pagado
-                                                        </button>
-                                                    @else
-                                                        <button
-                                                            wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}')"
-                                                            class="inline-flex
+                                                        @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') || $tiro->status == 'facturado')
+                                                            <button
+                                                                class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                                disabled>Pagado
+                                                            </button>
+                                                        @else
+                                                            <button
+                                                                wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}')"
+                                                                class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500
                                                             hover:bg-indigo-600 rounded-lg
                                                             focus:shadow-outline">Pagar
+                                                            </button>
+                                                        @endif
+                                                    @else
+                                                        <button
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
+                                                            PDF
                                                         </button>
                                                     @endif
-                                                    <button
-                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
-                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
-                                                        PDF
-                                                    </button>
                                                     {{-- <button
                                                     wire:click="editarDomicilio({{ $tiro->cliente_id }})"
                                                     class="inline-flex
@@ -454,7 +457,7 @@
                 <input type="number"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                     id="devuelto" wire:model.defer="cantDevueltos"
-                    placeholder="{{ $entregar == 0 ? ('Introduce la cantidad a regresar a la venta') : ('Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto ) }}"
+                    placeholder="{{ $entregar == 0 ? 'Introduce la cantidad a regresar a la venta' : 'Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto }}"
                     min="0" />
             </div>
             @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))

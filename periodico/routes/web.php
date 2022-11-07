@@ -24,10 +24,13 @@ use App\Http\Livewire\PdfRemisionesP;
 use App\Http\Livewire\ReportePDFrelacionCR;
 use App\Http\Livewire\ReporteRelacionCR;
 use App\Http\Livewire\FacturaPPD;
+use App\Http\Livewire\FacturarPPD;
 use App\Http\Livewire\PdfSuscripcionReporteVencimiento;
 use App\Http\Livewire\SuscripcionReporteFechas;
 use App\Http\Livewire\SuspencionDeContrato;
 use App\Http\Livewire\SuscripcionSuspendidaReporte;
+use App\Http\Livewire\ComplementoDePago;
+use App\Http\Livewire\VistaFacturaPPD;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +73,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
     Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
 
+    Route::get('/FacturarPPD/{cliente_id}/{idTipo}', FacturarPPD::class)->name('FacturarPPD');
+    Route::get('/complementoPago', ComplementoDePago::class)->name('complementoPago');
+
+    Route::get('/vistaPrevia/{id}', VistaFactura::class);
+
     Route::get('/agregarDiasSuscripcion', AgregarDiasSuscripcion::class)->name('agregarDiasSuscripcion');
     Route::get('/suspenderSuscripcion', SuspencionDeContrato::class)->name('suspenderSuscripcion');
 
@@ -80,6 +88,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFSuscripcionVencimiento', PdfSuscripcionReporteVencimiento::class)->name('PDFSuscripcionVencimiento');
 
     Route::get('/FacturasPPD', FacturaPPD::class)->name('FacturasPPD');
+
+    Route::get('/vistaPreviaPPD/{id}', VistaFacturaPPD::class)->name('vistaPreviaPPD');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

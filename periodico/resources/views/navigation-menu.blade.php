@@ -57,7 +57,10 @@
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Agregar días al contrato') }}</button></a>
                             <a href="{{ url('suspenderSuscripcion') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suspención de suscripción') }}</button></a>
-                            {{-- <a href="{{ url('FacturasPPD') }}"><button class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Factura PPD') }}</button></a> --}}
+                            <a href="{{ url('FacturasPPD') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Factura PPD') }}</button></a>
+                            <a href="{{ url('complementoPago') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Complemento de pago') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
 
@@ -155,7 +158,8 @@
                                 <button
                                     class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
