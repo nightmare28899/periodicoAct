@@ -111,6 +111,38 @@ class Tiros extends Component
         ], compact('domicilios'));
     }
 
+    public function regresarQuitados()
+    {
+        $this->ventas = ventas::all();
+        if (count($this->ventas) > 0) {
+            for ($i = 0; $i < count($this->ventas); $i++) {
+                if ($this->ventas[$i]['tiroStatus'] == 'inactivo') {
+                    $this->ventas[$i]->update([
+                        'tiroStatus' => 'Activo',
+                    ]);
+                }
+            }
+        }
+
+        $this->suscripcion = Suscripcion::all();
+        if (count($this->suscripcion) > 0) {
+            for ($i = 0; $i < count($this->suscripcion); $i++) {
+                if ($this->suscripcion[$i]['tiroStatus'] == 'inactivo') {
+                    $this->suscripcion[$i]->update([
+                        'tiroStatus' => 'Activo',
+                    ]);
+                }
+            }
+        }
+
+        $this->status = 'created';
+
+        $this->status = 'created';
+        $this->dispatchBrowserEvent('alert', [
+            'message' => ($this->status == 'created') ? '¡Se regresaron correctamente!' : ''
+        ]);
+    }
+
     public function pausarVenta($idVenta)
     {
         $venta = ventas::where('idVenta', $idVenta)->first();

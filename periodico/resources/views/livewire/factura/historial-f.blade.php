@@ -1,4 +1,4 @@
-<div class="w-4/5 mx-auto">
+<div class="w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Historial de facturas') }}
@@ -16,8 +16,7 @@
                     <div class="w-64 ml-5 pt-6">
                         <input type="number"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                            name="search" placeholder="Buscar por id" wire:model="idCliente"
-                            autocomplete="off" />
+                            name="search" placeholder="Buscar por id" wire:model="idCliente" autocomplete="off" />
                     </div>
                     <div class="w-64 ml-5 pt-6">
                         <input type="text"

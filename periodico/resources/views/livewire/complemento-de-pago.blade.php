@@ -93,7 +93,7 @@
                     <div class="flex mt-3">
                         <div class="flex flex-col mr-3 w-1/2">
                             <label for="monto">Monto a pagar</label>
-                            <input type="number" placeholder="Escribe el monto" wire:model.defer="montoIngresado"
+                            <input type="number" min="0" placeholder="Escribe el monto" wire:model.defer="montoIngresado"
                                 class="border border-gray-400 p-2 rounded">
                         </div>
                         <div class="flex flex-col mr-3 mt-6 w-64">

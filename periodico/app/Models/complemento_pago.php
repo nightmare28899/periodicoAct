@@ -16,6 +16,6 @@ class complemento_pago extends Model
     protected $table = 'complemento_pagos';
 
     protected $fillable = [
-        'invoice_id', 'invoice_date', 'cliente_id', 'paymentForm', 'fecha_pago', 'uuid'
+        'invoice_id', 'invoice_date', 'cliente_id', 'paymentForm', 'fecha_pago', 'uuid', 'status'
     ];
 }

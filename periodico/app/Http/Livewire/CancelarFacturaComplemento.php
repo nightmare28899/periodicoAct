@@ -2,30 +2,27 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Facades\Storage;
-use App\Models\Tiro;
-use App\Models\Invoice;
-
 use Livewire\Component;
+use Illuminate\Support\Facades\Storage;
+use App\Models\complemento_pago;
 
-class CancelarFactura extends Component
+class CancelarFacturaComplemento extends Component
 {
-    public $motivo = '', $tiro, $invoice, $idFactura = '', $status = 'created';
+    public $motivo = '', $complemento, $invoice, $idFactura = '', $status = 'created', $idCliente;
     private $facturama;
 
     public function render()
     {
-        $this->idFactura;
-        $this->invoice = Invoice::all();
-        return view('livewire.factura.cancelar-factura', ['facturama' => $this->facturama]);
+        return view('livewire.cancelar-factura-complemento', ['facturama' => $this->facturama]);
     }
 
-    public function mount($id)
+    public function mount($id, $idCliente)
     {
+        $this->idCliente = $idCliente;
         $this->idFactura = $id;
         $this->facturama = \Crisvegadev\Facturama\Invoice::streamFile('pdf', 'issued', $id);
-        Storage::disk('public')->put('file.pdf', base64_decode($this->facturama->data->Content));
-        $this->facturama = Storage::url('file.pdf');
+        Storage::disk('public')->put('complemento.pdf', base64_decode($this->facturama->data->Content));
+        $this->facturama = Storage::url('complemento.pdf');
 
     }
 
@@ -33,11 +30,8 @@ class CancelarFactura extends Component
     {
         if ($this->motivo) {
             $this->facturama =  \Crisvegadev\Facturama\Invoice::cancel($this->idFactura, 'issued', $this->motivo);
-            $this->tiro = Tiro::where('cliente_id', $this->invoice[0]['cliente_id'])->update([
+            $this->complemento = complemento_pago::where('cliente_id', $this->idCliente)->update([
                 'status' => 'cancelado',
-            ]);
-            $this->invoice = Invoice::where('invoice_id', $this->idFactura)->update([
-                'status' => 'cancelada',
             ]);
 
             $this->status = 'created';
@@ -45,7 +39,7 @@ class CancelarFactura extends Component
                 'message' => ($this->status == 'created') ? '¡Se cancelo la factura!' : ''
             ]);
 
-            return redirect('/historialF');
+            return redirect('/historialComplementoPago');
         } else {
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'created') ? '¡Primero escoge el motivo!' : ''

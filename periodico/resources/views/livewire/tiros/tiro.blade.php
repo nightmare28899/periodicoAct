@@ -27,10 +27,10 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="flex-initial mx-1 mt-4" style="width: 80%;">
-                        {{-- <input wire:model.defer='keyWord' wire:keydown.enter="busqueda" type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                            name="search" id="search" placeholder="Buscar Tiro"> --}}
+                    <div class="flex-initial ml-3 mx-1 mt-7" style="width: 80%;">
+                        <x-jet-button class="bg-green-500 hover:bg-green-600" wire:click="regresarQuitados">
+                            {{ __('Regresar quitados') }}
+                        </x-jet-button>
                     </div>
                     {{-- <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         <button wire:click="historialFactura" wire:loading.attr="disabled"
@@ -133,7 +133,11 @@
 
                                 <?php $sum_ejemplaressus = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
-                                    @if (($suscrip->{$diaS} != 0 && $suscrip->estado == 'Activo' && $suscrip->tiroStatus == 'Activo' && $suscrip->id != $suscrip->idsus) || ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
+                                    @if (($suscrip->{$diaS} != 0 &&
+                                        $suscrip->estado == 'Activo' &&
+                                        $suscrip->tiroStatus == 'Activo' &&
+                                        $suscrip->id != $suscrip->idsus) ||
+                                        ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
@@ -175,9 +179,13 @@
                             </tbody>
                         </table>
                     </div>
-                    <p class="uppercase">Total vta. periodico &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplares }} &nbsp;&nbsp; clientes: {{ count($ventas) }}</b> </p>
-                    <p class="uppercase">Total vta. suscripciones &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplaressus }} &nbsp;&nbsp; clientes: {{ count($suscripcion) }}</b> </p>
-                    <p class="uppercase text-blue-700">Totales <b class="text-red-700">ejemplares</b> {{ $sum_ejemplares + $sum_ejemplaressus }} <b class="text-red-700">clientes</b> {{ count($ventas) + count($suscripcion) }}</p>
+                    <p class="uppercase">Total vta. periodico &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplares }}
+                            &nbsp;&nbsp; clientes: {{ count($ventas) }}</b> </p>
+                    <p class="uppercase">Total vta. suscripciones &nbsp;&nbsp;&nbsp; <b>#ejemp:
+                            {{ $sum_ejemplaressus }} &nbsp;&nbsp; clientes: {{ count($suscripcion) }}</b> </p>
+                    <p class="uppercase text-blue-700">Totales <b class="text-red-700">ejemplares</b>
+                        {{ $sum_ejemplares + $sum_ejemplaressus }} <b class="text-red-700">clientes</b>
+                        {{ count($ventas) + count($suscripcion) }}</p>
                 </div>
                 <br>
                 {{-- {{ $resultado->links() }} --}}

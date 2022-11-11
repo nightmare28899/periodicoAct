@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('suscripcion_suspension', function (Blueprint $table) {
             $table->bigIncrements('sus_sus_id');
-            $table->bigInteger('idsus')->unsigned();
+            $table->bigInteger('id')->unsigned();
             $table->string('del');
             $table->string('al');
             $table->string('reponerDias');

@@ -31,6 +31,10 @@ use App\Http\Livewire\SuspencionDeContrato;
 use App\Http\Livewire\SuscripcionSuspendidaReporte;
 use App\Http\Livewire\ComplementoDePago;
 use App\Http\Livewire\VistaFacturaPPD;
+use App\Http\Livewire\HistorialSuscripciones;
+use App\Http\Livewire\HistorialComplementoPago;
+use App\Http\Livewire\VistaPreviaComplemento;
+use App\Http\Livewire\CancelarFacturaComplemento;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,10 +90,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reporteSuscripcionSuspendida', SuscripcionSuspendidaReporte::class)->name('reporteSuscripcionSuspendida');
     Route::get('/reporteSuscripcionVencimiento', SuscripcionReporteFechas::class)->name('reporteSuscripcionVencimiento');
     Route::get('/PDFSuscripcionVencimiento', PdfSuscripcionReporteVencimiento::class)->name('PDFSuscripcionVencimiento');
+    Route::get('/historialSuscripciones', HistorialSuscripciones::class)->name('historialSuscripciones');
+    Route::get('/historialComplementoPago', HistorialComplementoPago::class)->name('historialComplementoPago');
+    Route::get('/vistaPreviaComplemento/{id}', VistaFacturaPPD::class);
+    Route::get('/CancelarFacturaComplemento/{id}/{idCliente}', CancelarFacturaComplemento::class);
 
     Route::get('/FacturasPPD', FacturaPPD::class)->name('FacturasPPD');
 
-    Route::get('/vistaPreviaPPD/{id}', VistaFacturaPPD::class)->name('vistaPreviaPPD');
+    Route::get('/vistaPreviaComplemento/{id}', VistaPreviaComplemento::class)->name('vistaPreviaPPD');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

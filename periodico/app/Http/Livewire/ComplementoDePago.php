@@ -195,6 +195,7 @@ class ComplementoDePago extends Component
                         'paymentForm' => $this->forma_pago,
                         'fecha_pago' => $this->fecha,
                         'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
+                        'status' => 'Activo',
                     ]);
 
                     $this->status = 'created';

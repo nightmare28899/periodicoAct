@@ -75,6 +75,7 @@ class SuspencionDeContrato extends Component
 
                     $sus = Suscripcion::where('id', $this->suscripcionBuscada[0]->id)->update([
                         'fechaFin' => $dateSuscripciones,
+                        'estado' => 'suspendida',
                     ]);
 
                     SuscripcionSupendida::Create([
