@@ -126,7 +126,7 @@
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
-                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                                <td class='px-4 py-2'>{{ $tiro->idTipo }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
@@ -152,11 +152,8 @@
                                         @break($tiro->status != 'Pagado') --}}
                                         @endif
                                     @endforeach
-
                                 </tbody>
-
                             </table>
-
                         </div>
                     </div>
                 @else

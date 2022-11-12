@@ -10,7 +10,6 @@ class Tarifas extends Component
 {
     use WithPagination;
 
-
     public $Tarifas, $keyWord, $tipo, $ordinario, $dominical, $tarifa_id, $status = 'created';
     public $isModalOpen = 0;
     public $updateMode = false;

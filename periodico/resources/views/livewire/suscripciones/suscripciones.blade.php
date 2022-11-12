@@ -99,10 +99,10 @@
                     </p>
                 </div>
                 <div class="w-1/2">
-                    <br>
+                    {{-- <br>
                     <p class="font-bold"><input wire:model.lazy="subscripcionEs" type="radio" name="subscripcionEs"
                             value="Reactivación" {{ $subscripcionEs == 'Reactivación' ? 'checked' : '' }}> <label
-                            for="Reactivación">Reactivación</label></p>
+                            for="Reactivación">Reactivación</label></p> --}}
                 </div>
             </div>
 
@@ -200,7 +200,7 @@
                     Suscripción
                     <input type="radio" name="contrato" wire:model="contrato" value="Cortesía"
                         {{ $contrato == 'Cortesía' ? 'checked' : '' }}> Cortesía
-                    <input type="radio" name="contrato" wire:model="contrato" value="Intercambio"> Intercambio
+                    {{-- <input type="radio" name="contrato" wire:model="contrato" value="Intercambio"> Intercambio --}}
                 </div>
             </div>
             <div class="flex mt-2">

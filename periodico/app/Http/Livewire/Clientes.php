@@ -210,13 +210,22 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 270 : 230;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 750 : 630;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 1480 : 1250;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 2720 : 2450;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
+                        $this->personalizado = false;
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
@@ -227,13 +236,22 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
+                        $this->personalizado = false;
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
@@ -254,13 +272,22 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 370 : 330;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 1060 : 920;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 2000 : 1790;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 3920 : 3500;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
+                        $this->personalizado = false;
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
@@ -271,13 +298,22 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
+                        $this->personalizado = false;
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
@@ -298,13 +334,22 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 300 : 300;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = $this->precio === 'Normal' ? 770 : 770;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = $this->precio === 'Normal' ? 1400 : 1400;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = $this->precio === 'Normal' ? 2900 : 2900;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
+                        $this->personalizado = false;
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
                     } else {
@@ -315,12 +360,20 @@ class Clientes extends Component
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = 150;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Trimestral') {
                             $costo = 435;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Semestral') {
                             $costo = 800;
+                            $this->personalizado = false;
                         } else if ($this->periodoSuscripcionSeleccionada == 'Anual') {
                             $costo = 1550;
+                            $this->personalizado = false;
+                        } else if ($this->periodoSuscripcionSeleccionada == 'Semanal') {
+                            $costo = 0;
+                            $this->tarifaSeleccionada = 'Person';
+                            $this->personalizado = true;
                         }
                         $this->total = (int)$this->cantEjem * (int)$costo;
                         $this->totalDesc = (int)$this->cantEjem * (int)$costo;
@@ -919,7 +972,6 @@ class Clientes extends Component
                         $this->dispatchBrowserEvent('alert', [
                             'message' => ($this->status == 'created') ? '¡Venta generada exitosamente!' : ''
                         ]);
-
                     } else {
                         $this->status = 'error';
                         $this->dispatchBrowserEvent('alert', [
@@ -1083,7 +1135,7 @@ class Clientes extends Component
                     if ($this->domicilioSeleccionado) {
                         if ($this->from && $this->to) {
                             $this->validate([
-                                'tarifaSeleccionada.*' => 'required',
+                                'tarifaSeleccionada' => 'required',
                                 'cantEjem' => 'required',
                                 'tipoSuscripcionSeleccionada.*' => 'required',
                                 'periodoSuscripcionSeleccionada.*' => 'required',
