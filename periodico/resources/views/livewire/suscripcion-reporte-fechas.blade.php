@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class=" flex">
                     <p>Suscripciones que vencen en:</p>
-                    <input type="number" wire:model="fechavence" placeholder="Ingresa los dias"
+                    <input type="number" wire:model="fechavence" min="0" placeholder="Ingresa los dias"
                         class="form-input rounded-md shadow-sm mt-1 block mx-5" />
                     <button wire:click="generarReporte"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

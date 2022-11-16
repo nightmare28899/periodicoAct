@@ -38,16 +38,24 @@ class ComplementoDePago extends Component
             $this->nameCliente = $this->clienteSeleccionado['nombre'];
             $this->fiscalRegime = $this->clienteSeleccionado['regimen_fiscal'];
             $domicilio = Domicilio::where('cliente_id', '=', $idCliente)->get();
-            $this->codigoPostalFiscal = $domicilio[0]['cp'];
-            if (count($this->invoices) > 0) {
-                $this->status = 'created';
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Si tiene facturas!' : ''
-                ]);
+            if (count($domicilio) > 0) {
+                $this->codigoPostalFiscal = $domicilio[0]['cp'];
+
+                if (count($this->invoices) > 0) {
+                    $this->status = 'created';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡Si tiene facturas!' : ''
+                    ]);
+                } else {
+                    $this->status = 'error';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'error') ? '¡No tiene facturas!' : ''
+                    ]);
+                }
             } else {
                 $this->status = 'error';
                 $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'error') ? '¡No tiene facturas!' : ''
+                    'message' => ($this->status == 'error') ? '¡No tiene domicilio!' : ''
                 ]);
             }
             $this->resetear();

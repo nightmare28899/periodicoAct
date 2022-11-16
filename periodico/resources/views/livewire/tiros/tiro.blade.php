@@ -133,17 +133,13 @@
 
                                 <?php $sum_ejemplaressus = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
-                                    @if (($suscrip->{$diaS} != 0 &&
-                                        $suscrip->estado == 'Activo' &&
-                                        $suscrip->tiroStatus == 'Activo' &&
-                                        $suscrip->id != $suscrip->idsus) ||
-                                        ($suscrip->contrato == 'Cortesía' && $suscrip->tiroStatus == 'Activo'))
+                                    @if ($suscrip->{$diaS} != 0 && $suscrip->tiroStatus === 'Activo' || $suscrip->contrato === 'Cortesía')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
                                                 Cobrador: {{ $suscrip->cobrador }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $diaS }} </td>
-                                            <td class="px-4 py-2 border border-dark"">Suscripción</td>
+                                            <td class="px-4 py-2 border border-dark">Suscripción</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombre }}</td>
                                             <td class="px-4 py-2 border border-dark">Calle: {{ $suscrip->calle }} <br>
                                                 No. Ext:
@@ -162,12 +158,6 @@
                                                     Quitar
                                                 </button>
                                             </td>
-                                            {{-- <td class="border">Calle: {{ $domsubs[$key]->calle }} <br>
-                                    No. Ext:
-                                    {{ $domsubs[$key]->noext }}, CP: {{ $domsubs[$key]->cp }}, <br> Localidad:
-                                    {{ $domsubs[$key]->localidad }}, Ciudad: {{ $domsubs[$key]->ciudad }}
-                                </td>
-                                <td wire:model="referencia" class="border">{{ $domsubs[$key]->referencia }}</td> --}}
                                         </tr>
                                     @else
                                         <tr>

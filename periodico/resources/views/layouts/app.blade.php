@@ -120,6 +120,7 @@
                 case '¡No dejes los campos vacios!':
                 case '¡No puedes escoger la misma factura!':
                 case '¡No tiene facturas!':
+                case '¡No tiene domicilio!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
