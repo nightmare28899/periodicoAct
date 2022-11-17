@@ -19,7 +19,7 @@ class GenerarR extends Component
 {
     use WithPagination;
 
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas = [], $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [];
 
     public function mount()
     {
@@ -674,8 +674,13 @@ class GenerarR extends Component
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
-                        $ventasEncontradas = ventas::where('idVenta', '=', $this->clienteSeleccionado[$i])->get();
-                        $clienteClasificacion = Cliente::where('id', '=', $ventasEncontradas[0]['cliente_id'])->get();
+                        array_push($this->clienteSeleccionado, $this->ventas[$i]['idVenta']);
+                        array_push($this->ventasEncontradas, ventas::where('idVenta', '=', $this->clienteSeleccionado[$i])
+                            ->first()
+                            ->toArray());
+                        array_push($this->clienteClasificacionVentas, Cliente::where('id', '=', $this->ventasEncontradas[$i]['cliente_id'])
+                            ->first()
+                            ->toArray());
                         Tiro::create([
                             'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->ventas[$i]['nombre'],
@@ -690,7 +695,7 @@ class GenerarR extends Component
                             'dia' => $this->diaS,
                             'idTipo' => $this->clienteSeleccionado[$i],
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
-                            'status' => $clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
+                            'status' => $this->clienteClasificacionVentas[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                             'tipo' => $this->ventas[$i]['tiporuta'],
                             'domicilio_id' => $this->ventas[$i]->domicilio_id,
                         ]);
@@ -709,8 +714,13 @@ class GenerarR extends Component
             if (count($this->suscripcion) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
-                        $ventasEncontradas = Suscripcion::where('idSuscripcion', '=', $this->clienteSeleccionado[$i])->get();
-                        $clienteClasificacion = Cliente::where('id', '=', $ventasEncontradas[0]['cliente_id'])->get();
+                        array_push($this->clienteSeleccionado, $this->suscripcion[$i]['idSuscripcion']);
+                        array_push($this->suscripcionesEncontradas, Suscripcion::where('idSuscripcion', '=', $this->clienteSeleccionado[$i])
+                            ->first()
+                            ->toArray());
+                        array_push($this->clienteClasificacion, Cliente::where('id', '=', $this->suscripcionesEncontradas[$i]['cliente_id'])
+                            ->first()
+                            ->toArray());
                         Tiro::create([
                             'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->suscripcion[$i]['nombre'],
@@ -725,7 +735,7 @@ class GenerarR extends Component
                             'dia' => $this->diaS,
                             'idTipo' => $this->clienteSeleccionado[$i],
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
-                            'status' => $clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
+                            'status' => $this->clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
                             'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                         ]);
@@ -909,7 +919,7 @@ class GenerarR extends Component
                     })
                     ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            } else if ($this->tipoSeleccionada == "todos") {
+            } else {
 
                 $this->ventas = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -1323,8 +1333,13 @@ class GenerarR extends Component
             for ($i = 0; $i < count($this->ventas); $i++) {
                 if (count($this->tiro) > 0) {
                     if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) {
-                        $ventasEncontradas = ventas::where('idVenta', '=', $this->clienteSeleccionado[$i])->get();
-                        $clienteClasificacion = Cliente::where('id', '=', $ventasEncontradas[0]['cliente_id'])->get();
+                        array_push($this->clienteSeleccionado, $this->ventas[$i]['idVenta']);
+                        array_push($this->ventasEncontradas, ventas::where('idVenta', '=', $this->clienteSeleccionado[$i])
+                            ->first()
+                            ->toArray());
+                        array_push($this->clienteClasificacionVentas, Cliente::where('id', '=', $this->ventasEncontradas[$i]['cliente_id'])
+                            ->first()
+                            ->toArray());
                         Tiro::create([
                             'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->ventas[$i]['nombre'],
@@ -1337,7 +1352,7 @@ class GenerarR extends Component
                             'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
                             'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
                             'dia' => $this->diaS,
-                            'status' => $clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
+                            'status' => $this->clienteClasificacionVentas[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                             'idTipo' => $this->ventas[$i]['idVenta'],
                             'nombreruta' => $this->ventas[$i]['nombreruta'],
                             'tipo' => $this->ventas[$i]['tiporuta'],
@@ -1347,7 +1362,14 @@ class GenerarR extends Component
                             'remisionStatus' => 'Remisionado',
                         ]);
                     }
-                }/*  else {
+                } else {
+                    array_push($this->clienteSeleccionado, $this->ventas[$i]['idVenta']);
+                    array_push($this->ventasEncontradas, ventas::where('idVenta', '=', $this->clienteSeleccionado[$i])
+                        ->first()
+                        ->toArray());
+                    array_push($this->clienteClasificacionVentas, Cliente::where('id', '=', $this->ventasEncontradas[$i]['cliente_id'])
+                        ->first()
+                        ->toArray());
                     Tiro::create([
                         'fecha' => $this->dateF->format('Y-m-d'),
                         'cliente' => $this->ventas[$i]['nombre'],
@@ -1360,7 +1382,7 @@ class GenerarR extends Component
                         'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
                         'importe' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'] * $this->ventas[$i]->{$this->diaS},
                         'dia' => $this->diaS,
-                        'status' => 'sin pagar',
+                        'status' => $this->clienteClasificacionVentas[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                         'idTipo' => $this->ventas[$i]['idVenta'],
                         'nombreruta' => $this->ventas[$i]['nombreruta'],
                         'tipo' => $this->ventas[$i]['tiporuta'],
@@ -1369,7 +1391,7 @@ class GenerarR extends Component
                     ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
                         'remisionStatus' => 'Remisionado',
                     ]);
-                } */
+                }
             }
         }
 
@@ -1377,8 +1399,13 @@ class GenerarR extends Component
             for ($i = 0; $i < count($this->suscripcion); $i++) {
                 if (count($this->tiro) > 0) {
                     if (!Tiro::where('idTipo', '=', $this->suscripcion[$i]['idSuscripcion'])->exists()) {
-                        $ventasEncontradas = Suscripcion::where('idSuscripcion', '=', $this->clienteSeleccionado[$i])->get();
-                        $clienteClasificacion = Cliente::where('id', '=', $ventasEncontradas[0]['cliente_id'])->get();
+                        array_push($this->clienteSeleccionado, $this->suscripcion[$i]['idSuscripcion']);
+                        array_push($this->suscripcionesEncontradas, Suscripcion::where('idSuscripcion', '=', $this->clienteSeleccionado[$i])
+                            ->first()
+                            ->toArray());
+                        array_push($this->clienteClasificacion, Cliente::where('id', '=', $this->suscripcionesEncontradas[$i]['cliente_id'])
+                            ->first()
+                            ->toArray());
                         Tiro::create([
                             'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->suscripcion[$i]['nombre'],
@@ -1391,7 +1418,7 @@ class GenerarR extends Component
                             'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
                             'importe' => $this->suscripcion[$i]->total,
                             'dia' => $this->diaS,
-                            'status' => $clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
+                            'status' => $this->clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                             'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                             'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                             'tipo' => $this->suscripcion[$i]['tiporuta'],
@@ -1401,7 +1428,14 @@ class GenerarR extends Component
                             'remisionStatus' => 'Remisionado',
                         ]);
                     }
-                } /* else {
+                } else {
+                    array_push($this->clienteSeleccionado, $this->suscripcion[$i]['idSuscripcion']);
+                    array_push($this->suscripcionesEncontradas, Suscripcion::where('idSuscripcion', '=', $this->clienteSeleccionado[$i])
+                        ->first()
+                        ->toArray());
+                    array_push($this->clienteClasificacion, Cliente::where('id', '=', $this->suscripcionesEncontradas[$i]['cliente_id'])
+                        ->first()
+                        ->toArray());
                     Tiro::create([
                         'fecha' => $this->dateF->format('Y-m-d'),
                         'cliente' => $this->suscripcion[$i]['nombre'],
@@ -1414,7 +1448,7 @@ class GenerarR extends Component
                         'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
                         'importe' => $this->suscripcion[$i]->total,
                         'dia' => $this->diaS,
-                        'status' => 'sin pagar',
+                        'status' => $this->clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                         'idTipo' => $this->suscripcion[$i]['idSuscripcion'],
                         'nombreruta' => $this->suscripcion[$i]['nombreruta'],
                         'tipo' => $this->suscripcion[$i]['tiporuta'],
@@ -1423,7 +1457,7 @@ class GenerarR extends Component
                     Suscripcion::where('idSuscripcion', '=', $this->suscripcion[$i]['idSuscripcion'])->update([
                         'remisionStatus' => 'Remisionado',
                     ]);
-                } */
+                }
             }
         }
 
