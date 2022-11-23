@@ -406,7 +406,7 @@
                                     {{ $result->cantEjemplares }}, Tipo: Suscripción, {{ $result->contrato }} </label>
                             </div>
                         </td>
-                        <td>{{ sprintf('$ %s', number_format($result->tarifa == 'Base' ? 330 : 300)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->importe / $result->cantEjemplares)) }}</td>
                         <td>{{ sprintf('$ %s', number_format($result->importe)) }}</td>
                     </tr>
                 </tbody>

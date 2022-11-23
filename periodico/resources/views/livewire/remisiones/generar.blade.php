@@ -168,7 +168,7 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->cantEjemplares }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    ${{ $suscri->tarifa == 'Base' ? 330 : 300 }}
+                                                    ${{ $suscri->importe / $suscri->cantEjemplares }}</td>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     ${{ $suscri->importe }}

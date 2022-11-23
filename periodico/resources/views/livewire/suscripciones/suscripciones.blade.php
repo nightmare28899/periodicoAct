@@ -20,7 +20,7 @@
         <div class="px-4 mb-4" flex-grow>
             <div class="flex">
                 <div class="w-1/2 px-2">
-                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ $idSuscripcionSig ? $idSuscripcionSig['id'] + 1 : 1 }}</p>
+                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ isset($idSuscripcionSig) ? $idSuscripcionSig['id'] + 1 : 1 }}</p>
                 </div>
                 <div class="w-1/2">
                     <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"

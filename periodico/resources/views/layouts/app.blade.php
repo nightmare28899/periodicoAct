@@ -74,6 +74,8 @@
                 case '¡Suspendida correctamente!':
                 case '¡Si tiene facturas!':
                 case '¡Se regresaron correctamente!':
+                case '¡Suscripción cancelada correctamente!':
+                case '¡Venta cancelada correctamente!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':

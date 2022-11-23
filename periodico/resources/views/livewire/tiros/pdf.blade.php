@@ -70,7 +70,7 @@
         @endif
     @endforeach
     @foreach ($suscripcion as $suscri)
-        @if ($suscri->{$diaS} != 0)
+        @if ($suscri->{$diaS} != 0 && $suscri->tiroStatus === 'Activo' && $suscri->remisionStatus === 'Remisionado' || $suscri->contrato === 'Cortesía')
             <tr>
                 <td class="border">{{ $suscri->nombreruta }}, Tipo: {{ $suscri->tiporuta }},
                     Repartidor: {{ $suscri->repartidor }}, Cobrador: {{ $suscri->cobrador }}</td>

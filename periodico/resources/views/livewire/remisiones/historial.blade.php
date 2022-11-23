@@ -105,6 +105,12 @@
                                                             focus:shadow-outline">Pagar
                                                             </button>
                                                         @endif
+
+                                                        <button
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
+                                                            PDF
+                                                        </button>
                                                     @else
                                                         <button
                                                             wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"

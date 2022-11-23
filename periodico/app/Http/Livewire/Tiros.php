@@ -57,14 +57,13 @@ class Tiros extends Component
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->join("suscripcion_suspension", "suscripcion_suspension.id", "=", "suscripciones.id")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
                             ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                             ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "suscripcion_suspension.id")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
             } else {
                 $this->ventas = ventas
@@ -84,13 +83,12 @@ class Tiros extends Component
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->join("suscripcion_suspension", "suscripcion_suspension.id", "=", "suscripciones.id")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
                             ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "suscripcion_suspension.id")
+                    ->select("suscripciones.*", "cliente.id", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
             }
         } else {
@@ -186,14 +184,13 @@ class Tiros extends Component
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->join("suscripcion_suspension", "suscripcion_suspension.id", "=", "suscripciones.id")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
                             ->where('ruta.nombreruta', '=', $this->rutaSeleccionada)
                             ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "suscripcion_suspension.id")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
             } else {
                 $this->ventas = ventas
@@ -213,13 +210,12 @@ class Tiros extends Component
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->join("suscripcion_suspension", "suscripcion_suspension.id", "=", "suscripciones.id")
                     ->where(function ($query) {
                         $query->where('fechaInicio', '<=', $this->from)
                             ->where('fechaFin', '>=', $this->from)
                             ->where('suscripciones.tiroStatus', '=', 'Activo');
                     })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador", "suscripcion_suspension.id")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
             }
         } else {

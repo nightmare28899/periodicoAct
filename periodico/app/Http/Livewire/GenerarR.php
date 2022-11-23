@@ -721,6 +721,7 @@ class GenerarR extends Component
                         array_push($this->clienteClasificacion, Cliente::where('id', '=', $this->suscripcionesEncontradas[$i]['cliente_id'])
                             ->first()
                             ->toArray());
+
                         Tiro::create([
                             'fecha' => $this->dateF->format('Y-m-d'),
                             'cliente' => $this->suscripcion[$i]['nombre'],
@@ -730,7 +731,7 @@ class GenerarR extends Component
                             'estado' => 'Activo',
                             'cliente_id' => $this->suscripcion[$i]['cliente_id'],
                             'venta' => $this->suscripcion[$i]['cantEjemplares'],
-                            'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                            'precio' => ($this->suscripcion[$i]->total / $this->suscripcion[$i]->cantEjemplares),
                             'importe' => $this->suscripcion[$i]->total,
                             'dia' => $this->diaS,
                             'idTipo' => $this->clienteSeleccionado[$i],
@@ -1415,7 +1416,7 @@ class GenerarR extends Component
                             'estado' => 'Activo',
                             'cliente_id' => $this->suscripcion[$i]['cliente_id'],
                             'venta' => $this->suscripcion[$i]['cantEjemplares'],
-                            'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                            'precio' => $this->suscripcion[$i]->total = ($this->suscripcion[$i]->total / $this->suscripcion[$i]->cantEjemplares),
                             'importe' => $this->suscripcion[$i]->total,
                             'dia' => $this->diaS,
                             'status' => $this->clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
@@ -1445,7 +1446,7 @@ class GenerarR extends Component
                         'estado' => 'Activo',
                         'cliente_id' => $this->suscripcion[$i]['cliente_id'],
                         'venta' => $this->suscripcion[$i]['cantEjemplares'],
-                        'precio' => $this->suscripcion[$i]->tarifa == 'Base' ? 330 : 300,
+                        'precio' => $this->suscripcion[$i]->total = ($this->suscripcion[$i]->total / $this->suscripcion[$i]->cantEjemplares),
                         'importe' => $this->suscripcion[$i]->total,
                         'dia' => $this->diaS,
                         'status' => $this->clienteClasificacion[$i]['clasificacion'] == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
@@ -1463,7 +1464,7 @@ class GenerarR extends Component
 
         $this->modalRemision = false;
         $this->showingModal = true;
-        $this->clienteSeleccionado = [];
+        /* $this->clienteSeleccionado = []; */
 
         Storage::disk('public')->put('remision.pdf', $pdf);
 

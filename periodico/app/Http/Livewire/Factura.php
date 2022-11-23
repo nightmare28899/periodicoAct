@@ -257,7 +257,6 @@ class Factura extends Component
 
         try {
             if ($facturama->statusCode == 201) {
-                dd($facturama);
                 $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
                 Invoice::create([
                     'invoice_id' => $facturama->data->Id,

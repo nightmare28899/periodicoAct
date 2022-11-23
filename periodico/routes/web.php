@@ -36,6 +36,7 @@ use App\Http\Livewire\HistorialComplementoPago;
 use App\Http\Livewire\VistaPreviaComplemento;
 use App\Http\Livewire\CancelarFacturaComplemento;
 use App\Http\Livewire\CancelarVentas;
+use App\Http\Livewire\CancelarVentaPDF;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,10 +97,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/vistaPreviaComplemento/{id}', VistaFacturaPPD::class);
     Route::get('/CancelarFacturaComplemento/{id}/{idCliente}', CancelarFacturaComplemento::class);
     Route::get('/CancelarVenta/{tipo}', CancelarVentas::class);
+    Route::get('/CancelarSuscripciones/{tipo}', CancelarVentas::class);
 
     Route::get('/FacturasPPD', FacturaPPD::class)->name('FacturasPPD');
 
     Route::get('/vistaPreviaComplemento/{id}', VistaPreviaComplemento::class)->name('vistaPreviaPPD');
+    Route::get('/CancelarVentaPDF', CancelarVentaPDF::class)->name('CancelarVentaPDF');
 
     Route::get('/dashboard', function () {
         return view('dashboard');

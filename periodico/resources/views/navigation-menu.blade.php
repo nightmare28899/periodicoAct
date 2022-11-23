@@ -63,8 +63,10 @@
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Complemento de pago') }}</button></a>
                             <a href="{{ url('historialComplementoPago') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial complemento de pago') }}</button></a>
-                            {{-- <a href="{{ url('CancelarVenta' . '/venta') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cancelar Ventas') }}</button></a> --}}
+                            <a href="{{ url('CancelarVenta' . '/venta') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cancelar Ventas') }}</button></a>
+                            <a href="{{ url('CancelarSuscripciones' . '/suscri') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cancelar Suscripciones') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
 

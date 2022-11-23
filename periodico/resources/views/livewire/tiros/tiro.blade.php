@@ -32,22 +32,6 @@
                             {{ __('Regresar quitados') }}
                         </x-jet-button>
                     </div>
-                    {{-- <div class="flex-initial ml-3 mt-4" style="width: 10%;">
-                        <button wire:click="historialFactura" wire:loading.attr="disabled"
-                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
-                            <svg wire:loading wire:target="historialFactura"
-                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                    stroke="currentColor" stroke-width="4">
-                                </circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
-                            Historial de Facturas
-                        </button>
-                    </div> --}}
                     <div class="flex-initial ml-3 mt-4" style="width: 10%;">
                         <button wire:click="descarga" wire:loading.attr="disabled"
                             class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700 ">
@@ -93,6 +77,7 @@
                             </thead>
                             <tbody>
                                 <?php $sum_ejemplares = 0; ?>
+                                <?php $ventasClientes = 0; ?>
                                 @foreach ($ventas as $result)
                                     @if ($result->{$diaS} != 0 && $result->estado == 'Activo' && $result->tiroStatus == 'Activo')
                                         <tr>
@@ -123,17 +108,22 @@
                                                 </button>
                                             </td>
                                         </tr>
+                                        <?php $sum_ejemplares += $result->{$diaS}; ?>
+                                        <?php $ventasClientes = $loop->index + 1; ?>
                                     @else
                                         <tr>
 
                                         </tr>
                                     @endif
-                                    <?php $sum_ejemplares += $result->{$diaS}; ?>
                                 @endforeach
 
                                 <?php $sum_ejemplaressus = 0; ?>
+                                <?php $suscripcionesClientes = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
-                                    @if ($suscrip->{$diaS} != 0 && $suscrip->tiroStatus === 'Activo' || $suscrip->contrato === 'Cortesía')
+                                    @if (($suscrip->{$diaS} != 0 &&
+                                        $suscrip->tiroStatus === 'Activo' &&
+                                        $suscrip->remisionStatus === 'Remisionado') ||
+                                        $suscrip->contrato === 'Cortesía')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
@@ -159,23 +149,24 @@
                                                 </button>
                                             </td>
                                         </tr>
+                                        <?php $sum_ejemplaressus += $suscrip->cantEjemplares; ?>
+                                        <?php $suscripcionesClientes = $loop->index + 1; ?>
                                     @else
                                         <tr>
 
                                         </tr>
                                     @endif
-                                    <?php $sum_ejemplaressus += $suscrip->cantEjemplares; ?>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                     <p class="uppercase">Total vta. periodico &nbsp;&nbsp;&nbsp; <b>#ejemp: {{ $sum_ejemplares }}
-                            &nbsp;&nbsp; clientes: {{ count($ventas) }}</b> </p>
+                            &nbsp;&nbsp; clientes: {{ $ventasClientes }}</b> </p>
                     <p class="uppercase">Total vta. suscripciones &nbsp;&nbsp;&nbsp; <b>#ejemp:
-                            {{ $sum_ejemplaressus }} &nbsp;&nbsp; clientes: {{ count($suscripcion) }}</b> </p>
+                            {{ $sum_ejemplaressus }} &nbsp;&nbsp; clientes: {{ $suscripcionesClientes }}</b> </p>
                     <p class="uppercase text-blue-700">Totales <b class="text-red-700">ejemplares</b>
                         {{ $sum_ejemplares + $sum_ejemplaressus }} <b class="text-red-700">clientes</b>
-                        {{ count($ventas) + count($suscripcion) }}</p>
+                        {{ $ventasClientes + $suscripcionesClientes }}</p>
                 </div>
                 <br>
                 {{-- {{ $resultado->links() }} --}}
