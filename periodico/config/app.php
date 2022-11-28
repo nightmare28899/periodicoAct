@@ -199,7 +199,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         /* libreria para generar PDF */
         Barryvdh\DomPDF\ServiceProvider::class,
-        /* Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class, */
+        /* libreria para generar EXCEL */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -215,7 +216,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        /* 'PDF' => Barryvdh\DomPDF\Facade::class, */
     ])->toArray(),
 
 ];

@@ -19,7 +19,9 @@
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
         "laraveles/spanish": "^1.5",
-        "livewire/livewire": "^2.5"
+        "livewire/livewire": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

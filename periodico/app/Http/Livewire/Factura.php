@@ -156,7 +156,7 @@ class Factura extends Component
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->suscripcion->tarifa == 'Base' ? "330" : "300",
+                    "UnitPrice" => ($this->suscripcion->importe / $this->suscripcion->cantEjemplares),
                     "Discount" => $this->suscripcion->descuento,
                     "Quantity" => $this->suscripcion->cantEjemplares,
                     "Subtotal" => $this->suscripcion->importe,
@@ -171,7 +171,7 @@ class Factura extends Component
                             "IsRetention" => false
                         ]
                     ],
-                    "Total" => $this->suscripcion->total,
+                    "Total" => $this->suscripcion->importe,
                 ]
             ];
         } else {
@@ -255,7 +255,7 @@ class Factura extends Component
             ]);
         }
 
-        try {
+        /* try { */
             if ($facturama->statusCode == 201) {
                 $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
                 Invoice::create([
@@ -282,6 +282,7 @@ class Factura extends Component
                     'subtotal' => $facturama->data->Subtotal,
                     'discount' => $facturama->data->Discount,
                     'total' => $facturama->data->Total,
+                    'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
                 ]);
 
 
@@ -304,11 +305,11 @@ class Factura extends Component
 
                 $this->modalErrors = true;
             }
-        } catch (\Exception $e) {
+        /* } catch (\Exception $e) {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
             ]);
-        }
+        } */
     }
 }

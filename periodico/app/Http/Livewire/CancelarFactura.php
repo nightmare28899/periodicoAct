@@ -5,16 +5,18 @@ namespace App\Http\Livewire;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Tiro;
 use App\Models\Invoice;
-
+use Carbon\Carbon;
 use Livewire\Component;
 
 class CancelarFactura extends Component
 {
-    public $motivo = '', $tiro, $invoice, $idFactura = '', $status = 'created';
+    public $motivo = '', $tiro, $invoice, $idFactura = '', $status = 'created', $date;
     private $facturama;
 
     public function render()
     {
+        $this->date = new Carbon();
+
         $this->idFactura;
         $this->invoice = Invoice::all();
         return view('livewire.factura.cancelar-factura', ['facturama' => $this->facturama]);
@@ -38,6 +40,7 @@ class CancelarFactura extends Component
             ]);
             $this->invoice = Invoice::where('invoice_id', $this->idFactura)->update([
                 'status' => 'cancelada',
+                'invoice_date' => $this->date->format('Y-m-d'),
             ]);
 
             $this->status = 'created';

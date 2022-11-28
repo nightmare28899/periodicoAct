@@ -120,9 +120,19 @@ class ComplementoDePago extends Component
                 array_push($this->invoicesId, Invoice::where('id', '=', $this->facturaSeleccionada)
                     ->first()
                     ->toArray());
-                array_push($this->montosIngresados, $this->montoIngresado);
+                if ($this->montoIngresado <= $this->invoicesId[0]['total']) {
+                    array_push($this->montosIngresados, $this->montoIngresado);
+                } else {
+                    $this->status = 'error';
+                    $this->dispatchBrowserEvent('alert', [
+                        'message' => ($this->status == 'created') ? '¡El monto ingresado es mayor al total de la factura!' : ''
+                    ]);
+                }
+                $this->fecha = '';
+                $this->montosIngresados = [];
                 $this->facturaSeleccionada = '';
                 $this->montoIngresado = '';
+                $this->forma_pago = '';
             }
         } else {
             $this->status = 'created';
@@ -134,6 +144,11 @@ class ComplementoDePago extends Component
 
     public function remover($id)
     {
+        $this->paymentMethod = '';
+        $this->date = '';
+        $this->facturaSeleccionada = '';
+        $this->montoIngresado = '';
+
         foreach ($this->invoicesId as $key => $value) {
             if ($value['id'] == $id) {
                 unset($this->invoicesId[$key]);
