@@ -11,11 +11,6 @@ use App\Models\Tiro;
 use App\Models\ventas;
 use App\Models\Domicilio;
 use App\Models\Invoice;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use Termwind\Components\Dd;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 class Factura extends Component

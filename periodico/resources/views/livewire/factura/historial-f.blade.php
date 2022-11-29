@@ -16,7 +16,7 @@
                     <div class="w-64 ml-5 pt-6">
                         <input type="number"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                            name="search" placeholder="Buscar por id" wire:model="idCliente" autocomplete="off" />
+                            name="search" placeholder="Buscar por id" wire:model="idCliente" autocomplete="off" min='0'/>
                     </div>
                     <div class="w-64 ml-5 pt-6">
                         <input type="text"

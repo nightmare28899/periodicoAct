@@ -38,7 +38,7 @@
                                         </td>
                                         <td class="px-4 py-2 border border-dark">{{ $result->status }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $result->importe }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $result->fecha }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($result->fecha)->format('d/m/Y') }}</td>
                                         <td class="px-4 py-2 border border-dark">
                                             @if ($result->status != 'Cancelado')
                                                 <button wire:click="canlcelarVenta('{{ $tipo === 'suscripciones' ? $result->idSuscripcion : $result->idVenta }}')"
@@ -59,7 +59,6 @@
                             </tbody>
                         </table>
                     </div>
-                    {{-- {{ $ventas->links() }} --}}
                 </div>
             </div>
         </div>

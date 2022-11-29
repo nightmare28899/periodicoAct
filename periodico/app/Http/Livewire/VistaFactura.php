@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Invoice;
 
 class VistaFactura extends Component
 {
@@ -12,7 +11,6 @@ class VistaFactura extends Component
 
     public function render()
     {
-        $this->invoice = Invoice::all();
         return view('livewire.factura.vista-factura', ['facturama' => $this->facturama]);
     }
 

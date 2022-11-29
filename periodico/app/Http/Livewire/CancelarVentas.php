@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\models\Tiro;
+use App\Models\Tiro;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +11,7 @@ use carbon\carbon;
 
 class CancelarVentas extends Component
 {
-    public $ventas, $tipo = '', $status = 'created', $tipoMount, $fecha, $diaS;
+    public $ventas, $tipo, $status = 'created', $tipoMount, $fecha, $diaS;
 
     public function mount($tipo)
     {

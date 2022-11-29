@@ -18,7 +18,7 @@ class VistaPreviaComplemento extends Component
     {
         $this->idFactura = $id;
         $this->facturama = \Crisvegadev\Facturama\Invoice::streamFile('pdf', 'issued', $id);
-        Storage::disk('public')->put('file.pdf', base64_decode($this->facturama->data->Content));
+        Storage::disk('public')->put('complemento.pdf', base64_decode($this->facturama->data->Content));
         $this->facturama = Storage::url('complemento.pdf');
     }
 }

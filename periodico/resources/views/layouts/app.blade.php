@@ -124,6 +124,7 @@
                 case '¡No tiene facturas!':
                 case '¡No tiene domicilio!':
                 case '¡El monto ingresado es mayor al total de la factura!':
+                    case '¡Selecciona una factura primero!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

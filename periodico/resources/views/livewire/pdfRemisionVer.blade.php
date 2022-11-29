@@ -157,7 +157,7 @@
                             \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Suscripcion </label>
                 </div>
             </td>
-            <td>{{ $suscripcion['tarifa'] == 'ejecutiva' ? 300 : ($suscripcion['tarifa'] == 'base' ? 330 : ( 'personalizado' ))  }}</td>
+            <td>{{ sprintf('$ %s', number_format($total / $suscripcion['cantEjemplares'])) }}</td>
             <td>{{ sprintf('$ %s', number_format($total)) }}
             </td>
         </tr>

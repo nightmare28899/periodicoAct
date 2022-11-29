@@ -17,7 +17,7 @@
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search"
                         placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
-                        wire:model="remisionIdSearch" autocomplete="off" />
+                        wire:model="remisionIdSearch" autocomplete="off" min="0" />
                 </div>
                 <div class="w-64 mt-6 ml-5">
                     <input type="text"
@@ -73,7 +73,7 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
-                                            @if ($tiro->precio == 330 || $tiro->precio == 300)
+                                            @if (substr($tiro->idTipo, 0, 6) == 'suscri')
                                                 <td class="border border-dark">
                                                     @if ($tiro->clasificacion != 'CRÉDITO')
                                                         @if ($tiro->estado == 'Activo')
@@ -90,20 +90,23 @@
                                                             </button>
                                                         @endif
 
-                                                        @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') || $tiro->status == 'facturado')
-                                                            <button
-                                                                class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                                disabled>Pagado
-                                                            </button>
-                                                        @else
-                                                            <button
-                                                                wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}')"
-                                                                class="inline-flex
+                                                        @if ($tiro->status != 'CREDITO' && substr($tiro->idTipo, 0, 6) == 'suscri')
+                                                            @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') ||
+                                                                ($tiro->status == 'facturado' && substr($tiro->idTipo, 0, 6) == 'suscri'))
+                                                                <button
+                                                                    class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                                    disabled>Pagado
+                                                                </button>
+                                                            @else
+                                                                <button
+                                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}')"
+                                                                    class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500
                                                             hover:bg-indigo-600 rounded-lg
                                                             focus:shadow-outline">Pagar
-                                                            </button>
+                                                                </button>
+                                                            @endif
                                                         @endif
 
                                                         <button

@@ -386,7 +386,8 @@ class Historial extends Component
                 ::join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'cliente.id')
                 ->where('cliente.id', '=', $id)
                 ->get();
-            $this->suscri = Suscripcion::where('cliente_id', '=', $id)->get();
+
+            $this->suscri = Suscripcion::where('idSuscripcion', '=', $idTipo)->get();
             $this->domicilioSubs = DomicilioSubs::Where('cliente_id', $id)->get();
             $this->Ruta = Ruta::Where('id', $this->domicilioSubs[0]->ruta)->get();
             $pdf = Pdf::loadView('livewire.pdfRemisionVer', [

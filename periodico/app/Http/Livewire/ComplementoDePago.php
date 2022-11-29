@@ -11,7 +11,6 @@ use Carbon\Carbon;
 
 class ComplementoDePago extends Component
 {
-
     public $uuid, $folio, $paymentMethod, $PreviousBalanceAmount, $AmountPaid, $ImpSaldoInsoluto, $moneda = '(MXN) Peso Mexicano', $clienteSeleccionado, $invoices = [], $rfcCliente, $nameCliente, $fiscalRegime, $codigoPostalFiscal, $d, $modalErrors = 0, $activarCG = false, $facturaSeleccionada, $invoicesId = [], $montoIngresado, $montosIngresados = [], $forma_pago, $invoicesAdds = [], $status = 'created', $relatedDocuments = [], $date, $fecha;
 
     public function mount()
@@ -78,7 +77,6 @@ class ComplementoDePago extends Component
         if ($this->activarCG) {
             /* $this->cfdiUse = 'S01'; */
             /* $this->PaymentForm = '03'; */
-
             $this->rfcGenerico = 'XAXX010101000';
             $this->nombreGenerico = 'PUBLICO EN GENERAL';
             $this->cpGenerico = '58190';
@@ -92,7 +90,7 @@ class ComplementoDePago extends Component
 
     public function addFactura()
     {
-        if ($this->montoIngresado && $this->fecha) {
+        if ($this->montoIngresado) {
             if ($this->facturaSeleccionada && count($this->invoicesId) > 0) {
                 foreach ($this->invoicesId as $key => $value) {
                     if ($value['id'] == $this->facturaSeleccionada) {
@@ -110,26 +108,26 @@ class ComplementoDePago extends Component
                     $this->facturaSeleccionada = '';
                     $this->montoIngresado = '';
                 }
-                /* array_push($this->invoicesId, Invoice::where('id', '=', $this->facturaSeleccionada)
-                    ->first()
-                    ->toArray());
-                array_push($this->montosIngresados, $this->montoIngresado);
-                $this->facturaSeleccionada = '';
-                $this->montoIngresado = ''; */
             } else {
                 array_push($this->invoicesId, Invoice::where('id', '=', $this->facturaSeleccionada)
                     ->first()
                     ->toArray());
-                if ($this->montoIngresado <= $this->invoicesId[0]['total']) {
-                    array_push($this->montosIngresados, $this->montoIngresado);
-                } else {
-                    $this->status = 'error';
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡El monto ingresado es mayor al total de la factura!' : ''
-                    ]);
-                }
+
+                array_push($this->montosIngresados, $this->montoIngresado);
+                /* for ($i = 0; $i < count($this->invoicesId); $i++) {
+
+                    if ($this->montoIngresado <= $this->invoicesId[$i]['total']) {
+                        array_push($this->montosIngresados, $this->montoIngresado);
+                    } else {
+                        $this->status = 'error';
+                        $this->dispatchBrowserEvent('alert', [
+                            'message' => ($this->status == 'created') ? '¡El monto ingresado es mayor al total de la factura!' : ''
+                        ]);
+                    }
+                } */
+
                 $this->fecha = '';
-                $this->montosIngresados = [];
+                /* $this->montosIngresados = []; */
                 $this->facturaSeleccionada = '';
                 $this->montoIngresado = '';
                 $this->forma_pago = '';
@@ -144,24 +142,24 @@ class ComplementoDePago extends Component
 
     public function remover($id)
     {
-        $this->paymentMethod = '';
-        $this->date = '';
-        $this->facturaSeleccionada = '';
         $this->montoIngresado = '';
 
         foreach ($this->invoicesId as $key => $value) {
             if ($value['id'] == $id) {
                 unset($this->invoicesId[$key]);
+                unset($this->montosIngresados[$key]);
             }
         }
     }
 
     public function complementoDePago()
     {
-        if ($this->fecha && $this->forma_pago) {
+        if ($this->invoicesId && $this->paymentMethod && $this->fecha) {
             $sum = 0;
+            $sumPrevious = 0;
             for ($i = 0; $i < count($this->invoicesId); $i++) {
                 $sum += $this->montosIngresados[$i];
+                $sumPrevious += $this->invoicesId[$i]['total'];
                 $insoluto = ($this->invoicesId[$i]['total'] - $this->montosIngresados[$i]);
                 array_push(
                     $this->relatedDocuments,
@@ -175,7 +173,7 @@ class ComplementoDePago extends Component
                         "PartialityNumber" => "1",
                         "PreviousBalanceAmount" => $this->invoicesId[$i]['total'], //25.00,
                         "AmountPaid" => $this->montosIngresados[$i], //50
-                        "ImpSaldoInsoluto" =>  $insoluto,
+                        "ImpSaldoInsoluto" => ($this->invoicesId[$i]['total'] - $this->montosIngresados[$i]),
                     ]
                 );
             }
@@ -205,43 +203,44 @@ class ComplementoDePago extends Component
                 ]
             ]);
 
+            /* dd($facturama); */
 
 
-            try {
-                if ($facturama->statusCode == 201) {
-                    $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
+            /* try { */
+            if ($facturama->statusCode == 201) {
+                $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
 
-                    complemento_pago::Create([
-                        'invoice_id' => $facturama->data->Id,
-                        'invoice_date' => $facturama->data->Date,
-                        'cliente_id' => $this->clienteSeleccionado['id'],
-                        'paymentForm' => $this->forma_pago,
-                        'fecha_pago' => $this->fecha,
-                        'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
-                        'status' => 'Activo',
-                    ]);
+                complemento_pago::Create([
+                    'invoice_id' => $facturama->data->Id,
+                    'invoice_date' => $facturama->data->Date,
+                    'cliente_id' => $this->clienteSeleccionado['id'],
+                    'paymentForm' => $this->forma_pago,
+                    'fecha_pago' => $this->fecha,
+                    'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
+                    'status' => 'Activo',
+                ]);
 
-                    $this->status = 'created';
-                    $this->dispatchBrowserEvent('alert', [
-                        'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
-                    ]);
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
+                ]);
 
-                    return redirect('/vistaPreviaPPD/' . $facturama->data->Id);
-                } else {
-                    $this->d = "";
+                return redirect('/vistaPreviaComplemento/' . $facturama->data->Id);
+            } else {
+                $this->d = "";
 
-                    foreach ($facturama->errors as $key => $error) {
-                        $this->d .= "- $error \n";
-                    }
-
-                    $this->modalErrors = true;
+                foreach ($facturama->errors as $key => $error) {
+                    $this->d .= "- $error \n";
                 }
-            } catch (\Exception $e) {
+
+                $this->modalErrors = true;
+            }
+            /* } catch (\Exception $e) {
                 $this->status = 'error';
                 $this->dispatchBrowserEvent('alert', [
                     'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
                 ]);
-            }
+            } */
         } else {
             $this->status = 'created';
             $this->dispatchBrowserEvent('alert', [

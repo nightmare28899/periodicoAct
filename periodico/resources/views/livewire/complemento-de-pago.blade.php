@@ -132,7 +132,9 @@
                                             <td class="border px-4 py-2">{{ $invoice['serie'] }}</td>
                                             <td class="border px-4 py-2">{{ $invoice['uuid'] }}</td>
                                             <td class="border px-4 py-2">{{ $invoice['id'] }}</td>
-                                            <td class="border px-4 py-2">{{ $montosIngresados ? $montosIngresados[$loop->index] : $invoice['total'] }}</td>
+                                            @if ($montosIngresados)
+                                                <td class="border px-4 py-2">{{ $montosIngresados[$loop->index] }}</td>
+                                            @endif
                                             <td class="border px-4 py-2">{{ $invoice['total'] }}</td>
                                             <td class="border px-4 py-2"><button
                                                     wire:click="remover({{ $invoice['id'] }})"

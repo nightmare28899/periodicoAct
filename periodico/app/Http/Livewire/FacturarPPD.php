@@ -20,6 +20,7 @@ class FacturarPPD extends Component
     {
         if ($this->activarCG) {
             $this->cliente['nombre'] = 'PUBLICO EN GENERAL';
+            $this->cliente['razon_social'] = 'PUBLICO EN GENERAL';
             $this->cliente['rfc_input'] = 'XAXX010101000';
             /* $this->cfdiUse = 'S01'; */
             $this->cliente['regimen_fiscal'] = '616';
