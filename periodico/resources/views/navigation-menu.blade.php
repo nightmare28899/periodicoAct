@@ -98,7 +98,9 @@
                             <a href="{{ url('historialSuscripciones') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Suscripciones') }}</button></a>
                             <a href="{{ url('reportVentaPFacturas') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte venta periodico facturas') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte facturas') }}</button></a>
+                            <a href="{{ url('reporteSaldos') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte saldos') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
                 </div>

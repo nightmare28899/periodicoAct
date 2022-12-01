@@ -38,6 +38,7 @@ use App\Http\Livewire\CancelarFacturaComplemento;
 use App\Http\Livewire\CancelarVentas;
 use App\Http\Livewire\CancelarVentaPDF;
 use App\Http\Livewire\ReporteVentaPFacturas;
+use App\Http\Livewire\ReporteSaldos;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/tarifa', Tarifas::class);
     Route::get('/ruta', Rutas::class);
     //rutas remisiones
-    Route::get('/tiros/remision', function() {
+    Route::get('/tiros/remision', function () {
         return view('livewire.tiros.generarRemision');
     });
     Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
@@ -79,15 +80,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFPago', PDFPago::class)->name('PDFPago');
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
     Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
-
     Route::get('/FacturarPPD/{cliente_id}/{idTipo}', FacturarPPD::class)->name('FacturarPPD');
     Route::get('/complementoPago', ComplementoDePago::class)->name('complementoPago');
-
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
-
     Route::get('/agregarDiasSuscripcion', AgregarDiasSuscripcion::class)->name('agregarDiasSuscripcion');
     Route::get('/suspenderSuscripcion', SuspencionDeContrato::class)->name('suspenderSuscripcion');
-
     Route::get('/reporte-relacionCR', ReporteRelacionCR::class)->name('reporte-relacionCR');
     Route::get('/PDFReporteRCR', ReportePDFrelacionCR::class)->name('PDFReporteRCR');
     Route::get('/reporteSuscripcionSuspendida', SuscripcionSuspendidaReporte::class)->name('reporteSuscripcionSuspendida');
@@ -99,14 +96,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/CancelarFacturaComplemento/{id}/{idCliente}', CancelarFacturaComplemento::class);
     Route::get('/CancelarVenta/{tipo}', CancelarVentas::class);
     Route::get('/CancelarSuscripciones/{tipo}', CancelarVentas::class);
-
     Route::get('/FacturasPPD', FacturaPPD::class)->name('FacturasPPD');
-
     Route::get('/vistaPreviaComplemento/{id}', VistaPreviaComplemento::class)->name('vistaPreviaPPD');
     Route::get('/CancelarVentaPDF', CancelarVentaPDF::class)->name('CancelarVentaPDF');
-
     Route::get('/reportVentaPFacturas', ReporteVentaPFacturas::class)->name('reportVentaPFacturas');
-
+    Route::get('/reporteSaldos', ReporteSaldos::class)->name('reporteSaldos');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

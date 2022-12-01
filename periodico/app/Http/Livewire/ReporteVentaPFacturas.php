@@ -58,6 +58,6 @@ class ReporteVentaPFacturas extends Component
     {
         return Excel::download(new InvoicesExport([
             $this->invoices->toArray()
-        ]), 'invoices.xlsx');
+        ]), 'reporteFacturas.xlsx');
     }
 }

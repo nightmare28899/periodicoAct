@@ -8,10 +8,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use carbon\carbon;
-
 class CancelarVentas extends Component
 {
-    public $ventas, $tipo, $status = 'created', $tipoMount, $fecha, $diaS;
+    public $ventas, $tipo, $status = 'created', $tipoMount, $fecha, $diaS, $clienteSeleccionado;
 
     public function mount($tipo)
     {
@@ -35,6 +34,40 @@ class CancelarVentas extends Component
     {
         $this->fecha = new Carbon();
         $this->diaS = $this->fecha->translatedFormat('l');
+
+        if ($this->clienteSeleccionado) {
+            if (substr($this->tipoMount, 0, 6) == 'suscri') {
+                $this->tipo = 'suscripciones';
+                $this->ventas = Tiro
+                    ::join('suscripciones', 'suscripciones.idSuscripcion', '=', 'tiro.idTipo')
+                    ->select('tiro.*', 'suscripciones.idSuscripcion', 'suscripciones.cliente_id')
+                    ->where('tiro.cliente', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                    ->orWhere('tiro.cliente_id', $this->clienteSeleccionado)
+                    ->get();
+            } else if (substr($this->tipoMount, 0, 5) == 'venta') {
+                $this->tipo = 'ventas';
+                $this->ventas = Tiro
+                    ::join('ventas', 'ventas.idVenta', '=', 'tiro.idTipo')
+                    ->select('tiro.*', 'ventas.idVenta', 'ventas.cliente_id', 'ventas.domicilio_id')
+                    ->where('tiro.cliente', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                    ->orWhere('tiro.cliente_id', $this->clienteSeleccionado)
+                    ->get();
+            }
+        } else {
+            if (substr($this->tipoMount, 0, 6) == 'suscri') {
+                $this->tipo = 'suscripciones';
+                $this->ventas = Tiro
+                    ::join('suscripciones', 'suscripciones.idSuscripcion', '=', 'tiro.idTipo')
+                    ->select('tiro.*', 'suscripciones.idSuscripcion', 'suscripciones.cliente_id')
+                    ->get();
+            } else if (substr($this->tipoMount, 0, 5) == 'venta') {
+                $this->tipo = 'ventas';
+                $this->ventas = Tiro
+                    ::join('ventas', 'ventas.idVenta', '=', 'tiro.idTipo')
+                    ->select('tiro.*', 'ventas.idVenta', 'ventas.cliente_id', 'ventas.domicilio_id')
+                    ->get();
+            }
+        }
 
         return view('livewire.cancelar-ventas', [
             'ventas' => $this->ventas,
