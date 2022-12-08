@@ -14,6 +14,6 @@ class SuscripcionSupendida extends Model
 
     protected $table = 'suscripcion_suspension';
 
-    protected $fillable = ['del', 'al', 'dias', 'motivo', 'idsus', 'sus_sus_id', 'reponerDias', 'IndicarFecha', 'fechaReposicion', 'diasAgre'];
+    protected $fillable = ['del', 'al', 'dias', 'motivo', 'id', 'sus_sus_id', 'reponerDias', 'IndicarFecha', 'fechaReposicion', 'diasAgre'];
 }
 

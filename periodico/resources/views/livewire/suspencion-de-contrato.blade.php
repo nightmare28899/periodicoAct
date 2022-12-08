@@ -98,7 +98,6 @@
                             <select
                                 class="ml-3 border w-32 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block uppercase"
                                 wire:model="reponerDias">
-                                <option style="display: none;" selected>...</option>
                                 <option value="si">Si</option>
                                 <option value="no">No</option>
                             </select>
@@ -107,13 +106,23 @@
 
                     <div>
                         <div class="form-group">
-                            <input wire:model="radioOptions" name="reponer" type="radio" id="reponer"
-                                value="reponer" checked>
+                            @if ($reponerDias == 'si')
+                                <input wire:model="radioOptions" name="reponer" type="radio" id="reponer"
+                                    value="reponer" checked>
+                            @else
+                                <input wire:model="radioOptions" name="reponer" type="radio" id="reponer"
+                                    value="reponer" disabled>
+                            @endif
                             <label class="text-black" for="reponer">Reponer al termino del periodo del contrato</label>
                         </div>
                         <div class="form-group">
-                            <input wire:model="radioOptions" name="indicar" type="radio" id="indica"
-                                value="indicar">
+                            @if ($reponerDias == 'si')
+                                <input wire:model="radioOptions" name="indicar" type="radio" id="indica"
+                                    value="indicar">
+                            @else
+                                <input wire:model="radioOptions" name="indicar" type="radio" id="indica"
+                                    value="indicar" disabled>
+                            @endif
                             <label class="text-black" for="indicar">Indica la fecha de reposición</label>
                         </div>
                         <p>Fecha de resposición</p>
@@ -129,8 +138,8 @@
                                                 class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ 'El campo es obligatorio' }}</span></b>
                                         @enderror
                                     @else
-                                        <x-jet-input type="date" wire:model="fechaReposicion" class="w-64 uppercase"
-                                            disabled>
+                                        <x-jet-input type="date" wire:model="fechaReposicion"
+                                            class="w-64 uppercase" disabled>
                                         </x-jet-input>
                                     @endif
                                 </div>

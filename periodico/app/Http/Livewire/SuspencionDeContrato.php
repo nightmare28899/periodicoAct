@@ -5,12 +5,12 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Suscripcion;
 use App\Models\SuscripcionSupendida;
+use App\Models\Tiro;
 use Carbon\Carbon;
-use DateTime;
 
 class SuspencionDeContrato extends Component
 {
-    public $suscripcionBuscada = [], $incremento = 'aumentar', $dias, $date, $del, $al, $reponerDias = null, $radioOptions = 'reponer', $fechaReposicion, $motivo, $estado = false, $status = 'created';
+    public $suscripcionBuscada = [], $incremento = 'aumentar', $dias, $date, $del, $al, $reponerDias = 'no', $radioOptions = 'reponer', $fechaReposicion, $motivo, $estado = false, $status = 'created';
 
     public function mount()
     {
@@ -49,7 +49,6 @@ class SuspencionDeContrato extends Component
 
     public function suspender()
     {
-
         $this->validate([
             'del' => 'required',
             'al' => 'required',
@@ -60,12 +59,11 @@ class SuspencionDeContrato extends Component
         ]);
 
         if ($this->del != null && $this->al != null && $this->motivo != null && $this->reponerDias != null && $this->suscripcionBuscada != null) {
-            $suspendida = SuscripcionSupendida::where('idsus', $this->suscripcionBuscada[0]->id)->get();
+            $suspendida = SuscripcionSupendida::where('id', $this->suscripcionBuscada[0]->id)->get();
 
             if (count($suspendida) == 0) {
 
                 if ($this->radioOptions == 'reponer') {
-
                     $sus = Suscripcion::find($this->suscripcionBuscada[0]->id);
                     $date1 = new Carbon($this->del);
                     $date2 = new Carbon($this->al);
@@ -73,8 +71,12 @@ class SuspencionDeContrato extends Component
                     $dateSuscripciones = new Carbon($sus->fechaFin);
                     $dateSuscripciones->addDays((int)$date)->format('Y-m-d');
 
-                    $sus = Suscripcion::where('id', $this->suscripcionBuscada[0]->id)->update([
-                        'fechaFin' => $dateSuscripciones,
+                    Suscripcion::where('id', $sus->id)->update([
+                        'fechaFin' => $dateSuscripciones->format('Y-m-d'),
+                        'estado' => 'suspendida',
+                    ]);
+
+                    Tiro::where('cliente_id', $sus->cliente_id)->where('importe', $sus->importe)->update([
                         'estado' => 'suspendida',
                     ]);
 
@@ -82,10 +84,10 @@ class SuspencionDeContrato extends Component
                         'del' => $this->del,
                         'al' => $this->al,
                         'motivo' => $this->motivo,
-                        'idsus' => $this->suscripcionBuscada[0]->id,
+                        'id' => $sus->id,
                         'reponerDias' => $this->reponerDias,
                         'IndicarFecha' => $this->radioOptions,
-                        'fechaReposicion' => $this->fechaReposicion,
+                        'fechaReposicion' => $this->fechaReposicion ? $this->fechaReposicion : null,
                         'diasAgre' => $date,
                     ]);
 
@@ -100,6 +102,8 @@ class SuspencionDeContrato extends Component
                     $this->reponerDias = null;
                     $this->radioOptions = 'reponer';
                     $this->fechaReposicion = null;
+                    $this->suscripcionBuscada = [];
+                    $this->query = '';
                 } else {
                 }
             } else {

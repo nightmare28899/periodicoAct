@@ -51,10 +51,11 @@
                             </thead>
                             <tbody>
                                 @foreach ($tiros as $tiro)
-                                    @if ($state == 0)
+                                    @if ($state == 0 && $tiro->estado != 'suspendida')
                                         <tr>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
+                                                {{ $tiro->estado }}
+                                                {{-- {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td> --}}
                                             {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->id }}</td>
                                             <td class='px-4 py-2 border border-dark'>
