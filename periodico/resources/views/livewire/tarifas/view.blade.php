@@ -60,8 +60,8 @@
                             <tr>
                                 <td class="px-4 py-2 border border-dark">{{ $tarifa->id }}</td>
                                 <td class="px-4 py-2 border border-dark">{{ $tarifa->tipo }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $tarifa->ordinario }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $tarifa->dominical }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ sprintf('$ %s', number_format($tarifa->ordinario, 2)) }}</td>
+                                <td class="px-4 py-2 border border-dark">{{ sprintf('$ %s', number_format($tarifa->dominical, 2)) }}</td>
                                 <td class="px-4 py-2 border border-dark">{{ $tarifa->created_at }}</td>
                                 <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                     <x-jet-dropdown align="right" width="48">

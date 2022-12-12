@@ -66,7 +66,7 @@
                                     <th class='px-4 py-2 uppercase'></th>
                                     <th class='px-4 py-2 uppercase'></th>
                                     <th class='px-4 py-2 uppercase'></th>
-                                    <th class='px-4 py-2 uppercase'>{{ sprintf('$ %s', number_format($total)) }}</th>
+                                    <th class='px-4 py-2 uppercase'>{{ sprintf('$ %s', number_format($total, 2)) }}</th>
                                 </tr>
                             </thead>
                         </table>

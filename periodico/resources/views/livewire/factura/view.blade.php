@@ -190,10 +190,10 @@
                             <label for="">Importe:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($suscripcion->importe, 2)) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($tiro->importe, 2)) }}" disabled>
                             @endif
                         </div>
                     </div>
@@ -219,10 +219,10 @@
                             <label for="">Total:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($suscripcion->total)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($suscripcion->total, 2)) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($tiro->importe, 2)) }}" disabled>
                             @endif
                         </div>
                     </div>

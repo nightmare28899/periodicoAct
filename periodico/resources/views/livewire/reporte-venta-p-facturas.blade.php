@@ -66,7 +66,7 @@
                                     <td class="border">
                                         {{ $invo->rfc_input }}</td>
                                     <td class="border">
-                                        {{ sprintf('$ %s', number_format($invo->total)) }}</td>
+                                        {{ sprintf('$ %s', number_format($invo->total, 2)) }}</td>
                                     <td class="border">
                                         {{ substr($invo->paymentMethod, 0, 3) }}</td>
                                     <td class="border">
@@ -84,7 +84,7 @@
                                 <th class='px-4 py-2 uppercase'></th>
                                 <th class='px-4 py-2 uppercase'></th>
                                 <th class='px-4 py-2 uppercase'></th>
-                                <th class='px-4 py-2 uppercase'>{{ sprintf('$ %s', number_format($total)) }}</th>
+                                <th class='px-4 py-2 uppercase'>{{ sprintf('$ %s', number_format($total, 2)) }}</th>
                             </tr>
                         </thead>
                     </table>

@@ -36,23 +36,23 @@
                             <tbody>
                                 @if (count($ventas) > 0)
                                     @foreach ($ventas as $result)
-                                        <tr>
+                                        <tr class="uppercase">
                                             <td class="px-4 py-2 border border-dark">{{ $result->id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->cliente_id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->cliente }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->entregar }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->devuelto }}</td>
                                             <td class="px-4 py-2 border border-dark">
-                                                {{ $tipo === 'suscripciones' ? $result->importe / $result->entregar : $result->importe }}
+                                                {{ $tipo === 'suscripciones' ? sprintf('$ %s', number_format($result->importe / $result->entregar, 2)) : sprintf('$ %s', number_format($result->importe, 2)) }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->status }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $result->importe }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ sprintf('$ %s', number_format($result->importe, 2)) }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($result->fecha)->format('d/m/Y') }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 @if ($result->status != 'Cancelado')
                                                     <button
-                                                        wire:click="canlcelarVenta('{{ $tipo === 'suscripciones' ? $result->idSuscripcion : $result->idVenta }}')"
+                                                        wire:click="canlcelarVenta('{{ $tipo == 'ventas' ? $result->idVenta : $result->idSuscripcion }}')"
                                                         class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
                                                         {{ $tipo === 'suscripciones' ? 'Cancelar suscripción' : 'Cancelar venta' }}
                                                     </button>

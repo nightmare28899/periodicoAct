@@ -54,7 +54,7 @@
                         <div class="flex mt-2 space-x-4">
                             <div class="px-2">
                                 <b>Importe: <input type="text" style="height: 1.7rem;"
-                                        value="{{ sprintf('$ %s', number_format($suscripciones[0]['importe'])) }}"
+                                        value="{{ sprintf('$ %s', number_format($suscripciones[0]['importe'], 2)) }}"
                                         class="border-0 bg-gray-200" disabled></b>
                             </div>
                         </div>

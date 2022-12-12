@@ -144,7 +144,7 @@
                     </div>
                 </td>
                 <td>{{ $cliente['ordinario']  }}</td>
-                <td>{{ sprintf('$ %s', number_format($total)) }}
+                <td>{{ sprintf('$ %s', number_format($total, 2)) }}
                 </td>
             </tr>
         </tbody>
@@ -156,7 +156,7 @@
                 <td></td>
                 <td></td>
                 <td>IMPORTE</td>
-                <td>{{ sprintf('$ %s', number_format($total)) }}</td>
+                <td>{{ sprintf('$ %s', number_format($total, 2)) }}</td>
                 </td>
             </tr>
             <tr>
@@ -169,7 +169,7 @@
                 <td></td>
                 <td></td>
                 <td>SUBTOTAL</td>
-                <td>{{ sprintf('$ %s', number_format($total)) }}
+                <td>{{ sprintf('$ %s', number_format($total, 2)) }}
                 </td>
             </tr>
             <tr>
@@ -185,7 +185,7 @@
                 <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $lunes + $martes + $miercoles + $jueves + $viernes + $sabado + $domingo }}</th>
                 <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                 <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                    {{ sprintf('$ %s', number_format($total)) }}
+                    {{ sprintf('$ %s', number_format($total, 2)) }}
                 </th>
             </tr>
         </thead>

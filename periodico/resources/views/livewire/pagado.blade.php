@@ -161,7 +161,7 @@
                     </td>
                     <td>{{ $suscripcion['tarifa'] == 'ejecutiva' ? 300 : ($suscripcion['tarifa'] == 'base' ? 330 : 'personalizado') }}
                     </td>
-                    <td>{{ sprintf('$ %s', number_format($total)) }}
+                    <td>{{ sprintf('$ %s', number_format($total, 2)) }}
                     </td>
                 </tr>
             </tbody>
@@ -173,7 +173,7 @@
                     <td></td>
                     <td></td>
                     <td>IMPORTE</td>
-                    <td>{{ sprintf('$ %s', number_format($total)) }}</td>
+                    <td>{{ sprintf('$ %s', number_format($total, 2)) }}</td>
                     </td>
                 </tr>
                 <tr>
@@ -186,7 +186,7 @@
                     <td></td>
                     <td></td>
                     <td>SUBTOTAL</td>
-                    <td>{{ sprintf('$ %s', number_format($total)) }}
+                    <td>{{ sprintf('$ %s', number_format($total, 2)) }}
                     </td>
                 </tr>
                 <tr>
@@ -203,7 +203,7 @@
                     </th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                        {{ sprintf('$ %s', number_format($total)) }}
+                        {{ sprintf('$ %s', number_format($total, 2)) }}
                     </th>
                 </tr>
             </thead>
@@ -286,8 +286,8 @@
                                 {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }} Tipo: Venta/cliente </label>
                         </div>
                     </td>
-                    <td>{{ sprintf('$ %s', number_format($cliente['ordinario'])) }}</td>
-                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                    <td>{{ sprintf('$ %s', number_format($cliente['ordinario'], 2)) }}</td>
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'], 2)) }}
                     </td>
                 </tr>
             </tbody>
@@ -299,7 +299,7 @@
                     <td></td>
                     <td></td>
                     <td>IMPORTE</td>
-                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}</td>
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'], 2)) }}</td>
                     </td>
                 </tr>
                 <tr>
@@ -312,7 +312,7 @@
                     <td></td>
                     <td></td>
                     <td>SUBTOTAL</td>
-                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                    <td>{{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'], 2)) }}
                     </td>
                 </tr>
                 <tr>
@@ -330,7 +330,7 @@
                     </th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                     <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                        {{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'])) }}
+                        {{ sprintf('$ %s', number_format($ventas[0][$diaS] * $cliente['ordinario'], 2)) }}
                     </th>
                 </tr>
             </thead>

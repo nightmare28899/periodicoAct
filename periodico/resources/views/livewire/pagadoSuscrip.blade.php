@@ -158,8 +158,8 @@
                             \Carbon\Carbon::parse($suscripcionp['fechaFin'])->format('d/m/Y') }}, Tipo: Suscripcion </label>
             </div>
         </td>
-        <td>{{ sprintf('$ %s', number_format($costo = $suscripcion['total'] % $suscripcion['cantEjemplares'] )) }}</td>
-        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}
+        <td>{{ sprintf('$ %s', number_format($costo = $suscripcion['total'] % $suscripcion['cantEjemplares'], 2)) }}</td>
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'], 2)) }}
         </td>
     </tr>
     </tbody>
@@ -171,7 +171,7 @@
         <td></td>
         <td></td>
         <td>IMPORTE</td>
-        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}</td>
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'], 2)) }}</td>
         </td>
     </tr>
     <tr>
@@ -184,7 +184,7 @@
         <td></td>
         <td></td>
         <td>SUBTOTAL</td>
-        <td>{{ sprintf('$ %s', number_format($suscripcion['total'])) }}
+        <td>{{ sprintf('$ %s', number_format($suscripcion['total'], 2)) }}
         </td>
     </tr>
     <tr>
@@ -200,7 +200,7 @@
         <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $suscripcion['cantEjemplares'] }}</th>
         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-            {{ sprintf('$ %s', number_format($suscripcion['total'])) }}
+            {{ sprintf('$ %s', number_format($suscripcion['total'], 2)) }}
         </th>
     </tr>
     </thead>

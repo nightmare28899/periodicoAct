@@ -65,10 +65,10 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->precio, 2)) }}
                                             </td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->importe, 2)) }}
                                             </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
@@ -235,10 +235,10 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro->precio)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->precio, 2)) }}
                                             </td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro->importe)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->importe, 2)) }}
                                             </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>

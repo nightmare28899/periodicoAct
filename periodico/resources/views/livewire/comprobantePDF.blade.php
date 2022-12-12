@@ -150,15 +150,15 @@
 
         <br>
         <p><b>IMPORTE</b></p>
-        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total, 2)) }}</p>
         <p><b>DESCUENTO</b></p>
         <p class="move1">0</p>
         <p><b>SUBTOTAL</b></p>
-        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total, 2)) }}</p>
         <p><b>IVA</b></p>
         <p class="move1">0</p>
         <p><b>TOTAL</b></p>
-        <p class="move1">{{ sprintf('$ %s', number_format($total)) }}</p>
+        <p class="move1">{{ sprintf('$ %s', number_format($total, 2)) }}</p>
 
         <p><b>OBSERVACIONES:</b></p>
         <p class="move1">{{ $observaciones }}</p>

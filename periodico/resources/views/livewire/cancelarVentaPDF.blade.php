@@ -162,9 +162,9 @@
                             </div>
                         </td>
                         <?php $valUnitario = $result['total'] / $result['cantEjemplares']; ?>
-                        <td>{{ sprintf('$ %s', number_format($valUnitario)) }}
+                        <td>{{ sprintf('$ %s', number_format($valUnitario, 2)) }}
                         </td>
-                        <td>{{ sprintf('$ %s', number_format($result['total'])) }}
+                        <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}
                         </td>
                     </tr>
                 </tbody>
@@ -176,7 +176,7 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ sprintf('$ %s', number_format($result['total'])) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}</td>
                         </td>
                     </tr>
                     <tr>
@@ -189,7 +189,7 @@
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ sprintf('$ %s', number_format($result['total'])) }}
+                        <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}
                         </td>
                     </tr>
                     <tr>
@@ -206,7 +206,7 @@
                         </th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                             {{ sprintf('$ %s', number_format($result['total'])) }}
+                             {{ sprintf('$ %s', number_format($result['total'], 2)) }}
                         </th>
                     </tr>
                 </thead>
@@ -292,8 +292,8 @@
                                 </label>
                             </div>
                         </td>
-                        <td>{{ sprintf('$ %s', number_format($result->ordinario)) }}</td>
-                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario)) }}
+                        <td>{{ sprintf('$ %s', number_format($result->ordinario, 2)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario, 2)) }}
                         </td>
                     </tr>
                 </tbody>
@@ -305,7 +305,7 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario, 2)) }}</td>
                         </td>
                     </tr>
                     <tr>
@@ -318,7 +318,7 @@
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario)) }}
+                        <td>{{ sprintf('$ %s', number_format($result->entregar * $result->ordinario, 2)) }}
                         </td>
                     </tr>
                     <tr>
@@ -336,7 +336,7 @@
                         </th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                            {{ sprintf('$ %s', number_format($result->entregar * $result->ordinario)) }}
+                            {{ sprintf('$ %s', number_format($result->entregar * $result->ordinario, 2)) }}
                         </th>
                     </tr>
                 </thead>
