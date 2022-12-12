@@ -16,8 +16,6 @@ use Carbon\Carbon;
 use App\Models\ventas;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Invoice;
-use App\Models\Tiro;
 
 class Clientes extends Component
 {

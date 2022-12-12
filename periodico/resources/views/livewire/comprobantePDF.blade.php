@@ -55,7 +55,7 @@
             Morelia Michoacán, México Tel: (443) 322 56 00
             Fax Ext. 1038 RFC: VMI-600516-JG7, REG. EDO. 124026-9.</h5>
 
-        <table>
+        <table style="text-transform: uppercase;">
             <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                 <tr>
                     <th class='px-4 py-2' style="width: 100px;">CONTRATO</th>
@@ -100,7 +100,7 @@
         <p class="move1">{{ $cliente['pais'] }}</p>
 
         <p class="centrado" style="background-color: rgb(187, 230, 238);"><b>DOMICILIO DE ENTREGA</b></p>
-        <table>
+        <table style="text-transform: uppercase;">
             <thead style="text-transform: uppercase; border: .5px solid black">
                 <tr>
                     <th class='px-4 py-2' style="width: 70px;">N° EJEM</th>
@@ -128,7 +128,7 @@
         </table>
 
         <p class="centrado" style="background-color: rgb(187, 230, 238); margin-top: 15px;"><b>OTROS DATOS</b></p>
-        <table>
+        <table style="text-transform: uppercase;">
             <thead>
                 <tr>
                     <th class='px-4 py-2' style="width: 100px;">APERTURA {{ $esUnaSuscripcion == 'Apertura' ? 'X' : '' }}</th>

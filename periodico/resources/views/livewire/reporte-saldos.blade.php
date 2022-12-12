@@ -32,7 +32,7 @@
                 </div>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
                             <thead>
                                 <tr class='bg-gray-100'>
                                     <th scope="col" class="py-3 px-6">Fecha FC</th>

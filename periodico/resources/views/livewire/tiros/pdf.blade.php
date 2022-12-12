@@ -31,7 +31,7 @@
         @endif
     @endif
 <h3 id="movido">Fecha: {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</h3>
-<table class="a centrado">
+<table class="a centrado" style="text-transform: uppercase;">
     <thead>
     <tr class="bg-gray-500 text-white">
         <th>Ruta</th>

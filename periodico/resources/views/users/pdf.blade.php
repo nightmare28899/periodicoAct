@@ -16,7 +16,7 @@
 <body>
     <div class="container py-5">
         <h5 class=" font-weight-bold">DOMPDF Tutorial</h5>
-        <table class="table table-bordered mt-5">
+        <table class="table table-bordered mt-5 uppercase">
             <thead>
                 <tr>
                     <th>Id</th>

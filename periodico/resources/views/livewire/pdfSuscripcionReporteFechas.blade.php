@@ -8,7 +8,7 @@
     </style>
     {{-- In work, do what you enjoy. --}}
     <div class="mx-auto mt-3">
-        <table class="table-auto border-separate border-spacing-2 border border-dark text-center" style="width: 100%; text-align: center;">
+        <table class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase" style="width: 100%; text-align: center;">
             <thead>
                 <tr class='bg-gray-100'>
                     <th class='px-4 py-2 uppercase'>No. contrato</th>

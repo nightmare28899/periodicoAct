@@ -51,7 +51,7 @@
                 @if ($invoices)
                     <div class="text-center overflow-x">
                         <div class="overflow-x-auto w-full">
-                            <table class="table-auto border-separate border-spacing-2 border border-dark">
+                            <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
                                 <thead>
                                     <tr class="bg-gray-100">
                                         <th class="px-4 py-2 uppercase">Fecha</th>

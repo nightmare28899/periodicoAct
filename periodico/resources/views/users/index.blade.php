@@ -20,7 +20,7 @@
               </div>
 
               <div class="card-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered uppercase">
                         <thead>
                             <tr>
                                 <th>Id</th>

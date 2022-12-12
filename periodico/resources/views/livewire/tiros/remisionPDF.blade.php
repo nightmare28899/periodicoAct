@@ -134,7 +134,7 @@
                         style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
                         concepto</p>
                 </div>
-                <table>
+                <table style="text-transform: uppercase;">
                     <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                         <tr>
                             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
@@ -161,7 +161,7 @@
                     </tbody>
                 </table>
                 <hr>
-                <table>
+                <table style="text-transform: uppercase;">
                     <tbody class="centrado">
                         <tr>
                             <td></td>
@@ -387,7 +387,7 @@
                     style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
                     concepto</p>
             </div>
-            <table>
+            <table style="text-transform: uppercase;">
                 <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                     <tr>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">cant.</th>
@@ -412,7 +412,7 @@
                 </tbody>
             </table>
             <hr>
-            <table>
+            <table style="text-transform: uppercase;">
                 <tbody class="centrado">
                     <tr>
                         <td></td>

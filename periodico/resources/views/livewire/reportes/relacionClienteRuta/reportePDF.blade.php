@@ -26,7 +26,7 @@
 <h3>RELACION DE CLIENTES POR RUTA: {{ $ruta }} </h3>
 <h3>MORELIA, MICHOACÁN {{ $diaS }} {{ $date }}</h3>
 
-<table class="centrado">
+<table class="centrado" style="text-transform: uppercase;">
     <thead>
         <tr>
             <th>CLAVE</th>
