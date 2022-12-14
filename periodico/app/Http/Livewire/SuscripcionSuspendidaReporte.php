@@ -23,7 +23,7 @@ class SuscripcionSuspendidaReporte extends Component
     public function render()
     {
         if ($this->query) {
-            $this->suscripcionSus = SuscripcionSupendida::where('idsus', $this->query)->get();
+            $this->suscripcionSus = SuscripcionSupendida::where('id', $this->query)->get();
         } else {
             $this->suscripcionSus = SuscripcionSupendida::all();
         }

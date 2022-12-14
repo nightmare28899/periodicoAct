@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ventas;
 use App\Models\Invoice;
+use App\Models\SuscripcionSupendida;
 
 class Tiros extends Component
 {
@@ -90,6 +91,43 @@ class Tiros extends Component
                     })
                     ->select("suscripciones.*", "cliente.id", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta", "ruta.repartidor", "ruta.cobrador")
                     ->get($this->diaS);
+
+                $suscripcionSuspension = SuscripcionSupendida::join('suscripciones', 'suscripciones.id', '=', 'suscripcion_suspension.id')->select('suscripcion_suspension.*', 'suscripciones.fechaFin', 'suscripciones.importe', 'suscripciones.cliente_id')->get();
+
+                if (count($suscripcionSuspension) > 0) {
+
+                    for ($i = 0; $i < count($suscripcionSuspension); $i++) {
+
+                        if ($suscripcionSuspension[$i]->al <= $this->from) {
+                            Suscripcion::where('id', $suscripcionSuspension[$i]->id)->update([
+                                'estado' => 'Activo',
+                                'tiroStatus' => 'Activo'
+                            ]);
+
+                            Tiro::where('cliente_id', $suscripcionSuspension[$i]->cliente_id)->where('importe', $suscripcionSuspension[$i]->importe)->update([
+                                'estado' => 'Activo',
+                            ]);
+
+                            if ($suscripcionSuspension[$i]->IndicarFecha === 'reponer' && $suscripcionSuspension[$i]->reponerDias === 'si' && $suscripcionSuspension[$i]->fechaReposicion === null) {
+                                if ($suscripcionSuspension[$i]->fechaFin <= $this->from) {
+                                    $dateNow = Carbon::parse($suscripcionSuspension[$i]->fechaFin)->addDays($suscripcionSuspension[$i]->diasAgre)->format('Y-m-d');
+
+                                    Suscripcion::where('id', $suscripcionSuspension[$i]->id)->update([
+                                        'fechaFin' => $dateNow,
+                                    ]);
+                                }
+                            } else if ($suscripcionSuspension[$i]->IndicarFecha === 'reponer' && $suscripcionSuspension[$i]->reponerDias === 'si' && $suscripcionSuspension[$i]->fechaReposicion != null) {
+                                if ($suscripcionSuspension[$i]->fechaReposicion <= $this->from) {
+                                    $dateNow = Carbon::parse($suscripcionSuspension[$i]->fechaFin)->addDays($suscripcionSuspension[$i]->diasAgre)->format('Y-m-d');
+
+                                    Suscripcion::where('id', $suscripcionSuspension[$i]->id)->update([
+                                        'fechaFin' => $dateNow,
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         } else {
             $this->ventas = [];

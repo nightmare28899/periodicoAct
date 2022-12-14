@@ -56,7 +56,7 @@
                                             <td class='px-4 py-2 border border-dark'>
                                                 {{ $tiro->estado }}
                                                 {{-- {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td> --}}
-                                            {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
+                                                {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->id }}</td>
                                             <td class='px-4 py-2 border border-dark'>
                                                 {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}</td>
@@ -77,18 +77,22 @@
                                             @if (substr($tiro->idTipo, 0, 6) == 'suscri')
                                                 <td class="border border-dark">
                                                     @if ($tiro->clasificacion != 'CRÉDITO')
-                                                        @if ($tiro->estado == 'Activo')
-                                                            <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
-                                                                class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
-                                                                Pausar
-                                                                suscripción
-                                                            </button>
-                                                        @elseif ($tiro->estado == 'Pausado')
-                                                            <button wire:click="pausarRemision('{{ $tiro->idTipo }}')"
-                                                                class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
-                                                                Activar
-                                                                suscripción
-                                                            </button>
+                                                        @if ($tiro->status != 'Cancelado')
+                                                            @if ($tiro->estado == 'Activo')
+                                                                <button
+                                                                    wire:click="pausarRemision('{{ $tiro->idTipo }}')"
+                                                                    class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                                    Pausar
+                                                                    suscripción
+                                                                </button>
+                                                            @elseif ($tiro->estado == 'Pausado')
+                                                                <button
+                                                                    wire:click="pausarRemision('{{ $tiro->idTipo }}')"
+                                                                    class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
+                                                                    Activar
+                                                                    suscripción
+                                                                </button>
+                                                            @endif
                                                         @endif
 
                                                         @if ($tiro->status != 'CREDITO' && substr($tiro->idTipo, 0, 6) == 'suscri')

@@ -110,15 +110,6 @@ class Clientes extends Component
                 ->limit(6)
                 ->get()
                 ->toArray();
-            /* } else if ($this->query != '') {
-            $encontrado = Cliente::find($this->query);
-            $this->buscarPrincipal = Cliente::paginate(10);
-            $links = $this->buscarPrincipal;
-            $this->buscarPrincipal = Cliente
-                ::where('id', '=', $this->query)
-                ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->limit(10)
-                ->get(); */
         } else if ($this->query == '') {
             $this->buscarPrincipal = [];
             $this->clientesBuscados = [];
@@ -134,7 +125,6 @@ class Clientes extends Component
         $this->dateFiltro = new Carbon($this->to);
         $this->desde = $this->converHasta->format('Y-m-d');
         $this->idSuscripcionSig = Suscripcion::latest('id')->first();
-        /* $this->from = $this->dateF->format('Y-m-d'); */
         $keyWord = '%' . $this->keyWord . '%';
         $data = [
             'Genérico' => 'GENÉRICO',
@@ -431,13 +421,9 @@ class Clientes extends Component
                 $this->domicilioId = $this->suscripciones[0]->domicilio_id;
                 $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
                 $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
-                /* $this->subscripcionEs = $this->suscripciones[0]->esUnaSuscripcion; */
                 $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
                 $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
-                /* $this->periodoSuscripcionSeleccionada = $this->suscripciones[0]->periodo; */
                 $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
-                /* $this->from = $this->suscripciones[0]->fechaInicio;
-                $this->to = $this->suscripciones[0]->fechaFin; */
                 $this->contrato = $this->suscripciones[0]->contrato;
                 $this->lunes = $this->suscripciones[0]->lunes;
                 $this->martes = $this->suscripciones[0]->martes;
@@ -913,7 +899,6 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
                 if ($this->hasta) {
-
 
                     $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
                     if ($domicilio) {
