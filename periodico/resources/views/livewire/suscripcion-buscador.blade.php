@@ -31,10 +31,7 @@
                         <div class="w-1/2 p-2">
                             <input type="text"
                                 class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
-                                name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
-                                wire:keydown.escape="resetear" wire:keydown.tab="resetear"
-                                wire:keydown.arrow-up="decrementHighlight" wire:keydown.arrow-down="incrementHighlight"
-                                wire:keydown.enter="selectContact" autocomplete="off" />
+                                name="search" id="search" placeholder="Buscar Cliente" wire:model="query" autocomplete="off" />
 
                             @if (!empty($query))
 

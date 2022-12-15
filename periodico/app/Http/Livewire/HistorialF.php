@@ -22,24 +22,6 @@ class HistorialF extends Component
         $this->highlightIndex = 0;
     }
 
-    public function incrementHighlight()
-    {
-        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
-            $this->highlightIndex = 0;
-            return;
-        }
-        $this->highlightIndex++;
-    }
-
-    public function decrementHighlight()
-    {
-        if ($this->highlightIndex === 0) {
-            $this->highlightIndex = count($this->clientesBuscados) - 1;
-            return;
-        }
-        $this->highlightIndex--;
-    }
-
     public function selectContact($pos)
     {
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
