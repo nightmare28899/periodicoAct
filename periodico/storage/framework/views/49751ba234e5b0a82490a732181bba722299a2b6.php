@@ -1,9 +1,10 @@
 <div class="mx-auto" style="width: 26%;">
-    <x-slot name="header">
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Reporte Suscripciones Suspendidas') }}
+            <?php echo e(__('Reporte Suscripciones Suspendidas')); ?>
+
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
 
     <div class="py-12">
@@ -28,23 +29,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($suscripcionSus as $susc)
+                            <?php $__currentLoopData = $suscripcionSus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $susc): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['id'] }}
+                                        <?php echo e($susc['id']); ?>
+
                                     </td>
                                     <td class='px-4 py-2 border border-dark'>
-                                        {{ \Carbon\Carbon::parse($susc['del'])->format('d/m/Y') }}
+                                        <?php echo e(\Carbon\Carbon::parse($susc['del'])->format('d/m/Y')); ?>
+
                                     </td>
-                                    <td class='px-4 py-2 border border-dark'>{{ \Carbon\Carbon::parse($susc['al'])->format('d/m/Y') }}</td>
+                                    <td class='px-4 py-2 border border-dark'><?php echo e(\Carbon\Carbon::parse($susc['al'])->format('d/m/Y')); ?></td>
                                     <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['motivo'] }}
+                                        <?php echo e($susc['motivo']); ?>
+
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+<?php /**PATH C:\Users\Nightmare28899\Documents\GitHub\periodicoAct\periodico\resources\views/livewire/reportes/contratos-suspendidos/suscripcion-suspendida-reporte.blade.php ENDPATH**/ ?>

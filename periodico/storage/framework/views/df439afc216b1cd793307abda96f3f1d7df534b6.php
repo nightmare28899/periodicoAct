@@ -68,10 +68,7 @@
                                     <?php if($state == 0 && $tiro->estado != 'suspendida'): ?>
                                         <tr>
                                             <td class='px-4 py-2 border border-dark'>
-                                                <?php echo e($tiro->estado); ?>
-
-                                                
-                                                
+                                                <?php echo e(\Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y')); ?></td>
                                             <td class='px-4 py-2 border border-dark'><?php echo e($tiro->id); ?></td>
                                             <td class='px-4 py-2 border border-dark'>
                                                 <?php echo e($tiro->cliente ? $tiro->cliente : $tiro->razon_social); ?></td>

@@ -73,7 +73,7 @@ class SuspencionDeContrato extends Component
 
                     Suscripcion::where('id', $sus->id)->update([
                         'fechaFin' => $dateSuscripciones->format('Y-m-d'),
-                        'estado' => 'suspendida',
+                        'estado' => 'Suspendida',
                         'tiroStatus' => 'inactivo'
                     ]);
 

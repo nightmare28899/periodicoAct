@@ -152,7 +152,7 @@
                     <p>Motivo para la suspension</p>
                     <p>Escribe el motivo</p>
                     <textarea wire:model="motivo" style="margin-left: 2rem;"
-                        class="border-0 bg-gray-200 @error('motivo') border-red-500 @enderror" rows="2"
+                        class="border-0 rounded-md bg-gray-200 @error('motivo') border-red-500 @enderror" rows="2"
                         placeholder="Coloca un motivo" cols="50"></textarea>
                     @error('motivo')
                         <span

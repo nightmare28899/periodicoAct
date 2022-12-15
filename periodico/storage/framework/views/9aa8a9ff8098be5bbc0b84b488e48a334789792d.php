@@ -1,10 +1,12 @@
 <div class="w-2/3 mx-auto">
-    <x-slot name="header">
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Lista de Rutas') }}
-        </h2>
-    </x-slot>
+            <?php echo e(__('Lista de Rutas')); ?>
 
+        </h2>
+     <?php $__env->endSlot(); ?>
+
+    
     <div class="py-12">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
@@ -14,6 +16,7 @@
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                             name="search" id="search" placeholder="Buscar Ruta">
                     </div>
+                    
                     <div class="flex-none mx-1">
                         <button wire:click="create"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
@@ -22,20 +25,20 @@
                     </div>
                 </div>
                 <br>
-                @if (session()->has('message'))
+                <?php if(session()->has('message')): ?>
                     <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3"
                         role="alert">
                         <div class="flex">
                             <div>
-                                <p class="text-sm">{{ session('message') }}</p>
+                                <p class="text-sm"><?php echo e(session('message')); ?></p>
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if ($isModalOpen)
-                    @include('livewire.rutas.create')
-                @endif
+                <?php if($isModalOpen): ?>
+                    <?php echo $__env->make('livewire.rutas.create', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                <?php endif; ?>
                 <table class="table-auto border-separate border-spacing-2 border border-dark w-full text-center uppercase">
                     <thead>
                         <tr class="bg-gray-100">
@@ -49,17 +52,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rutas as $ruta)
+                        <?php $__currentLoopData = $rutas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ruta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->id }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->nombreruta }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->tiporuta }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->repartidor }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->cobrador }}</td>
-                                <td class="px-4 py-2 border border-dark">{{ $ruta->ctaespecial }}</td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->id); ?></td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->nombreruta); ?></td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->tiporuta); ?></td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->repartidor); ?></td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->cobrador); ?></td>
+                                <td class="px-4 py-2 border border-dark"><?php echo e($ruta->ctaespecial); ?></td>
                                 <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
-                                    <x-jet-dropdown align="right" width="48">
-                                        <x-slot name="trigger">
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'jetstream::components.dropdown','data' => ['align' => 'right','width' => '48']] + (isset($attributes) ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('jet-dropdown'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['align' => 'right','width' => '48']); ?>
+                                         <?php $__env->slot('trigger', null, []); ?> 
 
                                             <span class="inline-flex rounded-md">
                                                 <button type="button"
@@ -74,28 +85,33 @@
                                                     </svg>
                                                 </button>
                                             </span>
-                                        </x-slot>
+                                         <?php $__env->endSlot(); ?>
 
-                                        <x-slot name="content">
+                                         <?php $__env->slot('content', null, []); ?> 
 
-                                            <button wire:click="edit({{ $ruta->id }})"
+                                            <button wire:click="edit(<?php echo e($ruta->id); ?>)"
                                                 class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">Editar</button>
 
                                             <div class="border-t border-gray-100"></div>
 
-                                            {{-- <button wire:click="delete({{ $ruta->id }})"
-                                                class="px-2 w-full py-1 cursor-pointer hover:bg-red-600 hover:text-white">Eliminar</button> --}}
+                                            
 
-                                        </x-slot>
-                                    </x-jet-dropdown>
+                                         <?php $__env->endSlot(); ?>
+                                     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
 
                                 </td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
                 <br>
-                {{ $rutas->links('livewire.custom-pagination') }}
+                <?php echo e($rutas->links('livewire.custom-pagination')); ?>
+
                 <br>
                 <br>
             </div>
@@ -103,3 +119,4 @@
 
     </div>
 </div>
+<?php /**PATH C:\Users\Nightmare28899\Documents\GitHub\periodicoAct\periodico\resources\views/livewire/rutas/view.blade.php ENDPATH**/ ?>

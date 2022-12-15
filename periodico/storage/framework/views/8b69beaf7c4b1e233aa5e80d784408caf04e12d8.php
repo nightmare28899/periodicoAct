@@ -11,26 +11,23 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex">
                     <div class="flex-initial mx-1 mt-4" style="width: 100%;">
-                        
                         <input type="text"
-                               class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                               name="search" placeholder="Buscar Cliente por Nombre o ID" wire:model="query" autocomplete="off" />
+                            class="text-slate-600 relative bg-white text-base shadow outline-none focus:outline-none focus:ring w-full uppercase rounded-md"
+                            name="search" placeholder="Buscar Cliente por Nombre o ID" wire:model="clientesQuery"
+                            autocomplete="off" />
                     </div>
                     <div class="flex-none mx-1">
-                        
                         <button wire:click="modalSuscripciones"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
                             Generar Suscripción
                         </button>
                     </div>
                     <div class="flex-none mx-1">
-                        
                         <button wire:click="modalVentas"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base font-bold text-white shadow-sm hover:bg-blue-700">
                             Generar Venta
                         </button>
                     </div>
-                    
                     <div class="flex-none mx-1">
                         <button wire:click="create"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
@@ -96,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                             <?php if($clientes): ?>
+                            <?php if($clientes): ?>
                                 <?php $__currentLoopData = $clientes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cliente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
                                         <td class="px-4 py-2 border border-dark"><?php echo e($cliente->id); ?></td>
@@ -140,17 +137,8 @@
                                                  <?php $__env->endSlot(); ?>
 
                                                  <?php $__env->slot('content', null, []); ?> 
-
-                                                    
-
-                                                    
-
                                                     <button wire:click="edit(<?php echo e($cliente->id); ?>)"
                                                         class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">Editar</button>
-
-                                                    
-
-                                                    
                                                  <?php $__env->endSlot(); ?>
                                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -161,7 +149,7 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                             <?php else: ?>
+                            <?php else: ?>
                                 <tr>
                                     <td colspan="13" class="border text-center font-bold">Busca Registros</td>
                                 </tr>
@@ -171,7 +159,7 @@
                     <br>
                     <br>
                     <?php if(count($clientes) > 0): ?>
-                        <?php echo e($clientes->links()); ?>
+                        <?php echo e($clientes->links('livewire.custom-pagination')); ?>
 
                     <?php endif; ?>
                     <br>

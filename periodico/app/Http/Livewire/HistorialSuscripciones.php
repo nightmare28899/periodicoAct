@@ -18,7 +18,6 @@ class HistorialSuscripciones extends Component
         $this->dateF = new Carbon();
         $this->diaS = $this->dateF->translatedFormat('l');
 
-
         $this->suscripcionSuspendida = SuscripcionSupendida
             ::join('suscripciones', 'suscripciones.id', '=', 'suscripcion_suspension.id')
             ->join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')

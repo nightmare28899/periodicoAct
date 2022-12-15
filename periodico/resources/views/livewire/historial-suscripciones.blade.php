@@ -20,6 +20,7 @@
                         <option value="Pagado">Pagado</option>
                         <option value="facturado">Facturado</option>
                         <option value="sin pagar">Sin pagar</option>
+                        <option value="cancelado">Cancelado</option>
                     </select>
 
                     <label for="fechaInicio">Del</label>
@@ -70,8 +71,8 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
                                             <td
-                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Suspendida' ? 'bg-red-500' : '') }}">
-                                                {{ $suscripcion->estado == 'Suspendida' ? 'Inactivo' : 'Activo' }}</td>
+                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' ? 'bg-red-500' : '') }}">
+                                                {{ $suscripcion->estado == 'Pausado' ? 'Inactivo' : 'Activo' }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaFin }}</td>

@@ -178,6 +178,8 @@ class Historial extends Component
                 ::where('cliente_id', $this->id_cliente)
                 ->where('idTipo', '=', $idTipo)
                 ->update(['status' => 'Pagado']);
+
+            Suscripcion::where('cliente_id', $this->id_cliente)->update(['estado' => 'Activo']);
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->cliente = Cliente
                 ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')

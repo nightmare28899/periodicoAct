@@ -222,7 +222,7 @@ unset($__errorArgs, $__bag); ?>
                     <p>Motivo para la suspension</p>
                     <p>Escribe el motivo</p>
                     <textarea wire:model="motivo" style="margin-left: 2rem;"
-                        class="border-0 bg-gray-200 <?php $__errorArgs = ['motivo'];
+                        class="border-0 rounded-md bg-gray-200 <?php $__errorArgs = ['motivo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

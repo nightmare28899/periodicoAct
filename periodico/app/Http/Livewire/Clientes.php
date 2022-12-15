@@ -23,7 +23,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social, $d, $modalErrors = 0;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [];
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
 
@@ -41,24 +41,6 @@ class Clientes extends Component
         $this->query = '';
         $this->clientesBuscados = [];
         $this->highlightIndex = 0;
-    }
-
-    public function incrementHighlight()
-    {
-        if ($this->highlightIndex === count($this->clientesBuscados) - 1) {
-            $this->highlightIndex = 0;
-            return;
-        }
-        $this->highlightIndex++;
-    }
-
-    public function decrementHighlight()
-    {
-        if ($this->highlightIndex === 0) {
-            $this->highlightIndex = count($this->clientesBuscados) - 1;
-            return;
-        }
-        $this->highlightIndex--;
     }
 
     public function selectContact($pos)
@@ -464,8 +446,8 @@ class Clientes extends Component
         }
 
         return view('livewire.clientes.view', [
-            'clientes' => Cliente::where('id', '=', $this->query)
-                ->orWhere('nombre', 'like', '%' . $this->query . '%')->paginate(10),
+            'clientes' => Cliente::where('id', '=', $this->clientesQuery)
+                ->orWhere('nombre', 'like', '%' . $this->clientesQuery . '%')->paginate(10),
             'rfc' => $this->rfc,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
     }
@@ -480,6 +462,7 @@ class Clientes extends Component
     {
         $this->resetInput();
         $this->openModalPopover();
+        $this->editEnabled = false;
     }
 
     public function primerModal()
@@ -1142,7 +1125,7 @@ class Clientes extends Component
                                 'fechaInicio' => $this->from,
                                 'fechaFin' => $this->to,
                                 'dias' => $this->diasSuscripcionSeleccionada,
-                                'estado' => 'Activo',
+                                'estado' => 'sin pagar',
                                 'lunes' => $this->lunes,
                                 'martes' => $this->martes,
                                 'miércoles' => $this->miércoles,
