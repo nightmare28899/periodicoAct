@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use carbon\carbon;
 use App\Models\ventas;
+use App\Models\Suscripcion;
 
 class CancelarVentas extends Component
 {
@@ -122,6 +123,10 @@ class CancelarVentas extends Component
         ]);
 
         if (substr($this->tipoMount, 0, 6) == 'suscri') {
+            Suscripcion::where('idSuscripcion', $id)->update([
+                'status' => 'Cancelada',
+            ]);
+
             $this->tipo = 'suscripciones';
             $this->ventas = Tiro
                 ::join('suscripciones', 'suscripciones.idSuscripcion', '=', 'tiro.idTipo')

@@ -71,8 +71,8 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
                                             <td
-                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' ? 'bg-red-500' : '') }}">
-                                                {{ $suscripcion->estado == 'Pausado' ? 'Inactivo' : 'Activo' }}</td>
+                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '') }}">
+                                                {{ $suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'Inactivo' :  'Activo' }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaFin }}</td>
@@ -100,7 +100,7 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
                                             <td class="px-4 py-2 border border-dark bg-orange-500 text-white">
-                                                {{ $suscripcion->estado }}</td>
+                                                Suspendida </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">

@@ -99,8 +99,8 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark"><?php echo e($suscripcion->periodo); ?></td>
                                             <td
-                                                class="px-4 py-2 border border-dark text-white <?php echo e($suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' ? 'bg-red-500' : '')); ?>">
-                                                <?php echo e($suscripcion->estado == 'Pausado' ? 'Inactivo' : 'Activo'); ?></td>
+                                                class="px-4 py-2 border border-dark text-white <?php echo e($suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '')); ?>">
+                                                <?php echo e($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'Inactivo' :  'Activo'); ?></td>
                                             <td class="px-4 py-2 border border-dark"><?php echo e($suscripcion->fechaInicio); ?>
 
                                             </td>
@@ -133,7 +133,7 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark"><?php echo e($suscripcion->periodo); ?></td>
                                             <td class="px-4 py-2 border border-dark bg-orange-500 text-white">
-                                                <?php echo e($suscripcion->estado); ?></td>
+                                                Suspendida </td>
                                             <td class="px-4 py-2 border border-dark"><?php echo e($suscripcion->fechaInicio); ?>
 
                                             </td>
