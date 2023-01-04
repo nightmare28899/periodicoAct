@@ -40,7 +40,6 @@ class Clientes extends Component
     {
         $this->query = '';
         $this->clientesBuscados = [];
-        $this->highlightIndex = 0;
     }
 
     public function selectContact($pos)
@@ -1157,7 +1156,7 @@ class Clientes extends Component
                                 'desde' => $this->from,
                                 'hasta' => $this->to,
                                 'fecha' => $this->date,
-                                'idSuscripcionSig' => $this->idSuscripcionSig != null ? $this->idSuscripcionSig : 1,
+                                'idSuscripcionSig' => $this->idSuscripcionSig != null ? $this->idSuscripcionSig['id'] + 1 : 1,
                             ])
                                 ->setPaper('A5', 'landscape')
                                 ->output();

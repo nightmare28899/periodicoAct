@@ -121,8 +121,8 @@
                                 <?php $suscripcionesClientes = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
                                     @if (($suscrip->{$diaS} != 0 &&
-                                        $suscrip->tiroStatus === 'Activo' &&
-                                        $suscrip->remisionStatus === 'Remisionado') ||
+                                        $suscrip->tiroStatus === 'Activo' /* &&
+                                        $suscrip->remisionStatus === 'Remisionado' */) ||
                                         $suscrip->contrato === 'Cortesía')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:

@@ -53,6 +53,7 @@
                                     <th class='px-6 py-2 uppercase'>Fecha Fin</th>
                                     <th class="px-6 py-2 uppercase">Pagado</th>
                                     <th class="px-6 py-2 uppercase">Fecha</th>
+                                    <th class="px-6 py-2 uppercase">Acciones</th>
                                 </tr>
                             </thead>
 
@@ -65,7 +66,7 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->enoxt }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noext }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
                                             </td>
@@ -81,6 +82,44 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
+                                                    Ver PDF
+                                                </x-jet-button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                @if ($suscripcionesSinPago)
+                                    @foreach ($suscripcionesSinPago as $suscripcion)
+                                        <tr>
+                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->id }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cliente_id }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noext }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
+                                            <td
+                                                class="px-4 py-2 border border-dark text-white bg-red-500 }}">
+                                                Inactivo</td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaFin }}</td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                Sin pagar
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
+                                                    Ver PDF
+                                                </x-jet-button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -111,6 +150,11 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
+                                            </td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
+                                                    Ver PDF
+                                                </x-jet-button>
                                             </td>
                                         </tr>
                                     @endforeach

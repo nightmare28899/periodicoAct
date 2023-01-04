@@ -68,7 +68,7 @@
             <tbody class="">
                 <tr>
                     <td>FACTURA A:</td>
-                    <td>ID: {{ $idSuscripcionSig['id'] + 1 }}</td>
+                    <td>ID: {{ $idSuscripcionSig }}</td>
                     <td></td>
                     <td>RFC: {{ $cliente['rfc_input'] }}</td>
                     <td>RUTA: {{ $ruta[0]['nombreruta'] }}</td>
