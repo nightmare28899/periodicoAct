@@ -44,16 +44,18 @@ class CancelarVentas extends Component
                 $this->ventas = Suscripcion
                     ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                     ->select('suscripciones.*', 'cliente.nombre')
-                    ->where('tiro.cliente', 'LIKE', '%' . $this->clienteSeleccionado . '%')
-                    ->orWhere('tiro.cliente_id', $this->clienteSeleccionado)
+                    ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                    ->orWhere('suscripciones.cliente_id', $this->clienteSeleccionado)
+                    ->orWhere('suscripciones.id', $this->clienteSeleccionado)
                     ->get();
             } else if (substr($this->tipoMount, 0, 5) == 'venta') {
                 $this->tipo = 'ventas';
                 $this->ventas = ventas
                     ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->select('ventas.*', 'cliente.nombre')
-                    ->where('tiro.cliente', 'LIKE', '%' . $this->clienteSeleccionado . '%')
-                    ->orWhere('tiro.cliente_id', $this->clienteSeleccionado)
+                    ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                    ->orWhere('ventas.cliente_id', $this->clienteSeleccionado)
+                    ->orWhere('ventas.id', $this->clienteSeleccionado)
                     ->get();
             }
         } else {
