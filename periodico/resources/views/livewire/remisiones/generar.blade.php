@@ -111,9 +111,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($this->ventaCopia)
+                                @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */$result->remisionStatus == 'Pendiente')
+                                        @if (/* $result->{$diaS} != 0 &&  */$result->remisionStatus == 'Pendiente' && $result->estado == 'Activo')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">
@@ -148,7 +148,7 @@
                                 @endif
                                 @if ($suscripcionCopia)
                                     @foreach ($suscripcionCopia as $suscri)
-                                        @if ($suscri->remisionStatus != 'Remisionado')
+                                        @if ($suscri->remisionStatus != 'Remisionado' && $suscri->estado != 'Cancelada')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">

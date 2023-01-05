@@ -30,7 +30,6 @@ class GenerarR extends Component
     {
         $this->query = '';
         $this->clientesBuscados = [];
-        $this->highlightIndex = 0;
     }
 
     public function selectContact($pos)

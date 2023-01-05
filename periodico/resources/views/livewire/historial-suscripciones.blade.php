@@ -11,16 +11,15 @@
                 <div class="flex-initial mx-1 mt-4 mb-3">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64 uppercase"
-                        name="search" placeholder="Buscar por cliente" wire:model="query" autocomplete="off" />
+                        name="search" placeholder="nombre o id del cliente" wire:model="query" autocomplete="off" />
 
                     <select wire:model="estatusPago"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64 uppercase">
                         <option style="display: none;">Escoge una opcion</option>
                         <option value="Todas">Todas</option>
                         <option value="Pagado">Pagado</option>
-                        <option value="facturado">Facturado</option>
                         <option value="sin pagar">Sin pagar</option>
-                        <option value="cancelado">Cancelado</option>
+                        <option value="Cancelada">Cancelada</option>
                     </select>
 
                     <label for="fechaInicio">Del</label>
@@ -72,46 +71,13 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
                                             <td
-                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '') }}">
-                                                {{ $suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'Inactivo' :  'Activo' }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
+                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Pagado' || $suscripcion->estado == 'sin pagar' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '') }}">
+                                                {{ ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'Inactivo' : ($suscripcion->estado == 'sin pagar' ? 'Activo' : 'Activo')) }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($suscripcion->fechaInicio)->format('d/m/Y') }}
                                             </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaFin }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') }}</td>
                                             <td class="px-4 py-2 border border-dark">
-                                                {{ $suscripcion->status }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
-                                                    Ver PDF
-                                                </x-jet-button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                @if ($suscripcionesSinPago)
-                                    @foreach ($suscripcionesSinPago as $suscripcion)
-                                        <tr>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->id }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cliente_id }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noext }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
-                                            <td
-                                                class="px-4 py-2 border border-dark text-white bg-red-500 }}">
-                                                Inactivo</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaFin }}</td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                Sin pagar
+                                                {{ $suscripcion->estado }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
@@ -143,13 +109,13 @@
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('Y-m-d') }}
+                                                {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ $suscripcion->status }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
+                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('d/m/Y') }}
                                             </td>
                                             <td class="px-4 py-2 border border-dark">
                                                 <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">

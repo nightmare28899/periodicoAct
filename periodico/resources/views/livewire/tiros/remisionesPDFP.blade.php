@@ -274,7 +274,7 @@
                             <label class="text-black" for="Física"> Periodo:
                                 Del: {{ \Carbon\Carbon::parse($de)->format('d/m/Y') }} Hasta:
                                 {{ \Carbon\Carbon::parse($hasta)->format('d/m/Y') }}, Ejemplares:
-                                {{ $result->cantEjemplares }} </label>
+                                {{ $result->cantEjemplares }}, Tipo: {{ $result->contrato }} </label>
                         </div>
                     </td>
                     <td>{{ sprintf('$ %s', number_format($result->import / $result->cantEjemplares, 2)) }}</td>

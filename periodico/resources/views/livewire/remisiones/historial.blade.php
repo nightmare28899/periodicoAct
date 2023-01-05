@@ -46,6 +46,7 @@
                                     <th class='px-6 py-2 uppercase'>Dia</th>
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
+                                    <th class='px-6 py-2 uppercase'>Estado</th>
                                     <th class="px-6 py-2 uppercase">Acciones</th>
                                 </tr>
                             </thead>
@@ -71,6 +72,7 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->status }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             @if (substr($tiro->idTipo, 0, 6) == 'suscri')
                                                 <td class="border border-dark">
@@ -93,7 +95,7 @@
                                                             @endif
                                                         @endif
 
-                                                        @if ($tiro->status != 'CREDITO' && substr($tiro->idTipo, 0, 6) == 'suscri')
+                                                        @if ($tiro->status != 'CREDITO' && $tiro->status != 'Cancelado' && substr($tiro->idTipo, 0, 6) == 'suscri')
                                                             @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') ||
                                                                 ($tiro->status == 'facturado' && substr($tiro->idTipo, 0, 6) == 'suscri'))
                                                                 <button
@@ -112,16 +114,35 @@
                                                             @endif
                                                         @endif
 
+                                                        {{-- <button
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
+                                                            PDF
+                                                        </button> --}}
+                                                    @endif
+
+                                                    @if ($tiro->status != 'Cancelado')
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
+                                                            class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                            Cancelar Remisión
+                                                        </button>
+                                                    @else
+                                                        <button
+                                                            class="px-2 py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2 rounded-lg">
+                                                            Suscripción cancelada
+                                                        </button>
+                                                    @endif
+
+                                                    @if ($tiro->status != 'Cancelado')
                                                         <button
                                                             wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                             PDF
                                                         </button>
                                                     @else
-                                                        <button
-                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
-                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
-                                                            PDF
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
+                                                            class="px-2 py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2 rounded-lg">
+                                                            Ver PDF
                                                         </button>
                                                     @endif
                                                     {{-- <button
@@ -138,22 +159,6 @@
                                             @else
                                                 <td class="border border-dark">
 
-                                                    {{-- @if ($tiro->estado != 'Cancelado')
-                                                        <button wire:click="cancelar('{{ $tiro->idTipo }}')"
-                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline">Cancelar
-                                                            venta
-                                                        </button>
-                                                    @else
-                                                        <button
-                                                            class="inline-flex
-                                                        items-center h-10 px-4 m-2 text-sm text-white
-                                                        transition-colors duration-150 bg-red-500
-                                                        hover:bg-red-600 rounded-lg
-                                                        focus:shadow-outline"
-                                                            disabled>Cancelada
-                                                        </button>
-                                                    @endif --}}
-
                                                     @if ($tiro->clasificacion != 'CRÉDITO')
                                                         @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta') || $tiro->status == 'facturado')
                                                             <button
@@ -161,51 +166,54 @@
                                                                 disabled>Pagado
                                                             </button>
                                                         @else
-                                                            <x-jet-dropdown align="right" width="48">
-                                                                <x-slot name="trigger">
+                                                            @if ($tiro->status != 'Cancelado')
+                                                                <x-jet-dropdown align="right" width="48">
+                                                                    <x-slot name="trigger">
 
-                                                                    <span class="inline-flex rounded-md">
-                                                                        <button type="button"
-                                                                            class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                                            Acciones
+                                                                        <span class="inline-flex rounded-md">
+                                                                            <button type="button"
+                                                                                class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                                                                Acciones
 
-                                                                            <svg class="ml-2 -mr-0.5 h-4 w-4"
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                viewBox="0 0 20 20" fill="currentColor">
-                                                                                <path fill-rule="evenodd"
-                                                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                                                    clip-rule="evenodd" />
-                                                                            </svg>
+                                                                                <svg class="ml-2 -mr-0.5 h-4 w-4"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                    viewBox="0 0 20 20"
+                                                                                    fill="currentColor">
+                                                                                    <path fill-rule="evenodd"
+                                                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                                                        clip-rule="evenodd" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        </span>
+                                                                    </x-slot>
+
+                                                                    <x-slot name="content">
+                                                                        <div class="border-t border-gray-200"></div>
+                                                                        <button
+                                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
+                                                                            class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">
+                                                                            Devolver periodicos
                                                                         </button>
-                                                                    </span>
-                                                                </x-slot>
-
-                                                                <x-slot name="content">
-                                                                    <div class="border-t border-gray-200"></div>
+                                                                        <div class="border-t border-gray-200"></div>
+                                                                        <button
+                                                                            wire:click="modalCapturarPeriodicos({{ $tiro->id }})"
+                                                                            class="px-2 w-full py-1 cursor-pointer hover:bg-blue-600 hover:text-white">
+                                                                            Capturar periodicos
+                                                                        </button>
+                                                                        <div class="border-t border-gray-200"></div>
+                                                                    </x-slot>
+                                                                </x-jet-dropdown>
+                                                                @if ($tiro->status != 'Cancelado')
                                                                     <button
-                                                                        wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
-                                                                        class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">
-                                                                        Devolver periodicos
+                                                                        wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
+                                                                        class="inline-flex
+                                                        items-center h-10 px-4 m-2 text-sm text-white
+                                                        transition-colors duration-150 bg-indigo-500
+                                                        hover:bg-indigo-600 rounded-lg
+                                                        focus:shadow-outline"
+                                                                        target="_blank">Pagar
                                                                     </button>
-                                                                    <div class="border-t border-gray-200"></div>
-                                                                    <button
-                                                                        wire:click="modalCapturarPeriodicos({{ $tiro->id }})"
-                                                                        class="px-2 w-full py-1 cursor-pointer hover:bg-blue-600 hover:text-white">
-                                                                        Capturar periodicos
-                                                                    </button>
-                                                                    <div class="border-t border-gray-200"></div>
-                                                                </x-slot>
-                                                            </x-jet-dropdown>
-                                                            @if ($tiro->estado != 'Cancelado')
-                                                                <button
-                                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
-                                                                    class="inline-flex
-                                                            items-center h-10 px-4 m-2 text-sm text-white
-                                                            transition-colors duration-150 bg-indigo-500
-                                                            hover:bg-indigo-600 rounded-lg
-                                                            focus:shadow-outline"
-                                                                    target="_blank">Pagar
-                                                                </button>
+                                                                @endif
                                                             @endif
                                                         @endif
                                                     @else
@@ -216,11 +224,30 @@
                                                         </button>
                                                     @endif
 
-                                                    <button
-                                                        wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}', {{ $tiro->id }})"
-                                                        class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
-                                                        PDF
-                                                    </button>
+                                                    @if ($tiro->status != 'Cancelado')
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
+                                                            class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
+                                                            {{ $tipo === 'suscripciones' ? 'Cancelar suscripción' : 'Cancelar Remisión' }}
+                                                        </button>
+                                                    @else
+                                                        <button
+                                                            class="px-2 py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2 rounded-lg">
+                                                            {{ $tipo === 'suscripciones' ? 'Suscripción cancelada' : 'Venta cancelada' }}
+                                                        </button>
+                                                    @endif
+
+                                                    @if ($tiro->status != 'Cancelado')
+                                                        <button
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}', {{ $tiro->id }})"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
+                                                            PDF
+                                                        </button>
+                                                    @else
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
+                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
+                                                            PDF
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             @endif
                                         </tr>

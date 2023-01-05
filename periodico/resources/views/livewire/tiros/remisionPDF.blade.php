@@ -72,7 +72,7 @@
 <body>
     @if (count($ventas) > 0)
         @foreach ($ventas as $result)
-            @if ($result->{$diaS})
+            {{-- @if ($result->{$diaS}) --}}
                 <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
                     <img src="img/logo.jpe" alt="logo la voz" height="36px">
                 </div>
@@ -201,7 +201,7 @@
                         </tr>
                     </thead>
                 </table>
-            @endif
+            {{-- @endif --}}
         @endforeach
     @endif
     {{-- @if (count($domsubs) > 1)
@@ -403,7 +403,7 @@
                             <div class="form-group">
                                 <label class="text-black" for="Física"> Fecha:
                                     {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
-                                    {{ $result->cantEjemplares }}, Tipo: Suscripción, {{ $result->contrato }} </label>
+                                    {{ $result->cantEjemplares }}, Tipo: {{ $result->contrato }} </label>
                             </div>
                         </td>
                         <td>{{ sprintf('$ %s', number_format($result->importe / $result->cantEjemplares, 2)) }}</td>

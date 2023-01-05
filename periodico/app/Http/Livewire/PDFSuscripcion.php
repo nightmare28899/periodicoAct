@@ -7,6 +7,7 @@ use Livewire\Component;
 
 class PDFSuscripcion extends Component
 {
+    public $pdf;
     public function render()
     {
         $this->pdf = Storage::url('suscripcion.pdf');
