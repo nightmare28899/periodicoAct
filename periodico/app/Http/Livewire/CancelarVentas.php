@@ -123,11 +123,13 @@ class CancelarVentas extends Component
             Suscripcion::where('idSuscripcion', $id)->update([
                 'estado' => 'Cancelada',
                 'remisionStatus' => 'Cancelada',
+                'tiroStatus' => 'Cancelada'
             ]);
         } else if (substr($this->tipoMount, 0, 5) == 'venta') {
             Ventas::where('idVenta', $id)->update([
                 'estado' => 'Cancelada',
-                'remisionStatus' => 'Cancelada'
+                'remisionStatus' => 'Cancelada',
+                'tiroStatus' => 'Cancelada'
             ]);
         }
 

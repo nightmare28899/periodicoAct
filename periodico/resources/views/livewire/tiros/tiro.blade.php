@@ -79,7 +79,7 @@
                                 <?php $sum_ejemplares = 0; ?>
                                 <?php $ventasClientes = 0; ?>
                                 @foreach ($ventas as $result)
-                                    @if ($result->{$diaS} != 0 && $result->estado == 'Activo' && $result->tiroStatus == 'Activo')
+                                    @if ($result->{$diaS} != 0 && $result->estado != 'Cancelada' && $result->tiroStatus != 'Cancelada')
                                         <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombreruta }}, Tipo:
                                                 {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }},
@@ -120,7 +120,7 @@
                                 <?php $sum_ejemplaressus = 0; ?>
                                 <?php $suscripcionesClientes = 0; ?>
                                 @foreach ($suscripcion as $suscrip)
-                                    @if (($suscrip->{$diaS} != 0 && $suscrip->tiroStatus == 'Activo' && $suscrip->estado == 'sin pagar') /* &&
+                                    @if ((/* $suscrip->{$diaS} != 0 && */ $suscrip->tiroStatus != 'Cancelada' && $suscrip->estado != 'Cancelada') /* &&
                                      $suscrip->remisionStatus === 'Remisionado' */ ||
                                         $suscrip->contrato === 'Cortesía')
                                         <tr>
