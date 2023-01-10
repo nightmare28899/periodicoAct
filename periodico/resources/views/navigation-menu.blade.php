@@ -95,6 +95,8 @@
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Suscripciones Suspendidas') }}</button></a>
                             <a href="{{ url('reporteSuscripcionVencimiento') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Suscripciones Vencimiento') }}</button></a>
+                            <a href="{{ url('historialVentas') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Ventas') }}</button></a>
                             <a href="{{ url('historialSuscripciones') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Suscripciones') }}</button></a>
                             <a href="{{ url('reportVentaPFacturas') }}"><button

@@ -24,31 +24,39 @@
                 }
             </style>
 
-            <div class="w-full">
-                <input type="text"
-                    class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                    name="search" id="search" placeholder="Buscar Cliente" wire:model="query" autocomplete="off" />
+            <div class="w-full flex">
+                <div class="w-full">
+                    <input type="text"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
+                        autocomplete="off" />
+                    @if (!empty($query))
 
-                @if (!empty($query))
+                        <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
 
-                    <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
+                        <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg" style="width: 49%;">
 
-                    <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg w-2/3">
+                            @if (!empty($clientesBuscados))
 
-                        @if (!empty($clientesBuscados))
+                                @foreach ($clientesBuscados as $i => $buscado)
+                                    <div wire:click="selectContact({{ $i }})"
+                                        class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
+                                        {{ $buscado['nombre'] }}
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="list-item list-none p-2">No hay resultado</div>
+                            @endif
+                        </div>
 
-                            @foreach ($clientesBuscados as $i => $buscado)
-                                <div wire:click="selectContact({{ $i }})"
-                                    class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
-                                    {{ $buscado['nombre'] }}
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="list-item list-none p-2">No hay resultado</div>
-                        @endif
-                    </div>
+                    @endif
+                </div>
+                <div class="w-full ml-2">
+                    <input type="number" min="0" max="1000"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase" wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada" placeholder="Escribe el id de la venta" />
+                </div>
 
-                @endif
+
             </div>
 
             @if ($clienteSeleccionado != null)

@@ -25,7 +25,7 @@ class Clientes extends Component
 
     public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
 
-    public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas;
+    public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas, $query, $clientesBuscados = [], $dateF, $dateFiltro, $ventaEncontrada = null;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -42,34 +42,56 @@ class Clientes extends Component
         $this->clientesBuscados = [];
     }
 
+    public function showInformation()
+    {
+        if ($this->ventaEncontrada && $this->clienteSeleccionado) {
+            if (count($this->ventas) > 0) {
+                for ($i = 0; $i < count($this->ventas); $i++) {
+                    if ($this->ventas[$i]['estado'] != 'Cancelada') {
+
+                        try {
+                            $ventaSearch = ventas::where('cliente_id', $this->clienteSeleccionado)->where('ventas.id', (int)$this->ventaEncontrada)->get();
+                            if ($ventaSearch != null) {
+                                $this->desde = $ventaSearch[0]['desde'];
+                                $this->hasta = $ventaSearch[0]['hasta'];
+                                $this->lunesVentas = $ventaSearch[0]['lunes'];
+                                $this->martesVentas = $ventaSearch[0]['martes'];
+                                $this->miercolesVentas = $ventaSearch[0]['miércoles'];
+                                $this->juevesVentas = $ventaSearch[0]['jueves'];
+                                $this->viernesVentas = $ventaSearch[0]['viernes'];
+                                $this->sabadoVentas = $ventaSearch[0]['sábado'];
+                                $this->domingoVentas = $ventaSearch[0]['domingo'];
+                                $this->editEnabled = true;
+                            }
+                        } catch (\Exception $e) {
+                            $this->status = 'error';
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'error') ? '¡No existe venta con ese id!' : ' '
+                            ]);
+                        }
+                    } else {
+                        $this->hasta = null;
+                        $this->lunesVentas = null;
+                        $this->martesVentas = null;
+                        $this->miercolesVentas = null;
+                        $this->juevesVentas = null;
+                        $this->viernesVentas = null;
+                        $this->sabadoVentas = null;
+                        $this->domingoVentas = null;
+                        $this->editEnabled = false;
+                    }
+                }
+            }
+        }
+    }
+
     public function selectContact($pos)
     {
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
             $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
-            if (count($this->ventas) > 0) {
-                $this->desde = $this->ventas[0]['desde'];
-                $this->hasta = $this->ventas[0]['hasta'];
-                $this->lunesVentas = $this->ventas[0]['lunes'];
-                $this->martesVentas = $this->ventas[0]['martes'];
-                $this->miercolesVentas = $this->ventas[0]['miércoles'];
-                $this->juevesVentas = $this->ventas[0]['jueves'];
-                $this->viernesVentas = $this->ventas[0]['viernes'];
-                $this->sabadoVentas = $this->ventas[0]['sábado'];
-                $this->domingoVentas = $this->ventas[0]['domingo'];
-                $this->editEnabled = true;
-            } else {
-                $this->hasta = null;
-                $this->lunesVentas = null;
-                $this->martesVentas = null;
-                $this->miercolesVentas = null;
-                $this->juevesVentas = null;
-                $this->viernesVentas = null;
-                $this->sabadoVentas = null;
-                $this->domingoVentas = null;
-                $this->editEnabled = false;
-            }
+
             $this->domicilioSeleccionado = [];
             $this->resetear();
         }
@@ -930,6 +952,7 @@ class Clientes extends Component
 
                         $this->status = 'created';
                         $this->modalV = false;
+                        $this->ventaEncontrada = null;
 
 
                         $this->limpiarVentaModal();
@@ -962,11 +985,11 @@ class Clientes extends Component
 
     public function actualizarVenta()
     {
-        $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->first();
-        $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
+        $this->ventas = ventas::find($this->ventaEncontrada);
+        $domicilio = Domicilio::find($this->ventas['domicilio_id']);
 
         if ($domicilio) {
-            $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
+            $tarifa = Tarifa::find($domicilio['tarifa_id']);
             $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
             $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
             $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
@@ -990,6 +1013,7 @@ class Clientes extends Component
                 'total' => $this->total
             ]);
 
+            $this->status = 'updated';
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'updated') ? '¡Venta actualizada exitosamente!' : ''
             ]);
@@ -1058,6 +1082,7 @@ class Clientes extends Component
         $this->sabadoVentas = null;
         $this->domingoVentas = null;
         $this->modalV = false;
+        $this->ventaEncontrada = null;
     }
 
     public function updatedCantDom($field, $value)

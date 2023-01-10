@@ -7,7 +7,6 @@ use App\Models\Suscripcion;
 use App\Models\SuscripcionSupendida;
 use App\Models\Cliente;
 use Carbon\Carbon;
-use Doctrine\DBAL\Query;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;

@@ -56,7 +56,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="flex-none pt-1">
+                    <div class="pt-6 ml-2">
                         <div>
                             <button wire:click="descargaTodasRemisiones" id="tiro" wire:loading.attr="disabled"
                                 class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
@@ -73,22 +73,22 @@
                                 Generar Todas
                             </button>
                         </div>
-                        <div class="mt-1">
-                            <button wire:click="descargaRemision" id="tiro" wire:loading.attr="disabled"
-                                class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
-                                <svg wire:loading wire:target="descargaRemision"
-                                    class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4">
-                                    </circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                Generar Seleccion
-                            </button>
-                        </div>
+                    </div>
+                    <div class="mt-6 ml-2">
+                        <button wire:click="descargaRemision" id="tiro" wire:loading.attr="disabled"
+                            class="p-2 bg-green-500 rounded-md text-white hover:bg-green-700">
+                            <svg wire:loading wire:target="descargaRemision"
+                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Generar Seleccion
+                        </button>
                     </div>
                 </div>
                 <br>
@@ -113,7 +113,7 @@
                             <tbody>
                                 @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */$result->remisionStatus == 'Pendiente' && $result->estado == 'Activo')
+                                        @if (/* $result->{$diaS} != 0 &&  */ $result->remisionStatus == 'Pendiente' && $result->estado == 'Activo')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">
@@ -130,10 +130,10 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $faltante }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->{$diaS} }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    ${{ $diaS == 'domingo' ? $result->dominical : $result->ordinario }}
+                                                    {{ $diaS == 'domingo' ? sprintf('$ %s', number_format($result->dominical, 2)) : sprintf('$ %s', number_format($result->ordinario, 2)) }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    ${{ ($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS} }}
+                                                    {{ $diaS == 'domingo' ? sprintf('$ %s', number_format($result->dominical, 2)) : sprintf('$ %s', number_format($result->ordinario, 2) * $result->{$diaS}) }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->nombreruta }}
@@ -154,8 +154,7 @@
                                                     <div class="form-group">
                                                         <input wire:model="clienteSeleccionado" type="checkbox"
                                                             value={{ $suscri->idSuscripcion }}>
-                                                        <label class="text-black"
-                                                            for="Física">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
+                                                        <label class="text-black">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
                                                     </div>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
@@ -168,10 +167,11 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->cantEjemplares }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    ${{ $suscri->importe / $suscri->cantEjemplares }}</td>
+                                                    {{ sprintf('$ %s', number_format($suscri->importe / $suscri->cantEjemplares, 2)) }}
+                                                </td>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    ${{ $suscri->importe }}
+                                                    {{ sprintf('$ %s', number_format($suscri->importe, 2)) }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->nombreruta }}

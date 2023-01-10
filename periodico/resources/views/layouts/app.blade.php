@@ -127,6 +127,7 @@
                 case '¡El monto ingresado es mayor al total de la factura!':
                 case '¡Selecciona una factura primero!':
                 case '¡Llena todos los campos!':
+                case '¡No existe venta con ese id!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

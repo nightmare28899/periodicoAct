@@ -39,6 +39,7 @@ use App\Http\Livewire\CancelarVentas;
 use App\Http\Livewire\CancelarVentaPDF;
 use App\Http\Livewire\ReporteVentaPFacturas;
 use App\Http\Livewire\ReporteSaldos;
+use App\Http\Livewire\HistorialVentas;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reporteSuscripcionVencimiento', SuscripcionReporteFechas::class)->name('reporteSuscripcionVencimiento');
     Route::get('/PDFSuscripcionVencimiento', PdfSuscripcionReporteVencimiento::class)->name('PDFSuscripcionVencimiento');
     Route::get('/historialSuscripciones', HistorialSuscripciones::class)->name('historialSuscripciones');
+    Route::get('/historialVentas', HistorialVentas::class)->name('historialVentas');
     Route::get('/historialComplementoPago', HistorialComplementoPago::class)->name('historialComplementoPago');
     Route::get('/vistaPreviaComplemento/{id}', VistaFacturaPPD::class);
     Route::get('/CancelarFacturaComplemento/{id}/{idCliente}', CancelarFacturaComplemento::class);

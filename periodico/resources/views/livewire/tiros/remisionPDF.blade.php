@@ -149,8 +149,8 @@
                             <td>
                                 <div class="form-group">
                                     <label class="text-black" for="Física"> Fecha:
-                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
-                                        {{ $result->{$diaS} }}, Tipo: Venta/Cliente </label>
+                                        {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }},{{--  Ejemplares:
+                                        {{ $result->{$diaS} }}, --}} Tipo: Venta/Cliente </label>
                                 </div>
                             </td>
                             <td>{{ sprintf('$ %s', number_format($diaS == 'domingo' ? $result->dominical : $result->ordinario, 2)) }}
@@ -402,8 +402,8 @@
                         <td>
                             <div class="form-group">
                                 <label class="text-black" for="Física"> Fecha:
-                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}, Ejemplares:
-                                    {{ $result->cantEjemplares }}, Tipo: {{ $result->contrato }} </label>
+                                    {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }},{{--  Ejemplares:
+                                    {{ $result->cantEjemplares }}, --}} Tipo: {{ $result->contrato }} </label>
                             </div>
                         </td>
                         <td>{{ sprintf('$ %s', number_format($result->importe / $result->cantEjemplares, 2)) }}</td>

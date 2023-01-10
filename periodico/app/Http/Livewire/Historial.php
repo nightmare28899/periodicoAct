@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class Historial extends Component
 {
     public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha;
-
+    public $query = '';
     public function mount($editar)
     {
         if ($editar != 'normal') {
