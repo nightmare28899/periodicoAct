@@ -55,8 +55,6 @@
                     <input type="number" min="0" max="1000"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase" wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada" placeholder="Escribe el id de la venta" />
                 </div>
-
-
             </div>
 
             @if ($clienteSeleccionado != null)
