@@ -298,8 +298,7 @@
                         <div class="w-1/2 p-2">
                             <label for='colInput' class='block text-gray-700 text-sm font-bold mb-2'>Colonia:</label>
                             <input type='text' name='colInput'
-                                class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colInput') border-red-500 @enderror'
-                                maxlength='12' placeholder='Escribe tu colonia' wire:model.defer='colInput'>
+                                class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colInput') border-red-500 @enderror' placeholder='Escribe tu colonia' wire:model.defer='colInput'>
                             @error('colInput')
                                 <span
                                     class='text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2'>{{ $message }}</span>
@@ -372,7 +371,7 @@
                     <div class="flex">
                         <div class="w-1/2 p-2">
                             <label for="calleInput" class="block text-black text-sm font-bold mb-2">Calle:</label>
-                            <input type="text" maxlength="10"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('calleInput') border-red-500 @enderror"
                                 id="calleInput" wire:model.defer="calleInput" placeholder="Escribe tu calle" />
                             @error('calleInput')

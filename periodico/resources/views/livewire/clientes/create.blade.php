@@ -57,8 +57,7 @@
                         <label for='Física' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu
                             RFC:</label>
                         <input type='text' name='rfc_input'
-                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror'
-                               maxlength='13' placeholder='Escribe tu RFC (son 13 digitos)'
+                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror' placeholder='Escribe tu RFC (son 13 digitos)'
                                wire:model.defer='rfc_input'>
                         @error('rfc_input')
                         <span
@@ -68,8 +67,7 @@
                         <label for='Moral' class='block text-gray-700 text-sm font-bold mb-2'>Escribe tu
                             RFC:</label>
                         <input type='text' name='rfc_input'
-                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror'
-                               maxlength='12' placeholder='Escribe tu RFC (son 12 digitos)'
+                               class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('rfc_input') border-red-500 @enderror' placeholder='Escribe tu RFC (son 12 digitos)'
                                wire:model.defer='rfc_input'>
                         @error('rfc_input')
                         <span
