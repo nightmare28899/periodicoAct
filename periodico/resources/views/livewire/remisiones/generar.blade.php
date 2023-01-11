@@ -97,7 +97,7 @@
                         <table class="table-auto border-separate border-spacing-2 border border-dark w-full uppercase">
                             <thead>
                                 <tr class='bg-gray-100'>
-                                    <th class='px-4 py-2 uppercase'>Fecha</th>
+                                    <th class='px-4 py-2 uppercase'>Selecciona</th>
                                     <th class='px-4 py-2 uppercase'>Cliente</th>
                                     <th class='px-4 py-2 uppercase'>Entregar</th>
                                     <th class='px-4 py-2 uppercase'>Devuelto</th>
@@ -108,33 +108,38 @@
                                     {{-- <th class='px-6 py-2 uppercase'>Dia</th> --}}
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
+                                    <th class='px-6 py-2 uppercase'>Fecha Inicio</th>
+                                    <th class='px-6 py-2 uppercase'>Fecha Fin</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */ $result->remisionStatus == 'Pendiente' || $result->remisionStatus == 'Cancelada' && $result->estado == 'Activo')
+                                        @if (/* $result->{$diaS} != 0 &&  */ $result->remisionStatus == 'Pendiente' ||
+                                                ($result->remisionStatus == 'Cancelada' && $result->estado == 'Activo'))
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    <div class="form-group">
-                                                        <input wire:model="clienteSeleccionado" type="checkbox"
-                                                            value={{ $result->idVenta }}>
-                                                        <label class="text-black"
-                                                            for="Física">{{ \Carbon\Carbon::parse($result->created_at)->format('d/m/Y') }}</label>
-                                                    </div>
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                        value={{ $result->idVenta }}>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ $result->nombre ? $result->nombre : $result->razon_social }}</td>
+                                                    {{ $result->nombre ? $result->nombre : $result->razon_social }}
+                                                </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }} <b>periód.</b>
+                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}
+                                                    <b>periód.</b>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $devuelto }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $faltante }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }} <b>periód.</b>
+                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}
+                                                    <b>periód.</b>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    <b>Domingo:</b> {{ sprintf('$ %s', number_format($result->dominical, 2)) }}, <b>Ordinario:</b> {{ sprintf('$ %s', number_format($result->ordinario, 2)) }}
+                                                    <b>Domingo:</b>
+                                                    {{ sprintf('$ %s', number_format($result->dominical, 2)) }},
+                                                    <b>Ordinario:</b>
+                                                    {{ sprintf('$ %s', number_format($result->ordinario, 2)) }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ sprintf('$ %s', number_format($result->total, 2)) }}
@@ -143,6 +148,14 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->nombreruta }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->tiporuta }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    <div class="form-group">
+                                                        <label class="text-black"
+                                                            for="Física">{{ \Carbon\Carbon::parse($result->desde)->format('d/m/Y') }}</label>
+                                                    </div>
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ \Carbon\Carbon::parse($result->hasta)->format('d/m/Y') }}</td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -155,21 +168,19 @@
                                         @if ($suscri->remisionStatus != 'Remisionado' && $suscri->estado != 'Cancelada')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    <div class="form-group">
-                                                        <input wire:model="clienteSeleccionado" type="checkbox"
-                                                            value={{ $suscri->idSuscripcion }}>
-                                                        <label
-                                                            class="text-black">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
-                                                    </div>
+                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                        value={{ $suscri->idSuscripcion }}>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ $suscri->nombre ? $suscri->nombre : $suscri->razon_social }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->cantEjemplares }}
+                                                    <b>periód.</b>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $devuelto }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $faltante }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->cantEjemplares }}
+                                                    <b>periód.</b>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ sprintf('$ %s', number_format($suscri->importe / $suscri->cantEjemplares, 2)) }}
@@ -177,11 +188,23 @@
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ sprintf('$ %s', number_format($suscri->importe, 2)) }}
-                                                </td>
-                                                <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td>
+                                                </td>{{--
+                                                <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td> --}}
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->nombreruta }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->tiporuta }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    <div class="form-group">
+                                                        <label
+                                                            class="text-black">{{ \Carbon\Carbon::parse($suscri->fechaInicio)->format('d/m/Y') }}</label>
+                                                    </div>
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    <div class="form-group">
+                                                        <label
+                                                            class="text-black">{{ \Carbon\Carbon::parse($suscri->fechaFin)->format('d/m/Y') }}</label>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach

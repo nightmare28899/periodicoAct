@@ -72,59 +72,8 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            } else {
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->where("ventas.remisionStatus", "=", "Pendiente")
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->where("suscripciones.remisionStatus", "=", "Pendiente")
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -135,44 +84,34 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             } else {
-                if ($this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
+                $this->ventaCopia = ventas
+                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                    ->where(function ($query) {
+                        $query->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
+                    })
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->get($this->diaS);
 
-                    $this->ventaCopia = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where(function ($query) {
-                            $query->where('desde', '<=', $this->fechaRemision)
-                                ->where('hasta', '>=', $this->fechaRemision)
-                                ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-                    $this->suscripcionCopia = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where(function ($query) {
-                            $query->where('fechaInicio', '<=', $this->fechaRemision)
-                                ->where('fechaFin', '>=', $this->fechaRemision)
-                                ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta]);
-                        })
-                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
+                $this->suscripcionCopia = Suscripcion
+                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                    ->where(function ($query) {
+                        $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
+                    })
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->get($this->diaS);
             }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
@@ -184,7 +123,8 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -196,7 +136,8 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -209,8 +150,9 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta)
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -221,7 +163,8 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -234,8 +177,7 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -245,8 +187,7 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -256,7 +197,6 @@ class GenerarR extends Component
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where("ventas.remisionStatus", "=", "Pendiente")
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
@@ -264,7 +204,6 @@ class GenerarR extends Component
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where("suscripciones.remisionStatus", "=", "Pendiente")
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
@@ -276,8 +215,7 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -287,74 +225,10 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            } else {
-                if ($this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
-
-                    $this->ventaCopia = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where(function ($query) {
-                            $query->where('desde', '<=', $this->fechaRemision)
-                                ->where('hasta', '>=', $this->fechaRemision)
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-                    $this->suscripcionCopia = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where(function ($query) {
-                            $query->where('fechaInicio', '<=', $this->fechaRemision)
-                                ->where('fechaFin', '>=', $this->fechaRemision)
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
             }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
@@ -365,8 +239,7 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -377,40 +250,7 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->rutaSeleccionada != "Todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->where('ruta.nombreruta', $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->where('ruta.nombreruta', $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -426,68 +266,11 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            } else {
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->where(function ($query) {
-                        $query->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcionCopia = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->where(function ($query) {
-                        $query->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventaCopia = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta)
+                            ->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -498,48 +281,44 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
+                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             } else {
-                if ($this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
+                $this->ventaCopia = ventas
+                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
+                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
+                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
+                    ->where(function ($query) {
+                        $query->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta);
+                    })
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->get($this->diaS);
 
-                    $this->ventaCopia = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where(function ($query) {
-                            $query->where('desde', '<=', $this->fechaRemision)
-                                ->where('hasta', '>=', $this->fechaRemision)
-                                ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                                ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-                    $this->suscripcionCopia = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where(function ($query) {
-                            $query->where('fechaInicio', '<=', $this->fechaRemision)
-                                ->where('fechaFin', '>=', $this->fechaRemision)
-                                ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                                ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
+                $this->suscripcionCopia = Suscripcion
+                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
+                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
+                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
+                    ->where(function ($query) {
+                        $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta)
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
+                    })
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->get($this->diaS);
             }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
@@ -551,8 +330,11 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta)
+                            ->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
@@ -564,8 +346,11 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("cliente.id", '=',  $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate("suscripciones.fechaInicio", ">=", $this->de)
+                            ->whereDate("suscripciones.fechaFin", "<=", $this->hasta)
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -582,8 +367,7 @@ class GenerarR extends Component
                             $query->where('cliente.id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
                                 ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where('ventas.tipo', '=', $this->tipoSeleccionada)
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                                ->where('ventas.tipo', '=', $this->tipoSeleccionada);
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
@@ -593,11 +377,10 @@ class GenerarR extends Component
                         ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                         ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                         ->where(function ($query) {
-                            $query->where('cliente.id', '=', $this->query)
+                            $query->where('suscripciones.cliente_id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
                                 ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where('suscripciones.tipo', '=', $this->tipoSeleccionada)
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                                ->where('suscripciones.tipo', '=', $this->tipoSeleccionada);
                         })
                         ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
@@ -610,8 +393,7 @@ class GenerarR extends Component
                         ->where(function ($query) {
                             $query->where('cliente.id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
@@ -623,8 +405,7 @@ class GenerarR extends Component
                         ->where(function ($query) {
                             $query->where('cliente.id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
                         ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
@@ -640,8 +421,7 @@ class GenerarR extends Component
                             $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
                                 ->where('cliente.id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
@@ -652,47 +432,12 @@ class GenerarR extends Component
                         ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                         ->where(function ($query) {
                             $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                ->where('cliente.id', '=', $this->query)
+                                ->where('suscripciones.cliente_id', '=', $this->query)
                                 ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
                         ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
-                } else {
-                    if ($this->rutaSeleccionada != "Todos" && $this->fechaRemision) {
-                        $this->dateF = new Carbon($this->fechaRemision);
-                        $this->diaS = $this->dateF->translatedFormat('l');
-
-                        $this->ventaCopia = ventas
-                            ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                            ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                            ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                            ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                            ->where(function ($query) {
-                                $query->where('cliente.id', '=', $this->query)
-                                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                    ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                    ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                    ->where("ventas.remisionStatus", "=", "Pendiente");
-                            })
-                            ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                            ->get($this->diaS);
-
-                        $this->suscripcionCopia = Suscripcion
-                            ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                            ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                            ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                            ->where(function ($query) {
-                                $query->where('cliente.id', '=', $this->query)
-                                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                    ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
-                                    ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                    ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                            })
-                            ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                            ->get($this->diaS);
-                    }
                 }
             }
         }
@@ -863,10 +608,10 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -875,24 +620,22 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            }
-
-            if ($this->tipoSeleccionada == 'todos') {
+            } else {
                 $this->ventas = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -900,44 +643,10 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventas = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->where("ventas.remisionStatus", "=", "Pendiente")
-                            ->whereBetween('ventas.created_at', [$this->de, $this->hasta]);
-                    })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcion = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente")
-                            ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta]);
-                    })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
 
@@ -949,10 +658,11 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente")
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
+                            ->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -961,10 +671,11 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente")
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
 
@@ -975,10 +686,11 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->whereDate('ventas.desde', '<=', $this->de)
+                            ->whereDate('ventas.hasta', '>=', $this->hasta)
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -987,7 +699,8 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
@@ -1000,10 +713,9 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1011,10 +723,9 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada);
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             } else {
                 $this->ventas = ventas
@@ -1022,20 +733,14 @@ class GenerarR extends Component
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
                     ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
 
@@ -1046,10 +751,9 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1057,100 +761,10 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventas = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-
-                $this->suscripcion = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            } else {
-                if ($this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
-
-                    $this->ventas = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where("ventas.remisionStatus", "=", "Pendiente")
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-
-                    $this->suscripcion = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where("suscripciones.remisionStatus", "=", "Pendiente")
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
-
-
-                if ($this->rutaSeleccionada != "Todos" && $this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
-
-                    $this->ventas = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where(function ($query) {
-                            $query->where('desde', '<=', $this->fechaRemision)
-                                ->where('hasta', '>=', $this->fechaRemision)
-                                ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-                    $this->suscripcion = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where(function ($query) {
-                            $query->where('fechaInicio', '<=', $this->fechaRemision)
-                                ->where('fechaFin', '>=', $this->fechaRemision)
-                                ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
             }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
@@ -1161,10 +775,9 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1173,15 +786,14 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->where("ruta.nombreruta", "=", $this->rutaSeleccionada);
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
         }
 
-        if ($this->de && $this->hasta && $this->clienteBarraBuscadora) {
+        if ($this->de && $this->hasta && $this->query != "") {
             if ($this->tipoSeleccionada != 'todos') {
                 $this->ventas = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -1190,11 +802,13 @@ class GenerarR extends Component
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta)
+                            ->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1203,11 +817,14 @@ class GenerarR extends Component
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                            ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             } else {
                 $this->ventas = ventas
@@ -1215,45 +832,14 @@ class GenerarR extends Component
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                     ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
                     ->where(function ($query) {
-                        $query->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                        $query->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta);
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get($this->diaS);
-
-                $this->suscripcion = Suscripcion
-                    ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                    ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                    ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                    ->where(function ($query) {
-                        $query->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                    ->get($this->diaS);
-            }
-
-            if ($this->fechaRemision && $this->tipoSeleccionada != "todos") {
-                $this->dateF = new Carbon($this->fechaRemision);
-                $this->diaS = $this->dateF->translatedFormat('l');
-
-                $this->ventas = ventas
-                    ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                    ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                    ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                    ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                    ->where(function ($query) {
-                        $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                            ->where('desde', '<=', $this->fechaRemision)
-                            ->where('hasta', '>=', $this->fechaRemision)
-                            ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
-                    })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1261,49 +847,14 @@ class GenerarR extends Component
                     ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                     ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                     ->where(function ($query) {
-                        $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
-                            ->where("cliente.id", "=", $this->clienteBarraBuscadora['id'])
-                            ->where('fechaInicio', '<=', $this->fechaRemision)
-                            ->where('fechaFin', '>=', $this->fechaRemision)
-                            ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                        $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta)
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            } else {
-                if ($this->fechaRemision) {
-                    $this->dateF = new Carbon($this->fechaRemision);
-                    $this->diaS = $this->dateF->translatedFormat('l');
-
-                    $this->ventas = ventas
-                        ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
-                        ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
-                        ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
-                        ->where(function ($query) {
-                            $query->where('desde', '<=', $this->fechaRemision)
-                                ->where('hasta', '>=', $this->fechaRemision)
-                                ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                                ->whereBetween('ventas.created_at', [$this->de, $this->hasta])
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get($this->diaS);
-
-                    $this->suscripcion = Suscripcion
-                        ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
-                        ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
-                        ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
-                        ->where(function ($query) {
-                            $query->where('fechaInicio', '<=', $this->fechaRemision)
-                                ->where('fechaFin', '>=', $this->fechaRemision)
-                                ->where("cliente.id", $this->clienteBarraBuscadora['id'])
-                                ->whereBetween('suscripciones.created_at', [$this->de, $this->hasta])
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
-                        })
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
-                        ->get($this->diaS);
-                }
             }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
@@ -1315,10 +866,13 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("ventas.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                            ->where("ventas.remisionStatus", "=", "Pendiente");
+                            ->whereDate("ventas.desde", ">=", $this->de)
+                            ->whereDate("ventas.hasta", "<=", $this->hasta)
+                            ->where('cliente.id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
-                    ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS);
 
                 $this->suscripcion = Suscripcion
@@ -1328,15 +882,17 @@ class GenerarR extends Component
                     ->where(function ($query) {
                         $query->where("suscripciones.tipo", "=", $this->tipoSeleccionada)
                             ->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                            ->where("cliente.id", '=',  $this->clienteBarraBuscadora['id'])
-                            ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            ->whereDate("suscripciones.fechaInicio", ">=", $this->de)
+                            ->whereDate("suscripciones.fechaFin", "<=", $this->hasta)
+                            ->where('suscripciones.cliente_id', '=', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                            ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                     })
-                    ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                    ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
             }
         } else {
-            if ($this->clienteBarraBuscadora) {
-
+            if ($this->query != "") {
                 if ($this->tipoSeleccionada != 'todos') {
                     $this->ventas = ventas
                         ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
@@ -1344,11 +900,12 @@ class GenerarR extends Component
                         ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                         ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                         ->where(function ($query) {
-                            $query->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where('ventas.tipo', '=', $this->tipoSeleccionada)
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                            $query->where('cliente.id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                                ->where('ventas.tipo', '=', $this->tipoSeleccionada);
                         })
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
 
                     $this->suscripcion = Suscripcion
@@ -1356,11 +913,12 @@ class GenerarR extends Component
                         ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                         ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                         ->where(function ($query) {
-                            $query->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where('suscripciones.tipo', '=', $this->tipoSeleccionada)
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            $query->where('suscripciones.cliente_id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%')
+                                ->where('suscripciones.tipo', '=', $this->tipoSeleccionada);
                         })
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
                 } else {
                     $this->ventas = ventas
@@ -1369,10 +927,11 @@ class GenerarR extends Component
                         ->join("ruta", "ruta.id", "=", "domicilio.ruta_id")
                         ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                         ->where(function ($query) {
-                            $query->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                            $query->where('cliente.id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
 
                     $this->suscripcion = Suscripcion
@@ -1380,10 +939,11 @@ class GenerarR extends Component
                         ->join("domicilio_subs", "domicilio_subs.id", "=", "suscripciones.domicilio_id")
                         ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                         ->where(function ($query) {
-                            $query->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                            $query->where('cliente.id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
                 }
 
@@ -1395,10 +955,11 @@ class GenerarR extends Component
                         ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                         ->where(function ($query) {
                             $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                ->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where("ventas.remisionStatus", "=", "Pendiente");
+                                ->where('cliente.id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
-                        ->select("ventas.id", "ventas.idVenta", "ventas.desde", "ventas.hasta", "ventas.total", "ventas.lunes", "ventas.martes", "ventas.miércoles", "ventas.jueves", "ventas.viernes", "ventas.sábado", "ventas.domingo", "ventas.tipo", "ventas.domicilio_id", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                        ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                         ->get($this->diaS);
 
                     $this->suscripcion = Suscripcion
@@ -1407,10 +968,11 @@ class GenerarR extends Component
                         ->join("ruta", "ruta.id", "=", "domicilio_subs.ruta")
                         ->where(function ($query) {
                             $query->where("ruta.nombreruta", "=", $this->rutaSeleccionada)
-                                ->where('cliente.id', '=', $this->clienteBarraBuscadora['id'])
-                                ->where("suscripciones.remisionStatus", "=", "Pendiente");
+                                ->where('suscripciones.cliente_id', '=', $this->query)
+                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                                ->orWhere('cliente.razon_social', 'like', '%' . $this->query . '%');
                         })
-                        ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
+                        ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                         ->get($this->diaS);
                 }
             }
