@@ -113,7 +113,7 @@
                             <tbody>
                                 @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */ $result->remisionStatus == 'Pendiente' && $result->estado == 'Activo')
+                                        @if (/* $result->{$diaS} != 0 &&  */ $result->remisionStatus == 'Pendiente' || $result->remisionStatus == 'Cancelada' && $result->estado == 'Activo')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">

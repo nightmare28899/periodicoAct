@@ -491,7 +491,7 @@ class Historial extends Component
         ]);
     }
 
-    public function cancelar($idTipo)
+    /* public function cancelar($idTipo)
     {
         $tiro = Tiro
             ::join('ventas', 'ventas.idVenta', '=', 'tiro.idTipo')
@@ -515,13 +515,16 @@ class Historial extends Component
             ]);
         }
         $this->modalHistorial = false;
-    }
+    } */
 
     public function cancelarVenta($id)
     {
         $venta = Tiro::where('idTipo', $id)->first();
         $venta->update([
             'status' => 'Cancelado',
+        ]);
+        Ventas::where('idVenta', $id)->update([
+            'remisionStatus' => 'Cancelada',
         ]);
 
         if (substr($id, 0, 6) == 'suscri') {
