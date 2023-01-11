@@ -29,8 +29,17 @@
                     <label for="fechaFin">Hasta</label>
                     <x-jet-input type="date" wire:model="hasta"></x-jet-input>
 
-                </div>
-                <div class="flex-initial mx-1 mt-4 mb-3">
+                    <label>Ruta:</label>
+                    <select
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                        style="width: 11rem;" wire:model="rutaSeleccionada">
+                        <option value='Todos' selected>TODOS</option>
+                        @foreach ($ruta as $rut)
+                            <option value='{{ $rut['nombreruta'] }}'>
+                                {{ $rut['nombreruta'] }}
+                            </option>
+                        @endforeach
+                    </select>
 
                 </div>
 
@@ -42,6 +51,7 @@
                                     <th class='px-4 py-2 uppercase'>Contrato</th>
                                     <th class='px-4 py-2 uppercase'>Cliente</th>
                                     <th class='px-6 py-2 uppercase'>Nombre</th>
+                                    <th class='px-6 py-2 uppercase'>Ruta</th>
                                     <th class='px-4 py-2 uppercase'>Fecha Inicio</th>
                                     <th class='px-4 py-2 uppercase'>Fecha Fin</th>
                                     <th class='px-4 py-2 uppercase'>Lunes</th>
@@ -63,8 +73,11 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->cliente_id }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->nombre }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($venta->desde)->format('d/m/Y') }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($venta->hasta)->format('d/m/Y') }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $venta->nombreruta }}</td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                {{ \Carbon\Carbon::parse($venta->desde)->format('d/m/Y') }}</td>
+                                            <td class="px-4 py-2 border border-dark">
+                                                {{ \Carbon\Carbon::parse($venta->hasta)->format('d/m/Y') }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->lunes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->martes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->miércoles }}</td>
