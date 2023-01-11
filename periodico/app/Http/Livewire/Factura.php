@@ -178,7 +178,7 @@ class Factura extends Component
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->tiro->precio,
+                    "UnitPrice" => (float)number_format($this->tiro->importe / $this->tiro->entregar, 2),
                     "Discount" => 0,
                     "Quantity" => $this->tiro->entregar,
                     "Subtotal" => $this->tiro->importe,

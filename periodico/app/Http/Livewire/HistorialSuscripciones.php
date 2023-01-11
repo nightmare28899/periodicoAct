@@ -141,8 +141,8 @@ class HistorialSuscripciones extends Component
                         ->join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'suscripciones.cliente_id')
                         ->where(function ($query) {
                             $query->where('suscripciones.id', '!=', $this->suscripcionSuspendida[$this->contador]['id'])
-                                ->where('suscripciones.fechaInicio', '<=', $this->de)
-                                ->where('suscripciones.fechaFin', '>=', $this->hasta);
+                                ->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                                ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                         })
                         ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
                         ->get($this->diaS);
@@ -153,8 +153,8 @@ class HistorialSuscripciones extends Component
                     ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                     ->join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'suscripciones.cliente_id')
                     ->where(function ($query) {
-                        $query->where('suscripciones.fechaInicio', '<=', $this->de)
-                            ->where('suscripciones.fechaFin', '>=', $this->hasta);
+                        $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                            ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
                     ->get($this->diaS);
@@ -165,8 +165,8 @@ class HistorialSuscripciones extends Component
                 ->join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                 ->join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'suscripciones.cliente_id')
                 ->where(function ($query) {
-                    $query->where('suscripciones.fechaInicio', '<=', $this->de)
-                        ->where('suscripciones.fechaFin', '>=', $this->hasta);
+                    $query->whereDate('suscripciones.fechaInicio', '<=', $this->de)
+                        ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                 })
                 ->select('suscripcion_suspension.*', 'suscripciones.cliente_id', 'suscripciones.cantEjemplares', 'suscripciones.periodo', 'suscripciones.fechaInicio', 'suscripciones.fechaFin', 'suscripciones.lunes', 'suscripciones.martes', 'suscripciones.miércoles', 'suscripciones.jueves', 'suscripciones.viernes', 'suscripciones.sábado', 'suscripciones.domingo', 'suscripciones.estado', 'suscripciones.created_at', 'cliente.nombre', 'domicilio_subs.cliente_id', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.localidad', 'domicilio_subs.ciudad', 'domicilio_subs.referencia', 'domicilio_subs.ruta')
                 ->get();

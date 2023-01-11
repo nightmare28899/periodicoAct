@@ -37,7 +37,7 @@ class FacturarPPD extends Component
             $this->regimenFisGenerico = '616';
         }
 
-        return view('livewire.facturar-p-p-d', ['d' => $this->d]);
+        return view('livewire.facturar-p-p-d', ['d' => $this->d, 'domicilio' => $this->domicilio[0]]);
     }
 
     public function mount($cliente_id, $idTipo)
@@ -48,7 +48,7 @@ class FacturarPPD extends Component
 
             $this->cliente = Cliente::find($cliente_id);
             /* $this->historial = Tiro::where('idTipo', $idTipo)->get(); */
-            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->first();
+            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->get();
             $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
 
             $this->tipoFactura = 'PPD';
@@ -57,10 +57,13 @@ class FacturarPPD extends Component
             $this->idTipo = $idTipo;
 
             $this->cliente = Cliente::find($cliente_id);
-            $this->suscripcion = ventas::where('idVenta', $idTipo)->first();
-            $this->domicilio = Domicilio::where('id', $this->suscripcion['domicilio_id'])->first();
+            $this->suscripcion = ventas::where('idVenta', $idTipo)->get()
+                ->toArray();
+            $this->domicilio = Domicilio::where('id', $this->suscripcion[0]['domicilio_id'])->get()
+                ->toArray();
             $this->tipoFactura = 'PPD';
-            $this->tiro = Tiro::where('cliente_id', $cliente_id)->first();
+            $this->tiro = Tiro::where('cliente_id', $cliente_id)->where('idTipo', $idTipo)->get()
+                ->toArray();
             /* $this->globalInformation[] = []; */
         }
     }
@@ -146,7 +149,7 @@ class FacturarPPD extends Component
         if (substr($this->idTipo, 0, 6) == 'suscri') {
             $items = [
                 [
-                    "Serie" => "PPD",
+                    "Serie" => "SUSPPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
@@ -173,28 +176,28 @@ class FacturarPPD extends Component
         } else {
             $items = [
                 [
-                    "Serie" => "PPD",
+                    "Serie" => "VPPPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->tiro->precio,
+                    "UnitPrice" => $this->tiro[0]['precio'],
                     "Discount" => 0,
-                    "Quantity" => $this->tiro->entregar,
-                    "Subtotal" => $this->tiro->importe,
+                    "Quantity" => $this->tiro[0]['entregar'],
+                    "Subtotal" => $this->tiro[0]['importe'],
                     "ObjetoImp" => "02",
                     "TaxObject" => "02",
                     "Taxes" => [
                         [
                             "Total" => 0.0,
                             "Name" => "IVA",
-                            "Base" => $this->tiro->importe,
+                            "Base" => $this->tiro[0]['importe'],
                             "Rate" => 0,
                             "IsRetention" => false
                         ]
                     ],
-                    "Total" => $this->tiro->importe
+                    "Total" => $this->tiro[0]['importe']
                 ]
             ];
         }
@@ -213,7 +216,7 @@ class FacturarPPD extends Component
 
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
-                "Serie" => "PPD",
+                "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPPD" : "VPPPD",
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
@@ -231,14 +234,14 @@ class FacturarPPD extends Component
                     "FiscalRegime" => $this->activarCG ? $this->regimenFisGenerico : $this->cliente['regimen_fiscal'],
                     "email" => $this->cliente['email'],
                     "Address" => [
-                        "Street" => $this->domicilio['calle'],
-                        "ExteriorNumber" => (string) $this->domicilio['noext'],
-                        "InteriorNumber" => (string) $this->domicilio['noint'],
-                        "Neighborhood" => $this->domicilio['colonia'],
-                        "Locality" => $this->domicilio['localidad'],
+                        "Street" => $this->domicilio[0]['calle'],
+                        "ExteriorNumber" => (string) $this->domicilio[0]['noext'],
+                        "InteriorNumber" => (string) $this->domicilio[0]['noint'],
+                        "Neighborhood" => $this->domicilio[0]['colonia'],
+                        "Locality" => $this->domicilio[0]['localidad'],
                         "State" => $this->cliente['estado'],
                         "Country" => $this->cliente['pais'],
-                        "ZipCode" => (string) $this->domicilio['cp'],
+                        "ZipCode" => (string) $this->domicilio[0]['cp'],
                     ]
                 ],
                 'Items' => $items,

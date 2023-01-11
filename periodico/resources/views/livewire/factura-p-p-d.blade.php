@@ -9,10 +9,10 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex">
-                    <div class="w-64">
+                    {{-- <div class="w-64">
                         <h4>Elige la fecha:</h4>
                         <x-jet-input class="w-full" type="date" wire:model="fechaRemision"></x-jet-input>
-                    </div>
+                    </div> --}}
                     <div class="w-64 ml-5 pt-6">
                         <input type="text"
                             class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"

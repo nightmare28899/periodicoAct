@@ -20,12 +20,13 @@
         <div class="px-4 mb-4" flex-grow>
             <div class="flex">
                 <div class="w-1/2 px-2">
-                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID de la Suscripcion: {{ isset($idSuscripcionSig) ? $idSuscripcionSig['id'] + 1 : 1 }}</p>
+                    <p class="font-bold">La suscripción es para el cliente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ID
+                        de la Suscripcion: {{ isset($idSuscripcionSig) ? $idSuscripcionSig['id'] + 1 : 1 }}</p>
                 </div>
                 <div class="w-1/2">
                     <p class="font-bold">Fecha: <input type="text" style="height: 1.7rem; margin-left: 2.4rem;"
-                            value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}" class="border-0 rounded-md bg-gray-200"
-                            disabled>
+                            value="{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}"
+                            class="border-0 rounded-md bg-gray-200" disabled>
                     </p>
                 </div>
             </div>
@@ -60,11 +61,18 @@
                 {{-- <div class="w-1/2 p-2">
                     <input type="checkbox" name="oferta" wire:model="oferta"> Aplicar oferta
                 </div> --}}
-                <div class="w-1/2 p-2">
+                <div class="w-32 p-2">
                     @if ($personalizado == true)
                         <input type="number"
-                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring"
-                            wire:model="costoPerson" name="person" placeholder="Coloca la tarifa">
+                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                            wire:model="costoPerson" name="person" placeholder="Coloca la id de la susc">
+                    @endif
+                </div>
+                <div class="w-36 p-2">
+                    @if ($subscripcionEs == 'Renovación')
+                        <input type="number"
+                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
+                            wire:model="idRenovacionSuscripcion" wire:keydown.enter="showSuscripcionRenovacion" name="person" placeholder="Coloca el id suscripcion">
                     @endif
                 </div>
             </div>
@@ -181,8 +189,9 @@
                 </div>
                 <div class="w-2/5 px-2">
                     <p>EJEMPLARES</p>
-                    <input type="number" class="border-0 rounded-md bg-gray-200" style="height: 1.7rem; margin-top: 5px;"
-                        name="cantEjem" wire:model="cantEjem" min="0">
+                    <input type="number" class="border-0 rounded-md bg-gray-200"
+                        style="height: 1.7rem; margin-top: 5px;" name="cantEjem" wire:model="cantEjem"
+                        min="0">
                     @error('cantEjem')
                         <span class="text-red-500 text-xs italic">
                             {{ $message }}
@@ -377,26 +386,31 @@
             <div class="mt-3">
                 <div class="w-2/5 px-2 flex">
                     OBSERVACIONES(Opcional)
-                    <textarea style="margin-left: 2rem;" class="border-0 rounded-md bg-gray-200" rows="2" wire:model.defer="observacion"
-                        placeholder="Coloca una descripción" cols="50"></textarea>
+                    <textarea style="margin-left: 2rem;" class="border-0 rounded-md bg-gray-200" rows="2"
+                        wire:model.defer="observacion" placeholder="Coloca una descripción" cols="50"></textarea>
                 </div>
             </div>
             <div class="flex">
                 <div class="w-1/4 px-2">
                     <p class="mt-2 flex">IMPORTE <input class="border-0 rounded-md bg-gray-200 pl-3"
-                            style="height: 1.7rem; margin-left: 5.9rem;" value="{{ sprintf('$ %s', number_format($total, 2)) }}" disabled>
+                            style="height: 1.7rem; margin-left: 5.9rem;"
+                            value="{{ sprintf('$ %s', number_format($total, 2)) }}" disabled>
                     </p>
                     <p class="mt-2 flex">DESCUENTO <input class="border-0 rounded-md bg-gray-200 pl-3"
-                            style="height: 1.7rem; margin-left: 4.3rem;" value="{{ sprintf('$ %s', number_format($descuento, 2)) }}" disabled>
+                            style="height: 1.7rem; margin-left: 4.3rem;"
+                            value="{{ sprintf('$ %s', number_format($descuento, 2)) }}" disabled>
                     </p>
                     <p class="mt-2 flex">SUBTOTAL <input class="border-0 rounded-md bg-gray-200 pl-3"
-                            style="height: 1.7rem; margin-left: 5.1rem;" value="{{ sprintf('$ %s', number_format($total, 2)) }}" disabled>
+                            style="height: 1.7rem; margin-left: 5.1rem;"
+                            value="{{ sprintf('$ %s', number_format($total, 2)) }}" disabled>
                     </p>
                     <p class="mt-2 flex">IVA <input class="border-0 rounded-md bg-gray-200 pl-3"
-                            style="height: 1.7rem; margin-left: 8.5rem;" value="{{ sprintf('$ %s', number_format($iva, 2)) }}" disabled>
+                            style="height: 1.7rem; margin-left: 8.5rem;"
+                            value="{{ sprintf('$ %s', number_format($iva, 2)) }}" disabled>
                     </p>
                     <p class="mt-2 flex">TOTAL <input class="border-0 rounded-md     bg-gray-200 pl-3"
-                            style="height: 1.7rem; margin-left: 7rem;" value="{{ sprintf('$ %s', number_format($totalDesc, 2)) }}" disabled></p>
+                            style="height: 1.7rem; margin-left: 7rem;"
+                            value="{{ sprintf('$ %s', number_format($totalDesc, 2)) }}" disabled></p>
                 </div>
                 <div class="w-1/2 px-2 ml-5" style="margin-left: 400px;">
                     {{-- <p>FORMA DE PAGO</p>
@@ -428,7 +442,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
-                            Crear contrato
+                            {{ $subscripcionEs == 'Renovación' ? 'Renovar' : 'Suscribirse' }}
                         </button>
                         {{-- <button
                             class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md">Nuevo</button> --}}

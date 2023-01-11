@@ -38,7 +38,7 @@
                     <div class="flex mt-2 justify-between px-5 border-2">
                         <h1 class="text-xl font-bold mt-5">Datos Fiscales:</h1>
                         <button wire:click="modalEdit()"
-                            class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base font-bold text-white shadow-sm hover:bg-indigo-700">
+                            class="my-4 inline-flex justify-center md border border-transparent px-4 py-2 bg-indigo-600 text-base font-bold text-white shadow-sm hover:bg-indigo-700">
                             Agregar/Editar
                         </button>
                     </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="flex mt-2 justify-center">
                         <div class=" px-2">
-                            <b>CODIGO POSTAL: <input type="text" value="{{ $domicilio->cp }}"
+                            <b>CODIGO POSTAL: <input type="text" value="{{ $domicilio[0]['cp'] }}"
                                     class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class=" px-2">
@@ -65,11 +65,11 @@
                     </div>
                     <div class="flex mt-2 justify-center">
                         <div class=" px-2">
-                            <b>COLONIA: <input type="text" value="{{ $domicilio->colonia }}"
+                            <b>COLONIA: <input type="text" value="{{ $domicilio[0]['colonia'] }}"
                                     class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class=" px-2">
-                            <b>CALLE: <input type="text" value="{{ $domicilio->calle }}" class="border-0 bg-gray-200"
+                            <b>CALLE: <input type="text" value="{{ $domicilio[0]['calle'] }}" class="border-0 bg-gray-200"
                                     disabled></b>
                         </div>
                     </div>
@@ -85,11 +85,11 @@
                     </div>
                     <div class="flex mt-2 justify-center">
                         <div class=" px-2">
-                            <b>NO. EXTERIOR: <input type="text" value="{{ $domicilio->noext }}"
+                            <b>NO. EXTERIOR: <input type="text" value="{{ $domicilio[0]['noext'] }}"
                                     class="border-0 bg-gray-200" disabled></b>
                         </div>
                         <div class=" px-2">
-                            <b>NO. INTERIOR: <input type="text" value="{{ $domicilio->noint }}"
+                            <b>NO. INTERIOR: <input type="text" value="{{ $domicilio[0]['noint'] }}"
                                     class="border-0 bg-gray-200" disabled></b>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                                 <input type="text" class="border-0 bg-gray-200"
                                     value="{{ $suscripcion->cantEjemplares }}" disabled>
                             @else
-                                <input type="text" class="border-0 bg-gray-200" value="{{ $tiro->entregar }}"
+                                <input type="text" class="border-0 bg-gray-200" value="{{ $tiro[0]['entregar'] }}"
                                     disabled>
                             @endif
                         </div>
@@ -193,7 +193,7 @@
                                     value="{{ sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($tiro[0]['importe'])) }}" disabled>
                             @endif
                         </div>
                     </div>
@@ -222,7 +222,7 @@
                                     value="{{ sprintf('$ %s', number_format($suscripcion->total)) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($tiro->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($tiro[0]['importe'])) }}" disabled>
                             @endif
                         </div>
                     </div>

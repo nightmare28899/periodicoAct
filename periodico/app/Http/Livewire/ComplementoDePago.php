@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ComplementoDePago extends Component
 {
-    public $uuid, $folio, $paymentMethod, $PreviousBalanceAmount, $AmountPaid, $ImpSaldoInsoluto, $moneda = '(MXN) Peso Mexicano', $clienteSeleccionado, $invoices = [], $rfcCliente, $nameCliente, $fiscalRegime, $codigoPostalFiscal, $d, $modalErrors = 0, $activarCG = false, $facturaSeleccionada, $invoicesId = [], $montoIngresado, $montosIngresados = [], $forma_pago, $invoicesAdds = [], $status = 'created', $relatedDocuments = [], $date, $fecha;
+    public $uuid, $folio, $paymentMethod, $PreviousBalanceAmount, $AmountPaid, $ImpSaldoInsoluto, $moneda = '(MXN) Peso Mexicano', $clienteSeleccionado, $invoices = [], $rfcCliente, $nameCliente, $fiscalRegime, $codigoPostalFiscal, $d, $modalErrors = 0, $activarCG = false, $facturaSeleccionada, $invoicesId = [], $montoIngresado, $montosIngresados = [], $forma_pago, $invoicesAdds = [], $status = 'created', $relatedDocuments = [], $date, $fecha, $clientesBuscados, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $query;
 
     public function mount()
     {
@@ -22,7 +22,6 @@ class ComplementoDePago extends Component
     {
         $this->query = '';
         $this->clientesBuscados = [];
-        $this->highlightIndex = 0;
     }
 
     public function selectContact($pos)
@@ -154,7 +153,7 @@ class ComplementoDePago extends Component
 
     public function complementoDePago()
     {
-        if ($this->invoicesId && $this->paymentMethod && $this->fecha) {
+        if (/* $this->invoicesId && */ $this->forma_pago && $this->fecha) {
             $sum = 0;
             $sumPrevious = 0;
             for ($i = 0; $i < count($this->invoicesId); $i++) {
@@ -166,7 +165,7 @@ class ComplementoDePago extends Component
                     [
                         "TaxObject" => "01",
                         "Uuid" => $this->invoicesId[$i]['uuid'],
-                        "Serie" => "BQ",
+                        "Serie" => $this->invoicesId[$i]['serie'],
                         "Currency" => "MXN",
                         "Folio" => $i + 1,
                         "PaymentMethod" => "PPD",

@@ -21,11 +21,13 @@ class Clientes extends Component
 {
     use WithPagination;
 
-    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = 0, $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social, $d, $modalErrors = 0;
+    public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = [], $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social, $d, $modalErrors = 0;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas, $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas = [], $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
 
-    public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas, $query, $clientesBuscados = [], $dateF, $dateFiltro, $ventaEncontrada = null;
+    public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas, $query, $clientesBuscados = [], $dateF, $dateFiltro, $ventaEncontrada = null, $idRenovacionSuscripcion;
+
+    public $lunesTotal = 0, $martesTotal = 0, $miercolesTotal = 0, $juevesTotal = 0, $viernesTotal = 0, $sabadoTotal = 0, $domingoTotal = 0;
 
     public $listeners = [
         'hideMe' => 'hideModal'
@@ -85,13 +87,68 @@ class Clientes extends Component
         }
     }
 
+    public function showSuscripcionRenovacion()
+    {
+        if ($this->clienteSeleccionado && $this->subscripcionEs == 'Renovación') {
+            if (count($this->suscripciones) > 0) {
+                for ($i = 0; $i < count($this->suscripciones); $i++) {
+                    if ($this->suscripciones[$i]['estado'] != 'Cancelada') {
+                        try {
+                            $suscripcionSearch = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->where('suscripciones.id', (int)$this->idRenovacionSuscripcion)->get();
+
+                            if ($suscripcionSearch != null) {
+                                $this->domicilioId = $suscripcionSearch[0]->domicilio_id;
+                                $this->cantEjem = $suscripcionSearch[0]->cantEjemplares;
+                                $this->tipoSubscripcion = $suscripcionSearch[0]->suscripcion;
+                                $this->tarifaSeleccionada = $suscripcionSearch[0]->tarifa;
+                                $this->tipoSuscripcionSeleccionada = $suscripcionSearch[0]->tipoSuscripcion;
+                                $this->diasSuscripcionSeleccionada = $suscripcionSearch[0]->dias;
+                                $this->precio = $suscripcionSearch[0]->precio;
+                                $this->contrato = $suscripcionSearch[0]->contrato;
+                                $this->lunes = $suscripcionSearch[0]->lunes;
+                                $this->martes = $suscripcionSearch[0]->martes;
+                                $this->miércoles = $suscripcionSearch[0]->miércoles;
+                                $this->jueves = $suscripcionSearch[0]->jueves;
+                                $this->viernes = $suscripcionSearch[0]->viernes;
+                                $this->sábado = $suscripcionSearch[0]->sábado;
+                                $this->domingo = $suscripcionSearch[0]->domingo;
+                                $this->descuento = $suscripcionSearch[0]->descuento;
+                                $this->observacion = $suscripcionSearch[0]->observaciones;
+                                $this->total = $suscripcionSearch[0]->importe;
+                                $this->totalDesc = $suscripcionSearch[0]->total;
+                                $this->formaPagoSeleccionada = $suscripcionSearch[0]->formaPago;
+                                $this->periodoSuscripcionSeleccionada = $suscripcionSearch[0]->periodo;
+                                $this->siTieneSus = true;
+                                $this->total = 0;
+                            }
+                        } catch (\Exception $e) {
+                            $this->status = 'error';
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'error') ? '¡No existe suscripcion con ese id!' : ' '
+                            ]);
+                        }
+                    }
+                }
+            } else {
+                $this->siTieneSus = false;
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡El cliente no tiene suscripciones!' : ''
+                ]);
+            }
+        }
+    }
+
     public function selectContact($pos)
     {
         $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
-            $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
-
+            if ($this->modalV) {
+                $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
+            } else {
+                $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
+            }
             $this->domicilioSeleccionado = [];
             $this->resetear();
         }
@@ -195,7 +252,7 @@ class Clientes extends Component
             ->select('cliente.*', 'domicilio.*', 'ruta.nombreruta')
             ->get();
 
-        if ($this->diasSuscripcionSeleccionada) {
+        if ($this->diasSuscripcionSeleccionada != '') {
             if ($this->diasSuscripcionSeleccionada == 'l_v') {
                 if ($this->tipoSuscripcionSeleccionada == 'Impresa') {
                     if ($this->cantEjem >= 1) {
@@ -322,6 +379,7 @@ class Clientes extends Component
                 $this->allow = false;
             } else if ($this->diasSuscripcionSeleccionada == 'l_s') {
                 if ($this->tipoSuscripcionSeleccionada == 'Impresa') {
+
                     if ($this->cantEjem >= 1) {
                         if ($this->periodoSuscripcionSeleccionada == 'Mensual') {
                             $costo = $this->precio === 'Normal' ? 300 : 300;
@@ -418,38 +476,6 @@ class Clientes extends Component
             ->select('domicilio_subs.*', 'ruta.nombreruta')
             ->get();
 
-        if ($this->clienteSeleccionado && $this->subscripcionEs == 'Renovación') {
-            $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
-            if (!$this->suscripciones->isEmpty()) {
-                $this->domicilioId = $this->suscripciones[0]->domicilio_id;
-                $this->cantEjem = $this->suscripciones[0]->cantEjemplares;
-                $this->tipoSubscripcion = $this->suscripciones[0]->suscripcion;
-                $this->tarifaSeleccionada = $this->suscripciones[0]->tarifa;
-                $this->tipoSuscripcionSeleccionada = $this->suscripciones[0]->tipoSuscripcion;
-                $this->diasSuscripcionSeleccionada = $this->suscripciones[0]->dias;
-                $this->contrato = $this->suscripciones[0]->contrato;
-                $this->lunes = $this->suscripciones[0]->lunes;
-                $this->martes = $this->suscripciones[0]->martes;
-                $this->miércoles = $this->suscripciones[0]->miércoles;
-                $this->jueves = $this->suscripciones[0]->jueves;
-                $this->viernes = $this->suscripciones[0]->viernes;
-                $this->sábado = $this->suscripciones[0]->sábado;
-                $this->domingo = $this->suscripciones[0]->domingo;
-                $this->descuento = $this->suscripciones[0]->descuento;
-                $this->observacion = $this->suscripciones[0]->observaciones;
-                $this->total = $this->suscripciones[0]->importe;
-                $this->totalDesc = $this->suscripciones[0]->total;
-                $this->formaPagoSeleccionada = $this->suscripciones[0]->formaPago;
-                $this->siTieneSus = true;
-            } else {
-                $this->siTieneSus = false;
-                $this->status = 'created';
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡El cliente no tiene suscripciones!' : ''
-                ]);
-            }
-        }
-
         if ($this->clienteSeleccionado && $this->contrato == 'Cortesía') {
             $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             $this->total = 0;
@@ -466,10 +492,27 @@ class Clientes extends Component
             }
         }
 
+        if ($this->lunesVentas || $this->martesVentas || $this->miercolesVentas || $this->juevesVentas || $this->viernesVentas || $this->sabadoVentas || $this->domingoVentas) {
+            $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
+            if ($domicilio) {
+                $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
+                $this->lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
+                $this->martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
+                $this->miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
+                $this->juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
+                $this->viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
+                $this->sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
+                $this->domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
+
+                $this->total = $this->lunesTotal + $this->martesTotal + $this->miercolesTotal + $this->juevesTotal + $this->viernesTotal + $this->sabadoTotal + $this->domingoTotal;
+            }
+        }
+
         return view('livewire.clientes.view', [
             'clientes' => Cliente::where('id', '=', $this->clientesQuery)
                 ->orWhere('nombre', 'like', '%' . $this->clientesQuery . '%')->paginate(10),
             'rfc' => $this->rfc,
+            'total' => $this->total,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
     }
 
@@ -907,15 +950,15 @@ class Clientes extends Component
                     $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
                     if ($domicilio) {
                         $tarifa = Tarifa::where('id', $domicilio->tarifa_id)->first();
-                        $lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
-                        $martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
-                        $miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
-                        $juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
-                        $viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
-                        $sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
-                        $domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
+                        $this->lunesTotal = (int)$this->lunesVentas * $tarifa['ordinario'];
+                        $this->martesTotal = (int)$this->martesVentas * $tarifa['ordinario'];
+                        $this->miercolesTotal = (int)$this->miercolesVentas * $tarifa['ordinario'];
+                        $this->juevesTotal = (int)$this->juevesVentas * $tarifa['ordinario'];
+                        $this->viernesTotal = (int)$this->viernesVentas * $tarifa['ordinario'];
+                        $this->sabadoTotal = (int)$this->sabadoVentas * $tarifa['ordinario'];
+                        $this->domingoTotal = (int)$this->domingoVentas * $tarifa['dominical'];
 
-                        $this->total = $lunesTotal + $martesTotal + $miercolesTotal + $juevesTotal + $viernesTotal + $sabadoTotal + $domingoTotal;
+                        $this->total = $this->lunesTotal + $this->martesTotal + $this->miercolesTotal + $this->juevesTotal + $this->viernesTotal + $this->sabadoTotal + $this->domingoTotal;
 
                         $this->validate([
                             'lunesVentas' => 'required|numeric|min:0',
@@ -947,8 +990,6 @@ class Clientes extends Component
                             'remisionStatus' => 'Pendiente',
                             'tiroStatus' => 'Activo',
                         ]);
-
-
 
                         $this->status = 'created';
                         $this->modalV = false;
@@ -1142,7 +1183,7 @@ class Clientes extends Component
                                 'esUnaSuscripcion' => $this->subscripcionEs,
                                 'tarifa' => $this->tarifaSeleccionada,
                                 'cantEjemplares' => (int)$this->cantEjem,
-                                'precio' => (int)$this->precio,
+                                'precio' => $this->precio,
                                 'contrato' => $this->contrato,
                                 'tipoSuscripcion' => $this->tipoSuscripcionSeleccionada,
                                 'periodo' => $this->periodoSuscripcionSeleccionada,
@@ -1229,6 +1270,16 @@ class Clientes extends Component
                         'periodo' => $this->periodoSuscripcionSeleccionada,
                         'fechaInicio' => $this->from,
                         'fechaFin' => $this->to,
+                        'dias' => $this->diasSuscripcionSeleccionada,
+                        'lunes' => $this->lunes,
+                        'martes' => $this->martes,
+                        'miércoles' => $this->miércoles,
+                        'jueves' => $this->jueves,
+                        'viernes' => $this->viernes,
+                        'sábado' => $this->sábado,
+                        'domingo' => $this->domingo,
+                        'importe' => (int)$this->total,
+                        'total' => $this->totalDesc,
                     ]);
 
                     $this->status = 'created';

@@ -9,10 +9,10 @@
         <div class="grid justify-items-start">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4 justify-self-center">
                 <div class="flex">
-                    <div class="flex-none mx-1">
+                    {{-- <div class="flex-none mx-1">
                         <h4>Elige la fecha:</h4>
                         <x-jet-input type="date" wire:model="fechaRemision"></x-jet-input>
-                    </div>
+                    </div> --}}
                     <div class="flex-none">
                         <h4>Busca el cliente:</h4>
                         <input type="text"
@@ -105,7 +105,7 @@
                                     <th class='px-4 py-2 uppercase'>Venta</th>
                                     <th class='px-4 py-2 uppercase'>Precio</th>
                                     <th class='px-4 py-2 uppercase'>Importe</th>
-                                    <th class='px-6 py-2 uppercase'>Dia</th>
+                                    {{-- <th class='px-6 py-2 uppercase'>Dia</th> --}}
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
                                 </tr>
@@ -125,17 +125,21 @@
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ $result->nombre ? $result->nombre : $result->razon_social }}</td>
-                                                <td class='px-4 py-2 border border-dark'>{{ $result->{$diaS} }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }} <b>periód.</b>
+                                                </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $devuelto }}</td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $faltante }}</td>
-                                                <td class='px-4 py-2 border border-dark'>{{ $result->{$diaS} }}</td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ $diaS == 'domingo' ? sprintf('$ %s', number_format($result->dominical, 2)) : sprintf('$ %s', number_format($result->ordinario, 2)) }}
+                                                    {{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }} <b>periód.</b>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ $diaS == 'domingo' ? sprintf('$ %s', number_format($result->dominical, 2)) : sprintf('$ %s', number_format($result->ordinario, 2) * $result->{$diaS}) }}
+                                                    <b>Domingo:</b> {{ sprintf('$ %s', number_format($result->dominical, 2)) }}, <b>Ordinario:</b> {{ sprintf('$ %s', number_format($result->ordinario, 2)) }}
                                                 </td>
-                                                <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ sprintf('$ %s', number_format($result->total, 2)) }}
+                                                </td>
+                                                {{-- <td class='px-4 py-2 border border-dark'>{{ $diaS }}</td> --}}
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->nombreruta }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->tiporuta }}</td>
@@ -154,7 +158,8 @@
                                                     <div class="form-group">
                                                         <input wire:model="clienteSeleccionado" type="checkbox"
                                                             value={{ $suscri->idSuscripcion }}>
-                                                        <label class="text-black">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
+                                                        <label
+                                                            class="text-black">{{ \Carbon\Carbon::parse($suscri->created_at)->format('d/m/Y') }}</label>
                                                     </div>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>

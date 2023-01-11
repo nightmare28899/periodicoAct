@@ -8,10 +8,10 @@
     <div class="py-12 mx-auto px-4 container">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             <div class="flex">
-                <div class="w-64 mr-5">
+                {{-- <div class="w-64 mr-5">
                     <h4>Elige la fecha:</h4>
                     <x-jet-input class="w-full" type="date" wire:model="fechaRemision"></x-jet-input>
-                </div>
+                </div> --}}
                 <div class="w-64 mt-6">
                     <input type="number"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
@@ -43,7 +43,7 @@
                                     <th class='px-4 py-2 uppercase'>Venta</th>
                                     <th class='px-4 py-2 uppercase'>Precio</th>
                                     <th class='px-4 py-2 uppercase'>Importe</th>
-                                    <th class='px-6 py-2 uppercase'>Dia</th>
+                                    {{-- <th class='px-6 py-2 uppercase'>Dia</th> --}}
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
                                     <th class='px-6 py-2 uppercase'>Estado</th>
@@ -69,7 +69,7 @@
                                             <td class='px-4 py-2 border border-dark'>
                                                 {{ sprintf('$ %s', number_format($tiro->importe, 2)) }}
                                             </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td>
+                                            {{-- <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td> --}}
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro->status }}</td>

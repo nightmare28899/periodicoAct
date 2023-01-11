@@ -12,7 +12,28 @@
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64 uppercase"
                         name="search" placeholder="nombre o id client/contra" wire:model="query" autocomplete="off" />
+
+                    <select wire:model="estatusPago"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64 uppercase">
+                        <option style="display: none;">Escoge una opcion</option>
+                        <option value="Todas">Todas</option>
+                        <option value="Activo">Activo</option>
+                        {{-- <option value="sin pagar">Sin pagar</option> --}}
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+
+                    <label for="fechaInicio">Del</label>
+                    <x-jet-input type="date" wire:model="desde"></x-jet-input>
+
+
+                    <label for="fechaFin">Hasta</label>
+                    <x-jet-input type="date" wire:model="hasta"></x-jet-input>
+
                 </div>
+                <div class="flex-initial mx-1 mt-4 mb-3">
+
+                </div>
+
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
                         <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
@@ -21,7 +42,8 @@
                                     <th class='px-4 py-2 uppercase'>Contrato</th>
                                     <th class='px-4 py-2 uppercase'>Cliente</th>
                                     <th class='px-6 py-2 uppercase'>Nombre</th>
-                                    <th class='px-4 py-2 uppercase'>Colonia</th>
+                                    <th class='px-4 py-2 uppercase'>Fecha Inicio</th>
+                                    <th class='px-4 py-2 uppercase'>Fecha Fin</th>
                                     <th class='px-4 py-2 uppercase'>Lunes</th>
                                     <th class='px-4 py-2 uppercase'>Martes</th>
                                     <th class='px-4 py-2 uppercase'>Miércoles</th>
@@ -41,7 +63,8 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->cliente_id }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->nombre }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $venta->colonia }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($venta->desde)->format('d/m/Y') }}</td>
+                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($venta->hasta)->format('d/m/Y') }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->lunes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->martes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->miércoles }}</td>

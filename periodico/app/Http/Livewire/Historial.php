@@ -189,9 +189,10 @@ class Historial extends Component
                 ->where('cliente.id', '=', $this->id_cliente)
                 ->get();
 
-            $this->ventas = ventas::Where('cliente_id', $this->id_cliente)->get();
+            $this->ventas = ventas::Where('idVenta', $idTipo)->get();
             $this->domicilio = Domicilio::Where('cliente_id', $this->id_cliente)->first();
             $this->Ruta = Ruta::Where('id', $this->domicilio->ruta_id)->get();
+
             $pdf = Pdf::loadView('livewire.pagado', [
                 'ventas' => $this->ventas,
                 'total' => $this->ventas[0]['total'],
@@ -415,10 +416,10 @@ class Historial extends Component
                 ::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
-                ->where('cliente.id', '=', $id)
+                ->where('domicilio.cliente_id', '=', $id)
                 ->get();
 
-            $this->ventas = ventas::Where('cliente_id', $id)->get();
+            $this->ventas = ventas::Where('idVenta', $idTipo)->get();
             $this->domicilio = Domicilio::Where('cliente_id', $id)->first();
             $this->Ruta = Ruta::Where('id', $this->domicilio->ruta_id)->get();
 

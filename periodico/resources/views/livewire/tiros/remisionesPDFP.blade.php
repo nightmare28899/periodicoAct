@@ -141,7 +141,7 @@
                 </thead>
                 <tbody class="centrado">
                     <tr>
-                        <td>{{ $result->{$diaS} }}</td>
+                        <td>{{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}</td>
                         <td>
                             <div class="form-group">
                                 <label class="text-black" for="Física"> Periodo:
@@ -150,9 +150,9 @@
                                     {{ $result->{$diaS} }} --}} </label>
                             </div>
                         </td>
-                        <td>{{ sprintf('$ %s', number_format($diaS == 'domingo' ? $result->dominical : $result->ordinario, 2)) }}
+                        <td><b>Domingo:</b> {{ sprintf('$ %s', number_format($result->dominical, 2)) }}, <b>Ordinario:</b> {{ sprintf('$ %s', number_format($result->ordinario, 2)) }}
                         </td>
-                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS}, 2)) }}
+                        <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
                         </td>
                     </tr>
                 </tbody>
@@ -164,7 +164,7 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS}, 2)) }}
+                        <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
                         </td>
                     </tr>
                     <tr>
@@ -177,7 +177,7 @@
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS}, 2)) }}
+                        <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
                         </td>
                     </tr>
                     <tr>
@@ -190,10 +190,10 @@
                 <thead>
                     <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-                        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->{$diaS} }}</th>
+                        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                            {{ sprintf('$ %s', number_format(($diaS == 'domingo' ? $result->dominical : $result->ordinario) * $result->{$diaS}, 2)) }}
+                            {{ sprintf('$ %s', number_format($result->total, 2)) }}
                         </th>
                     </tr>
                 </thead>

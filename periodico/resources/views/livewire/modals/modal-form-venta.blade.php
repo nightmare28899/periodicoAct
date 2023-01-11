@@ -53,7 +53,9 @@
                 </div>
                 <div class="w-full ml-2">
                     <input type="number" min="0" max="1000"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase" wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada" placeholder="Escribe el id de la venta" />
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada"
+                        placeholder="Escribe el id de la venta" />
                 </div>
             </div>
 
@@ -211,7 +213,9 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="w-full"></div>
+                <div class="w-full">
+                    <p class="pt-12 ml-2"><b>Total de la venta:</b> {{ $total ? sprintf('$ %s', number_format($total, 2)) : 0 }}</p>
+                </div>
             </div>
         </div>
     </x-slot>

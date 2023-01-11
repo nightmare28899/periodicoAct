@@ -73,7 +73,7 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $invoice->cliente }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $invoice->quantity }}</td>
-                                            <td class="px-4 py-2 border border-dark">${{ $invoice->total }}
+                                            <td class="px-4 py-2 border border-dark">{{ sprintf('$ %s', number_format($invoice->total, 2)) }}
                                                 {{ $invoice->currency }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
