@@ -92,7 +92,7 @@ class GenerarR extends Component
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            } /* else {
+            } else {
                 $this->ventaCopia = ventas
                     ::join("cliente", "cliente.id", "=", "ventas.cliente_id")
                     ->join("domicilio", "domicilio.id", "=", "ventas.domicilio_id")
@@ -118,7 +118,7 @@ class GenerarR extends Component
                     })
                     ->select("suscripciones.*", "cliente.nombre", "cliente.razon_social", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                     ->get($this->diaS);
-            } */
+            }
 
             if ($this->rutaSeleccionada != "Todos" && $this->tipoSeleccionada != "todos") {
                 $this->ventaCopia = ventas
