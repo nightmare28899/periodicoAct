@@ -12,13 +12,14 @@ use App\Models\ventas;
 use App\Models\Domicilio;
 use App\Models\Invoice;
 
-
 class Factura extends Component
 {
-    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0;
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [];
 
     public function render()
     {
+        $this->invoice = Invoice::latest('id')->first();
+
         if ($this->activarCG) {
             $this->cliente['nombre'] = 'PUBLICO EN GENERAL';
             $this->cliente['rfc_input'] = 'XAXX010101000';
@@ -216,7 +217,7 @@ class Factura extends Component
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
-                "Folio" => substr($this->idTipo, 0, 6) == 'suscri' ? "2" : "1",
+                "Folio" => isset($invoice) ? $invoice['id'] + 1 : 1,
                 "CfdiType" => "I",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,

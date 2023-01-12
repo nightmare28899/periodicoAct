@@ -99,39 +99,39 @@
                     remisionado de clientes
                 </h3>
                 <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-                    {{ $result->nombreruta }}
+                    {{ $result['nombreruta'] }}
                 </p>
                 <h3
                     style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
                     remision
-                    {{ $result->id }}
+                    {{ $result['id'] }}
                 </h3>
                 <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                     {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
                 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-                    {{ $result->nombre ? $result->nombre : $result->razon_social }}</p>
+                    {{ $result['nombre'] ? $result['nombre'] : $result['razon_social'] }}</p>
                 <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-                    {{ $result->rfc_input }}</p>
+                    {{ $result['rfc_input'] }}</p>
                 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-                    {{ $result->calle }}</p>
+                    {{ $result['calle'] }}</p>
                 <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                     <b>colonia</b>
-                    {{ $result->colonia }}</p>
+                    {{ $result['colonia'] }}</p>
                 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio</b>
-                    {{ $result->municipio }}</p>
+                    {{ $result['municipio'] }}</p>
                 <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                     <b>estado</b>
-                    {{ $result->estado }}</p>
+                    {{ $result['estado'] }}</p>
                 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-                    {{ $result->noext }}</p>
+                    {{ $result['noext'] }}</p>
                 <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
                         int</b>
-                    {{ $result->noint }}</p>
+                    {{ $result['noint'] }}</p>
                 <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-                    {{ $result->cp }}</p>
+                    {{ $result['cp'] }}</p>
                 <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                     <b>pais</b>
-                    {{ $result->pais }}</p>
+                    {{ $result['pais'] }}</p>
                 <div style="padding-top: 8px;">
                     <p
                         style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
@@ -148,7 +148,7 @@
                     </thead>
                     <tbody class="centrado">
                         <tr>
-                            <td>{{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}</td>
+                            <td>{{ $result['lunes'] + $result['martes'] + $result['miércoles'] + $result['jueves'] + $result['viernes'] + $result['sábado'] + $result['domingo'] }}</td>
                             <td>
                                 <div class="form-group">
                                     <label class="text-black" for="Física"> Fecha:
@@ -156,9 +156,9 @@
                                         {{ $result->{$diaS} }}, --}} Tipo: Venta/Cliente </label>
                                 </div>
                             </td>
-                            <td><b>Domingo:</b> {{ sprintf('$ %s', number_format($result->dominical, 2)) }}, <b>Ordinario:</b> {{ sprintf('$ %s', number_format($result->ordinario, 2)) }}
+                            <td><b>Domingo:</b> {{ sprintf('$ %s', number_format($result['dominical'], 2)) }}, <b>Ordinario:</b> {{ sprintf('$ %s', number_format($result['ordinario'], 2)) }}
                             </td>
-                            <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
+                            <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}
                             </td>
                         </tr>
                     </tbody>
@@ -170,7 +170,7 @@
                             <td></td>
                             <td></td>
                             <td>IMPORTE</td>
-                            <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
+                            <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}
                             </td>
                         </tr>
                         <tr>
@@ -183,7 +183,7 @@
                             <td></td>
                             <td></td>
                             <td>SUBTOTAL</td>
-                            <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}
+                            <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}
                             </td>
                         </tr>
                         <tr>
@@ -196,10 +196,10 @@
                     <thead>
                         <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-                            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->lunes + $result->martes + $result->miércoles + $result->jueves + $result->viernes + $result->sábado + $result->domingo }}</th>
+                            <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result['lunes'] + $result['martes'] + $result['miércoles'] + $result['jueves'] + $result['viernes'] + $result['sábado'] + $result['domingo'] }}</th>
                             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                             <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                                {{ sprintf('$ %s', number_format($result->total, 2)) }}
+                                {{ sprintf('$ %s', number_format($result['total'], 2)) }}
                             </th>
                         </tr>
                     </thead>
@@ -351,40 +351,40 @@
                 remisionado de clientes
             </h3>
             <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-                {{ $result->nombreruta }}
+                {{ $result['nombreruta'] }}
             </p>
             <h3
                 style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
                 remision
-                {{ $result->id }}
+                {{ $result['id'] }}
             </h3>
             <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                 {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>cliente</b>
-                {{ $result->nombre ? $result->nombre : $result->razon_social }}</p>
+                {{ $result['nombre'] ? $result['nombre'] : $result['razon_social'] }}</p>
             <p id="movido3" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>rfc</b>
-                {{ $result->rfc_input }}</p>
+                {{ $result['rfc_input'] }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>calle</b>
-                {{ $result->calle }}</p>
+                {{ $result['calle'] }}</p>
             <p id="movido4" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>colonia</b>
-                {{ $result->colonia }}
+                {{ $result['colonia'] }}
             </p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>ciudad</b>
-                {{ $result->ciudad }}</p>
+                {{ $result['ciudad'] }}</p>
             <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;">
                 <b>estado</b>
-                {{ $result->estado }}
+                {{ $result['estado'] }}
             </p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext</b>
-                {{ $result->noext }}</p>
+                {{ $result['noext'] }}</p>
             <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
                     int</b>
-                {{ $result->noint }}</p>
+                {{ $result['noint'] }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>c.p.</b>
-                {{ $result->cp }}</p>
+                {{ $result['cp'] }}</p>
             <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais</b>
-                {{ $result->pais }}</p>
+                {{ $result['pais'] }}</p>
             <div style="padding-top: 8px;">
                 <p
                     style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
@@ -401,16 +401,16 @@
                 </thead>
                 <tbody class="centrado">
                     <tr>
-                        <td>{{ $result->cantEjemplares }}</td>
+                        <td>{{ $result['cantEjemplares'] }}</td>
                         <td>
                             <div class="form-group">
                                 <label class="text-black" for="Física"> Fecha:
                                     {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }},{{--  Ejemplares:
-                                    {{ $result->cantEjemplares }}, --}} Tipo: {{ $result->contrato }} </label>
+                                    {{ $result->cantEjemplares }}, --}} Tipo: {{ $result['contrato'] }} </label>
                             </div>
                         </td>
-                        <td>{{ sprintf('$ %s', number_format($result->importe / $result->cantEjemplares, 2)) }}</td>
-                        <td>{{ sprintf('$ %s', number_format($result->importe, 2)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result['importe'] / $result['cantEjemplares'], 2)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result['importe'], 2)) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -421,19 +421,19 @@
                         <td></td>
                         <td></td>
                         <td>IMPORTE</td>
-                        <td>{{ sprintf('$ %s', number_format($result->importe, 2)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result['importe'], 2)) }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                         <td>DESCUENTO</td>
-                        <td>{{ $result->descuento }}</td>
+                        <td>{{ $result['descuento'] }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                         <td>SUBTOTAL</td>
-                        <td>{{ sprintf('$ %s', number_format($result->total, 2)) }}</td>
+                        <td>{{ sprintf('$ %s', number_format($result['total'], 2)) }}</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -445,11 +445,11 @@
                 <thead>
                     <tr style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">totales</th>
-                        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result->cantEjemplares }}
+                        <th class='px-4 py-2' style="width: 266px; font-size: 14px;">{{ $result['cantEjemplares'] }}
                         </th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">neto</th>
                         <th class='px-4 py-2' style="width: 140px; font-size: 14px;">
-                            {{ sprintf('$ %s', number_format($result->total, 2)) }}</th>
+                            {{ sprintf('$ %s', number_format($result['total'], 2)) }}</th>
                     </tr>
                 </thead>
             </table>
