@@ -19,7 +19,7 @@ class GenerarR extends Component
 {
     use WithPagination;
 
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [];
 
     public function mount()
     {
@@ -503,7 +503,7 @@ class GenerarR extends Component
                 ->join("tarifa", "tarifa.id", "=", "domicilio.tarifa_id")
                 ->whereIn('ventas.idVenta', $this->clienteSeleccionado)
                 ->select("ventas.*", "cliente.*", "domicilio.*", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                ->get();
+                ->get($this->diaS);
 
             $this->suscripcion = Suscripcion
                 ::join("cliente", "cliente.id", "=", "suscripciones.cliente_id")
@@ -514,6 +514,14 @@ class GenerarR extends Component
                 ->get();
 
             if ($this->de && $this->hasta) {
+                $comienzo = Carbon::parse($this->de);
+                $final = Carbon::parse($this->hasta);
+
+                for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
+                    array_push($this->entreFechas, $i->format("d/m/Y"));
+                    array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+                }
+
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                     'ventas' => $this->ventas,
                     'suscripcion' => $this->suscripcion,
@@ -523,6 +531,8 @@ class GenerarR extends Component
                     'domsubs' => $this->domsubs,
                     'hasta' => $this->hasta,
                     'rutasNombre' => $this->rutasNombre,
+                    'entreFechas' => $this->entreFechas,
+                    'diasEntreFechas' => $this->diasEntreFechas,
                 ])
                     ->setPaper('A5', 'landscape')
                     ->output();
@@ -650,7 +660,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -679,7 +689,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -711,7 +721,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -744,7 +754,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -774,7 +784,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -799,7 +809,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -826,7 +836,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -855,7 +865,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -891,7 +901,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -927,7 +937,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -965,7 +975,7 @@ class GenerarR extends Component
                             ->where("ventas.estado", "=", "Activo");
                     })
                     ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                    ->get()
+                    ->get($this->diaS)
                     ->toArray();
 
                 $this->suscripcion = Suscripcion
@@ -1003,7 +1013,7 @@ class GenerarR extends Component
                                 ->where("ventas.estado", "=", "Activo");
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get()
+                        ->get($this->diaS)
                         ->toArray();
 
                     $this->suscripcion = Suscripcion
@@ -1034,7 +1044,7 @@ class GenerarR extends Component
                                 ->where("ventas.estado", "=", "Activo");
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get()
+                        ->get($this->diaS)
                         ->toArray();
 
                     $this->suscripcion = Suscripcion
@@ -1067,7 +1077,7 @@ class GenerarR extends Component
                                 ->where("ventas.estado", "=", "Activo");
                         })
                         ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
-                        ->get()
+                        ->get($this->diaS)
                         ->toArray();
 
                     $this->suscripcion = Suscripcion
@@ -1089,6 +1099,15 @@ class GenerarR extends Component
         }
 
         if ($this->de && $this->hasta) {
+
+            $comienzo = Carbon::parse($this->de);
+            $final = Carbon::parse($this->hasta);
+
+            for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
+                array_push($this->entreFechas, $i->format("d/m/Y"));
+                array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+            }
+
             $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                 'ventas' => $this->ventas,
                 'suscripcion' => $this->suscripcion,
@@ -1098,6 +1117,8 @@ class GenerarR extends Component
                 'domiPDF' => $this->domiPDF,
                 'hasta' => $this->hasta,
                 'rutasNombre' => $this->rutasNombre,
+                'entreFechas' => $this->entreFechas,
+                'diasEntreFechas' => $this->diasEntreFechas,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
