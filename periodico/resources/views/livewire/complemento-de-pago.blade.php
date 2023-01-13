@@ -12,42 +12,7 @@
                 <div class="flex flex-col">
                     <p class="pt-5">Activar cliente Génerico <input wire:model="activarCG" type="checkbox"></p>
                     <div class="flex flex-row">
-                        <div class="flex flex-col mr-3">
-                            <label for="forma_pago">Forma de pago</label>
-                            <select wire:model="forma_pago" class="border border-gray-400 p-2 rounded">
-                                <option selected style="display: none">Elegir una opcion</option>
-                                <option value="01">01 - Efectivo</option>
-                                <option value="02">02 - Cheque nominativo</option>
-                                <option value="03">03 - Transferencia electrónica de fondos</option>
-                                <option value="04">04 - Tarjeta de crédito</option>
-                                <option value="05">05 - Monedero electrónico</option>
-                                <option value="06">06 - Dinero electrónico</option>
-                                <option value="08">08 - Vales de despensa</option>
-                                <option value="12">12 - Dación en pago</option>
-                                <option value="13">13 - Pago por subrogación</option>
-                                <option value="14">14 - Pago por consignación</option>
-                                <option value="15">15 - Condonación</option>
-                                <option value="17">17 - Compensación</option>
-                                <option value="23">23 - Novación</option>
-                                <option value="24">24 - Confusión</option>
-                                <option value="25">25 - Remisión de deuda</option>
-                                <option value="26">26 - Prescripción o caducidad</option>
-                                <option value="27">27 - A satisfacción del acreedor</option>
-                                <option value="28">28 - Tarjeta de débito</option>
-                                <option value="29">29 - Tarjeta de servicios</option>
-                                <option value="30">30 - Aplicación de anticipos</option>
-                                <option value="31">31 - Intermediario pagos</option>
-                                <option value="99">99 - Por definir</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col mr-3">
-                            <label for="fecha">Moneda</label>
-                            <input type="text" wire:model="moneda" placeholder="Busca el cliente"
-                                class="border border-gray-400 p-2 rounded" disabled>
-                        </div>
-                    </div>
-                    <div class="flex flex-row mt-3">
-                        <div class="flex flex-col mr-3">
+                        <div class="flex flex-col mr-3 w-full">
                             <label for="fecha">Selecciona tu cliente</label>
                             <input type="text" wire:model="query" placeholder="Busca el cliente"
                                 class="border border-gray-400 p-2 rounded">
@@ -73,11 +38,8 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="flex flex-col mr-3">
-                            <label for="fecha">Fecha de pago</label>
-                            <input type="date" wire:model="fecha" class="border border-gray-400 p-2 rounded">
-                        </div>
                     </div>
+
                     <div class="flex flex-row mt-3">
                         <div class="flex flex-col mr-3 w-full">
                             <label for="fecha">Factura a pagar</label>
@@ -112,7 +74,46 @@
                                 Agregar factura</button>
                         </div>
                     </div>
-                    <div class="">
+                    <div class="flex mt-3">
+                        <div class="flex flex-col mr-3 w-1/2">
+                            <label for="forma_pago">Forma de pago</label>
+                            <select wire:model="forma_pago" class="border border-gray-400 p-2 rounded">
+                                <option selected style="display: none">Elegir una opcion</option>
+                                <option value="01">01 - Efectivo</option>
+                                <option value="02">02 - Cheque nominativo</option>
+                                <option value="03">03 - Transferencia electrónica de fondos</option>
+                                <option value="04">04 - Tarjeta de crédito</option>
+                                <option value="05">05 - Monedero electrónico</option>
+                                <option value="06">06 - Dinero electrónico</option>
+                                <option value="08">08 - Vales de despensa</option>
+                                <option value="12">12 - Dación en pago</option>
+                                <option value="13">13 - Pago por subrogación</option>
+                                <option value="14">14 - Pago por consignación</option>
+                                <option value="15">15 - Condonación</option>
+                                <option value="17">17 - Compensación</option>
+                                <option value="23">23 - Novación</option>
+                                <option value="24">24 - Confusión</option>
+                                <option value="25">25 - Remisión de deuda</option>
+                                <option value="26">26 - Prescripción o caducidad</option>
+                                <option value="27">27 - A satisfacción del acreedor</option>
+                                <option value="28">28 - Tarjeta de débito</option>
+                                <option value="29">29 - Tarjeta de servicios</option>
+                                <option value="30">30 - Aplicación de anticipos</option>
+                                <option value="31">31 - Intermediario pagos</option>
+                                <option value="99">99 - Por definir</option>
+                            </select>
+                        </div>
+                        {{-- <div class="flex flex-col mr-3">
+                                <label for="fecha">Moneda</label>
+                                <input type="text" wire:model="moneda" placeholder="Busca el cliente"
+                                    class="border border-gray-400 p-2 rounded" disabled>
+                            </div> --}}
+                        <div class="flex flex-col mr-3 w-64">
+                            <label for="fecha">Fecha de pago</label>
+                            <input type="date" wire:model="fecha" class="border border-gray-400 p-2 rounded">
+                        </div>
+                    </div>
+                    <div class="mt-3">
                         <p>Facturas agregadas</p>
                         <table
                             class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase">

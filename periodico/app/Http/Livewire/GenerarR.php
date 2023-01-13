@@ -19,7 +19,7 @@ class GenerarR extends Component
 {
     use WithPagination;
 
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [];
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [], $importeVentas = 0, $totalesVentas = 0, $deHastaData = false;
 
     public function mount()
     {
@@ -514,12 +514,23 @@ class GenerarR extends Component
                 ->get();
 
             if ($this->de && $this->hasta) {
+                $this->deHastaData = true;
                 $comienzo = Carbon::parse($this->de);
                 $final = Carbon::parse($this->hasta);
 
                 for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
                     array_push($this->entreFechas, $i->format("d/m/Y"));
                     array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+                }
+
+                foreach ($this->ventas as $result) {
+
+                    foreach ($this->entreFechas as $key => $fecha) {
+                        $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+
+                        $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+                        $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
+                    }
                 }
 
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -564,17 +575,18 @@ class GenerarR extends Component
                     /* if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) { */
                     $clienteVenta = ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->first();
                     $clienteFound = Cliente::find($clienteVenta->cliente_id);
+
                     Tiro::create([
                         'fecha' => $this->dateF->format('Y-m-d'),
                         'cliente' => $this->ventas[$i]['nombre'],
-                        'entregar' => $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
+                        'entregar' => $this->deHastaData == true ? $this->totalesVentas : $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
                         'devuelto' => $this->devuelto,
                         'faltante' => $this->faltante,
                         'venta' => $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
                         'estado' => 'Activo',
                         'cliente_id' => $this->ventas[$i]->cliente_id,
                         'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
-                        'importe' => $this->ventas[$i]->total,
+                        'importe' => $this->deHastaData == true ? $this->importeVentas : $this->ventas[$i]->total,
                         'dia' => $this->diaS,
                         'idTipo' => $this->clienteSeleccionado[$i],
                         'nombreruta' => $this->ventas[$i]['nombreruta'],
@@ -589,6 +601,7 @@ class GenerarR extends Component
 
                     $this->modalRemision = false;
                     $this->showingModal = true;
+                    $this->deHastaData = false;
                     $this->toast();
                     /* } */
                 }
@@ -783,7 +796,7 @@ class GenerarR extends Component
                             ->where("ventas.remisionStatus", "!=", "Remisionado")
                             ->where("ventas.estado", "=", "Activo");
                     })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS)
                     ->toArray();
 
@@ -808,7 +821,7 @@ class GenerarR extends Component
                         $query->where("ventas.remisionStatus", "!=", "Remisionado")
                             ->where("ventas.estado", "=", "Activo");
                     })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS)
                     ->toArray();
 
@@ -835,7 +848,7 @@ class GenerarR extends Component
                             ->where("ventas.remisionStatus", "!=", "Remisionado")
                             ->where("ventas.estado", "=", "Activo");
                     })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS)
                     ->toArray();
 
@@ -864,7 +877,7 @@ class GenerarR extends Component
                             ->where("ventas.remisionStatus", "!=", "Remisionado")
                             ->where("ventas.estado", "=", "Activo");
                     })
-                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
+                    ->select("ventas.*", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.pais", "domicilio.cliente_id", "domicilio.calle", "domicilio.noint", "domicilio.noext", "domicilio.colonia", "domicilio.cp", "domicilio.localidad", "domicilio.municipio", "domicilio.ruta_id", "domicilio.tarifa_id", "domicilio.referencia", "ruta.nombreruta", "ruta.tiporuta", "tarifa.tipo", "tarifa.ordinario", "tarifa.dominical")
                     ->get($this->diaS)
                     ->toArray();
 
@@ -1104,8 +1117,18 @@ class GenerarR extends Component
             $final = Carbon::parse($this->hasta);
 
             for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
-                array_push($this->entreFechas, $i->format("d/m/Y"));
+                array_push($this->entreFechas, Carbon::parse($i)->format('d/m/Y'));
                 array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+            }
+
+            foreach ($this->ventas as $result) {
+
+                foreach ($this->entreFechas as $key => $fecha) {
+                    $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+
+                    $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+                    $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
+                }
             }
 
             $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -1161,7 +1184,7 @@ class GenerarR extends Component
                     'estado' => 'Activo',
                     'cliente_id' => $this->ventas[$i]['cliente_id'],
                     'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
-                    'importe' => $this->ventas[$i]['total'],
+                    'importe' => $this->deHastaData == true ? $this->importeVentas : $this->ventas[$i]['total'],
                     'dia' => $this->diaS,
                     'status' => $clienteFound->clasificacion == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
                     'idTipo' => $this->ventas[$i]['idVenta'],

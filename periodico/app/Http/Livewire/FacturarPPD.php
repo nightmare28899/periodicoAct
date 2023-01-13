@@ -50,9 +50,12 @@ class FacturarPPD extends Component
 
             $this->cliente = Cliente::find($cliente_id);
             /* $this->historial = Tiro::where('idTipo', $idTipo)->get(); */
-            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->get();
-            $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
-
+            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->get()
+                ->toArray();
+            $this->domicilio = domicilioSubs::where('id', $this->suscripcion[0]['domicilio_id'])->get()
+                ->toArray();
+            $this->tiro = Tiro::where('cliente_id', $cliente_id)->where('idTipo', $idTipo)->get()
+                ->toArray();
             $this->tipoFactura = 'PPD';
         } else if (substr($idTipo, 0, 5) == 'venta') {
             $this->clienteid = $cliente_id;
@@ -73,16 +76,15 @@ class FacturarPPD extends Component
     public function modalEdit()
     {
         $this->modalAgregar = true;
-
         if (substr($this->idTipo, 0, 6) == 'suscri') {
-            $domicilioEdit = domicilioSubs::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit = domicilioSubs::find($this->suscripcion[0]['domicilio_id']);
             $this->cpInput = $domicilioEdit->cp;
             $this->calleInput = $domicilioEdit->calle;
             $this->noextInput = $domicilioEdit->noext;
             $this->nointInput = $domicilioEdit->noint;
             $this->colInput = $domicilioEdit->colonia;
         } else {
-            $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit = Domicilio::find($this->suscripcion[0]['domicilio_id']);
             $this->cpInput = $domicilioEdit->cp;
             $this->calleInput = $domicilioEdit->calle;
             $this->noextInput = $domicilioEdit->noext;
@@ -114,7 +116,7 @@ class FacturarPPD extends Component
         ]);
 
         if (substr($this->idTipo, 0, 6) == 'suscri') {
-            $domicilioEdit = domicilioSubs::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit = domicilioSubs::find($this->suscripcion[0]['domicilio_id']);
             $domicilioEdit->update([
                 'cp' => $this->cpInput,
                 'calle' => $this->calleInput,
@@ -123,7 +125,7 @@ class FacturarPPD extends Component
                 'colonia' => $this->colInput,
             ]);
         } else {
-            $domicilioEdit = Domicilio::find($this->suscripcion['domicilio_id']);
+            $domicilioEdit = Domicilio::find($this->suscripcion[0]['domicilio_id']);
             $domicilioEdit->update([
                 'cp' => $this->cpInput,
                 'calle' => $this->calleInput,
@@ -157,22 +159,22 @@ class FacturarPPD extends Component
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->suscripcion->importe / $this->suscripcion->cantEjemplares,
-                    "Discount" => $this->suscripcion->descuento,
-                    "Quantity" => $this->suscripcion->cantEjemplares,
-                    "Subtotal" => $this->suscripcion->importe,
+                    "UnitPrice" => number_format($this->suscripcion[0]['importe'] / $this->suscripcion[0]['cantEjemplares'], 2),
+                    "Discount" => $this->suscripcion[0]['descuento'],
+                    "Quantity" => $this->suscripcion[0]['cantEjemplares'],
+                    "Subtotal" => $this->suscripcion[0]['importe'],
                     "ObjetoImp" => "02",
                     "TaxObject" => "02",
                     "Taxes" => [
                         [
                             "Total" => 0.0,
                             "Name" => "IVA",
-                            "Base" => $this->suscripcion->importe,
+                            "Base" => $this->suscripcion[0]['importe'],
                             "Rate" => 0,
                             "IsRetention" => false
                         ]
                     ],
-                    "Total" => $this->suscripcion->total,
+                    "Total" => $this->suscripcion[0]['total'],
                 ]
             ];
         } else {
@@ -184,7 +186,7 @@ class FacturarPPD extends Component
                     "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
-                    "UnitPrice" => $this->tiro[0]['precio'],
+                    "UnitPrice" => number_format($this->tiro[0]['importe'] / $this->tiro[0]['entregar'], 2),
                     "Discount" => 0,
                     "Quantity" => $this->tiro[0]['entregar'],
                     "Subtotal" => $this->tiro[0]['importe'],
@@ -255,60 +257,60 @@ class FacturarPPD extends Component
             ]);
         }
 
-        try {
-            if ($facturama->statusCode == 201) {
-                $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
-                Invoice::create([
-                    'invoice_id' => $facturama->data->Id,
-                    'invoice_date' => $facturama->data->Date,
-                    'cliente_id' => $this->clienteid,
-                    'cliente' => $nombre,
-                    'idTipo' => $this->idTipo,
-                    'status' => 'CREDITO',
-                    'serie' => $facturama->data->Serie,
-                    'folio' => $facturama->data->Folio,
-                    'paymentTerms' => $facturama->data->PaymentTerms,
-                    'paymentMethod' => $facturama->data->PaymentMethod,
-                    'expeditionPlace' => $facturama->data->ExpeditionPlace,
-                    'currency' => $facturama->data->Currency,
-                    'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
-                    'rfc' => $facturama->data->Issuer->Rfc,
-                    'productCode' => $facturama->data->Items[0]->ProductCode,
-                    'unitCode' => $facturama->data->Items[0]->UnitCode,
-                    'quantity' => $facturama->data->Items[0]->Quantity,
-                    'unit' => $facturama->data->Items[0]->Unit,
-                    'description' => $facturama->data->Items[0]->Description,
-                    'unitValue' => $facturama->data->Items[0]->UnitValue,
-                    'subtotal' => $facturama->data->Subtotal,
-                    'discount' => $facturama->data->Discount,
-                    'total' => $facturama->data->Total,
-                    'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
-                ]);
+        /* try { */
+        if ($facturama->statusCode == 201) {
+            $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
+            Invoice::create([
+                'invoice_id' => $facturama->data->Id,
+                'invoice_date' => $facturama->data->Date,
+                'cliente_id' => $this->clienteid,
+                'cliente' => $nombre,
+                'idTipo' => $this->idTipo,
+                'status' => 'CREDITO',
+                'serie' => $facturama->data->Serie,
+                'folio' => $facturama->data->Folio,
+                'paymentTerms' => $facturama->data->PaymentTerms,
+                'paymentMethod' => $facturama->data->PaymentMethod,
+                'expeditionPlace' => $facturama->data->ExpeditionPlace,
+                'currency' => $facturama->data->Currency,
+                'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
+                'rfc' => $facturama->data->Issuer->Rfc,
+                'productCode' => $facturama->data->Items[0]->ProductCode,
+                'unitCode' => $facturama->data->Items[0]->UnitCode,
+                'quantity' => $facturama->data->Items[0]->Quantity,
+                'unit' => $facturama->data->Items[0]->Unit,
+                'description' => $facturama->data->Items[0]->Description,
+                'unitValue' => $facturama->data->Items[0]->UnitValue,
+                'subtotal' => $facturama->data->Subtotal,
+                'discount' => $facturama->data->Discount,
+                'total' => $facturama->data->Total,
+                'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
+            ]);
 
-                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
-                    'status' => 'facturado',
-                ]);
+            $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                'status' => 'facturado',
+            ]);
 
-                $this->status = 'created';
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
-                ]);
+            $this->status = 'created';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
+            ]);
 
-                return redirect('/vistaPrevia/' . $facturama->data->Id);
-            } else {
-                $this->d = "";
+            return redirect('/vistaPrevia/' . $facturama->data->Id);
+        } else {
+            $this->d = "";
 
-                foreach ($facturama->errors as $key => $error) {
-                    $this->d .= "- $error \n";
-                }
-
-                $this->modalErrors = true;
+            foreach ($facturama->errors as $key => $error) {
+                $this->d .= "- $error \n";
             }
-        } catch (\Exception $e) {
+
+            $this->modalErrors = true;
+        }
+        /* } catch (\Exception $e) {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
                 'message' => ($this->status == 'error') ? '¡Rellena todos los campos!' : ''
             ]);
-        }
+        } */
     }
 }

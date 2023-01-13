@@ -175,7 +175,7 @@
                             <label for="">Cant. Ejemplares:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ $suscripcion->cantEjemplares }}" disabled>
+                                    value="{{ $suscripcion[0]['cantEjemplares'] }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200" value="{{ $tiro[0]['entregar'] }}"
                                     disabled>
@@ -190,7 +190,7 @@
                             <label for="">Importe:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($suscripcion->importe)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($suscripcion[0]['importe'])) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
                                     value="{{ sprintf('$ %s', number_format($tiro[0]['importe'])) }}" disabled>
@@ -205,7 +205,7 @@
                             <label for="">Descuento:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ $suscripcion->descuento }}" disabled>
+                                    value="{{ $suscripcion[0]['descuento'] }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200" value="0" disabled>
                             @endif
@@ -219,7 +219,7 @@
                             <label for="">Total:</label>
                             @if (substr($idTipo, 0, 6) == 'suscri')
                                 <input type="text" class="border-0 bg-gray-200"
-                                    value="{{ sprintf('$ %s', number_format($suscripcion->total)) }}" disabled>
+                                    value="{{ sprintf('$ %s', number_format($suscripcion[0]['total'])) }}" disabled>
                             @else
                                 <input type="text" class="border-0 bg-gray-200"
                                     value="{{ sprintf('$ %s', number_format($tiro[0]['importe'])) }}" disabled>
