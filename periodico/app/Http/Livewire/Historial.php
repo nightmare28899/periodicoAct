@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\Storage;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha;
+    public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha, $statusTiro = 'Todos';
+
     public $query = '';
+
     public function mount($editar)
     {
         if ($editar != 'normal') {
@@ -61,51 +63,28 @@ class Historial extends Component
         $this->date = Carbon::now()->format('d-m-Y');
 
         if ($this->state != true) {
-            if ($this->query && $this->fechaRemision) {
+            if ($this->query) {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->where(function ($query) {
-                        $query->where('cliente.id', 'like', '%' . $this->query . '%')
-                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                            ->where('fecha', $this->fechaRemision);
-                    })
-                    ->select('tiro.*', 'cliente.clasificacion')
-                    ->get();
-            } else if ($this->query) {
-                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->where('cliente.id', 'like', '%' . $this->query . '%')
+                    ->where('tiro.id', $this->query)
+                    ->orWhere('tiro.cliente_id', $this->query)
                     ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get();
-            } else if ($this->fechaRemision) {
+            } else if ($this->statusTiro != 'Todos') {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->where('fecha', $this->fechaRemision)
-                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->where('tiro.status', $this->statusTiro)
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get();
             } else {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->select('tiro.*', 'cliente.clasificacion')
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get();
             }
-        } else {
-            if ($this->query && $this->fechaRemision) {
-                $this->datos = Tiro::where(function ($query) {
-                    $query->where('cliente.id', 'like', '%' . $this->query . '%')
-                        ->where('fecha', $this->fechaRemision);
-                })->get();
-                for ($i = 0; $i < count($this->datos); $i++) {
-                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
-                        $this->type = $this->datos[$i]->idTipo;
 
-                        $this->tiros = Tiro::where(function ($query) {
-                            $query->where('cliente_id',)
-                                ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                                ->where('fecha', $this->fechaRemision)
-                                ->where('idTipo', $this->type);
-                        })->get();
-                    }
-                }
-            } else if ($this->clienteSeleccionado) {
+        } else {
+            if ($this->clienteSeleccionado) {
                 $this->datos = Tiro::all();
+
                 for ($i = 0; $i < count($this->datos); $i++) {
                     if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
                         array_push($this->type, $this->datos[$i]->idTipo);
@@ -113,18 +92,6 @@ class Historial extends Component
                         $this->tiros = Tiro::where(function ($query) {
                             $query->whereIn('idTipo', $this->type)
                                 ->where('cliente_id', $this->clienteSeleccionado['id']);
-                        })->get();
-                    }
-                }
-            } else if ($this->fechaRemision) {
-                $this->datos = Tiro::all();
-                for ($i = 0; $i < count($this->datos); $i++) {
-                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
-                        array_push($this->type, $this->datos[$i]->idTipo);
-
-                        $this->tiros = Tiro::where(function ($query) {
-                            $query->whereIn('idTipo', $this->type)
-                                ->where('fecha', $this->fechaRemision);
                         })->get();
                     }
                 }

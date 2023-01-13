@@ -25,6 +25,17 @@
                         name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                         autocomplete="off" />
                 </div>
+                <div class="w-64 mt-6 ml-5">
+                    <select name="tipo" id="tipo"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        wire:model="statusTiro">
+                        <option value="Todos">Todos</option>
+                        <option value="Pagado">Pagado</option>
+                        <option value="sin pagar">Sin pagar</option>
+                        <option value="Cancelado">Cancelado</option>
+                        <option value="facturado">Facturado</option>
+                    </select>
+                </div>
             </div>
             <br>
             @if ($tiros)
