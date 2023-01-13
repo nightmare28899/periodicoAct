@@ -531,6 +531,7 @@ class GenerarR extends Component
                         $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
                         $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
                     }
+                    /* dd($this->importeVentas, $this->totalesVentas); */
                 }
 
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -1112,12 +1113,12 @@ class GenerarR extends Component
         }
 
         if ($this->de && $this->hasta) {
-
+            $this->deHastaData = true;
             $comienzo = Carbon::parse($this->de);
             $final = Carbon::parse($this->hasta);
 
             for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
-                array_push($this->entreFechas, Carbon::parse($i)->format('d/m/Y'));
+                array_push($this->entreFechas, $i->format("d/m/Y"));
                 array_push($this->diasEntreFechas, $i->translatedFormat('l'));
             }
 
@@ -1129,6 +1130,7 @@ class GenerarR extends Component
                     $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
                     $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
                 }
+                /* dd($this->importeVentas, $this->totalesVentas); */
             }
 
             $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
