@@ -65,7 +65,7 @@
 
 <body>
     @if (count($ventas) > 0)
-        @foreach ($ventas as $result)
+        @foreach ($ventas as $key => $result)
             {{-- @if ($result->{$diaS}) --}}
                 <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
                     <img src="img/logo.jpe" alt="logo la voz" height="36px">
@@ -96,7 +96,7 @@
                     <h3
                         style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
                         remision
-                        {{ $result['id'] }}
+                        {{ $idTiroSig != null ? $idTiroSig[$key]['id'] : 1 }}
                     </h3>
                     <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                         {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>
@@ -351,7 +351,7 @@
                 <h3
                     style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
                     remision
-                    {{ $result['id'] }}
+                    {{ $idTiroSig != null ? $idTiroSig[$key]['id'] : 1 }}
                 </h3>
                 <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                     {{ \Carbon\Carbon::parse($dateF)->format('d/m/Y') }}</p>

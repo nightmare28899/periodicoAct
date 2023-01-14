@@ -19,7 +19,7 @@ class GenerarR extends Component
 {
     use WithPagination;
 
-    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [], $importeVentas = 0, $totalesVentas = 0, $deHastaData = false;
+    public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [], $importeVentas = 0, $totalesVentas = 0, $deHastaData = false, $idRemision = [];
 
     public function mount()
     {
@@ -513,64 +513,6 @@ class GenerarR extends Component
                 ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get();
 
-            if ($this->de && $this->hasta) {
-                $this->deHastaData = true;
-                $comienzo = Carbon::parse($this->de);
-                $final = Carbon::parse($this->hasta);
-
-                for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
-                    array_push($this->entreFechas, $i->format("d/m/Y"));
-                    array_push($this->diasEntreFechas, $i->translatedFormat('l'));
-                }
-
-                foreach ($this->ventas as $result) {
-
-                    foreach ($this->entreFechas as $key => $fecha) {
-                        $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
-
-                        $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
-                        $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
-                    }
-                    /* dd($this->importeVentas, $this->totalesVentas); */
-                }
-
-                $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
-                    'ventas' => $this->ventas,
-                    'suscripcion' => $this->suscripcion,
-                    'diaS' => $this->diaS,
-                    'dateF' => $this->dateF,
-                    'de' => $this->de,
-                    'domsubs' => $this->domsubs,
-                    'hasta' => $this->hasta,
-                    'rutasNombre' => $this->rutasNombre,
-                    'entreFechas' => $this->entreFechas,
-                    'diasEntreFechas' => $this->diasEntreFechas,
-                ])
-                    ->setPaper('A5', 'landscape')
-                    ->output();
-
-                $this->rutasNombre = [];
-                $this->modalRemision = false;
-                $this->showingModal = true;
-                $this->de = '';
-                $this->hasta = '';
-            } else {
-                $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
-                    'ventas' => $this->ventas,
-                    'suscripcion' => $this->suscripcion,
-                    'diaS' => $this->diaS,
-                    'dateF' => $this->dateF,
-                    'domsubs' => $this->domsubs,
-                    'rutasNombre' => $this->rutasNombre,
-                ])
-                    ->setPaper('A5', 'landscape')
-                    ->output();
-
-                $this->rutasNombre = [];
-                $this->modalRemision = false;
-                $this->showingModal = true;
-            }
-
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     /* if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) { */
@@ -600,10 +542,7 @@ class GenerarR extends Component
                         'remisionStatus' => 'Remisionado',
                     ]);
 
-                    $this->modalRemision = false;
-                    $this->showingModal = true;
-                    $this->deHastaData = false;
-                    $this->toast();
+                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
                     /* } */
                 }
             }
@@ -637,16 +576,91 @@ class GenerarR extends Component
                         'remisionStatus' => 'Remisionado',
                     ]);
 
-                    $this->modalRemision = false;
-                    $this->showingModal = true;
-                    $this->toast();
+                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
                     /* } */
                 }
             }
 
-            $this->clienteSeleccionado = [];
+            if ($this->de && $this->hasta) {
+                $this->deHastaData = true;
+                $comienzo = Carbon::parse($this->de);
+                $final = Carbon::parse($this->hasta);
+
+                for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
+                    array_push($this->entreFechas, $i->format("d/m/Y"));
+                    array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+                }
+
+                if ($this->deHastaData == true) {
+                    foreach ($this->ventas as $result) {
+
+                        foreach ($this->entreFechas as $key => $fecha) {
+                            $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+
+                            $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+                            $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
+
+                            Tiro::where("idTipo", $result['idVenta'])->update([
+                                'importe' => $this->importeVentas,
+                                'entregar' => $this->totalesVentas,
+                                'venta' => $this->totalesVentas,
+                            ]);
+                        }
+                        $this->importeVentas = 0;
+                        $this->totalesVentas = 0;
+                    }
+                }
+
+                $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
+                    'ventas' => $this->ventas,
+                    'suscripcion' => $this->suscripcion,
+                    'diaS' => $this->diaS,
+                    'dateF' => $this->dateF,
+                    'de' => $this->de,
+                    'domsubs' => $this->domsubs,
+                    'hasta' => $this->hasta,
+                    'rutasNombre' => $this->rutasNombre,
+                    'entreFechas' => $this->entreFechas,
+                    'diasEntreFechas' => $this->diasEntreFechas,
+                    'idTiroSig' => $this->idRemision,
+                ])
+                    ->setPaper('A5', 'landscape')
+                    ->output();
+
+                $this->rutasNombre = [];
+                $this->modalRemision = false;
+                $this->showingModal = true;
+                $this->de = '';
+                $this->hasta = '';
+            } else {
+                $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
+                    'ventas' => $this->ventas,
+                    'suscripcion' => $this->suscripcion,
+                    'diaS' => $this->diaS,
+                    'dateF' => $this->dateF,
+                    'domsubs' => $this->domsubs,
+                    'rutasNombre' => $this->rutasNombre,
+                    'idTiroSig' => $this->idRemision,
+                ])
+                    ->setPaper('A5', 'landscape')
+                    ->output();
+
+                $this->rutasNombre = [];
+                $this->modalRemision = false;
+                $this->showingModal = true;
+            }
+
+            $this->modalRemision = false;
+            $this->showingModal = true;
+            $this->importeVentas = 0;
+            $this->totalesVentas = 0;
+            $this->deHastaData = false;
+
+            /* $this->clienteSeleccionado = []; */
 
             Storage::disk('public')->put('remision.pdf', $pdf);
+
+            $this->toast();
 
             return Redirect::to('/PDFRemision');
         } else {
@@ -1112,63 +1126,7 @@ class GenerarR extends Component
             }
         }
 
-        if ($this->de && $this->hasta) {
-            $this->deHastaData = true;
-            $comienzo = Carbon::parse($this->de);
-            $final = Carbon::parse($this->hasta);
 
-            for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
-                array_push($this->entreFechas, $i->format("d/m/Y"));
-                array_push($this->diasEntreFechas, $i->translatedFormat('l'));
-            }
-
-            foreach ($this->ventas as $result) {
-
-                foreach ($this->entreFechas as $key => $fecha) {
-                    $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
-
-                    $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
-                    $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
-                }
-                /* dd($this->importeVentas, $this->totalesVentas); */
-            }
-
-            $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
-                'ventas' => $this->ventas,
-                'suscripcion' => $this->suscripcion,
-                'diaS' => $this->diaS,
-                'dateF' => $this->dateF,
-                'de' => $this->de,
-                'domiPDF' => $this->domiPDF,
-                'hasta' => $this->hasta,
-                'rutasNombre' => $this->rutasNombre,
-                'entreFechas' => $this->entreFechas,
-                'diasEntreFechas' => $this->diasEntreFechas,
-            ])
-                ->setPaper('A5', 'landscape')
-                ->output();
-
-            $this->clienteSeleccionado = [];
-            $this->rutasNombre = [];
-            $this->modalRemision = false;
-            $this->de = '';
-            $this->hasta = '';
-        } else {
-            $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
-                'ventas' => $this->ventas,
-                'suscripcion' => $this->suscripcion,
-                'diaS' => $this->diaS,
-                'dateF' => $this->dateF,
-                'domsubs' => $this->domiPDF,
-                'rutasNombre' => $this->rutasNombre,
-            ])
-                ->setPaper('A5', 'landscape')
-                ->output();
-
-            $this->clienteSeleccionado = [];
-            $this->rutasNombre = [];
-            $this->modalRemision = false;
-        }
 
         if (count($this->ventas) > 0) {
             for ($i = 0; $i < count($this->ventas); $i++) {
@@ -1194,9 +1152,12 @@ class GenerarR extends Component
                     'tipo' => $this->ventas[$i]['tiporuta'],
                     'domicilio_id' => $this->ventas[$i]['domicilio_id'],
                 ]);
+
                 ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
                     'remisionStatus' => 'Remisionado',
                 ]);
+
+                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
                 /* } */
             }
         }
@@ -1225,15 +1186,90 @@ class GenerarR extends Component
                     'tipo' => $this->suscripcion[$i]['tiporuta'],
                     'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                 ]);
+
                 Suscripcion::where('idSuscripcion', '=', $this->suscripcion[$i]['idSuscripcion'])->update([
                     'remisionStatus' => 'Remisionado',
                 ]);
+
+                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
                 /* } */
             }
         }
 
+        if ($this->de && $this->hasta) {
+            $this->deHastaData = true;
+            $comienzo = Carbon::parse($this->de);
+            $final = Carbon::parse($this->hasta);
+
+            for ($i = $comienzo; $i <= $final; $i->addDays(1)) {
+                array_push($this->entreFechas, $i->format("d/m/Y"));
+                array_push($this->diasEntreFechas, $i->translatedFormat('l'));
+            }
+
+            if ($this->deHastaData == true) {
+                foreach ($this->ventas as $result) {
+
+                    foreach ($this->entreFechas as $key => $fecha) {
+                        $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+
+                        $this->importeVentas += $this->diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$this->diasEntreFechas[$key]] : $result['ordinario'] * $result[$this->diasEntreFechas[$key]];
+                        $this->totalesVentas += $result[$this->diasEntreFechas[$key]];
+
+                        Tiro::where("idTipo", $result['idVenta'])->update([
+                            'importe' => $this->importeVentas,
+                            'entregar' => $this->totalesVentas,
+                            'venta' => $this->totalesVentas,
+                        ]);
+                    }
+                    $this->importeVentas = 0;
+                    $this->totalesVentas = 0;
+                }
+            }
+
+            $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
+                'ventas' => $this->ventas,
+                'suscripcion' => $this->suscripcion,
+                'diaS' => $this->diaS,
+                'dateF' => $this->dateF,
+                'de' => $this->de,
+                'domiPDF' => $this->domiPDF,
+                'hasta' => $this->hasta,
+                'rutasNombre' => $this->rutasNombre,
+                'entreFechas' => $this->entreFechas,
+                'diasEntreFechas' => $this->diasEntreFechas,
+                'idTiroSig' => $this->idRemision,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
+
+            $this->clienteSeleccionado = [];
+            $this->rutasNombre = [];
+            $this->modalRemision = false;
+            $this->de = '';
+            $this->hasta = '';
+        } else {
+            $pdf = PDF::loadView('livewire.tiros.remisionPDF', [
+                'ventas' => $this->ventas,
+                'suscripcion' => $this->suscripcion,
+                'diaS' => $this->diaS,
+                'dateF' => $this->dateF,
+                'domsubs' => $this->domiPDF,
+                'rutasNombre' => $this->rutasNombre,
+                'idTiroSig' => $this->idRemision,
+            ])
+                ->setPaper('A5', 'landscape')
+                ->output();
+
+            $this->clienteSeleccionado = [];
+            $this->rutasNombre = [];
+            $this->modalRemision = false;
+        }
+
         $this->modalRemision = false;
         $this->showingModal = true;
+        $this->importeVentas = 0;
+        $this->totalesVentas = 0;
+        $this->deHastaData = false;
         /* $this->clienteSeleccionado = []; */
 
         Storage::disk('public')->put('remision.pdf', $pdf);
