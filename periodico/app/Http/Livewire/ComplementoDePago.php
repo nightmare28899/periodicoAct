@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ComplementoDePago extends Component
 {
-    public $uuid, $folio, $paymentMethod, $PreviousBalanceAmount, $AmountPaid, $ImpSaldoInsoluto, $moneda = '(MXN) Peso Mexicano', $clienteSeleccionado, $invoices = [], $rfcCliente, $nameCliente, $fiscalRegime, $codigoPostalFiscal, $d, $modalErrors = 0, $activarCG = false, $facturaSeleccionada, $invoicesId = [], $montoIngresado, $montosIngresados = [], $forma_pago, $invoicesAdds = [], $status = 'created', $relatedDocuments = [], $date, $fecha, $clientesBuscados, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $query, $invoice;
+    public $uuid, $folio, $paymentMethod, $PreviousBalanceAmount, $AmountPaid, $ImpSaldoInsoluto, $moneda = '(MXN) Peso Mexicano', $clienteSeleccionado, $invoices = [], $rfcCliente, $nameCliente, $fiscalRegime, $codigoPostalFiscal, $d, $modalErrors = 0, $activarCG = false, $facturaSeleccionada, $invoicesId = [], $montoIngresado, $montosIngresados = [], $forma_pago, $invoicesAdds = [], $status = 'created', $relatedDocuments = [], $date, $fecha, $clientesBuscados, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $query, $invoiceId = [];
 
     public function mount()
     {
@@ -72,7 +72,6 @@ class ComplementoDePago extends Component
 
     public function render()
     {
-        $this->invoice = Complemento_pago::latest('id')->first();
         $this->date = Carbon::now()->format('Y-m-d\TH:i:s');
         if ($this->activarCG) {
             /* $this->cfdiUse = 'S01'; */
@@ -178,10 +177,12 @@ class ComplementoDePago extends Component
                 );
             }
 
+            $this->invoiceId = complemento_pago::all();
+
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
                 "CfdiType" => "P", // normal //abono
                 "NameId" => "14",
-                "Folio" => isset($invoice) ? $invoice['id'] + 1 : 1,
+                "Folio" => count($this->invoiceId) == 0 ? 1 : count($this->invoiceId) + 1,
                 "ExpeditionPlace" => "58190",
                 "Receiver" => [
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->rfcCliente,

@@ -19,8 +19,6 @@ class Factura extends Component
 
     public function render()
     {
-        $this->invoice = Invoice::latest('id')->first();
-
         if ($this->activarCG) {
             $this->cliente['nombre'] = 'PUBLICO EN GENERAL';
             $this->cliente['rfc_input'] = 'XAXX010101000';
@@ -212,13 +210,15 @@ class Factura extends Component
             "Year" => "2022",
         ];
 
+        $this->invoice = Invoice::all();
+
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
                 "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPUE" : "VPPUE",
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
-                "Folio" => isset($invoice) ? $invoice['id'] + 1 : 1,
+                "Folio" => count($this->invoice) == 0 ? 1 : count($this->invoice) + 1,
                 "CfdiType" => "I",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
@@ -252,64 +252,62 @@ class Factura extends Component
         }
 
         try {
-        if ($facturama->statusCode == 201) {
-            $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
-            Invoice::create([
-                'invoice_id' => $facturama->data->Id,
-                'invoice_date' => $facturama->data->Date,
-                'cliente_id' => $this->clienteid,
-                'cliente' => $nombre,
-                'idTipo' => $this->idTipo,
-                'status' => 'Vigente',
-                'serie' => $facturama->data->Serie,
-                'folio' => $facturama->data->Folio,
-                'paymentTerms' => $facturama->data->PaymentTerms,
-                'paymentMethod' => $facturama->data->PaymentMethod,
-                'expeditionPlace' => $facturama->data->ExpeditionPlace,
-                'currency' => $facturama->data->Currency,
-                'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
-                'rfc' => $facturama->data->Issuer->Rfc,
-                'productCode' => $facturama->data->Items[0]->ProductCode,
-                'unitCode' => $facturama->data->Items[0]->UnitCode,
-                'quantity' => $facturama->data->Items[0]->Quantity,
-                'unit' => $facturama->data->Items[0]->Unit,
-                'description' => $facturama->data->Items[0]->Description,
-                'unitValue' => $facturama->data->Items[0]->UnitValue,
-                'subtotal' => $facturama->data->Subtotal,
-                'discount' => $facturama->data->Discount,
-                'total' => $facturama->data->Total,
-                'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
-            ]);
+            if ($facturama->statusCode == 201) {
+                $facturama->data->Date = Carbon::parse($facturama->data->Date)->format('Y-m-d');
+                Invoice::create([
+                    'invoice_id' => $facturama->data->Id,
+                    'invoice_date' => $facturama->data->Date,
+                    'cliente_id' => $this->clienteid,
+                    'cliente' => $nombre,
+                    'idTipo' => $this->idTipo,
+                    'status' => 'Vigente',
+                    'serie' => $facturama->data->Serie,
+                    'folio' => $facturama->data->Folio,
+                    'paymentTerms' => $facturama->data->PaymentTerms,
+                    'paymentMethod' => $facturama->data->PaymentMethod,
+                    'expeditionPlace' => $facturama->data->ExpeditionPlace,
+                    'currency' => $facturama->data->Currency,
+                    'fiscalRegime' => $facturama->data->Issuer->FiscalRegime,
+                    'rfc' => $facturama->data->Issuer->Rfc,
+                    'productCode' => $facturama->data->Items[0]->ProductCode,
+                    'unitCode' => $facturama->data->Items[0]->UnitCode,
+                    'quantity' => $facturama->data->Items[0]->Quantity,
+                    'unit' => $facturama->data->Items[0]->Unit,
+                    'description' => $facturama->data->Items[0]->Description,
+                    'unitValue' => $facturama->data->Items[0]->UnitValue,
+                    'subtotal' => $facturama->data->Subtotal,
+                    'discount' => $facturama->data->Discount,
+                    'total' => $facturama->data->Total,
+                    'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
+                ]);
 
-            /* $enviarCorreo = (`https://apisandbox.facturama.mx/cfdi?cfdiType={$this->cfdipe}&cfdiId={$facturama->data->Complement->TaxStamp->Uuid}&email={$this->cliente->email}`); */
+                /* $enviarCorreo = (`https://apisandbox.facturama.mx/cfdi?cfdiType={$this->cfdipe}&cfdiId={$facturama->data->Complement->TaxStamp->Uuid}&email={$this->cliente->email}`);
 
-            $enviarCorreo = Http::post('https://apisandbox.facturama.mx/cfdi?', [
-                'cfdiType' => (string)$this->cfdipe,
-                'cfdiId' => (string)$facturama->data->Complement->TaxStamp->Uuid,
-                'email' => (string)$this->cliente->email,
-            ]);
+                $enviarCorreo = Http::post('https://apisandbox.facturama.mx/cfdi?', [
+                    'cfdiType' => (string)$this->cfdipe,
+                    'cfdiId' => (string)$facturama->data->Complement->TaxStamp->Uuid,
+                    'email' => (string)$this->cliente->email,
+                ]); */
 
-            /* dd($enviarCorreo); */
+                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                    'status' => 'facturado',
+                ]);
 
-            $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
-                'status' => 'facturado',
-            ]);
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
+                ]);
 
-            $this->status = 'created';
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Se creo exitosamente la factura!' : ''
-            ]);
+                return redirect('/vistaPrevia/' . $facturama->data->Id);
+            } else {
+                $this->d = "";
 
-            return redirect('/vistaPrevia/' . $facturama->data->Id);
-        } else {
-            $this->d = "";
+                foreach ($facturama->errors as $key => $error) {
+                    $this->d .= "- $error \n";
+                }
 
-            foreach ($facturama->errors as $key => $error) {
-                $this->d .= "- $error \n";
+                $this->modalErrors = true;
             }
-
-            $this->modalErrors = true;
-        }
         } catch (\Exception $e) {
             /* $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [

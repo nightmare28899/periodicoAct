@@ -18,8 +18,6 @@ class FacturarPPD extends Component
 
     public function render()
     {
-        $this->invoice = Invoice::latest('id')->first();
-
         if ($this->activarCG) {
             $this->cliente['nombre'] = 'PUBLICO EN GENERAL';
             $this->cliente['razon_social'] = 'PUBLICO EN GENERAL';
@@ -218,13 +216,15 @@ class FacturarPPD extends Component
             "Year" => "2022",
         ];
 
+        $this->invoice = Invoice::all();
+
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
                 "Serie" => substr($this->idTipo, 0, 6) == 'suscri' ? "SUSPPD" : "VPPPD",
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
-                "Folio" => isset($invoice) ? $invoice['id'] + 1 : 1,
+                "Folio" => count($this->invoice) == 0 ? 1 : count($this->invoice) + 1,
                 "CfdiType" => "E",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
