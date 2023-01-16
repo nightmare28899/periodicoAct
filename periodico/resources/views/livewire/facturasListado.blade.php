@@ -72,7 +72,7 @@
 
                                 <tbody>
                                     @foreach ($tiros as $tiro)
-                                        @if ($tiro->status == 'Pagado')
+                                        @if ($tiro->status == 'Pagado' || $tiro->status == 'cancelado')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
@@ -122,7 +122,7 @@
                                                         disabled>Facturado</a>
                                                 </td>
                                             </tr>
-                                        @elseif ($tiro->status == 'cancelado')
+                                        {{-- @elseif ($tiro->status == 'cancelado')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
@@ -146,7 +146,7 @@
                                                     <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline"
                                                         disabled>Cancelado</a>
                                                 </td>
-                                            </tr>
+                                            </tr> --}}
                                             {{-- @elseif (count($tiros) > 0 && $tiro->status != 'Pagado')
                                         <td colspan="13" class="text-center font-bold">No tiene facturas</td>
                                         @break($tiro->status != 'Pagado') --}}

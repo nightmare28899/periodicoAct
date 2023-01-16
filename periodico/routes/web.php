@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
     Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
-    Route::get('/cancelarFactura/{id}', CancelarFactura::class);
+    Route::get('/cancelarFactura/{id}/{idTipo}', CancelarFactura::class);
     Route::get('/crearVenta', ClienteBuscador::class)->name('CrearVenta');
     Route::get('/crearSuscripcion', SuscripcionBuscador::class)->name('CrearSuscripcion');
     Route::get('/remisiones', GenerarR::class);

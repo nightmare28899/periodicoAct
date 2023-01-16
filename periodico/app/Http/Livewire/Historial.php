@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Historial extends Component
 {
-    public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha, $statusTiro = 'Todos';
+    public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha, $statusTiro = 'Todos', $tarifaOrdinario = 0, $tarifaDominical = 0, $tarifa = 0;
 
     public $query = '';
 
@@ -68,19 +68,23 @@ class Historial extends Component
                     ->where('tiro.id', $this->query)
                     ->orWhere('tiro.cliente_id', $this->query)
                     ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get();
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->get()
+                    ->toArray();
             } else if ($this->statusTiro != 'Todos') {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->where('tiro.status', $this->statusTiro)
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get();
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->get()
+                    ->toArray();
             } else {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get();
+                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
+                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->get()
+                    ->toArray();
             }
-
         } else {
             if ($this->clienteSeleccionado) {
                 $this->datos = Tiro::all();
@@ -114,6 +118,8 @@ class Historial extends Component
 
         return view('livewire.remisiones.historial', [
             'entregar' => $this->entregar,
+            'tarifaOrdinario' => $this->tarifaOrdinario,
+            'tarifaDominical' => $this->tarifaDominical,
         ]);
     }
 
@@ -204,8 +210,10 @@ class Historial extends Component
         $this->modalHistorial = false;
         $this->modalRemision = false;
         $this->showingModal = false;
-        $tiros = Tiro::find($id);
+        $tiros = Tiro::join("domicilio", "domicilio.id", "domicilio_id")->join("tarifa", "tarifa.id", "tarifa_id")->find($id);
         $this->tiros_id = $id;
+        $this->tarifaOrdinario = $tiros->ordinario;
+        $this->tarifaDominical = $tiros->dominical;
         $this->devuelto = $tiros->devuelto;
         $this->idVentaEditar = $idVenta;
         $this->diaDevolucion = $dia;
@@ -258,21 +266,23 @@ class Historial extends Component
         $this->entregar = $tiros->entregar;
         $ventas = ventas::where('idVenta', $this->idVentaEditar)->first();
         $this->devuelto = $this->cantDevueltos;
-        if ($this->devuelto) {
+        if ($this->devuelto && $this->tarifa) {
             $this->cantCancelar = false;
+            $total = $this->tarifa * $this->devuelto;
+
             if ($tiros->entregar >= $this->devuelto) {
                 $tiros->update([
                     'devuelto' => $tiros->devuelto + $this->devuelto,
                     'entregar' => $tiros->entregar - $this->devuelto,
                     'venta' => $tiros->venta - $this->devuelto,
-                    'importe' => $tiros->importe = ($tiros->entregar - $this->devuelto) * $tiros->precio,
+                    'importe' => $tiros->importe - $total,
                 ]);
 
                 $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
 
-                $ventas->update([
+                /* $ventas->update([
                     $this->diaDevolucion => $cant[0][$this->diaDevolucion] - $this->devuelto,
-                ]);
+                ]); */
 
                 $this->status = 'updated';
                 $this->dispatchBrowserEvent('alert', [
@@ -291,14 +301,14 @@ class Historial extends Component
                     'devuelto' => $tiros->devuelto - $this->devuelto,
                     'entregar' => $tiros->entregar + $this->devuelto,
                     'venta' => $tiros->venta + $this->devuelto,
-                    'importe' => $tiros->importe = ($tiros->entregar + $this->devuelto) * $tiros->precio,
+                    'importe' => $tiros->importe - $total,
                 ]);
 
                 $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
 
-                $ventas->update([
+                /* $ventas->update([
                     $this->diaDevolucion => $cant[0][$this->diaDevolucion] + $this->devuelto,
-                ]);
+                ]); */
 
                 $this->status = 'adjust';
                 $this->dispatchBrowserEvent('alert', [
@@ -316,6 +326,11 @@ class Historial extends Component
                     'message' => ($this->status == 'error') ? '¡No puedes devolver más cantidad de la que hay!' : ''
                 ]);
             }
+        } else {
+            $this->status = 'error';
+            $this->dispatchBrowserEvent('alert', [
+                'message' => ($this->status == 'error') ? '¡No puedes dejar campos vacíos!' : ''
+            ]);
         }
     }
 

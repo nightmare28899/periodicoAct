@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CancelarFactura extends Component
 {
-    public $motivo = '', $tiro, $invoice, $idFactura = '', $status = 'created', $date;
+    public $motivo = '', $tiro, $invoice, $idFactura = '', $status = 'created', $date, $idTipo;
     private $facturama;
 
     public function render()
@@ -22,20 +22,20 @@ class CancelarFactura extends Component
         return view('livewire.factura.cancelar-factura', ['facturama' => $this->facturama]);
     }
 
-    public function mount($id)
+    public function mount($id, $idTipo)
     {
         $this->idFactura = $id;
         $this->facturama = \Crisvegadev\Facturama\Invoice::streamFile('pdf', 'issued', $id);
         Storage::disk('public')->put('file.pdf', base64_decode($this->facturama->data->Content));
         $this->facturama = Storage::url('file.pdf');
-
+        $this->idTipo = $idTipo;
     }
 
     public function cancelar()
     {
         if ($this->motivo) {
             $this->facturama =  \Crisvegadev\Facturama\Invoice::cancel($this->idFactura, 'issued', $this->motivo);
-            $this->tiro = Tiro::where('cliente_id', $this->invoice[0]['cliente_id'])->update([
+            $this->tiro = Tiro::where('cliente_id', $this->invoice[0]['cliente_id'])->where('idTipo', $this->idTipo)->update([
                 'status' => 'cancelado',
             ]);
             $this->invoice = Invoice::where('invoice_id', $this->idFactura)->update([
