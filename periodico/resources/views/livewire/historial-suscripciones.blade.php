@@ -71,7 +71,7 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
                                             <td
-                                                class="px-4 py-2 border border-dark text-white {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') > $fechaActua->format('d/m/Y') || $suscripcion->estado == 'Pagado' || $suscripcion->estado == 'sin pagar' || $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '') }}">
+                                                class="px-4 py-2 border border-dark text-white {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') > $fechaActual->format('d/m/Y') || $suscripcion->estado == 'Pagado' || $suscripcion->estado == 'sin pagar' || $suscripcion->estado == 'Activo' ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'bg-red-500' : '') }}">
                                                 {{ ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' ? 'Inactivo' : ($suscripcion->estado == 'sin pagar' ? 'Activo' : 'Activo')) }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($suscripcion->fechaInicio)->format('d/m/Y') }}
                                             </td>

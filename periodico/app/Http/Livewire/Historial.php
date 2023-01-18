@@ -68,29 +68,23 @@ class Historial extends Component
         if ($this->state != true) {
             if ($this->query) {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
-                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
                     ->where(function ($query) {
                         $query->where('tiro.id', $this->query)
                             ->orWhere('tiro.cliente_id', $this->query)
                             ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
                     })
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get()
                     ->toArray();
             } else if ($this->statusTiro != 'Todos') {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
-                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
                     ->where('tiro.status', $this->statusTiro)
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get()
                     ->toArray();
             } else {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
-                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
-                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
+                    ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
                     ->get()
                     ->toArray();
             }

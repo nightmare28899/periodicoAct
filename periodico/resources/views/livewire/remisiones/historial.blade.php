@@ -52,7 +52,7 @@
                                     <th class='px-4 py-2 uppercase'>Devuelto</th>
                                     <th class='px-4 py-2 uppercase'>Faltante</th>
                                     <th class='px-4 py-2 uppercase'>Venta</th>
-                                    <th class='px-4 py-2 uppercase'>Precio</th>
+                                    {{-- <th class='px-4 py-2 uppercase'>Precio</th> --}}
                                     <th class='px-4 py-2 uppercase'>Importe</th>
                                     {{-- <th class='px-6 py-2 uppercase'>Dia</th> --}}
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
@@ -74,10 +74,10 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['devuelto'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['faltante'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['venta'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'><b>Ordinario:</b>
+                                            {{-- <td class='px-4 py-2 border border-dark'><b>Ordinario:</b>
                                                 {{ sprintf('$ %s', number_format($tiro['ordinario'], 2)) }},
                                                 <b>Dominical:</b> {{ sprintf('$ %s', number_format($tiro['dominical'], 2)) }}
-                                            </td>
+                                            </td> --}}
                                             <td class='px-4 py-2 border border-dark'>
                                                 {{ sprintf('$ %s', number_format($tiro['importe'], 2)) }}
                                             </td>
@@ -145,7 +145,7 @@
                                                         </button>
                                                     @endif
 
-                                                    @if ($tiro->status != 'Cancelado')
+                                                    @if ($tiro['status'] != 'Cancelado')
                                                         <button
                                                             wire:click="generarPDF({{ $tiro['cliente_id'] }}, '{{ $tiro['idTipo'] }}', '{{ ' ' }}', {{ $tiro['id'] }})"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
