@@ -483,7 +483,7 @@
 
     </x-jet-dialog-modal>
     {{-- MODAL EDITAR DEVUELTOS --}}
-    <x-jet-dialog-modal wire:model="modalEditar">
+    <x-jet-dialog-modal maxWidth="3xl" wire:model="modalEditar">
 
         <x-slot name="title">
             <div class="flex sm:px-6">
@@ -508,13 +508,32 @@
                 <input type="number"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                     id="devuelto" wire:model.defer="cantDevueltos"
-                    placeholder="{{ $entregar == 0 ? 'Introduce la cantidad a regresar a la venta' : 'Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto }}"
+                    placeholder="{{ $entregar == 0 ? 'Introduce la cantidad a regresar a la venta' : 'Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto  }}"
                     min="0" />
             </div>
-            <div class="w-2/5 px-2 mb-3">
+            <div class="w-2/3 px-2 mb-3">
                 <p>Tarifa</p>
-                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaOrdinario }}"> Ordinario
-                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaDominical }}"> Dominical
+                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaOrdinario }}"> Ordinario: <b>{{ sprintf("$ %s", number_format($tarifaOrdinario, 2)) }}</b> &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaDominical }}"> Dominical: <b>{{ sprintf("$ %s", number_format($tarifaDominical, 2)) }}</b>
+            </div>
+            <div class="w-2/5 px-2 mb-3">
+                <p>Cantidades Actuales</p>
+                <table class="">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="px-4 py-2">Ordinario</th>
+                            <th class="px-4 py-2">Dominical</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border px-4 py-2"><b>Cantidad:</b></td>
+                            <td class="border px-4 py-2">{{ $entregar == 0 && $devuelto > 0 ? 0 : $lunes + $martes + $miercoles + $jueves + $viernes + $sabado }}</td>
+                            <td class="border px-4 py-2">{{ $entregar == 0 && $devuelto > 0 ? 0 : $domingo }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))
                 <button wire:click.prevent="updateDevueltos" type="button"

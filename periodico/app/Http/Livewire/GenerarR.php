@@ -14,12 +14,15 @@ use App\Models\Tiro;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Livewire\WithPagination;
+use App\Models\Remisionid;
 
 class GenerarR extends Component
 {
     use WithPagination;
 
     public $Ejemplares, $keyWord, $cliente = [], $ejemplares, $domicilio, $referencia, $fecha, $diaS, $created_at, $ejemplar_id, $date, $resultados = [], $res = [], $modal, $dateF, $Domicilios, $status = 'created', $devuelto = 0, $faltante = 0, $precio, $updateMode = false, $from, $to, $isGenerateTiro = 0, $clienteSeleccionado = [], $showingModal = false, $modalRemision = false, $importe, $modalHistorial = 0, $count = 0, $tiros = [], $modalEditar = 0, $tiro_id, $op, $ruta, $rutaSeleccionada = 'Todos', $de, $hasta, $dateFiltro, $entregar, $suscripcion = [], $sus = [], $array_merge = [], $ventas, $ventaCopia = [], $datosTiroSuscripcion = [], $domsubs = [], $suscripcionCopia = [], $rutaEncontrada = [], $domiciliosIdSacados = [], $rutasNombre = [], $domiPDF = [], $pausa = false, $idVentas, $tipoSeleccionada = 'todos', $tiro, $modalHistorialFactura = 0, $invoices, $query = '', $clienteBarraBuscadora = [], $fechaRemision, $ventaDia = [], $suscripcionesEncontradas = [], $clienteClasificacion = [], $ventasEncontradas = [], $clienteClasificacionVentas = [], $clientesBuscados = [], $entreFechas = [], $diasEntreFechas = [], $importeVentas = 0, $totalesVentas = 0, $deHastaData = false, $idRemision = [];
+
+    public $remisionesId = [], $rangoFechasImplode, $diasEntreFechasImplode;
 
     public function mount()
     {
@@ -543,6 +546,7 @@ class GenerarR extends Component
                     ]);
 
                     array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                    array_push($this->remisionesId, $this->idRemision[$i]['id']);
                     /* } */
                 }
             }
@@ -610,6 +614,15 @@ class GenerarR extends Component
                         $this->totalesVentas = 0;
                     }
                 }
+
+                /* dd($remisionesId = implode(",", $this->remisionesId), $this->rangoFechasImplode = implode(",", $this->entreFechas), $this->diasEntreFechasImplode = implode(",", $this->diasEntreFechas)); */
+
+                Remisionid::create([
+                    'remisiones_id' => $remisionesId = implode(",", $this->remisionesId),
+                    'fechas' => $this->rangoFechasImplode = implode(",", $this->entreFechas),
+                    'dias' => $this->diasEntreFechasImplode = implode(",", $this->diasEntreFechas),
+                    'diaAlta' => $this->dateF->format('d/m/Y'),
+                ]);
 
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                     'ventas' => $this->ventas,
@@ -1126,8 +1139,6 @@ class GenerarR extends Component
             }
         }
 
-
-
         if (count($this->ventas) > 0) {
             for ($i = 0; $i < count($this->ventas); $i++) {
                 /* if (!Tiro::where('idTipo', '=', $this->ventas[$i]['idVenta'])->exists()) { */
@@ -1158,6 +1169,7 @@ class GenerarR extends Component
                 ]);
 
                 array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                array_push($this->remisionesId, $this->idRemision[$i]['id']);
                 /* } */
             }
         }
@@ -1225,6 +1237,15 @@ class GenerarR extends Component
                     $this->totalesVentas = 0;
                 }
             }
+
+            Remisionid::create([
+                'remisiones_id' => $remisionesId = implode(",", $this->remisionesId),
+                'fechas' => $this->rangoFechasImplode = implode(",", $this->entreFechas),
+                'dias' => $this->diasEntreFechasImplode = implode(",", $this->diasEntreFechas),
+                'diaAlta' => $this->dateF->format('d/m/Y'),
+                'fechaInicio' => $this->de,
+                'fechaFin' => $this->hasta,
+            ]);
 
             $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
                 'ventas' => $this->ventas,

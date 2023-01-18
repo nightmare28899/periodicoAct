@@ -89,6 +89,8 @@
                         </x-slot>
 
                         <x-slot name="content" class="w-full text-center">
+                            <a href="{{ url('remisionesRangoFecha') }}"><button
+                                class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Remisiones Rango Fecha') }}</button></a>
                             <a href="{{ url('reporte-relacionCR') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte relación de clientes por ruta') }}</button></a>
                             <a href="{{ url('reporteSuscripcionSuspendida') }}"><button

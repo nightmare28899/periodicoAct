@@ -177,6 +177,7 @@ class HistorialSuscripciones extends Component
             'suscripciones' => $this->suscripciones,
             'suscripcionSuspendida' => $this->suscripcionSuspendida,
             'suscripcionesSinPago' => $this->suscripcionesSinPago,
+            'fechaActual' => $this->dateF
         ]);
     }
 }

@@ -40,6 +40,8 @@ use App\Http\Livewire\CancelarVentaPDF;
 use App\Http\Livewire\ReporteVentaPFacturas;
 use App\Http\Livewire\ReporteSaldos;
 use App\Http\Livewire\HistorialVentas;
+use App\Http\Livewire\RemisionesRangoPorFecha;
+use App\Http\Livewire\RemisionesRangoPdfview;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +105,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/CancelarVentaPDF', CancelarVentaPDF::class)->name('CancelarVentaPDF');
     Route::get('/reportVentaPFacturas', ReporteVentaPFacturas::class)->name('reportVentaPFacturas');
     Route::get('/reporteSaldos', ReporteSaldos::class)->name('reporteSaldos');
+    Route::get('/remisionesRangoFecha', RemisionesRangoPorFecha::class)->name('remisionesRangoFecha');
+    Route::get('/remisionesRangoPdfview', RemisionesRangoPdfview::class)->name('remisionesRangoPdfview');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

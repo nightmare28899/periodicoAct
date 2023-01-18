@@ -10,6 +10,7 @@ use App\Models\Domicilio;
 use App\Models\domicilioSubs;
 use App\Models\Suscripcion;
 use App\Models\Ruta;
+use App\Models\Remisionid;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
@@ -19,7 +20,9 @@ class Historial extends Component
 {
     public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha, $statusTiro = 'Todos', $tarifaOrdinario = 0, $tarifaDominical = 0, $tarifa = 0;
 
-    public $query = '';
+    public $query = '', $remisionesRango = [];
+    public $lunes = 0, $martes = 0, $miercoles = 0, $jueves = 0, $viernes = 0, $sabado = 0, $domingo = 0;
+    public $cantLunes = 0, $cantMartes = 0, $cantMiercoles = 0, $cantJueves = 0, $cantViernes = 0, $cantSabado = 0, $cantDomingo = 0;
 
     public function mount($editar)
     {
@@ -65,14 +68,20 @@ class Historial extends Component
         if ($this->state != true) {
             if ($this->query) {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                    ->where('tiro.id', $this->query)
-                    ->orWhere('tiro.cliente_id', $this->query)
-                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%')
+                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
+                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
+                    ->where(function ($query) {
+                        $query->where('tiro.id', $this->query)
+                            ->orWhere('tiro.cliente_id', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
+                    })
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
                     ->get()
                     ->toArray();
             } else if ($this->statusTiro != 'Todos') {
                 $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
+                    ->join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')
                     ->where('tiro.status', $this->statusTiro)
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', "tarifa.ordinario", "tarifa.dominical")
                     ->get()
@@ -120,6 +129,20 @@ class Historial extends Component
             'entregar' => $this->entregar,
             'tarifaOrdinario' => $this->tarifaOrdinario,
             'tarifaDominical' => $this->tarifaDominical,
+            'cantlunes' => $this->cantLunes,
+            'cantmartes' => $this->cantMartes,
+            'cantmiercoles' => $this->cantMiercoles,
+            'cantjueves' => $this->cantJueves,
+            'cantviernes' => $this->cantViernes,
+            'cantsabado' => $this->cantSabado,
+            'cantdomingo' => $this->cantDomingo,
+            'lunes' => $this->lunes,
+            'martes' => $this->martes,
+            'miercoles' => $this->miercoles,
+            'jueves' => $this->jueves,
+            'viernes' => $this->viernes,
+            'sabado' => $this->sabado,
+            'domingo' => $this->domingo,
         ]);
     }
 
@@ -211,6 +234,63 @@ class Historial extends Component
         $this->modalRemision = false;
         $this->showingModal = false;
         $tiros = Tiro::join("domicilio", "domicilio.id", "domicilio_id")->join("tarifa", "tarifa.id", "tarifa_id")->find($id);
+        $venta = Ventas::where('idVenta', $idVenta)->first();
+        $this->remisionesRango = Remisionid::all();
+        $allTiro = Tiro::all();
+
+
+        foreach ($this->remisionesRango as $key => $remision) {
+            $remisionFoundId = explode(',', $remision->remisiones_id);
+            $remisionFoundDias = explode(',', $remision->dias);
+
+            for ($i = 0; $i < count($remisionFoundId); $i++) {
+                 if ((int)$remisionFoundId[$i] == $id) {
+                    for ($j = 0; $j < count($remisionFoundDias); $j++) {
+                        switch ($remisionFoundDias[$j]) {
+                            case 'lunes':
+                                (int)$this->cantLunes += 1;
+                                break;
+                            case 'martes':
+                                (int)$this->cantMartes += 1;
+                                break;
+                            case 'miércoles':
+                                (int)$this->cantMiercoles += 1;
+                                break;
+                            case 'jueves':
+                                (int)$this->cantJueves += 1;
+                                break;
+                            case 'viernes':
+                                (int)$this->cantViernes += 1;
+                                break;
+                            case 'sábado':
+                                (int)$this->cantSabado += 1;
+                                break;
+                            case 'domingo':
+                                (int)$this->cantDomingo += 1;
+                                break;
+                        }
+                    }
+                 }
+            }
+        }
+
+        $this->cantLunes != null ? $this->lunes = $venta->lunes * $this->cantLunes : $this->lunes = $venta->lunes;
+        $this->cantMartes != null ? $this->martes = $venta->martes * $this->cantMartes : $this->martes = $venta->martes;
+        $this->cantMiercoles != null ? $this->miercoles = $venta->miércoles * $this->cantMiercoles : $this->miercoles = $venta->miércoles;
+        $this->cantJueves != null ? $this->jueves = $venta->jueves * $this->cantJueves : $this->jueves = $venta->jueves;
+        $this->cantViernes != null ? $this->viernes = $venta->viernes * $this->cantViernes : $this->viernes = $venta->viernes;
+        $this->cantSabado != null ? $this->sabado = $venta->sábado * $this->cantSabado : $this->sabado = $venta->sábado;
+        $this->cantDomingo != null ? $this->domingo = $venta->domingo * $this->cantDomingo : $this->domingo = $venta->domingo;
+
+        $this->cantLunes = 0;
+        $this->cantMartes = 0;
+        $this->cantMiercoles = 0;
+        $this->cantJueves = 0;
+        $this->cantViernes = 0;
+        $this->cantSabado = 0;
+        $this->cantDomingo = 0;
+
+
         $this->tiros_id = $id;
         $this->tarifaOrdinario = $tiros->ordinario;
         $this->tarifaDominical = $tiros->dominical;
