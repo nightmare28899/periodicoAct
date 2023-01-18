@@ -284,7 +284,6 @@ class Historial extends Component
         $this->cantSabado = 0;
         $this->cantDomingo = 0;
 
-
         $this->tiros_id = $id;
         $this->tarifaOrdinario = $tiros->ordinario;
         $this->tarifaDominical = $tiros->dominical;

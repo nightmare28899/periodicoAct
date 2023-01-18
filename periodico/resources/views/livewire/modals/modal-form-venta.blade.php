@@ -52,10 +52,16 @@
                     @endif
                 </div>
                 <div class="w-full ml-2">
-                    <input type="number" min="0" max="1000"
+                    {{-- <input type="number" min="0" max="1000"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada"
-                        placeholder="Escribe el id de la venta" />
+                        placeholder="Escribe el id de la venta" /> --}}
+                        <select wire:model="ventaEncontrada" class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase">
+                            <option>{{ $ventas != null ? 'Selecciona una venta' : 'No tiene ventas' }}</option>
+                            @foreach ($ventas as $venta)
+                                <option value="{{ $venta->id }}">{{ $venta->id }}</option>
+                            @endforeach
+                        </select>
                 </div>
             </div>
 

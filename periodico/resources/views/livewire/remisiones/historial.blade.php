@@ -521,7 +521,7 @@
                 <table class="">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th class="px-4 py-2">Valores Estáticos</th>
                             <th class="px-4 py-2">Ordinario</th>
                             <th class="px-4 py-2">Dominical</th>
                         </tr>

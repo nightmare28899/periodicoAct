@@ -44,49 +44,6 @@ class Clientes extends Component
         $this->clientesBuscados = [];
     }
 
-    public function showInformation()
-    {
-        if ($this->ventaEncontrada && $this->clienteSeleccionado) {
-            if (count($this->ventas) > 0) {
-                for ($i = 0; $i < count($this->ventas); $i++) {
-                    if ($this->ventas[$i]['estado'] != 'Cancelada') {
-
-                        try {
-                            $ventaSearch = ventas::where('cliente_id', $this->clienteSeleccionado)->where('ventas.id', (int)$this->ventaEncontrada)->get();
-                            if ($ventaSearch != null) {
-                                $this->desde = $ventaSearch[0]['desde'];
-                                $this->hasta = $ventaSearch[0]['hasta'];
-                                $this->lunesVentas = $ventaSearch[0]['lunes'];
-                                $this->martesVentas = $ventaSearch[0]['martes'];
-                                $this->miercolesVentas = $ventaSearch[0]['miércoles'];
-                                $this->juevesVentas = $ventaSearch[0]['jueves'];
-                                $this->viernesVentas = $ventaSearch[0]['viernes'];
-                                $this->sabadoVentas = $ventaSearch[0]['sábado'];
-                                $this->domingoVentas = $ventaSearch[0]['domingo'];
-                                $this->editEnabled = true;
-                            }
-                        } catch (\Exception $e) {
-                            $this->status = 'error';
-                            $this->dispatchBrowserEvent('alert', [
-                                'message' => ($this->status == 'error') ? '¡No existe venta con ese id!' : ' '
-                            ]);
-                        }
-                    } else {
-                        $this->hasta = null;
-                        $this->lunesVentas = null;
-                        $this->martesVentas = null;
-                        $this->miercolesVentas = null;
-                        $this->juevesVentas = null;
-                        $this->viernesVentas = null;
-                        $this->sabadoVentas = null;
-                        $this->domingoVentas = null;
-                        $this->editEnabled = false;
-                    }
-                }
-            }
-        }
-    }
-
     public function showSuscripcionRenovacion()
     {
         if ($this->clienteSeleccionado && $this->subscripcionEs == 'Renovación') {
@@ -145,7 +102,7 @@ class Clientes extends Component
         if ($this->clienteSeleccionado) {
             $this->clienteSeleccionado;
             if ($this->modalV) {
-                $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
+                $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->where('estado', '!=', "Cancelada")->get();
             } else {
                 $this->suscripciones = Suscripcion::where('cliente_id', $this->clienteSeleccionado)->get();
             }
@@ -197,6 +154,56 @@ class Clientes extends Component
             'T-E' => 'T-E', */
             /* 'Sanborn' => 'SANBORN', */
         ];
+
+        if ($this->ventaEncontrada && $this->clienteSeleccionado) {
+            if (count($this->ventas) > 0) {
+                for ($i = 0; $i < count($this->ventas); $i++) {
+                    if ($this->ventas[$i]['estado'] != 'Cancelada') {
+
+                        try {
+                            $ventaSearch = ventas::where('cliente_id', $this->clienteSeleccionado)->where('ventas.id', (int)$this->ventaEncontrada)->get();
+                            if ($ventaSearch != null) {
+                                $this->desde = $ventaSearch[0]['desde'];
+                                $this->hasta = $ventaSearch[0]['hasta'];
+                                $this->lunesVentas = $ventaSearch[0]['lunes'];
+                                $this->martesVentas = $ventaSearch[0]['martes'];
+                                $this->miercolesVentas = $ventaSearch[0]['miércoles'];
+                                $this->juevesVentas = $ventaSearch[0]['jueves'];
+                                $this->viernesVentas = $ventaSearch[0]['viernes'];
+                                $this->sabadoVentas = $ventaSearch[0]['sábado'];
+                                $this->domingoVentas = $ventaSearch[0]['domingo'];
+                                $this->editEnabled = true;
+                            }
+                        } catch (\Exception $e) {
+                            $this->status = 'error';
+                            $this->dispatchBrowserEvent('alert', [
+                                'message' => ($this->status == 'error') ? '¡No existe venta con ese id!' : ' '
+                            ]);
+                        }
+                    } else {
+                        $this->hasta = null;
+                        $this->lunesVentas = null;
+                        $this->martesVentas = null;
+                        $this->miercolesVentas = null;
+                        $this->juevesVentas = null;
+                        $this->viernesVentas = null;
+                        $this->sabadoVentas = null;
+                        $this->domingoVentas = null;
+                        $this->editEnabled = false;
+                    }
+                }
+            }
+        } else {
+            $this->hasta = null;
+            $this->lunesVentas = null;
+            $this->martesVentas = null;
+            $this->miercolesVentas = null;
+            $this->juevesVentas = null;
+            $this->viernesVentas = null;
+            $this->sabadoVentas = null;
+            $this->domingoVentas = null;
+            $this->editEnabled = false;
+        }
 
         $formaPago = [
             'Efectivo' => 'Efectivo',
