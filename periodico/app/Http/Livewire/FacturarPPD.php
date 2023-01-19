@@ -14,7 +14,7 @@ use App\Models\Invoice;
 
 class FacturarPPD extends Component
 {
-    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [];
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [], $concepto = '';
 
     public function render()
     {
@@ -154,7 +154,7 @@ class FacturarPPD extends Component
                     "Serie" => "SUSPPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
-                    "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
+                    "Description" => ($this->concepto != '' ? $this->concepto : ($this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA")),
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => number_format($this->suscripcion[0]['importe'] / $this->suscripcion[0]['cantEjemplares'], 2),
@@ -181,7 +181,7 @@ class FacturarPPD extends Component
                     "Serie" => "VPPPD",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
-                    "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
+                    "Description" => ($this->concepto != '' ? $this->concepto : ($this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA")),
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => number_format($this->tiro[0]['importe'] / $this->tiro[0]['entregar'], 2),

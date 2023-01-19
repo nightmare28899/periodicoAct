@@ -15,13 +15,13 @@
             page-break-after: always;
         }
 
-        header {
+        /* header {
             position: fixed;
             top: -60px;
             left: 0px;
             right: 0px;
             height: 50px;
-        }
+        } */
 
         th,
         td {
@@ -73,12 +73,22 @@
             left: 430px;
             margin-top: 0px;
         }
+
+        #movido8 {
+            position: absolute;
+            left: 130px;
+            margin-top: 0px;
+        }
+        #movido9 {
+            position: absolute;
+            left: 230px;
+            margin-top: 0px;
+        }
     </style>
 </head>
 
 <body>
     @foreach ($ventas as $key => $result)
-        {{-- @if ($result->{$diaS}) --}}
         <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
             <img src="img/logo.jpe" alt="logo la voz" height="36px">
         </div>
@@ -93,8 +103,6 @@
                 Ext.
                 1038 &nbsp;&nbsp;&nbsp;&nbsp; RFC: VMI-600516-JG7, REG. EDO. 124026-9.
             </h5>
-            {{-- <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">
-                </h5> --}}
             <h3
                 style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px; padding-top: -12; margin-top: -12;">
                 remisionado de venta periodico
@@ -122,7 +130,7 @@
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio:</b>
                 {{ $result['municipio'] }}</p>
             <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado:</b>
-                {{ $result['estado'] }}</p>
+                {{ $result['localidad'] }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext:</b>
                 {{ $result['noext'] }}</p>
             <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
@@ -132,7 +140,8 @@
                 {{ $result['cp'] }}</p>
             <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais:</b>
                 {{ $result['pais'] }}</p>
-            <table style="margin-top: 15px; font-size: 12px;">
+
+            <table style="margin-top: 15px; padding-top: 15px; font-size: 12px;">
                 <thead style="background-color: rgb(187, 230, 238); text-transform: uppercase;">
                     <tr>
                         <th style="width: 90px;">fecha</th>
@@ -170,9 +179,39 @@
                         <td></td>
                         <td>IMPORTE</td>
                         <td>{{ number_format($importe, 2) }}</td>
-                        {{--
-                    <td>{{ $result['lunes'] + $result['martes'] + $result['miércoles'] + $result['jueves'] + $result['viernes'] + $result['sábado'] + $result['domingo'] }}</td> --}}
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Descuento</td>
+                        <td>{{ number_format(0, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Subtotal</td>
+                        <td>{{ number_format($importe, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>IVA</td>
+                        <td>{{ number_format(0, 2) }}</td>
+                    </tr>
+                    <br><br><br><br><br>
+                    <p style="padding-bottom: -12; margin-bottom: -12; border-top: 0.5px solid black;">
+                        &nbsp; Firma cobrador &nbsp;</p>
+                    <p id="movido8" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">&nbsp;Fecha cobro&nbsp;</p>
+                    <p id="movido9" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">&nbsp;Firma cliente&nbsp;</p>
                 </tbody>
             </table>
         </main>
@@ -239,6 +278,7 @@
                     style="text-transform: uppercase; border: 1px solid black; text-align: center; padding-bottom: -1; margin-bottom: -1;">
                     concepto</p>
             </div>
+
             <table style="text-transform: uppercase;">
                 <thead style="text-transform: uppercase; background-color: rgb(187, 230, 238);">
                     <tr>
