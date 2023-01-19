@@ -546,7 +546,7 @@ class GenerarR extends Component
                     ]);
 
                     array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
-                    array_push($this->remisionesId, $this->idRemision[$i]['id']);
+                    array_push($this->remisionesId, 1);
                     /* } */
                 }
             }
@@ -615,13 +615,13 @@ class GenerarR extends Component
                     }
                 }
 
-                /* dd($remisionesId = implode(",", $this->remisionesId), $this->rangoFechasImplode = implode(",", $this->entreFechas), $this->diasEntreFechasImplode = implode(",", $this->diasEntreFechas)); */
-
                 Remisionid::create([
                     'remisiones_id' => $remisionesId = implode(",", $this->remisionesId),
                     'fechas' => $this->rangoFechasImplode = implode(",", $this->entreFechas),
                     'dias' => $this->diasEntreFechasImplode = implode(",", $this->diasEntreFechas),
                     'diaAlta' => $this->dateF->format('d/m/Y'),
+                    'fechaInicio' => $this->de,
+                    'fechaFin' => $this->hasta,
                 ]);
 
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
