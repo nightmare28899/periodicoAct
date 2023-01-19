@@ -207,11 +207,11 @@
                                                                             Devolver periodicos
                                                                         </button>
                                                                         <div class="border-t border-gray-200"></div>
-                                                                        <button
+                                                                        {{-- <button
                                                                             wire:click="modalCapturarPeriodicos({{ $tiro['id'] }})"
                                                                             class="px-2 w-full py-1 cursor-pointer hover:bg-blue-600 hover:text-white">
                                                                             Capturar periodicos
-                                                                        </button>
+                                                                        </button> --}}
                                                                         <div class="border-t border-gray-200"></div>
                                                                     </x-slot>
                                                                 </x-jet-dropdown>

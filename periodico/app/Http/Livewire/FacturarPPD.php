@@ -234,7 +234,7 @@ class FacturarPPD extends Component
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->cliente['rfc_input'],
                     "Name" => $this->activarCG ? $this->nombreGenerico : $nombre,
                     "CfdiUse" => $this->cfdiUse,
-                    "TaxZipCode" => $this->activarCG ? $this->cpGenerico : $this->domicilio['cp'],
+                    "TaxZipCode" => $this->activarCG ? $this->cpGenerico : $this->domicilio[0]['cp'],
                     "FiscalRegime" => $this->activarCG ? $this->regimenFisGenerico : $this->cliente['regimen_fiscal'],
                     "email" => $this->cliente['email'],
                     "Address" => [

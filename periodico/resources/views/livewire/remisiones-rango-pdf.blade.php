@@ -121,7 +121,7 @@
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>municipio:</b>
                 {{ $result['municipio'] }}</p>
             <p id="movido5" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>estado:</b>
-                {{ $result['estado'] }}</p>
+                {{ $result['localidad'] }}</p>
             <p style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num. ext:</b>
                 {{ $result['noext'] }}</p>
             <p id="movido6" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>num.
