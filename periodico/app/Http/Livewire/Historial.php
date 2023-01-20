@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Route;
 
 class Historial extends Component
 {
@@ -23,6 +24,7 @@ class Historial extends Component
     public $query = '', $remisionesRango = [];
     public $lunes = 0, $martes = 0, $miercoles = 0, $jueves = 0, $viernes = 0, $sabado = 0, $domingo = 0;
     public $cantLunes = 0, $cantMartes = 0, $cantMiercoles = 0, $cantJueves = 0, $cantViernes = 0, $cantSabado = 0, $cantDomingo = 0;
+    public $fechasFound = [], $remisionFoundDias = [];
 
     public function mount($editar)
     {
@@ -137,6 +139,8 @@ class Historial extends Component
             'viernes' => $this->viernes,
             'sabado' => $this->sabado,
             'domingo' => $this->domingo,
+            'fechasFound' => $this->fechasFound,
+            'remisionFoundDias' => $this->remisionFoundDias,
         ]);
     }
 
@@ -223,6 +227,8 @@ class Historial extends Component
 
     public function editarRemision($id, $idVenta, $dia)
     {
+        return Redirect::to('/devolverVentas/'.$id);
+
         $this->modalEditar = true;
         $this->modalHistorial = false;
         $this->modalRemision = false;
@@ -235,12 +241,13 @@ class Historial extends Component
 
         foreach ($this->remisionesRango as $key => $remision) {
             $remisionFoundId = explode(',', $remision->remisiones_id);
-            $remisionFoundDias = explode(',', $remision->dias);
+            $this->remisionFoundDias = explode(',', $remision->dias);
+            $dates = explode(',', $remision->fechas);
 
             for ($i = 0; $i < count($remisionFoundId); $i++) {
-                 if ((int)$remisionFoundId[$i] == $id) {
-                    for ($j = 0; $j < count($remisionFoundDias); $j++) {
-                        switch ($remisionFoundDias[$j]) {
+                if ((int)$remisionFoundId[$i] == $id) {
+                    for ($j = 0; $j < count($this->remisionFoundDias); $j++) {
+                        switch ($this->remisionFoundDias[$j]) {
                             case 'lunes':
                                 (int)$this->cantLunes += 1;
                                 break;
@@ -264,9 +271,15 @@ class Historial extends Component
                                 break;
                         }
                     }
-                 }
+                }
             }
+
+            for ($i = 4; $i < count($dates); $i++) {
+                array_push($this->fechasFound, $dates[$i]);
+            }
+            dd($this->fechasFound);
         }
+
 
         $this->cantLunes != null ? $this->lunes = $venta->lunes * $this->cantLunes : $this->lunes = $venta->lunes;
         $this->cantMartes != null ? $this->martes = $venta->martes * $this->cantMartes : $this->martes = $venta->martes;

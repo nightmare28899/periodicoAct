@@ -56,10 +56,10 @@
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         wire:keydown.enter="showInformation" wire:model.defer="ventaEncontrada"
                         placeholder="Escribe el id de la venta" /> --}}
-                        <select wire:model="ventaEncontrada" class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase">
+                        <select wire:model="ventaEncontrada" wire:click="editarVenta()" class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase">
                             <option>{{ $ventas != null ? 'Selecciona una venta' : 'No tiene ventas' }}</option>
                             @foreach ($ventas as $venta)
-                                <option value="{{ $venta->id }}">{{ $venta->id }}</option>
+                                <option value="{{ $venta->id??null }}">{{ $venta->id??null }}</option>
                             @endforeach
                         </select>
                 </div>

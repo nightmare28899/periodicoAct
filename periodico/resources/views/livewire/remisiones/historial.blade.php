@@ -535,6 +535,40 @@
                     </tbody>
                 </table>
             </div>
+            <table style="margin-top: 15px; padding-top: 15px; font-size: 12px; margin-bottom: 15px;">
+                <thead style="background-color: rgb(187, 230, 238); text-transform: uppercase;">
+                    <tr>
+                        <th style="width: 90px;">fecha</th>
+                        <th style="width: 90px;">dia</th>
+                        <th style="width: 90px;">entregados</th>
+                        <th style="width: 85px;">devol.</th>
+                        <th style="width: 85px;">falt.</th>
+                        <th style="width: 110px;">precio</th>
+                        <th style="width: 110px;">importe</th>
+                    </tr>
+                </thead>
+                <tbody class="centrado">
+                    <?php $totales = 0; ?>
+                    <?php $importe = 0; ?>
+                    @foreach ($fechasFound as $key => $fecha)
+                        <tr>
+                            <td>{{ $fecha }}</td>{{--
+                            <td>{{ $remisionFoundDias }}</td> --}}
+                            {{-- <td>{{ $fecha->dia }}</td>
+                            <td>{{ $fecha->entregados }}</td>
+                            <td>{{ $fecha->devueltos }}</td>
+                            <td>{{ $fecha->faltantes }}</td>
+                            <td>{{ sprintf("$ %s", number_format($fecha->precio, 2)) }}</td>
+                            <td>{{ sprintf("$ %s", number_format($fecha->importe, 2)) }}</td> --}}
+                        </tr>
+
+                    @endforeach
+                    <p>{{ count($fechasFound) }}</p>
+                </tbody>
+            </table>
+
+            <br>
+
             @if ($devuelto == 0 || ($devuelto > 0 && $entregar > 0))
                 <button wire:click.prevent="updateDevueltos" type="button"
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
