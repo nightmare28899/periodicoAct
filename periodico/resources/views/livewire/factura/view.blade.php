@@ -320,7 +320,7 @@
                         <div class="w-1/2 p-2">
                             <label for="noextInput" class="block text-black text-sm font-bold mb-2">No.
                                 Exterior:</label>
-                            <input type="number"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noextInput') border-red-500 @enderror"
                                 id="noextInput" wire:model.defer="noextInput" placeholder="Escribe tu noext" />
                             @error('noextInput')
@@ -331,7 +331,7 @@
                         <div class="w-1/2 p-2">
                             <label for="nointInput" class="block text-black text-sm font-bold mb-2">No.
                                 Interior:</label>
-                            <input type="number"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
                                 id="nointInput" wire:model.defer="nointInput" placeholder="Escribe tu noint" />
                             @error('nointInput')

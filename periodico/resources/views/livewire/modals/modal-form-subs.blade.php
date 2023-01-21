@@ -43,7 +43,7 @@
         <div class="flex">
             <div class="w-1/2 p-2">
                 <label for="noext" class="block text-black text-sm font-bold mb-2">No. Ext.:</label>
-                <input type="text" min="0"
+                <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('noext') border-red-500 @enderror"
                     id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                 @error('noext')
@@ -66,7 +66,7 @@
         <div class="flex">
             <div class="w-1/2 p-2">
                 <label for="cp" class="block text-black text-sm font-bold mb-2">C.P.:</label>
-                <input type="number" min="0"
+                <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('cp') border-red-500 @enderror"
                     id="cp" wire:model.defer="cp" placeholder="Escribe tu CP" />
                 @error('cp')

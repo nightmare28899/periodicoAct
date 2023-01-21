@@ -48,7 +48,7 @@
                         Ext.:</label>
                     <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('noext') border-red-500 @enderror"
-                        id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" min="0" />
+                        id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                     @error('noext')
                         <span
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
@@ -71,7 +71,7 @@
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Código
                         Postal:</label>
-                    <input type="number"
+                    <input type="text"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('cp') border-red-500 @enderror"
                         id="cp" wire:model.defer="cp" placeholder="Escribe tu Código Postal" />
                     @error('cp')
