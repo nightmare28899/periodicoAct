@@ -51,7 +51,7 @@
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Facturas') }}</button></a>
                             <a href="{{ url('historialF') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Facturas') }}</button></a>
-                            <a href="{{ url('historialR' . '/editar') }}"><button
+                            <a href="{{ url('historialR' . '/editar/') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Editar Domicilios de Suscripciones Activas') }}</button></a>
                             <a href="{{ url('agregarDiasSuscripcion') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Agregar días al contrato') }}</button></a>

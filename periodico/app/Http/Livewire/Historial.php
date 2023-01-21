@@ -15,7 +15,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Route;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Historial extends Component
 {
@@ -90,6 +92,8 @@ class Historial extends Component
                     ->get()
                     ->toArray();
             }
+
+            $data = $this->paginate($this->tiros, 10);
         } else {
             if ($this->clienteSeleccionado) {
                 $this->datos = Tiro::all();
@@ -141,6 +145,18 @@ class Historial extends Component
             'domingo' => $this->domingo,
             'fechasFound' => $this->fechasFound,
             'remisionFoundDias' => $this->remisionFoundDias,
+        ], compact('data'));
+    }
+
+    public function paginate($items, $perPage = 0, $page = null)
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+            'query' => Paginator::resolveQueryString(),
         ]);
     }
 

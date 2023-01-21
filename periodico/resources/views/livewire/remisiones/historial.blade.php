@@ -8,24 +8,20 @@
     <div class="py-12 mx-auto px-4 container">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             <div class="flex">
-                {{-- <div class="w-64 mr-5">
-                    <h4>Elige la fecha:</h4>
-                    <x-jet-input class="w-full" type="date" wire:model="fechaRemision"></x-jet-input>
-                </div> --}}
-                <div class="w-64 mt-6">
+                {{-- <div class="w-64 mt-6">
                     <input type="number"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search"
                         placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
                         wire:model="remisionIdSearch" autocomplete="off" min="0" />
-                </div>
+                </div> --}}
                 <div class="w-64 mt-6 ml-5">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                        name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
+                        name="search" id="search" placeholder="Buscar nombre o id" wire:model="query"
                         autocomplete="off" />
                 </div>
-                <div class="w-64 mt-6 ml-5">
+                {{-- <div class="w-64 mt-6 ml-5">
                     <select name="tipo" id="tipo"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         wire:model="statusTiro">
@@ -35,7 +31,7 @@
                         <option value="Cancelado">Cancelado</option>
                         <option value="facturado">Facturado</option>
                     </select>
-                </div>
+                </div> --}}
             </div>
             <br>
             @if ($tiros)
@@ -44,7 +40,6 @@
                         <table class="table-auto border-separate border-spacing-2 border border-dark w-full uppercase">
                             <thead>
                                 <tr class='bg-gray-100'>
-                                    <th class='px-4 py-2 uppercase'>Fecha</th>
                                     {{-- <th class="px-6 py-2">idTipo</th> --}}
                                     <th class="px-6 py-2 uppercase">Id</th>
                                     <th class='px-4 py-2 uppercase'>Cliente</th>
@@ -58,18 +53,18 @@
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
                                     <th class='px-6 py-2 uppercase'>Estado</th>
+                                    <th class='px-4 py-2 uppercase'>Fecha</th>
                                     <th class="px-6 py-2 uppercase">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tiros as $tiro)
+                                @foreach ($data as $tiro)
                                     @if ($state == 0 && $tiro['estado'] != 'suspendida')
                                         <tr>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ \Carbon\Carbon::parse($tiro['fecha'])->format('d/m/Y') }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['id'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}</td>
+                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}
+                                            </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['entregar'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['devuelto'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['faltante'] }}</td>
@@ -85,6 +80,8 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['nombreruta'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['tipo'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['status'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>
+                                                {{ \Carbon\Carbon::parse($tiro['fecha'])->format('d/m/Y') }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             @if (substr($tiro['idTipo'], 0, 6) == 'suscri')
                                                 <td class="border border-dark">
@@ -108,8 +105,9 @@
                                                         @endif
 
                                                         @if ($tiro['status'] != 'CREDITO' && $tiro['status'] != 'Cancelado' && substr($tiro['idTipo'], 0, 6) == 'suscri')
-                                                            @if (($tiro['status'] == 'Pagado' && substr($tiro['idTipo'], 0, 6) == 'suscri') ||
-                                                                ($tiro['status'] == 'facturado' && substr($tiro['idTipo'], 0, 6) == 'suscri'))
+                                                            @if (
+                                                                ($tiro['status'] == 'Pagado' && substr($tiro['idTipo'], 0, 6) == 'suscri') ||
+                                                                    ($tiro['status'] == 'facturado' && substr($tiro['idTipo'], 0, 6) == 'suscri'))
                                                                 <button
                                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                                     disabled>Pagado
@@ -270,7 +268,8 @@
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['id'] }}</td>
                                             {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}</td>
+                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}
+                                            </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['entregar'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['devuelto'] }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['faltante'] }}</td>
@@ -282,7 +281,8 @@
                                                 {{ sprintf('$ %s', number_format($tiro['importe'], 2)) }}
                                             </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['dia'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['nombreruta'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['nombreruta'] }}
+                                            </td>
                                             <td class='px-4 py-2 border border-dark'>{{ $tiro['tipo'] }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             <td class="border border-dark">
@@ -300,8 +300,11 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- {{ $tiros->links() }} --}}
                     </div>
+                    <br>
+                    @if (count($data) > 0)
+                        {{ $data->links('livewire.pagination.custom') }}
+                    @endif
                 </div>
             @else
                 <div class="text-center">
@@ -508,13 +511,15 @@
                 <input type="number"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('nombre') border-red-500 @enderror"
                     id="devuelto" wire:model.defer="cantDevueltos"
-                    placeholder="{{ $entregar == 0 ? 'Introduce la cantidad a regresar a la venta' : 'Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto  }}"
+                    placeholder="{{ $entregar == 0 ? 'Introduce la cantidad a regresar a la venta' : 'Cantidad actual: ' . $cantActual . ' Devueltos: ' . $devuelto }}"
                     min="0" />
             </div>
             <div class="w-2/3 px-2 mb-3">
                 <p>Tarifa</p>
-                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaOrdinario }}"> Ordinario: <b>{{ sprintf("$ %s", number_format($tarifaOrdinario, 2)) }}</b> &nbsp;&nbsp;&nbsp;
-                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaDominical }}"> Dominical: <b>{{ sprintf("$ %s", number_format($tarifaDominical, 2)) }}</b>
+                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaOrdinario }}">
+                Ordinario: <b>{{ sprintf("$ %s", number_format($tarifaOrdinario, 2)) }}</b> &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tarifa" wire:model.defer="tarifa" value="{{ $tarifaDominical }}">
+                Dominical: <b>{{ sprintf("$ %s", number_format($tarifaDominical, 2)) }}</b>
             </div>
             <div class="w-2/5 px-2 mb-3">
                 <p>Cantidades Actuales</p>
@@ -529,7 +534,9 @@
                     <tbody>
                         <tr>
                             <td class="border px-4 py-2"><b>Cantidad:</b></td>
-                            <td class="border px-4 py-2">{{ $entregar == 0 && $devuelto > 0 ? 0 : $lunes + $martes + $miercoles + $jueves + $viernes + $sabado }}</td>
+                            <td class="border px-4 py-2">
+                                {{ $entregar == 0 && $devuelto > 0 ? 0 : $lunes + $martes + $miercoles + $jueves + $viernes + $sabado }}
+                            </td>
                             <td class="border px-4 py-2">{{ $entregar == 0 && $devuelto > 0 ? 0 : $domingo }}</td>
                         </tr>
                     </tbody>
@@ -561,7 +568,6 @@
                             <td>{{ sprintf("$ %s", number_format($fecha->precio, 2)) }}</td>
                             <td>{{ sprintf("$ %s", number_format($fecha->importe, 2)) }}</td> --}}
                         </tr>
-
                     @endforeach
                     <p>{{ count($fechasFound) }}</p>
                 </tbody>
