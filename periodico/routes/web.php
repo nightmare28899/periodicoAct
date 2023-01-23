@@ -42,7 +42,6 @@ use App\Http\Livewire\ReporteSaldos;
 use App\Http\Livewire\HistorialVentas;
 use App\Http\Livewire\RemisionesRangoPorFecha;
 use App\Http\Livewire\RemisionesRangoPdfview;
-use App\Http\Livewire\Ventas\Devolver;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,7 +107,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reporteSaldos', ReporteSaldos::class)->name('reporteSaldos');
     Route::get('/remisionesRangoFecha', RemisionesRangoPorFecha::class)->name('remisionesRangoFecha');
     Route::get('/remisionesRangoPdfview', RemisionesRangoPdfview::class)->name('remisionesRangoPdfview');
-    Route::get('/devolverVenta/{id}', Devolver::class)->name('devolverVentas');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
