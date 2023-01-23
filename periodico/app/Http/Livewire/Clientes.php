@@ -1429,7 +1429,7 @@ class Clientes extends Component
             'localidad' => $this->localidad,
             'ciudad' => $this->ciudad,
             'referencia' => $this->referencia,
-            'ruta_id' => $this->ruta
+            'ruta' => $this->ruta
         ]);
 
         $this->dispatchBrowserEvent('alert', [

@@ -311,7 +311,7 @@
                     <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
                         <table class="w-full text-md text-left text-gray-500 dark:text-gray-400 uppercase">
                             <thead
-                                class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                class="text-md text-gray-700 uppercase bg-gray-600">
                                 <tr class="bg-gray-500 text-white uppercase">
                                     <th scope="col" class="py-3 px-6">Calle</th>
                                     <th scope="col" class="py-3 px-6">#Int</th>
@@ -333,7 +333,7 @@
                                         @endphp
                                         {{-- <pre>{{ var_dump($dom) }}</pre><br><br> --}}
                                         <tr
-                                            class="bg-white text-black hover:text-white dark:hover:bg-gray-600 text-center cursor-pointer">
+                                            class="bg-white text-black hover:text-white hover:bg-blue-600 text-center cursor-pointer">
                                             <td class="border"
                                                 wire:click="eliminarDatoSeleccionado({{ $dom->id }})">
                                                 {{ $dom->calle }}</td>
