@@ -78,11 +78,42 @@
             position: absolute;
             left: 130px;
             margin-top: 0px;
+            width: 100px;
         }
+
         #movido9 {
             position: absolute;
-            left: 230px;
+            left: 250px;
             margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido10 {
+            position: absolute;
+            left: 370px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido11 {
+            position: absolute;
+            left: 370px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido12 {
+            position: absolute;
+            left: 510px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido13 {
+            position: absolute;
+            left: 510px;
+            margin-top: 0px;
+            width: 100px;
         }
     </style>
 </head>
@@ -210,8 +241,16 @@
                     <br><br><br><br><br>
                     <p style="padding-bottom: -12; margin-bottom: -12; border-top: 0.5px solid black;">
                         &nbsp; Firma cobrador &nbsp;</p>
-                    <p id="movido8" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">&nbsp;Fecha cobro&nbsp;</p>
-                    <p id="movido9" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">&nbsp;Firma cliente&nbsp;</p>
+                    <p id="movido8" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">
+                        &nbsp;Fecha cobro&nbsp;</p>
+                    <p id="movido9" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">
+                        &nbsp;Firma cliente&nbsp;</p>
+
+                    <p id="movido10">DEV.</p>
+                    <p id="movido11" style="border-top: 0.5px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                    <p id="movido12">NETO</p>
+                    <p id="movido13" style="border-top: 0.5px solid black;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 </tbody>
             </table>
         </main>
