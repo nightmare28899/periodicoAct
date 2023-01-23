@@ -55,81 +55,48 @@
                                     <th class="px-6 py-2 uppercase">Acciones</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                @if ($suscripciones)
-                                    @foreach ($suscripciones as $suscripcion)
-                                        <tr>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->id }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cliente_id }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noext }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
-                                            <td
-                                                class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Pagado' || $suscripcion->estado == 'sin pagar' || $suscripcion->estado == 'Activo' && $suscripcion->fechaFin >= $fechaActual->format('Y-m-d') ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' || $suscripcion->fechaFin < $fechaActual->format('Y-m-d') ? 'bg-red-500' : '') }}">
-                                                {{ ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' || $suscripcion->fechaFin < $fechaActual->format('Y-m-d') ? 'Inactivo' : ($suscripcion->estado == 'sin pagar' ? 'Activo' : 'Activo')) }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($suscripcion->fechaInicio)->format('d/m/Y') }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">{{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') }}</td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ $suscripcion->estado }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
-                                                    Ver PDF
-                                                </x-jet-button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                @if ($suscripcionSuspendida)
-                                    @foreach ($suscripcionSuspendida as $suscripcion)
-                                        <tr>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->id }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cliente_id }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->enoxt }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
-                                            <td class="px-4 py-2 border border-dark bg-orange-500 text-white">
-                                                Suspendida </td>
-                                            <td class="px-4 py-2 border border-dark">{{ $suscripcion->fechaInicio }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ $suscripcion->status }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('d/m/Y') }}
-                                            </td>
-                                            <td class="px-4 py-2 border border-dark">
-                                                <x-jet-button wire:click="verPDF({{ $suscripcion->id }})" class="bg-blue-500">
-                                                    Ver PDF
-                                                </x-jet-button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
+                                @foreach ($suscripciones as $suscripcion)
+                                    <tr>
+                                        <td class='px-4 py-2 border border-dark'>{{ $suscripcion->id }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->cliente_id }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $suscripcion->nombre }}</td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $suscripcion->calle }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->noint }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->noext }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->colonia }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->cantEjemplares }}
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">{{ $suscripcion->periodo }}</td>
+                                        <td
+                                            class="px-4 py-2 border border-dark text-white {{ $suscripcion->estado == 'Pagado' || $suscripcion->estado == 'sin pagar' || ($suscripcion->estado == 'Activo' && $suscripcion->fechaFin >= $fechaActual->format('Y-m-d')) ? 'bg-green-500' : ($suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' || $suscripcion->fechaFin < $fechaActual->format('Y-m-d') ? 'bg-red-500' : ($suscripcion->estado == 'Suspendida' ? 'bg-orange-500' : 'bg-gray-500')) }}">
+                                            {{ $suscripcion->estado == 'Pausado' || $suscripcion->estado == 'Cancelada' || $suscripcion->fechaFin < $fechaActual->format('Y-m-d') ? 'Inactivo' : ($suscripcion->estado == 'sin pagar' ? 'Activo' : ($suscripcion->estado == 'Suspendida' ? 'Suspendido' : 'Activo')) }}
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            {{ \Carbon\Carbon::parse($suscripcion->fechaInicio)->format('d/m/Y') }}
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            {{ \Carbon\Carbon::parse($suscripcion->fechaFin)->format('d/m/Y') }}</td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            {{ $suscripcion->estado }}
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            {{ \Carbon\Carbon::parse($suscripcion->created_at)->format('Y-m-d') }}
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            <x-jet-button wire:click="verPDF({{ $suscripcion->id }})"
+                                                class="bg-blue-500">
+                                                Ver PDF
+                                            </x-jet-button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <p>REGISTROS: {{ count($suscripciones) + count($suscripcionSuspendida) }}</p>
+                <br>
+                {{ $suscripciones->links('livewire.custom-pagination') }}
             </div>
         </div>
     </div>

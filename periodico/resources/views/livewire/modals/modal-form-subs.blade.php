@@ -32,7 +32,7 @@
                 <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.(Opcional):</label>
                 <input type="text"
                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('noint') border-red-500 @enderror"
-                    id="noint" wire:model.defer="noint" placeholder="Escribe tu No. Int" min="0" />
+                    id="noint" wire:model.defer="noint" placeholder="Escribe tu No. Int" />
                 @error('noint')
                     <span
                         class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>

@@ -4,20 +4,19 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\complemento_pago;
+use Livewire\WithPagination;
 
 class HistorialComplementoPago extends Component
 {
-    public $complemento_pago;
+    use WithPagination;
 
     public function render()
     {
-        $this->complemento_pago = complemento_pago
+        $complemento_pago = complemento_pago
             ::join('cliente', 'cliente.id', '=', 'complemento_pagos.cliente_id')
             ->select('complemento_pagos.*', 'cliente.nombre')
-            ->get();
+            ->paginate(10);
 
-        return view('livewire.historial-complemento-pago', [
-            'complementos' => $this->complemento_pago
-        ]);
+        return view('livewire.historial-complemento-pago', compact('complemento_pago'));
     }
 }

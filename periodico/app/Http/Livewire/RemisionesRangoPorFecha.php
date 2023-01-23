@@ -8,27 +8,27 @@ use App\Models\Tiro;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 
 class RemisionesRangoPorFecha extends Component
 {
-    public $remisionesData = [], $remisionesId, $entreFechas, $remisionFound = [], $de, $hasta, $status = 'created';
+    use WithPagination;
+
+    public $remisionesId, $entreFechas, $remisionFound = [], $de, $hasta, $status = 'created';
 
     public function render()
     {
-
         if ($this->de && $this->hasta) {
-            $this->remisionesData = Remisionid::where(function ($query) {
+            $remisionesData = Remisionid::where(function ($query) {
                 $query->where('fechaInicio', $this->de)
                     ->where('fechaFin', $this->hasta);
             })
-                ->get();
+                ->paginate(10);
         } else {
-            $this->remisionesData = Remisionid::all();
+            $remisionesData = Remisionid::paginate(10);
         }
 
-        return view('livewire.remisiones-rango-por-fecha', [
-            'remisionesData' => $this->remisionesData
-        ]);
+        return view('livewire.remisiones-rango-por-fecha', compact('remisionesData'));
     }
 
     public function verPDF($id)
@@ -49,8 +49,8 @@ class RemisionesRangoPorFecha extends Component
                 ->first());
         }
 
-        $entreFechas = explode(',',$remision->fechas);
-        $diasEntreFechas = explode(',',$remision->dias);
+        $entreFechas = explode(',', $remision->fechas);
+        $diasEntreFechas = explode(',', $remision->dias);
 
         $pdf = PDF::loadView('livewire.remisiones-rango-pdf', [
             'ventas' => $this->remisionFound,

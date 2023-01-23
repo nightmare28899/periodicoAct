@@ -1,7 +1,7 @@
-<div class="w-1/2 mx-auto">
+<div class="w-3/4 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Reporte suscripcion vencimiento') }}
+            {{ __('Reporte Suscripcion Vencimiento') }}
         </h2>
     </x-slot>
 
@@ -26,46 +26,51 @@
                         </svg>
                         Generar</button>
                 </div>
-
-                <div class="mx-auto mt-3">
-                    <table class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase">
-                        <thead>
-                            <tr class='bg-gray-100'>
-                                <th class='px-4 py-2 uppercase'>No. contrato</th>
-                                <th class='px-4 py-2 uppercase'>cliente</th>
-                                <th class='px-4 py-2 uppercase'>nombre</th>
-                                <th class='px-4 py-2 uppercase'>fecha vencimiento</th>
-                                <th class='px-4 py-2 uppercase'>Periodo</th>
-                                <th class='px-4 py-2 uppercase'>ejemplar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($suscripcion as $susc)
-                                <tr>
-                                    <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['id'] }}
-                                    </td>
-                                    <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['cliente_id'] }}
-                                    </td>
-                                    <td class='px-4 py-2 border border-dark'>{{ $susc['nombre'] }}</td>
-                                    <td class='px-4 py-2 border border-dark'>
-                                        {{ \Carbon\Carbon::parse($susc['fechaFin'])->format('d/m/Y') }}
-                                    </td>
-                                    <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['periodo'] }}
-                                    </td>
-                                    <td class='px-4 py-2 border border-dark'>
-                                        {{ $susc['cantEjemplares'] }}
-                                    </td>
+                <br>
+                <div class="text-center overflow-x">
+                    <div class="overflow-x-auto w-full">
+                        <table
+                            class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase">
+                            <thead>
+                                <tr class='bg-gray-100'>
+                                    <th class='px-4 py-2 uppercase'>No. contrato</th>
+                                    <th class='px-4 py-2 uppercase'>cliente</th>
+                                    <th class='px-4 py-2 uppercase'>nombre</th>
+                                    <th class='px-4 py-2 uppercase'>fecha vencimiento</th>
+                                    <th class='px-4 py-2 uppercase'>Periodo</th>
+                                    <th class='px-4 py-2 uppercase'>ejemplar</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <p class="uppercase font-bold">Total de contratos: {{ count($suscripcion) }}</p>
+                            </thead>
+                            <tbody>
+                                @foreach ($suscripcion as $susc)
+                                    <tr>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $susc['id'] }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $susc['cliente_id'] }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>{{ $susc['nombre'] }}</td>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ \Carbon\Carbon::parse($susc['fechaFin'])->format('d/m/Y') }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $susc['periodo'] }}
+                                        </td>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $susc['cantEjemplares'] }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <br>
+                {{-- {{ $suscripcion->links('livewire.custom-pagination') }} --}}
+                <p class="uppercase font-bold">Total de contratos: {{ count($suscripcion) }}</p>
             </div>
         </div>
     </div>
-    {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
+
 </div>

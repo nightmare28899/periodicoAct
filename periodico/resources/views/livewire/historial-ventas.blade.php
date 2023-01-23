@@ -97,6 +97,8 @@
                         </table>
                     </div>
                 </div>
+                <br>
+                {{ $ventas->links('livewire.custom-pagination') }}
             </div>
         </div>
     </div>

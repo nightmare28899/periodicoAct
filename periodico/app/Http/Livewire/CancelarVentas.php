@@ -10,26 +10,29 @@ use Illuminate\Support\Facades\Storage;
 use carbon\carbon;
 use App\Models\ventas;
 use App\Models\Suscripcion;
+use Livewire\WithPagination;
 
 class CancelarVentas extends Component
 {
-    public $ventas, $suscripciones, $tipo, $status = 'created', $tipoMount, $fecha, $diaS, $clienteSeleccionado;
+    use WithPagination;
+
+    public $suscripciones, $tipo, $status = 'created', $tipoMount, $fecha, $diaS, $clienteSeleccionado;
 
     public function mount($tipo)
     {
         $this->tipoMount = $tipo;
         if (substr($tipo, 0, 6) == 'suscri') {
             $this->tipo = 'suscripciones';
-            $this->ventas = Suscripcion
+            $ventas = Suscripcion
                 ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                 ->select('suscripciones.*', 'cliente.nombre')
-                ->get();
+                ->paginate(10);
         } else if (substr($tipo, 0, 5) == 'venta') {
             $this->tipo = 'ventas';
-            $this->ventas = ventas
+            $ventas = ventas
                 ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                 ->select('ventas.*', 'cliente.nombre')
-                ->get();
+                ->paginate(10);
         }
     }
 
@@ -41,49 +44,55 @@ class CancelarVentas extends Component
         if ($this->clienteSeleccionado) {
             if (substr($this->tipoMount, 0, 6) == 'suscri') {
                 $this->tipo = 'suscripciones';
-                $this->ventas = Suscripcion
+                $ventas = Suscripcion
                     ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                     ->select('suscripciones.*', 'cliente.nombre')
-                    ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
-                    ->orWhere('suscripciones.cliente_id', $this->clienteSeleccionado)
-                    ->orWhere('suscripciones.id', $this->clienteSeleccionado)
-                    ->get();
+                    ->where(function ($query) {
+                        $query->where('suscripciones.estado', '!=', 'Cancelada')
+                            ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                            ->orWhere('suscripciones.cliente_id', $this->clienteSeleccionado)
+                            ->orWhere('suscripciones.id', $this->clienteSeleccionado);
+                    })
+                    ->paginate(10);
             } else if (substr($this->tipoMount, 0, 5) == 'venta') {
                 $this->tipo = 'ventas';
-                $this->ventas = ventas
+                $ventas = ventas
                     ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->select('ventas.*', 'cliente.nombre')
-                    ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
-                    ->orWhere('ventas.cliente_id', $this->clienteSeleccionado)
-                    ->orWhere('ventas.id', $this->clienteSeleccionado)
-                    ->get();
+                    ->where(function ($query) {
+                        $query->where('ventas.estado', '!=', 'Cancelada')
+                            ->where('cliente.nombre', 'LIKE', '%' . $this->clienteSeleccionado . '%')
+                            ->orWhere('ventas.cliente_id', $this->clienteSeleccionado)
+                            ->orWhere('ventas.id', $this->clienteSeleccionado);
+                    })
+                    ->paginate(10);
             }
         } else {
             if (substr($this->tipoMount, 0, 6) == 'suscri') {
                 $this->tipo = 'suscripciones';
-                $this->ventas = Suscripcion
+                $ventas = Suscripcion
                     ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
+                    ->where('suscripciones.estado', '!=', 'Cancelada')
                     ->select('suscripciones.*', 'cliente.nombre')
-                    ->get();
+                    ->paginate(10);
             } else if (substr($this->tipoMount, 0, 5) == 'venta') {
                 $this->tipo = 'ventas';
-                $this->ventas = ventas
+                $ventas = ventas
                     ::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                    ->where('ventas.estado', '!=', 'Cancelada')
                     ->select('ventas.*', 'cliente.nombre')
-                    ->get();
+                    ->paginate(10);
             }
         }
 
-        return view('livewire.cancelar-ventas', [
-            'ventas' => $this->ventas,
-        ]);
+        return view('livewire.cancelar-ventas', compact('ventas'));
     }
 
     public function verPDF($idVenta)
     {
         if (substr($this->tipoMount, 0, 6) == 'suscri') {
             $this->tipo = 'suscripciones';
-            $this->ventas = Tiro
+            $ventas = Tiro
                 ::join('suscripciones', 'suscripciones.idSuscripcion', '=', 'tiro.idTipo')
                 ->join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                 ->join('domicilio_subs', 'domicilio_subs.id', '=', 'suscripciones.domicilio_id')
@@ -93,7 +102,7 @@ class CancelarVentas extends Component
                 ->get($this->diaS);
         } else if (substr($this->tipoMount, 0, 5) == 'venta') {
             $this->tipo = 'ventas';
-            $this->ventas = Tiro
+            $ventas = Tiro
                 ::join('ventas', 'ventas.idVenta', '=', 'tiro.idTipo')
                 ->join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                 ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
@@ -104,7 +113,7 @@ class CancelarVentas extends Component
         }
 
         $pdf = PDF::loadView('livewire.cancelarVentaPDF', [
-            'ventas' => $this->ventas,
+            'ventas' => $ventas,
             'tipo' => $this->tipo,
             'fecha' => $this->fecha,
             'diaS' => $this->diaS,

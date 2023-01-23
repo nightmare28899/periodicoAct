@@ -4,32 +4,22 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\SuscripcionSupendida;
+use Livewire\WithPagination;
 
 class SuscripcionSuspendidaReporte extends Component
 {
-    public $suscsuscripcionSusripcion = [];
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->resetear();
-    }
-
-    public function resetear()
-    {
-        $this->query = '';
-        $this->suscripcionBuscada = [];
-    }
+    public $suscsuscripcionSusripcion = [], $query = '';
 
     public function render()
     {
         if ($this->query) {
-            $this->suscripcionSus = SuscripcionSupendida::where('id', $this->query)->get();
+            $suscripcionSus = SuscripcionSupendida::where('id', $this->query)->paginate(10);
         } else {
-            $this->suscripcionSus = SuscripcionSupendida::all();
+            $suscripcionSus = SuscripcionSupendida::paginate(10);
         }
 
-        return view('livewire.reportes.contratos-suspendidos.suscripcion-suspendida-reporte', [
-            'suscripcion' => $this->suscripcionSus
-        ]);
+        return view('livewire.reportes.contratos-suspendidos.suscripcion-suspendida-reporte', compact('suscripcionSus'));
     }
 }

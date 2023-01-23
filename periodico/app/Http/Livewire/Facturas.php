@@ -5,67 +5,54 @@ namespace App\Http\Livewire;
 use App\Models\Cliente;
 use Livewire\Component;
 use App\Models\Tiro;
+use Livewire\WithPagination;
 
 class Facturas extends Component
 {
-    public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [], $fechaRemision, $idCliente;
-    public function mount()
-    {
-        $this->resetear();
-    }
+    use WithPagination;
 
-    public function resetear()
-    {
-        $this->query = '';
-        $this->clientesBuscados = [];
-        $this->highlightIndex = 0;
-    }
-
-    public function selectContact($pos)
-    {
-        $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
-        if ($this->clienteSeleccionado) {
-            $this->clienteSeleccionado;
-            $this->resetear();
-        }
-    }
-
-    public function updatedQuery()
-    {
-        $this->clientesBuscados = Cliente
-            ::where('id', '=',  $this->query)
-            ->orWhere('nombre', 'like', '%' . $this->query . '%')
-            ->limit(6)
-            ->get()
-            ->toArray();
-    }
+    public $query = '', $clienteSeleccionado, $clientesBuscados = [], $fechaRemision, $idCliente;
 
     public function render()
     {
         if ($this->clienteSeleccionado && $this->fechaRemision) {
-            $this->tiros = Tiro::where(function ($query) {
-                $query->where('cliente_id', $this->clienteSeleccionado['id'])
-                    ->where('fecha', $this->fechaRemision);
-            })->get();
-        } else if ($this->clienteSeleccionado) {
-            $this->tiros = Tiro::where('cliente_id', $this->clienteSeleccionado['id'])->get();
+            $result = Tiro::where(function ($query) {
+                $query->where('status', '=', 'Pagado')
+                    ->orWhere('status', '=', 'cancelado')
+                    ->orWhere('status', '=', 'sin pagar');
+            })
+                ->where('cliente_id', $this->clienteSeleccionado['id'])
+                ->where('fecha', $this->fechaRemision)
+                ->paginate(10);
+        } else if ($this->query) {
+            $result = Tiro::where(function ($query) {
+                $query->where('status', '=', 'Pagado')
+                    ->orWhere('status', '=', 'cancelado')
+                    ->orWhere('status', '=', 'sin pagar');
+            })
+                ->where('cliente_id', $this->query)
+                ->orWhere('cliente', 'like', '%' . $this->query . '%')
+                ->orWhere('id', $this->query)
+                ->paginate(10);
         } else if ($this->fechaRemision) {
-            $this->tiros = Tiro::where('fecha', $this->fechaRemision)->get();
+            $result = Tiro::where(function ($query) {
+                $query->where('status', '=', 'Pagado')
+                    ->orWhere('status', '=', 'cancelado')
+                    ->orWhere('status', '=', 'sin pagar');
+            })
+                ->where('fecha', $this->fechaRemision)
+                ->paginate(10);
         } else {
-            $this->tiros = Tiro::all();
-        }
-
-        if ($this->idCliente && $this->fechaRemision) {
-            $this->tiros = Tiro::where(function ($query) {
-                $query->where('cliente_id', $this->idCliente)
-                    ->where('fecha', $this->fechaRemision);
-            })->get();
-        } else if ($this->idCliente) {
-            $this->tiros = Tiro::where('cliente_id', $this->idCliente)->get();
+            $result = Tiro::where(function ($query) {
+                $query->where('status', '=', 'Pagado')
+                    ->orWhere('status', '=', 'cancelado')
+                    ->orWhere('status', '=', 'sin pagar');
+            })
+                ->paginate(10);
         }
 
         return view('livewire.facturasListado', [
-            'tiros' => $this->tiros,
+            'invoices' => $result,
         ]);
     }
 }

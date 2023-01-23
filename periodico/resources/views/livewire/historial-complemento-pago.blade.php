@@ -1,7 +1,7 @@
 <div class="w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Historial de Complementos de pago') }}
+            {{ __('Historial de Complementos de Pago') }}
         </h2>
     </x-slot>
 
@@ -24,7 +24,7 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($complementos as $complemento)
+                                @foreach ($complemento_pago as $complemento)
                                     <tr>
                                         <td class='border px-4 py-2'>{{ $complemento->id }}</td>
                                         <td class='border px-4 py-2'>{{ $complemento->nombre }}</td>
@@ -54,6 +54,7 @@
                         </table>
                     </div>
                 </div>
+                {{ $complemento_pago->links('livewire.custom-pagination') }}
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@
                     <div class="w-72 mt-6">
                         <input type="text"
                             class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                            name="search" id="search" placeholder="Buscar Cliente: nombre o id"
+                            name="search" id="search" placeholder="Busca por nombre o id"
                             wire:model="clienteSeleccionado" autocomplete="off" />
                     </div>
                 </div>
@@ -91,6 +91,8 @@
                         </table>
                     </div>
                 </div>
+                <br>
+                {{ $ventas->links('livewire.custom-pagination') }}
             </div>
         </div>
     </div>

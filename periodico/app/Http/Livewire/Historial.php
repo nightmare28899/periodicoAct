@@ -15,12 +15,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\WithPagination;
 
 class Historial extends Component
 {
+    use WithPagination;
+
     public $tiros, $id_cliente, $status = 'created', $ventas = [], $tiro, $cliente, $date, $domicilio, $ruta, $modalEditar = 0, $devuelto, $faltante = 0, $entregar, $suscri = [], $clienteSeleccionado, $clientesBuscados, $modalDomicilio = 0, $rutas, $calle, $noint, $noext, $colonia, $cp, $localidad, $referencia, $ciudad, $fechaRemision, $state = false, $datos = [], $type = [], $id_domicilio, $remisionIdSearch, $diaDevolucion, $idVentaEditar, $diaPdf, $modalCapturar = 0, $cantActual = 0, $cantAgregar, $capturarPeriodicos_id, $cantDevueltos, $cantCancelar = 0, $tipo, $domicilioSeleccionado, $suscripcion, $domicilioSubs, $Ruta, $modalHistorial, $modalRemision, $showingModal, $tiros_id, $diaS, $fecha, $statusTiro = 'Todos', $tarifaOrdinario = 0, $tarifaDominical = 0, $tarifa = 0;
 
     public $query = '', $remisionesRango = [];
@@ -33,33 +33,6 @@ class Historial extends Component
         if ($editar != 'normal') {
             $this->state = true;
         }
-        $this->resetear();
-    }
-
-    public function resetear()
-    {
-        $this->query = '';
-        $this->clientesBuscados = [];
-    }
-
-    public function selectContact($pos)
-    {
-        $this->clienteSeleccionado = $this->clientesBuscados[$pos] ?? null;
-        if ($this->clienteSeleccionado) {
-            $this->clienteSeleccionado;
-            $this->domicilioSeleccionado = [];
-            $this->resetear();
-        }
-    }
-
-    public function updatedQuery()
-    {
-        $this->clientesBuscados = Cliente
-            ::where('id', '=', $this->query . '%')
-            ->orWhere('nombre', 'like', '%' . $this->query . '%')
-            ->limit(6)
-            ->get()
-            ->toArray();
     }
 
     public function render()
@@ -71,41 +44,42 @@ class Historial extends Component
 
         if ($this->state != true) {
             if ($this->query) {
-                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->where(function ($query) {
                         $query->where('tiro.id', $this->query)
                             ->orWhere('tiro.cliente_id', $this->query)
                             ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
                     })
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get()
-                    ->toArray();
+                    ->paginate(10);
             } else if ($this->statusTiro != 'Todos') {
-                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->where('tiro.status', $this->statusTiro)
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get()
-                    ->toArray();
+                    ->paginate(10);
             } else {
-                $this->tiros = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                    ->get()
-                    ->toArray();
+                    ->paginate(10);
             }
-
-            $data = $this->paginate($this->tiros, 10);
         } else {
-            if ($this->clienteSeleccionado) {
+            if ($this->query) {
                 $this->datos = Tiro::all();
 
                 for ($i = 0; $i < count($this->datos); $i++) {
                     if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
                         array_push($this->type, $this->datos[$i]->idTipo);
 
-                        $this->tiros = Tiro::where(function ($query) {
-                            $query->whereIn('idTipo', $this->type)
-                                ->where('cliente_id', $this->clienteSeleccionado['id']);
-                        })->get();
+                        $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                            ->join('domicilio_subs', 'domicilio_subs.id', '=', 'tiro.domicilio_id')
+                            ->where(function ($query) {
+                                $query->whereIn('idTipo', $this->type)
+                                    ->where('tiro.id', $this->query)
+                                    ->orWhere('tiro.cliente_id', $this->query)
+                                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
+                            })
+                            ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noext', 'domicilio_subs.noint', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.localidad', 'domicilio_subs.referencia', 'domicilio_subs.ciudad')
+                            ->paginate(10);
                     }
                 }
             } else {
@@ -113,16 +87,15 @@ class Historial extends Component
                 for ($i = 0; $i < count($this->datos); $i++) {
                     if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
                         array_push($this->type, $this->datos[$i]->idTipo);
-                        $this->tiros = Tiro::where(function ($query) {
-                            $query->whereIn('idTipo', $this->type);
-                        })->get();
+                        $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                            ->where(function ($query) {
+                                $query->whereIn('idTipo', $this->type);
+                            })
+                            ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
+                            ->paginate(10);
                     }
                 }
             }
-        }
-
-        if ($this->remisionIdSearch) {
-            $this->tiros = Tiro::where('id', $this->remisionIdSearch)->get();
         }
 
         return view('livewire.remisiones.historial', [
@@ -145,19 +118,7 @@ class Historial extends Component
             'domingo' => $this->domingo,
             'fechasFound' => $this->fechasFound,
             'remisionFoundDias' => $this->remisionFoundDias,
-        ], compact('data'));
-    }
-
-    public function paginate($items, $perPage = 0, $page = null)
-    {
-        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
-            'path' => Paginator::resolveCurrentPath(),
-            'query' => Paginator::resolveQueryString(),
-        ]);
+        ], compact('result'));
     }
 
     public function pagar($id_cliente, $idTipo, $dia)
@@ -243,7 +204,7 @@ class Historial extends Component
 
     public function editarRemision($id, $idVenta, $dia)
     {
-        return Redirect::to('/devolverVentas/'.$id);
+        return Redirect::to('/devolverVentas/' . $id);
 
         $this->modalEditar = true;
         $this->modalHistorial = false;
@@ -362,7 +323,7 @@ class Historial extends Component
         ]);
     }
 
-    public function updateDevueltos()
+    /* public function updateDevueltos()
     {
         $tiros = Tiro::find($this->tiros_id);
         $this->entregar = $tiros->entregar;
@@ -382,9 +343,9 @@ class Historial extends Component
 
                 $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
 
-                /* $ventas->update([
+                $ventas->update([
                     $this->diaDevolucion => $cant[0][$this->diaDevolucion] - $this->devuelto,
-                ]); */
+                ]);
 
                 $this->status = 'updated';
                 $this->dispatchBrowserEvent('alert', [
@@ -408,9 +369,9 @@ class Historial extends Component
 
                 $cant = ventas::where('idVenta', $this->idVentaEditar)->get($this->diaDevolucion);
 
-                /* $ventas->update([
+                $ventas->update([
                     $this->diaDevolucion => $cant[0][$this->diaDevolucion] + $this->devuelto,
-                ]); */
+                ]);
 
                 $this->status = 'adjust';
                 $this->dispatchBrowserEvent('alert', [
@@ -434,7 +395,7 @@ class Historial extends Component
                 'message' => ($this->status == 'error') ? '¡No puedes dejar campos vacíos!' : ''
             ]);
         }
-    }
+    } */
 
     public function modalCapturarPeriodicos($id)
     {

@@ -46,5 +46,6 @@
                     </table>
                 </div>
             </div>
+            {{ $suscripcionSus->links('livewirer.custom-pagination') }}
         </div>
     </div>

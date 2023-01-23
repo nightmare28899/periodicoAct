@@ -68,6 +68,7 @@
                         </table>
                     </div>
                 </div>
+                {{ $remisionesData->links('livewire.custom-pagination') }}
             </div>
         </div>
     </div>

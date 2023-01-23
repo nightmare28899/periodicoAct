@@ -5,25 +5,28 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\ventas;
 use App\Models\Ruta;
+use Livewire\WithPagination;
 
 class HistorialVentas extends Component
 {
-    public $ventas, $query = '', $estatusPago = 'Todas', $desde, $hasta, $ruta, $rutaSeleccionada = "Todos";
+    use WithPagination;
+
+    public $query = '', $estatusPago = 'Todas', $desde, $hasta, $ruta, $rutaSeleccionada = "Todos";
 
     public function render()
     {
         $this->ruta = Ruta::all();
 
         if ($this->estatusPago != 'Todas') {
-            $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+            $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                 ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
                 ->where('ventas.estado', $this->estatusPago)
-                ->get();
+                ->paginate(10);
 
             if ($this->desde && $this->hasta) {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
@@ -32,11 +35,11 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.desde', '<=', $this->desde)
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
-                    ->get();
+                    ->paginate(10);
             }
 
             if ($this->query != '') {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
@@ -46,11 +49,11 @@ class HistorialVentas extends Component
                             ->orWhere('ventas.id', $this->query)
                             ->orWhere('ventas.cliente_id', $this->query);
                     })
-                    ->get();
+                    ->paginate(10);
             }
 
             if ($this->desde && $this->hasta && $this->query != '') {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->where(function ($query) {
@@ -62,28 +65,40 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
-                    ->get();
+                    ->paginate(10);
             }
-        } else {
-            if ($this->rutaSeleccionada == 'Todos') {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+
+            if ($this->rutaSeleccionada != 'Todos') {
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
-                    ->get();
+                    ->where(function ($query) {
+                        $query->where('ruta.nombreruta', $this->rutaSeleccionada)
+                            ->where('ventas.estado', $this->estatusPago);
+                    })
+                    ->paginate(10);
+            }
+        } else {
+            if ($this->rutaSeleccionada == 'Todos') {
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                    ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
+                    ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                    ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
+                    ->paginate(10);
             } else {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
                     ->where(function ($query) {
                         $query->where('ruta.nombreruta', $this->rutaSeleccionada);
                     })
-                    ->get();
+                    ->paginate(10);
             }
 
             if ($this->desde && $this->hasta) {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->where(function ($query) {
@@ -91,11 +106,11 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
-                    ->get();
+                    ->paginate(10);
             }
 
             if ($this->query != '') {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
@@ -104,11 +119,11 @@ class HistorialVentas extends Component
                             ->orWhere('ventas.id', $this->query)
                             ->orWhere('ventas.cliente_id', $this->query);
                     })
-                    ->get();
+                    ->paginate(10);
             }
 
             if ($this->desde && $this->hasta && $this->query != '') {
-                $this->ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
+                $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
@@ -119,13 +134,12 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.desde', '<=', $this->desde)
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
-                    ->get();
+                    ->paginate(10);
             }
         }
 
         return view('livewire.historial-ventas', [
-            'ventas' => $this->ventas,
             'ruta' => $this->ruta,
-        ]);
+        ], compact('ventas'));
     }
 }

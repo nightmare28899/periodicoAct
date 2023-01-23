@@ -8,20 +8,13 @@
     <div class="py-12 mx-auto px-4 container">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             <div class="flex">
-                {{-- <div class="w-64 mt-6">
-                    <input type="number"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                        name="search" id="search"
-                        placeholder="{{ $state == true ? 'Buscar por id' : 'Buscar Remision por id' }}"
-                        wire:model="remisionIdSearch" autocomplete="off" min="0" />
-                </div> --}}
                 <div class="w-64 mt-6 ml-5">
                     <input type="text"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         name="search" id="search" placeholder="Buscar nombre o id" wire:model="query"
                         autocomplete="off" />
                 </div>
-                {{-- <div class="w-64 mt-6 ml-5">
+                <div class="w-64 mt-6 ml-5">
                     <select name="tipo" id="tipo"
                         class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                         wire:model="statusTiro">
@@ -31,10 +24,10 @@
                         <option value="Cancelado">Cancelado</option>
                         <option value="facturado">Facturado</option>
                     </select>
-                </div> --}}
+                </div>
             </div>
             <br>
-            @if ($tiros)
+            @if ($result)
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto">
                         <table class="table-auto border-separate border-spacing-2 border border-dark w-full uppercase">
@@ -58,45 +51,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $tiro)
-                                    @if ($state == 0 && $tiro['estado'] != 'suspendida')
+                                @foreach ($result as $tiro)
+                                    @if ($state == 0 && $tiro->estado != 'suspendida')
                                         <tr>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['id'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->id }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}
+                                                {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}
                                             </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['entregar'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['devuelto'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['faltante'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['venta'] }}</td>
-                                            {{-- <td class='px-4 py-2 border border-dark'><b>Ordinario:</b>
-                                                {{ sprintf('$ %s', number_format($tiro['ordinario'], 2)) }},
-                                                <b>Dominical:</b> {{ sprintf('$ %s', number_format($tiro['dominical'], 2)) }}
-                                            </td> --}}
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro['importe'], 2)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->importe, 2)) }}
                                             </td>
                                             {{-- <td class='px-4 py-2 border border-dark'>{{ $tiro->dia }}</td> --}}
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['nombreruta'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['tipo'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['status'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->status }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ \Carbon\Carbon::parse($tiro['fecha'])->format('d/m/Y') }}</td>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
-                                            @if (substr($tiro['idTipo'], 0, 6) == 'suscri')
+                                            @if (substr($tiro->idTipo, 0, 6) == 'suscri')
                                                 <td class="border border-dark">
-                                                    @if ($tiro['clasificacion'] != 'CRÉDITO')
-                                                        @if ($tiro['status'] != 'Cancelado')
-                                                            @if ($tiro['estado'] == 'Activo')
+                                                    @if ($tiro->clasificacion != 'CRÉDITO')
+                                                        @if ($tiro->status != 'Cancelado')
+                                                            @if ($tiro->estado == 'Activo')
                                                                 <button
-                                                                    wire:click="pausarRemision('{{ $tiro['idTipo'] }}')"
+                                                                    wire:click="pausarRemision('{{ $tiro->idTipo }}')"
                                                                     class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
                                                                     Pausar
                                                                     suscripción
                                                                 </button>
                                                             @elseif ($tiro->estado == 'Pausado')
                                                                 <button
-                                                                    wire:click="pausarRemision('{{ $tiro['idTipo'] }}')"
+                                                                    wire:click="pausarRemision('{{ $tiro->idTipo }}')"
                                                                     class="px-2 py-1 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                                     Activar
                                                                     suscripción
@@ -104,17 +93,17 @@
                                                             @endif
                                                         @endif
 
-                                                        @if ($tiro['status'] != 'CREDITO' && $tiro['status'] != 'Cancelado' && substr($tiro['idTipo'], 0, 6) == 'suscri')
+                                                        @if ($tiro->status != 'CREDITO' && $tiro->status != 'Cancelado' && substr($tiro->idTipo, 0, 6) == 'suscri')
                                                             @if (
-                                                                ($tiro['status'] == 'Pagado' && substr($tiro['idTipo'], 0, 6) == 'suscri') ||
-                                                                    ($tiro['status'] == 'facturado' && substr($tiro['idTipo'], 0, 6) == 'suscri'))
+                                                                ($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 6) == 'suscri') ||
+                                                                    ($tiro->status == 'facturado' && substr($tiro->idTipo, 0, 6) == 'suscri'))
                                                                 <button
                                                                     class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                                     disabled>Pagado
                                                                 </button>
                                                             @else
                                                                 <button
-                                                                    wire:click="pagar({{ $tiro['cliente_id'] }}, '{{ $tiro['idTipo'] }}', '{{ ' ' }}')"
+                                                                    wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}')"
                                                                     class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-indigo-500
@@ -123,16 +112,10 @@
                                                                 </button>
                                                             @endif
                                                         @endif
-
-                                                        {{-- <button
-                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
-                                                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
-                                                            PDF
-                                                        </button> --}}
                                                     @endif
 
-                                                    @if ($tiro['status'] != 'Cancelado')
-                                                        <button wire:click="cancelarVenta('{{ $tiro['idTipo'] }}')"
+                                                    @if ($tiro->status != 'Cancelado')
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
                                                             class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
                                                             Cancelar Remisión
                                                         </button>
@@ -143,40 +126,30 @@
                                                         </button>
                                                     @endif
 
-                                                    @if ($tiro['status'] != 'Cancelado')
+                                                    @if ($tiro->status != 'Cancelado')
                                                         <button
-                                                            wire:click="generarPDF({{ $tiro['cliente_id'] }}, '{{ $tiro['idTipo'] }}', '{{ ' ' }}', {{ $tiro['id'] }})"
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ ' ' }}', {{ $tiro->id }})"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                             PDF
                                                         </button>
                                                     @else
-                                                        <button wire:click="cancelarVenta('{{ $tiro['idTipo'] }}')"
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
                                                             class="px-2 py-1 cursor-pointer bg-green-500 hover:bg-green-600 text-white my-2 rounded-lg">
                                                             Ver PDF
                                                         </button>
                                                     @endif
-                                                    {{-- <button
-                                                    wire:click="editarDomicilio({{ $tiro->cliente_id }})"
-                                                    class="inline-flex
-                                                            items-center h-10 px-4 m-2 text-sm text-white
-                                                            transition-colors duration-150 bg-blue-500
-                                                            hover:bg-blue-600 rounded-lg
-                                                            focus:shadow-outline"
-                                                >
-                                                    Editar domicilio
-                                                </button> --}}
                                                 </td>
                                             @else
                                                 <td class="border border-dark">
 
-                                                    @if ($tiro['clasificacion'] != 'CRÉDITO')
-                                                        @if (($tiro['status'] == 'Pagado' && substr($tiro['idTipo'], 0, 5) == 'venta') || $tiro['status'] == 'facturado')
+                                                    @if ($tiro->clasificacion != 'CRÉDITO')
+                                                        @if (($tiro->status == 'Pagado' && substr($tiro->idTipo, 0, 5) == 'venta') || $tiro->status == 'facturado')
                                                             <button
                                                                 class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                                                                 disabled>Pagado
                                                             </button>
                                                         @else
-                                                            @if ($tiro['status'] != 'Cancelado')
+                                                            @if ($tiro->status != 'Cancelado')
                                                                 <x-jet-dropdown align="right" width="48">
                                                                     <x-slot name="trigger">
 
@@ -200,22 +173,16 @@
                                                                     <x-slot name="content">
                                                                         <div class="border-t border-gray-200"></div>
                                                                         <button
-                                                                            wire:click="editarRemision({{ $tiro['id'] }}, '{{ $tiro['idTipo'] }}', '{{ $tiro['dia'] }}')"
+                                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
                                                                             class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">
                                                                             Devolver periodicos
                                                                         </button>
                                                                         <div class="border-t border-gray-200"></div>
-                                                                        {{-- <button
-                                                                            wire:click="modalCapturarPeriodicos({{ $tiro['id'] }})"
-                                                                            class="px-2 w-full py-1 cursor-pointer hover:bg-blue-600 hover:text-white">
-                                                                            Capturar periodicos
-                                                                        </button> --}}
-                                                                        <div class="border-t border-gray-200"></div>
                                                                     </x-slot>
                                                                 </x-jet-dropdown>
-                                                                @if ($tiro['status'] != 'Cancelado')
+                                                                @if ($tiro->status != 'Cancelado')
                                                                     <button
-                                                                        wire:click="pagar({{ $tiro['cliente_id'] }}, '{{ $tiro['idTipo'] }}', '{{ $tiro['dia'] }}')"
+                                                                        wire:click="pagar({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
                                                                         class="inline-flex
                                                         items-center h-10 px-4 m-2 text-sm text-white
                                                         transition-colors duration-150 bg-indigo-500
@@ -228,14 +195,14 @@
                                                         @endif
                                                     @else
                                                         <button
-                                                            wire:click="editarRemision({{ $tiro['id'] }}, '{{ $tiro['idTipo'] }}', '{{ $tiro['dia'] }}' )"
+                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
                                                             class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                             Editar
                                                         </button>
                                                     @endif
 
-                                                    @if ($tiro['status'] != 'Cancelado')
-                                                        <button wire:click="cancelarVenta('{{ $tiro['idTipo'] }}')"
+                                                    @if ($tiro->status != 'Cancelado')
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
                                                             class="px-2 py-1 cursor-pointer bg-red-500 hover:bg-red-600 text-white my-2 rounded-lg">
                                                             {{ $tipo === 'suscripciones' ? 'Cancelar suscripción' : 'Cancelar Remisión' }}
                                                         </button>
@@ -246,14 +213,14 @@
                                                         </button>
                                                     @endif
 
-                                                    @if ($tiro['status'] != 'Cancelado')
+                                                    @if ($tiro->status != 'Cancelado')
                                                         <button
-                                                            wire:click="generarPDF({{ $tiro['cliente_id'] }}, '{{ $tiro['idTipo'] }}', '{{ $tiro['dia'] }}', {{ $tiro['id'] }})"
+                                                            wire:click="generarPDF({{ $tiro->cliente_id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}', {{ $tiro->id }})"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                             PDF
                                                         </button>
                                                     @else
-                                                        <button wire:click="cancelarVenta('{{ $tiro['idTipo'] }}')"
+                                                        <button wire:click="cancelarVenta('{{ $tiro->idTipo }}')"
                                                             class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-green-500 hover:bg-green-600 rounded-lg focus:shadow-outline">Ver
                                                             PDF
                                                         </button>
@@ -263,30 +230,27 @@
                                         </tr>
                                     @elseif($state == 1)
                                         <tr>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ \Carbon\Carbon::parse($tiro['fecha'])->format('d/m/Y') }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['id'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->id }}</td>
                                             {{-- <td class='px-4 py-2'>{{ $tiro->idTipo }}</td> --}}
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ $tiro['cliente'] ? $tiro['cliente'] : $tiro['razon_social'] }}
+                                                {{ $tiro->cliente ? $tiro->cliente : $tiro->razon_social }}
                                             </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['entregar'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['devuelto'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['faltante'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['venta'] }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->entregar }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->devuelto }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->faltante }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->venta }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro['precio'], 2)) }}
+                                                {{ sprintf('$ %s', number_format($tiro->importe, 2)) }}
                                             </td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->nombreruta }}
+                                            </td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->tipo }}</td>
+                                            <td class='px-4 py-2 border border-dark'>{{ $tiro->status }}</td>
                                             <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($tiro['importe'], 2)) }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['dia'] }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['nombreruta'] }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $tiro['tipo'] }}</td>
+                                                {{ \Carbon\Carbon::parse($tiro->fecha)->format('d/m/Y') }}</td>
                                             {{-- checa esto agrega el estado al tiro para poder cambiar el boton segun el estdo --}}
                                             <td class="border border-dark">
-                                                <button wire:click="editarDomicilio({{ $tiro['domicilio_id'] }})"
+                                                <button wire:click="editarDomicilio({{ $tiro->domicilio_id }})"
                                                     class="inline-flex
                                                             items-center h-10 px-4 m-2 text-sm text-white
                                                             transition-colors duration-150 bg-blue-500
@@ -302,9 +266,7 @@
                         </table>
                     </div>
                     <br>
-                    @if (count($data) > 0)
-                        {{ $data->links('livewire.pagination.custom') }}
-                    @endif
+                    {{ $result->links('livewire.custom-pagination') }}
                 </div>
             @else
                 <div class="text-center">

@@ -1,7 +1,7 @@
 <div class="w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Historial de facturas') }}
+            {{ __('Historial de Facturas') }}
         </h2>
     </x-slot>
 
@@ -14,36 +14,10 @@
                         <x-jet-input class="w-full" type="date" wire:model="fechaFactura"></x-jet-input>
                     </div>
                     <div class="w-64 ml-5 pt-6">
-                        <input type="number"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
-                            name="search" placeholder="Buscar por id" wire:model="idCliente" autocomplete="off" min='0'/>
-                    </div>
-                    <div class="w-64 ml-5 pt-6">
                         <input type="text"
                             class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
                             name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                             autocomplete="off" />
-
-                        @if (!empty($query))
-
-                            <div class="fixed top-0 right-0 bottom-0 left-0" wire:click="resetear"></div>
-
-                            <div class="absolute z-10 list-group bg-white rounded-t-none shadow-lg">
-
-                                @if (!empty($clientesBuscados))
-
-                                    @foreach ($clientesBuscados as $i => $buscado)
-                                        <div wire:click="selectContact({{ $i }})"
-                                            class="list-item list-none p-2 hover:text-white hover:bg-blue-600 cursor-pointer">
-                                            {{ $buscado['nombre'] }}
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <div class="list-item list-none p-2">No hay resultado</div>
-                                @endif
-                            </div>
-
-                        @endif
                     </div>
                 </div>
                 <br>
@@ -73,7 +47,8 @@
                                             </td>
                                             <td class="px-4 py-2 border border-dark">{{ $invoice->cliente }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $invoice->quantity }}</td>
-                                            <td class="px-4 py-2 border border-dark">{{ sprintf('$ %s', number_format($invoice->total, 2)) }}
+                                            <td class="px-4 py-2 border border-dark">
+                                                {{ sprintf('$ %s', number_format($invoice->total, 2)) }}
                                                 {{ $invoice->currency }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
@@ -90,16 +65,18 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="13" class="border">No hay facturas</td>
-                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    {{ $invoices->links('livewire.custom-pagination') }}
+                @else
+                    <div>
+                        <p colspan="13" class="border">No hay facturas</p>
+                    </div>
                 @endif
-                </tbody>
-                </table>
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>
