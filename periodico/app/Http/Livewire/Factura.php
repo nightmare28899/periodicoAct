@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 
 class Factura extends Component
 {
-    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [], $cfdipe = "(issued | received)";
+    public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [], $cfdipe = "(issued | received)", $concepto = '';
 
     public function render()
     {
@@ -148,7 +148,7 @@ class Factura extends Component
                     "Serie" => "SUSPUE",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
-                    "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
+                    "Description" => $this->concepto,
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => ($this->suscripcion->importe / $this->suscripcion->cantEjemplares),
@@ -175,7 +175,7 @@ class Factura extends Component
                     "Serie" => "VPPUE",
                     "ProductCode" => "55101504",
                     "IdentificationNumber" => "EDL",
-                    "Description" => $this->activarCG ? "VENTA PERIODICO FACTURA GLOBAL" : "VENTA PERIODICO FACTURA",
+                    "Description" => $this->concepto,
                     "Unit" => "Pieza",
                     "UnitCode" => "H87",
                     "UnitPrice" => (float)number_format($this->tiro->importe / $this->tiro->entregar, 2),

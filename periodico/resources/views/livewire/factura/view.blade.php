@@ -95,16 +95,16 @@
                     </div>
 
                     <br>
-                    <div class="flex mt-1 mt-1.5">
+                    <div class="flex mt-1.5">
                         <div class="w-1/2 px-2">
-                            <label for="">Tipo Factura:</label><br>
-                            <select name="" id="" wire:model="tipoFactura">
+                            <label for="tipoFactura">Tipo Factura:</label><br>
+                            <select name="tipoFactura" id="tipoFactura" wire:model="tipoFactura">
                                 <option value="PUE">PUE</option>
                             </select>
                         </div>
                         <div class="w-1/2 px-2">
-                            <label for="">Forma de pago:</label>
-                            <select name="" id="" wire:model="PaymentForm" class="input-generic-style"
+                            <label for="PaymentForm">Forma de pago:</label>
+                            <select name="PaymentForm" id="PaymentForm" wire:model="PaymentForm" class="input-generic-style"
                                 wire:loading.attr="disabled" wire:target="facturar">
                                 <option selected style="display: none">Elegir una opcion</option>
                                 <option value="01">01 - Efectivo</option>
@@ -165,6 +165,11 @@
                                 <option value="CN01">CN01 Nómina.</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div class="w-1/5 px-2 mt-7">
+                        <label for="concepto">Concepto (Opcional):</label>
+                        <textarea wire:model="concepto" name="concepto" id="concepto" cols="30" rows="3" placeholder="Escribe el concepto"></textarea>
                     </div>
                     <br>
                     <div class="flex mt-1">
