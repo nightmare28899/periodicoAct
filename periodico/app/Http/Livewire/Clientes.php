@@ -467,9 +467,15 @@ class Clientes extends Component
             }
         }
 
+
+        $clientesHome = Cliente::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
+            ->where('cliente.id', 'like', '%' . $this->clientesQuery . '%')
+            ->orWhere('cliente.nombre', 'like', '%' . $this->clientesQuery . '%')
+            ->orWhere('domicilio.referencia', 'like', '%' . $this->clientesQuery . '%')
+            ->paginate(10);
+
         return view('livewire.clientes.view', [
-            'clientes' => Cliente::where('id', '=', $this->clientesQuery)
-                ->orWhere('nombre', 'like', '%' . $this->clientesQuery . '%')->paginate(10),
+            'clientes' => $clientesHome,
             'rfc' => $this->rfc,
             'total' => $this->total,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
@@ -655,17 +661,17 @@ class Clientes extends Component
         ]);
 
         Cliente::Create([
-            'clasificacion' => strtoupper($this->clasificacion),
-            'rfc' => strtoupper($this->rfc),
-            'rfc_input' => strtoupper($this->rfc_input),
-            'nombre' => strtoupper($this->nombre) ? strtoupper($this->nombre) : null,
-            'estado' => strtoupper($this->estado),
-            'pais' => strtoupper($this->pais),
-            'email' => strtoupper($this->email),
-            'email_cobranza' => strtoupper($this->email_cobranza),
-            'telefono' => strtoupper($this->telefono),
-            'regimen_fiscal' => strtoupper($this->regimen_fiscal),
-            'razon_social' => strtoupper($this->razon_social) ? strtoupper($this->razon_social) : null,
+            'clasificacion' => $this->clasificacion,
+            'rfc' => $this->rfc,
+            'rfc_input' => $this->rfc_input,
+            'nombre' => $this->nombre ? $this->nombre : null,
+            'estado' => $this->estado,
+            'pais' => $this->pais,
+            'email' => $this->email,
+            'email_cobranza' => $this->email_cobranza,
+            'telefono' => $this->telefono,
+            'regimen_fiscal' => $this->regimen_fiscal,
+            'razon_social' => $this->razon_social ? $this->razon_social : null,
         ]);
 
         $this->emit('closeModal');
@@ -773,14 +779,14 @@ class Clientes extends Component
 
         domicilioSubs::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado)->first()->id,
-            'calle' => strtoupper($this->calle),
+            'calle' => $this->calle,
             'noint' => $this?->noint,
             'noext' => $this->noext,
-            'colonia' => strtoupper($this->colonia),
+            'colonia' => $this->colonia,
             'cp' => $this->cp,
-            'localidad' => strtoupper($this->localidad),
-            'ciudad' => strtoupper($this->ciudad),
-            'referencia' => strtoupper($this->referencia),
+            'localidad' => $this->localidad,
+            'ciudad' => $this->ciudad,
+            'referencia' => $this->referencia,
             'ruta' => $this->ruta,
             'ejemplares' => 0,
         ]);
@@ -838,16 +844,16 @@ class Clientes extends Component
 
         Domicilio::Create([
             'cliente_id' => $this->cliente_id = Cliente::where('id', $this->clienteSeleccionado['id'])->first()->id,
-            'calle' => strtoupper($this->calle),
+            'calle' => $this->calle,
             'noint' => $this->noint ? $this->noint : 0,
             'noext' => $this->noext,
-            'colonia' => strtoupper($this->colonia),
+            'colonia' => $this->colonia,
             'cp' => $this->cp,
-            'localidad' => strtoupper($this->localidad),
-            'municipio' => strtoupper($this->municipio),
+            'localidad' => $this->localidad,
+            'municipio' => $this->municipio,
             'ruta_id' => $this->ruta_id,
             'tarifa_id' => $this->tarifa_id,
-            'referencia' => strtoupper($this->referencia),
+            'referencia' => $this->referencia,
         ]);
 
         $this->status = 'created';
