@@ -467,15 +467,12 @@ class Clientes extends Component
             }
         }
 
-
-        $clientesHome = Cliente::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
-            ->where('cliente.id', 'like', '%' . $this->clientesQuery . '%')
-            ->orWhere('cliente.nombre', 'like', '%' . $this->clientesQuery . '%')
-            ->orWhere('domicilio.referencia', 'like', '%' . $this->clientesQuery . '%')
-            ->paginate(10);
-
         return view('livewire.clientes.view', [
-            'clientes' => $clientesHome,
+            'clientes' => Cliente::join('domicilio', 'domicilio.cliente_id', '=', 'cliente.id')
+                ->where('cliente.id', 'like', '%' . $this->clientesQuery . '%')
+                ->orWhere('cliente.nombre', 'like', '%' . $this->clientesQuery . '%')
+                ->orWhere('domicilio.referencia', 'like', '%' . $this->clientesQuery . '%')
+                ->paginate(10),
             'rfc' => $this->rfc,
             'total' => $this->total,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
