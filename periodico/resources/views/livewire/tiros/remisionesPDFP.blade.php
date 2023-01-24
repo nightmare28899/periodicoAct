@@ -211,7 +211,7 @@
                         <td>IMPORTE</td>
                         <td>{{ number_format($importe, 2) }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -237,7 +237,7 @@
                         <td></td>
                         <td>IVA</td>
                         <td>{{ number_format(0, 2) }}</td>
-                    </tr>
+                    </tr> --}}
                     <br><br><br><br><br>
                     <p style="padding-bottom: -12; margin-bottom: -12; border-top: 0.5px solid black;">
                         &nbsp; Firma cobrador &nbsp;</p>

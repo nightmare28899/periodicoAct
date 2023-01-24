@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('IndicarFecha');
             $table->string('fechaReposicion')->nullable();
             $table->string('motivo');
-            $table->foreign('idsus')->references('id')->on('suscripciones')->onDelete('cascade');
+            $table->foreign('id')->references('id')->on('suscripciones')->onDelete('cascade');
             $table->timestamps();
         });
     }
