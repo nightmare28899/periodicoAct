@@ -23,7 +23,7 @@ class Clientes extends Component
 
     public $Clientes, $keyWord, $clasificacion, $rfc = 'Física', $rfc_input, $nombre, $estado, $pais, $email, $email_cobranza, $telefono, $regimen_fiscal, $cliente_id, $Domicilios, $calle, $noint, $localidad, $municipio, $ruta_id, $tarifa_id, $ciudad, $referencia, $domicilio_id, $Ejemplares, $lunes, $martes, $miércoles, $jueves, $viernes, $sábado, $domingo, $ejemplar_id, $isModalOpen = 0, $clienteModalOpen = 0, $ejemplarModalOpen = 0, $detallesModalOpen = 0, $updateMode = false, $status = 'created', $suscripciones = [], $date, $clienteSeleccionado, $dataClient = [], $cp, $colonia, $noext, $ruta, $razon_social, $d, $modalErrors = 0;
 
-    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = 0, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas = [], $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
+    public $oferta = false, $tipoSubscripcion = 'Normal', $subscripcionEs = 'Apertura', $precio = 'Normal', $contrato = 'Suscripción', $cantEjem = 0, $diasSuscripcionSeleccionada = '', $observacion, $descuento = 0, $totalDesc = 0, $tipoSuscripcionSeleccionada, $allow = true, $tarifaSeleccionada, $formaPagoSeleccionada, $periodoSuscripcionSeleccionada = '', $modificarFecha = false, $from, $to, $total = 0, $iva = 0, $modalDomSubs = 0, $modalFormDom = 0, $domiciliosSubs, $datoSeleccionado, $domicilioSeleccionado = [], $parametro = [], $domicilioSubsId, $arregloDatos = [], $modalV = false, $desde, $hasta, $converHasta, $domicilioId, $editEnabled = false, $ventas = [], $cantDom = 0, $cantArray = [], $inputCantidad, $posicion, $posicionDomSubs, $idSuscrip, $clients, $personalizado = 0, $costoPerson = 0, $buscarPrincipal = [], $siTieneSus = false, $links, $idSuscripcionSig = [], $clientesQuery = '';
 
     public $lunesVentas, $martesVentas, $miercolesVentas, $juevesVentas, $viernesVentas, $sabadoVentas, $domingoVentas, $query, $clientesBuscados = [], $dateF, $dateFiltro, $ventaEncontrada = null, $idRenovacionSuscripcion;
 
@@ -117,14 +117,14 @@ class Clientes extends Component
             $this->clientesBuscados = Cliente
                 ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->limit(6)
+                ->limit(30)
                 ->get()
                 ->toArray();
         } else if ($this->suscripciones == true && $this->query != '') {
             $this->clientesBuscados = Cliente
                 ::where('id', '=', $this->query)
                 ->orWhere('nombre', 'like', '%' . $this->query . '%')
-                ->limit(6)
+                ->limit(30)
                 ->get()
                 ->toArray();
         } else if ($this->query == '') {
@@ -476,6 +476,11 @@ class Clientes extends Component
             'rfc' => $this->rfc,
             'total' => $this->total,
         ], compact('data', 'rutas', 'tarifas', 'formaPago'));
+    }
+
+    public function closeModalVentas()
+    {
+        $this->modalV = false;
     }
 
     public function cerrarModalSuscripciones()
@@ -1030,7 +1035,7 @@ class Clientes extends Component
 
     public function editarVenta()
     {
-        if ($this->ventaEncontrada && $this->clienteSeleccionado) {
+        if ($this->ventaEncontrada != null && $this->clienteSeleccionado) {
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->ventas); $i++) {
                     if ($this->ventas[$i]['estado'] != 'Cancelada') {
@@ -1050,21 +1055,22 @@ class Clientes extends Component
                                 $this->editEnabled = true;
                             }
                         } catch (\Exception $e) {
-                            $this->status = 'error';
+                            /* $this->status = 'error';
                             $this->dispatchBrowserEvent('alert', [
                                 'message' => ($this->status == 'error') ? '¡No existe venta con ese id!' : ' '
-                            ]);
+                            ]); */
+
+                            $this->hasta = null;
+                            $this->lunesVentas = null;
+                            $this->martesVentas = null;
+                            $this->miercolesVentas = null;
+                            $this->juevesVentas = null;
+                            $this->viernesVentas = null;
+                            $this->sabadoVentas = null;
+                            $this->domingoVentas = null;
+                            $this->editEnabled = false;
+                            $this->total = null;
                         }
-                    } else {
-                        $this->hasta = null;
-                        $this->lunesVentas = null;
-                        $this->martesVentas = null;
-                        $this->miercolesVentas = null;
-                        $this->juevesVentas = null;
-                        $this->viernesVentas = null;
-                        $this->sabadoVentas = null;
-                        $this->domingoVentas = null;
-                        $this->editEnabled = false;
                     }
                 }
             }
@@ -1079,31 +1085,6 @@ class Clientes extends Component
             $this->domingoVentas = null;
             $this->editEnabled = false;
         }
-        /* if ($this->clienteSeleccionado) {
-            $this->ventas = ventas::where('cliente_id', $this->clienteSeleccionado)->get();
-            if (count($this->ventas) > 0) {
-                $this->editEnabled = true;
-                $this->desde = $this->ventas[0]['desde'];
-                $this->hasta = $this->ventas[0]['hasta'];
-                $this->lunesVentas = $this->ventas[0]['lunes'];
-                $this->martesVentas = $this->ventas[0]['martes'];
-                $this->miercolesVentas = $this->ventas[0]['miércoles'];
-                $this->juevesVentas = $this->ventas[0]['jueves'];
-                $this->viernesVentas = $this->ventas[0]['viernes'];
-                $this->sabadoVentas = $this->ventas[0]['sábado'];
-                $this->domingoVentas = $this->ventas[0]['domingo'];
-                $this->modalV = true;
-                $this->status = 'updated';
-            } else {
-                $this->dispatchBrowserEvent('alert', [
-                    'message' => ($this->status == 'created') ? '¡El cliente no tiene ningúna venta registrada!' : ''
-                ]);
-            }
-        } else {
-            $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'created') ? '¡Selecciona un cliente!' : ''
-            ]);
-        } */
     }
 
     public function limpiarClienteSeleccionado()
