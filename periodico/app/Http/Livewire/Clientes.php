@@ -707,7 +707,7 @@ class Clientes extends Component
             'rfc' => 'required',
             'rfc_input' => 'required',
         ]);
-
+        dd($this->cliente_id);
         $cliente = Cliente::find($this->cliente_id);
         $cliente->update([
             'clasificacion' => $this->clasificacion,
@@ -863,16 +863,16 @@ class Clientes extends Component
         $domicilio = Domicilio::where('cliente_id', $this->clienteSeleccionado)->first();
 
         $domicilio->update([
-            'calle' => strtoupper($this->calle),
+            'calle' => $this->calle,
             'noint' => $this->noint,
             'noext' => $this->noext,
-            'colonia' => strtoupper($this->colonia),
+            'colonia' => $this->colonia,
             'cp' => $this->cp,
-            'localidad' => strtoupper($this->localidad),
-            'municipio' => strtoupper($this->municipio),
+            'localidad' => $this->localidad,
+            'municipio' => $this->municipio,
             'ruta_id' => $this->ruta_id,
             'tarifa_id' => $this->tarifa_id,
-            'referencia' => strtoupper($this->referencia),
+            'referencia' => $this->referencia,
         ]);
 
         $this->status = 'created';
