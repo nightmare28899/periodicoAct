@@ -78,6 +78,7 @@
                 case '¡Venta cancelada correctamente!':
                 case '¡PDF cargado correctamente!':
                 case '¡Remisiones cargadas!':
+                case '¡Devolución realizada!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -130,6 +131,7 @@
                 case '¡Llena todos los campos!':
                 case '¡No existe venta con ese id!':
                 case '¡No puedes dejar campos vacíos!':
+                case '¡Llena toda la información!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
