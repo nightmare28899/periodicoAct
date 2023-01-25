@@ -238,7 +238,7 @@
                         <td>IVA</td>
                         <td>{{ number_format(0, 2) }}</td>
                     </tr> --}}
-                    <br><br><br><br><br>
+                    <br><br><br>{{-- <br><br> --}}
                     <p style="padding-bottom: -12; margin-bottom: -12; border-top: 0.5px solid black;">
                         &nbsp; Firma cobrador &nbsp;</p>
                     <p id="movido8" style="padding-bottom: -8; margin-bottom: -8; border-top: 0.5px solid black;">

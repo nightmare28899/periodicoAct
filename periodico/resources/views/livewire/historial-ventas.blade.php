@@ -52,8 +52,8 @@
                                     <th class='px-4 py-2 uppercase'>Cliente</th>
                                     <th class='px-6 py-2 uppercase'>Nombre</th>
                                     <th class='px-6 py-2 uppercase'>Ruta</th>
-                                    <th class='px-4 py-2 uppercase'>Fecha Inicio</th>
-                                    <th class='px-4 py-2 uppercase'>Fecha Fin</th>
+                                    {{-- <th class='px-4 py-2 uppercase'>Fecha Inicio</th>
+                                    <th class='px-4 py-2 uppercase'>Fecha Fin</th> --}}
                                     <th class='px-4 py-2 uppercase'>Lunes</th>
                                     <th class='px-4 py-2 uppercase'>Martes</th>
                                     <th class='px-4 py-2 uppercase'>Miércoles</th>
@@ -74,10 +74,10 @@
                                             <td class="px-4 py-2 border border-dark">{{ $venta->cliente_id }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->nombre }}</td>
                                             <td class='px-4 py-2 border border-dark'>{{ $venta->nombreruta }}</td>
-                                            <td class="px-4 py-2 border border-dark">
+                                            {{-- <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($venta->desde)->format('d/m/Y') }}</td>
                                             <td class="px-4 py-2 border border-dark">
-                                                {{ \Carbon\Carbon::parse($venta->hasta)->format('d/m/Y') }}</td>
+                                                {{ \Carbon\Carbon::parse($venta->hasta)->format('d/m/Y') }}</td> --}}
                                             <td class="px-4 py-2 border border-dark">{{ $venta->lunes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->martes }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $venta->miércoles }}</td>

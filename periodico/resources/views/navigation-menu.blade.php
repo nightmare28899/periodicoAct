@@ -52,17 +52,17 @@
                             <a href="{{ url('historialF') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Facturas') }}</button></a>
                             <a href="{{ url('historialR' . '/editar/') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Editar Domicilios de Suscripciones Activas') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Editar Domicilios Suscripciones Activas') }}</button></a>
                             <a href="{{ url('agregarDiasSuscripcion') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Agregar días al contrato') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Agregar Días al Contrato') }}</button></a>
                             <a href="{{ url('suspenderSuscripcion') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suspención de suscripción') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Suspención Suscripción') }}</button></a>
                             <a href="{{ url('FacturasPPD') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Factura PPD') }}</button></a>
                             <a href="{{ url('complementoPago') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Complemento de pago') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Complemento Pago') }}</button></a>
                             <a href="{{ url('historialComplementoPago') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial complemento de pago') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Complemento Pago') }}</button></a>
                             <a href="{{ url('CancelarVenta' . '/venta') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Cancelar Ventas') }}</button></a>
                             <a href="{{ url('CancelarSuscripciones' . '/suscri') }}"><button
@@ -90,9 +90,11 @@
 
                         <x-slot name="content" class="w-full text-center">
                             <a href="{{ url('remisionesRangoFecha') }}"><button
-                                class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Remisiones Rango Fecha') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Remisiones Rango Fecha') }}</button></a>
+                            <a href="{{ url('devolucionInforme') }}"><button
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Devoluciones Ventas') }}</button></a>
                             <a href="{{ url('reporte-relacionCR') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte relación de clientes por ruta') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Relación Clientes por Ruta') }}</button></a>
                             <a href="{{ url('reporteSuscripcionSuspendida') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Suscripciones Suspendidas') }}</button></a>
                             <a href="{{ url('reporteSuscripcionVencimiento') }}"><button
@@ -102,9 +104,9 @@
                             <a href="{{ url('historialSuscripciones') }}"><button
                                     class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Historial Suscripciones') }}</button></a>
                             <a href="{{ url('reportVentaPFacturas') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte facturas') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Facturas') }}</button></a>
                             <a href="{{ url('reporteSaldos') }}"><button
-                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte saldos') }}</button></a>
+                                    class="btn px-2 w-full py-1 cursor-pointer text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition">{{ __('Reporte Saldos') }}</button></a>
                         </x-slot>
                     </x-jet-dropdown>
                 </div>
