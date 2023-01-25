@@ -73,6 +73,48 @@
             left: 430px;
             margin-top: 0px;
         }
+
+        #movido8 {
+            position: absolute;
+            left: 130px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido9 {
+            position: absolute;
+            left: 250px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido10 {
+            position: absolute;
+            left: 370px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido11 {
+            position: absolute;
+            left: 370px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido12 {
+            position: absolute;
+            left: 510px;
+            margin-top: 0px;
+            width: 100px;
+        }
+
+        #movido13 {
+            position: absolute;
+            left: 510px;
+            margin-top: 0px;
+            width: 100px;
+        }
     </style>
 </head>
 
