@@ -132,6 +132,7 @@
                 case '¡No existe venta con ese id!':
                 case '¡No puedes dejar campos vacíos!':
                 case '¡Llena toda la información!':
+                case '¡Coloca los periodos primero!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

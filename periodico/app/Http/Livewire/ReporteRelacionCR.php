@@ -103,7 +103,7 @@ class ReporteRelacionCR extends Component
             'diaS' => $this->diaS,
             'ruta' => $this->rutaSeleccionada,
         ])
-            ->setPaper('A3', 'landscape')
+            ->setPaper('A3', 'vertical')
             ->output();
 
         Storage::disk('public')->put('reporteRCR.pdf', $pdf);

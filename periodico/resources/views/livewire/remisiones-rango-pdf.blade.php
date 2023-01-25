@@ -15,17 +15,17 @@
             page-break-after: always;
         }
 
-        header {
+        /* header {
             position: fixed;
             top: -60px;
             left: 0px;
             right: 0px;
             height: 50px;
-        }
+        } */
 
         th,
         td {
-            border: .3px solid gray;
+            border-top: .3px solid gray;
         }
 
         .centrado {
@@ -123,30 +123,27 @@
         <div style="margin-bottom: 1px; background-color:rgba(31,113,186,255); height: 40px;">
             <img src="img/logo.jpe" alt="logo la voz" height="36px">
         </div>
-        <br>
+        <hr style="color: brown; margin-bottom: 5px;">
         <main>
-            <h5 style="padding-top: -12; margin-top: -12;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
+            <h5 style="padding-top: -2; margin-top: -2;">LA VOZ DE MICHOACAN S.A. DE C.V. Av Periodismo José Tocavén
                 Lavín
                 1270
-                Col. Agustín Arriaga Rivera.</h5>
-            <h5 style="padding-top: -12; margin-top: -12;">C.P. 58190, Morelia Michoacán, México Tel: (443) 322 56 00
+                Col. Agustín Arriaga Rivera. C.P. 58190, <br> Morelia Michoacán, México Tel: (443) 322 56 00
                 Fax
                 Ext.
                 1038 &nbsp;&nbsp;&nbsp;&nbsp; RFC: VMI-600516-JG7, REG. EDO. 124026-9.
             </h5>
-            {{-- <h5 style="padding-top: -12; margin-top: -12; margin-bottom: -12;">
-                </h5> --}}
             <h3
-                style="background-color: rgb(187, 230, 238); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px; padding-top: -12; margin-top: -12;">
+                style="background-color: rgb(205, 212, 224); padding-bottom: -10; margin-bottom: -10; text-transform: uppercase; font-size: 16px; padding-top: -12; margin-top: -12;">
                 remisionado de venta periodico
             </h3>
-            <p id="movido" style="font-size: 16px;"><b>RUTA</b>
-                {{ $result['nombreruta'] }}
+            <p id="movido" style="font-size: 16px;"><b>REMISION</b>
+                {{ $result->id }}
             </p>
             <h3
-                style="background-color: rgb(187, 230, 238); text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
-                remision
-                {{ $result->id }}
+                style="text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
+                ruta
+                {{ $result['nombreruta'] }}
             </h3>
             <p id="movido2" style="text-transform: uppercase; font-size: 16px;"><b>fecha</b>
                 {{ \Carbon\Carbon::parse($result['fecha'])->format('d/m/Y') }}</p>
@@ -174,7 +171,7 @@
             <p id="movido7" style="padding-bottom: -12; margin-bottom: -12; text-transform: uppercase;"><b>pais:</b>
                 {{ $result['pais'] }}</p>
             <table style="margin-top: 15px; font-size: 12px;">
-                <thead style="background-color: rgb(187, 230, 238); text-transform: uppercase;">
+                <thead style="background-color: rgb(205, 212, 224); text-transform: uppercase;">
                     <tr>
                         <th style="width: 90px;">fecha</th>
                         <th style="width: 90px;">dia</th>

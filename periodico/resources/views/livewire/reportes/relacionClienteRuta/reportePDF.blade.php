@@ -1,4 +1,9 @@
 <style>
+    body {
+        font-size: 12.5px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
     table,
     th,
         {
