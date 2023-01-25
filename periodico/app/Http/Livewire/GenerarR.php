@@ -622,6 +622,7 @@ class GenerarR extends Component
                     'diaAlta' => $this->dateF->format('d/m/Y'),
                     'fechaInicio' => $this->de,
                     'fechaFin' => $this->hasta,
+                    'ruta' => $this->ventas[0]['nombreruta']
                 ]);
 
                 $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [
@@ -1245,6 +1246,7 @@ class GenerarR extends Component
                 'diaAlta' => $this->dateF->format('d/m/Y'),
                 'fechaInicio' => $this->de,
                 'fechaFin' => $this->hasta,
+                'ruta' => $this->ventas[0]['nombreruta']
             ]);
 
             $pdf = PDF::loadView('livewire.tiros.remisionesPDFP', [

@@ -14,5 +14,5 @@ class Remisionid extends Model
 
     protected $table = 'remisiones_rangos_fechas';
 
-    protected $fillable = ['remisiones_id', 'fechas', 'dias', 'diaAlta', 'fechaInicio', 'fechaFin'];
+    protected $fillable = ['remisiones_id', 'fechas', 'dias', 'diaAlta', 'fechaInicio', 'fechaFin', 'ruta'];
 }
