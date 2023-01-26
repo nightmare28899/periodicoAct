@@ -115,7 +115,7 @@
                             <tbody>
                                 @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */ $result->estado == 'Activo' && $result->remisionStatus == 'Pendiente' ||  $result->remisionStatus == 'Cancelada')
+                                        @if (/* $result->{$diaS} != 0 &&  */ $result->estado == 'Activo' && $result->remisionStatus == 'Pendiente'/*  ||  $result->remisionStatus == 'Cancelada' */)
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <input wire:model="clienteSeleccionado" type="checkbox"
