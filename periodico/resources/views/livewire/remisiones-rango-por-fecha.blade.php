@@ -17,6 +17,13 @@
                     <label for="fechaFin">Hasta</label>
                     <x-jet-input type="date" wire:model="hasta"></x-jet-input>
 
+                    <select wire:model="ruta">
+                        <option value="seleccion">Selecciona una ruta</option>
+                        @foreach ($rutas as $ruta)
+                            <option value="{{ $ruta->nombreruta }}">{{ $ruta->nombreruta }}</option>
+                        @endforeach
+                    </select>
+
                 </div>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
@@ -26,6 +33,7 @@
                                     <th scope="col" class="py-3 px-6">id</th>
                                     <th scope="col" class="py-3 px-6">Fecha incio</th>
                                     <th scope="col" class="py-3 px-6">Fecha fin</th>
+                                    <th scope="col" class="py-3 px-6">Ruta</th>
                                     <th scope="col" class="py-3 px-6">Remisiones id</th>
                                     {{-- <th scope="col" class="py-3 px-6">Dias</th> --}}
                                     <th scope="col" class="py-3 px-6">Fecha registro</th>
@@ -42,6 +50,8 @@
                                             {{ \Carbon\Carbon::parse($data->fechaInicio)->format('d/m/Y') }}</td>
                                         <td class='px-4 py-2 border border-dark'>
                                             {{ \Carbon\Carbon::parse($data->fechaFin)->format('d/m/Y') }}</td>
+                                        <td class='px-4 py-2 border border-dark'>
+                                            {{ $data->ruta }}</td>
                                         <td class='px-4 py-2 border border-dark'>{{ $data->remisiones_id }}</td>
                                         {{-- <td class='px-4 py-2 border border-dark'>{{ $data->dias }}</td> --}}
                                         <td class='px-4 py-2 border border-dark'>{{ $data->diaAlta }}</td>

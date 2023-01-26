@@ -9,15 +9,18 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
+use App\Models\Ruta;
 
 class RemisionesRangoPorFecha extends Component
 {
     use WithPagination;
 
-    public $remisionesId, $entreFechas, $remisionFound = [], $de, $hasta, $status = 'created';
+    public $remisionesId, $entreFechas, $remisionFound = [], $de, $hasta, $status = 'created', $ruta = "seleccion", $rutas;
 
     public function render()
     {
+        $this->rutas = Ruta::all();
+
         if ($this->de && $this->hasta) {
             $remisionesData = Remisionid::where(function ($query) {
                 $query->where('fechaInicio', $this->de)
@@ -28,7 +31,16 @@ class RemisionesRangoPorFecha extends Component
             $remisionesData = Remisionid::paginate(10);
         }
 
-        return view('livewire.remisiones-rango-por-fecha', compact('remisionesData'));
+        if ($this->ruta != 'seleccion') {
+            $remisionesData = Remisionid::where(function ($query) {
+                $query->where('ruta', $this->ruta);
+            })
+                ->paginate(10);
+        }
+
+        return view('livewire.remisiones-rango-por-fecha', [
+            'rutas' => $this->rutas,
+        ], compact('remisionesData'));
     }
 
     public function verPDF($id)
