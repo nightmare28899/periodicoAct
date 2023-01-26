@@ -46,8 +46,7 @@ class Factura extends Component
             $this->idTipo = $idTipo;
 
             $this->cliente = Cliente::find($cliente_id);
-            /* $this->historial = Tiro::where('idTipo', $idTipo)->get(); */
-            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->first();
+            $this->suscripcion = Suscripcion::where('idSuscripcion', $idTipo)->latest();
             $this->domicilio = domicilioSubs::where('id', $this->suscripcion['domicilio_id'])->first();
 
             $this->tipoFactura = 'PUE';
