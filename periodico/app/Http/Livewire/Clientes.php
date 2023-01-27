@@ -712,7 +712,6 @@ class Clientes extends Component
             'rfc' => 'required',
             'rfc_input' => 'required',
         ]);
-        dd($this->cliente_id);
         $cliente = Cliente::find($this->cliente_id);
         $cliente->update([
             'clasificacion' => $this->clasificacion,
