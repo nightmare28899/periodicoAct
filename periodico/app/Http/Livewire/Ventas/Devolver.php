@@ -8,10 +8,11 @@ use App\Models\ventas;
 use App\Models\Remisionid;
 use App\Models\devolucionVenta;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class Devolver extends Component
 {
-    public $ventas, $tiro, $remisiones = [], $idRemision, $datoEncontrado, $datesFound = [], $dias = [], $cantDevolver = [], $cantidades = [], $modalConfirmar = false, $status = 'created', $implodeCant;
+    public $ventas, $tiro, $remisiones = [], $idRemision, $datoEncontrado, $datesFound = [], $dias = [], $cantDevolver = [], $cantidades = [], $modalConfirmar = false, $status = 'created', $implodeCant, $calculoImporte = 0;
 
     public function render()
     {
@@ -40,7 +41,9 @@ class Devolver extends Component
             'tiro' => $this->tiro,
             'remisiones' => $this->remisiones,
             'fechas' => $this->datesFound,
-            'dias' => $this->dias
+            'dias' => $this->dias,
+            'calculoImporte' => $this->calculoImporte,
+            'idRemision' => $this->idRemision,
         ]);
     }
 
@@ -53,7 +56,7 @@ class Devolver extends Component
         }
     }
 
-    public function confirmar()
+    public function confirmar($cantDevolverTotales)
     {
         if (count($this->cantDevolver) > 0) {
 
@@ -67,7 +70,11 @@ class Devolver extends Component
                 'fechas' => implode(",", $this->datesFound),
                 'dias' => implode(",",$this->dias),
                 'entregados' => $this->tiro->entregar,
-                'importe' => $this->tiro->importe
+                'importe' => $cantDevolverTotales
+            ]);
+
+            Tiro::where('idTipo', $this->tiro->idTipo)->update([
+                'importe' => $cantDevolverTotales
             ]);
 
             $this->status = 'created';

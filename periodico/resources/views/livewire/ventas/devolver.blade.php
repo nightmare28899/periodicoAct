@@ -57,7 +57,7 @@
                             <?php $totales += $ventas[$dias[$pos]]; ?>
 
                             @if (count($cantDevolver) > 0)
-                                <?php $cantDevolverTotales += $dias[$pos] == 'domingo' ? $ventas['dominical'] * ($ventas[$dias[$pos]] - $cantDevolver[$pos][$dias[$pos]]) : $ventas['ordinario'] * ($ventas[$dias[$pos]] - $cantDevolver[$pos][$dias[$pos]]); ?>
+                                <?php $calculoImporte = $cantDevolverTotales += $dias[$pos] == 'domingo' ? $ventas['dominical'] * ($ventas[$dias[$pos]] - $cantDevolver[$pos][$dias[$pos]]) : $ventas['ordinario'] * ($ventas[$dias[$pos]] - $cantDevolver[$pos][$dias[$pos]]); ?>
                             @endif
 
                             <?php $importe += $dias[$pos] == 'domingo' ? $ventas['dominical'] * $ventas[$dias[$pos]] : $ventas['ordinario'] * $ventas[$dias[$pos]]; ?>
@@ -75,12 +75,13 @@
                             <td class="px-4 py-2 border border-dark">
                                 @if (count($cantDevolver) > 0)
                                     {{ sprintf('$ %s', number_format($cantDevolverTotales, 2)) }}
+                                    <input name="invisible" id="invisible" type="hidden" value="{{ $cantDevolverTotales }}">
                                 @else
                                     {{ sprintf('$ %s', number_format($importe, 2)) }}
                                 @endif
                             </td>
                         </tr>
-                        <td>
+
                         <td class="px-4 py-2 border border-dark"></td>
                         <td class="px-4 py-2 border border-dark"></td>
                         <td class="px-4 py-2 border border-dark"></td>
@@ -103,7 +104,7 @@
                                     Calcular</button>
                             </div>
 
-                            <button wire:click="devolver"
+                            <button wire:click="confirmar({{ $cantDevolverTotales }})"
                                 class="btn inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-500 focus:outline-none transition">
                                 <svg wire:loading wire:target="devolver"
                                     class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

@@ -1,7 +1,7 @@
 <div class="container w-2/3 mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
-            {{ __('Devoluciones') }}
+            {{ __('Informe Devoluciones') }}
         </h2>
     </x-slot>
 
@@ -9,10 +9,20 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex">
-                    <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
-                        Generar informe general
-                    </button>
+                    <div>
+                        <x-jet-input type="date" wire:model="desde"></x-jet-input>
+                    </div>
+                    <div class="ml-3">
+                        <x-jet-input type="date" wire:model="hasta"></x-jet-input>
+                    </div>
+                    <div class="ml-3">
+                        <x-jet-input type="text" wire:model="folioDev" placeholder="Coloca el Folio"></x-jet-input>
+                    </div>
+                    <div class="ml-3">
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+                            Generar informe general
+                        </button>
+                    </div>
                 </div>
                 <div class="text-center overflow-x mt-3">
                     <div class="overflow-x-auto">
@@ -38,7 +48,7 @@
                                             </td>
                                             <td>
                                                 <div class="flex justify-center">
-                                                    <button wire:click="delete({{ $result->id }})"
+                                                    <button wire:click="verPDF({{ $result->id }}, {{ $result->idRemision }}, {{ $result->idDomicilio }})"
                                                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
                                                         Ver PDF
                                                     </button>

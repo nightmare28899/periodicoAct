@@ -44,6 +44,7 @@ use App\Http\Livewire\RemisionesRangoPorFecha;
 use App\Http\Livewire\RemisionesRangoPdfview;
 use App\Http\Livewire\Ventas\Devolver;
 use App\Http\Livewire\Ventas\RegistroDevoluciones;
+use App\Http\Livewire\Ventas\PDFViewDevolucion;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/remisionesRangoPdfview', RemisionesRangoPdfview::class)->name('remisionesRangoPdfview');
     Route::get('/devolverVentas/{id}', Devolver::class)->name('devolverVentas');
     Route::get('/devolucionInforme', RegistroDevoluciones::class)->name('devolucionInforme');
+    Route::get('/PDFDevolucionView', PDFViewDevolucion::class)->name('PDFDevolucionView');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
