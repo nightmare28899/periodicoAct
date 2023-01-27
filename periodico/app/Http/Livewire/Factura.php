@@ -41,8 +41,6 @@ class Factura extends Component
 
     public function mount($cliente_id, $idTipo)
     {
-        dd($cliente_id, $idTipo);
-
         $this->clienteid = $cliente_id;
         $this->idTipo = $idTipo;
 
