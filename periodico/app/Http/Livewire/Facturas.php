@@ -43,12 +43,7 @@ class Facturas extends Component
                 ->where('fecha', $this->fechaRemision)
                 ->paginate(10);
         } else {
-            $result = Tiro::where(function ($query) {
-                $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'cancelado')
-                    ->orWhere('status', '=', 'sin pagar');
-            })
-                ->paginate(10);
+            $result = Tiro::paginate(10);
         }
 
         return view('livewire.facturasListado', [
