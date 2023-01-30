@@ -10,7 +10,7 @@
             <div class="flex">
                 <div class="w-64 mt-6 ml-5">
                     <input type="text"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                         name="search" id="search" placeholder="Buscar nombre o id" wire:model="query"
                         autocomplete="off" />
                 </div>
@@ -30,7 +30,7 @@
             @if ($result)
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full">
                             <thead>
                                 <tr class='bg-gray-100'>
                                     {{-- <th class="px-6 py-2">idTipo</th> --}}

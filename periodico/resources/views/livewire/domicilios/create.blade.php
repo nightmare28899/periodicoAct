@@ -22,22 +22,22 @@
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Calle:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('calle') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('calle') border-red-500 @enderror"
                         id="calle" wire:model.defer="calle" placeholder="Escribe tu Calle" />
                     @error('calle')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">No
                         Int.(Opcional):</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('noint') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noint') border-red-500 @enderror"
                         id="noint" wire:model.defer="noint" placeholder="Escribe tu No.Int" />
                     @error('noint')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -47,22 +47,22 @@
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">No.
                         Ext.:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('noext') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noext') border-red-500 @enderror"
                         id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                     @error('noext')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Colonia:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('colonia') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colonia') border-red-500 @enderror"
                         id="colonia" wire:model.defer="colonia" placeholder="Escribe tu Colonia" />
                     @error('colonia')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -72,22 +72,22 @@
                     <label for="exampleFormControlInput2" class="block text-black text-sm font-bold mb-2">Código
                         Postal:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('cp') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cp') border-red-500 @enderror"
                         id="cp" wire:model.defer="cp" placeholder="Escribe tu Código Postal" />
                     @error('cp')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Localidad:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('localidad') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('localidad') border-red-500 @enderror"
                         id="localidad" wire:model.defer="localidad" placeholder="Escribe tu Localidad" />
                     @error('localidad')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -97,17 +97,17 @@
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Municipio:</label>
                     <input type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('municipio') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('municipio') border-red-500 @enderror"
                         id="municipio" wire:model.defer="municipio" placeholder="Escribe tu Municipio" />
                     @error('municipio')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput1" class="block text-black text-sm font-bold mb-2">Ruta</label>
                     <select
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('ruta') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ruta') border-red-500 @enderror"
                         wire:model.defer="ruta_id" id="ruta" style="width: 100%">
                         <option value='' style="display: none;">Escoge una opción</option>
                         @foreach ($rutas as $id => $ruta)
@@ -118,7 +118,7 @@
                     </select>
                     @error('ruta')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -127,7 +127,7 @@
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput1" class="block text-black text-sm font-bold mb-2">Tarifa</label>
                     <select
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('tarifa_id') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tarifa_id') border-red-500 @enderror"
                         wire:model.defer="tarifa_id" style="width: 100%">
                         <option value='' style="display: none;">Escoge una opción</option>
                         @foreach ($tarifas as $id => $tarifa)
@@ -138,19 +138,19 @@
                     </select>
                     @error('tarifa_id')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="w-1/2 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Referencia:</label>
                     <textarea type="text"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 uppercase @error('referencia') border-red-500 @enderror"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('referencia') border-red-500 @enderror"
                         rows="3" cols="50" id="referencia" wire:model.defer="referencia"
                         placeholder="Escribe tu Referencia"> </textarea>
                     @error('referencia')
                         <span
-                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 uppercase text-center my-2">{{ $message }}</span>
+                            class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -160,7 +160,7 @@
     <x-slot name="footer">
         {{-- <div class="flex-auto w-64 px-4 sm:px-6">
             <x-jet-secondary-button
-                class="inline-flex items-center w-full justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
+                class="inline-flex items-center w-full justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition ml-3"
                 wire:click="$set('clienteModalOpen', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>

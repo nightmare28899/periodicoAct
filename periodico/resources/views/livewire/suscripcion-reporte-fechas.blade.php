@@ -30,7 +30,7 @@
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
                         <table
-                            class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase">
+                            class="table-auto border-separate border-spacing-2 border border-dark text-center">
                             <thead>
                                 <tr class='bg-gray-100'>
                                     <th class='px-4 py-2 uppercase'>No. contrato</th>

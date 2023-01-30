@@ -16,7 +16,7 @@
                     </div>
                     <div class="flex-none mx-1">
                         <input type="text"
-                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" placeholder="Buscar" wire:model="query" autocomplete="off" />
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <div class="flex mt-2 space-x-4">
                             <div class="px-2">
                                 <b>DEL: <x-jet-input type="date" wire:model="del"
-                                        class="w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block uppercase">
+                                        class="w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block">
                                     </x-jet-input>
                                     @error('del')
                                         <span
@@ -83,7 +83,7 @@
                         <div class="flex mt-2 space-x-4">
                             <div class="px-2">
                                 <b>AL: <x-jet-input type="date" wire:model="al"
-                                        class="w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block uppercase">
+                                        class="w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block">
                                     </x-jet-input>
                                     @error('al')
                                         <span
@@ -96,7 +96,7 @@
                     <div>
                         <p class="flex mt-3">Reponer los dias que se suspende el contrato
                             <select
-                                class="ml-3 border w-32 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block uppercase"
+                                class="ml-3 border w-32 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
                                 wire:model="reponerDias">
                                 <option value="si">Si</option>
                                 <option value="no">No</option>
@@ -131,7 +131,7 @@
                                 <div class="px-2">
                                     @if ($estado == true)
                                         <x-jet-input type="date" wire:model="fechaReposicion"
-                                            class="border uppercase border-gray-300 w-64">
+                                            class="border border-gray-300 w-64">
                                         </x-jet-input>
                                         @error('fechaReposicion')
                                             <span
@@ -139,7 +139,7 @@
                                         @enderror
                                     @else
                                         <x-jet-input type="date" wire:model="fechaReposicion"
-                                            class="w-64 uppercase" disabled>
+                                            class="w-64" disabled>
                                         </x-jet-input>
                                     @endif
                                 </div>

@@ -9,7 +9,7 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <table
-                    class="table-auto border-separate border-spacing-2 border border-dark w-full text-center uppercase">
+                    class="table-auto border-separate border-spacing-2 border border-dark w-full text-center">
                     <thead>
                         <tr class="bg-gray-100">
                             <th class="px-4 py-2 w-20 uppercase">Fecha</th>
@@ -35,7 +35,7 @@
                                 <td class="px-4 py-2 border border-dark">{{ $ventas[$dias[$pos]] }}</td>
                                 <td class="px-4 py-2 border border-dark flex">
                                     <input wire:model.defer="cantDevolver.{{ $pos }}.{{ $dias[$pos] }}"
-                                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                                         min="0" type="number">
                                 </td>
                                 <td class="px-4 py-2 border border-dark">

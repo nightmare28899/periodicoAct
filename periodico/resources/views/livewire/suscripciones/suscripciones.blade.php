@@ -33,7 +33,7 @@
             <div class="flex">
                 <div class="w-1/2 p-2">
                     <input type="text"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                         name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                         autocomplete="off" />
 
@@ -309,10 +309,10 @@
                         wire:click="modalCrearDomSubs">Lista
                     </button>
                     <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
-                        <table class="w-full text-md text-left text-gray-500 dark:text-gray-400 uppercase">
+                        <table class="w-full text-md text-left text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-md text-gray-700 uppercase bg-gray-600">
-                                <tr class="bg-gray-500 text-white uppercase">
+                                <tr class="bg-gray-500 text-white">
                                     <th scope="col" class="py-3 px-6">Calle</th>
                                     <th scope="col" class="py-3 px-6">#Int</th>
                                     <th scope="col" class="py-3 px-6">#Ext</th>

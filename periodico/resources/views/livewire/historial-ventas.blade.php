@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="flex-initial mx-1 mt-4 mb-3">
                     <input type="text"
-                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64 uppercase"
+                        class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-64"
                         name="search" placeholder="nombre o id client/contra" wire:model="query" autocomplete="off" />
 
                     <select wire:model="estatusPago"
@@ -45,7 +45,7 @@
 
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark">
                             <thead>
                                 <tr class='bg-gray-100'>
                                     <th class='px-4 py-2 uppercase'>Contrato</th>

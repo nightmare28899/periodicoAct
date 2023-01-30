@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <table class="w-full text-md text-gray-500 dark:text-gray-40 text-center uppercase">
+                    <table class="w-full text-md text-gray-500 dark:text-gray-40 text-center">
                         <thead class="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr class="bg-gray-500 text-white uppercase">
                                 <th scope="col" class="py-3 px-6">Fecha FC</th>

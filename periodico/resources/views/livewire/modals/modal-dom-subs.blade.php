@@ -26,7 +26,7 @@
         </div>
         @if (count($domiciliosSubs) > 0)
             <div class="overflow-x-auto relative shadow-md sm:rounded-lg mt-3">
-                <table class="w-full text-md text-left text-gray-500 dark:text-gray-400 uppercase">
+                <table class="w-full text-md text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-md text-gray-700 uppercase bg-gray-700">
                         <tr class="bg-gray-500 text-white uppercase">
                             <th scope="col" class="py-3 px-6">

@@ -11,7 +11,7 @@
                 <div class="flex">
                     <div class="flex-initial mx-1 mt-4" style="width: 100%;">
                         <input type="text"
-                            class="text-slate-600 relative bg-white text-base shadow outline-none focus:outline-none focus:ring w-full uppercase rounded-md"
+                            class="text-slate-600 relative bg-white text-base shadow outline-none focus:outline-none focus:ring w-full rounded-md"
                             name="search" placeholder="Buscar Cliente por Nombre o ID" wire:model="clientesQuery"
                             autocomplete="off" />
                     </div>
@@ -103,7 +103,7 @@
 
                 <div class="overflow-x-auto w-full">
 
-                    <table class="table-auto border-separate border-spacing-2 border border-dark text-center uppercase">
+                    <table class="table-auto border-separate border-spacing-2 border border-dark text-center">
                         <thead>
                             <tr class="bg-gray-100">
                                 <th class="px-4 py-2 w-20 uppercase">ID</th>

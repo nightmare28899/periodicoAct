@@ -1,4 +1,4 @@
-<div class="px-6 w-full mx-auto">
+<div class="px-6 uppercase w-full mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Reporte Remisiones Rango Fecha') }}
@@ -18,7 +18,7 @@
                     <x-jet-input type="date" wire:model="hasta"></x-jet-input>
 
                     <select wire:model="ruta">
-                        <option value="seleccion">Selecciona una ruta</option>
+                        <option value="seleccion" class="uppercase">Todos</option>
                         @foreach ($rutas as $ruta)
                             <option value="{{ $ruta->nombreruta }}">{{ $ruta->nombreruta }}</option>
                         @endforeach
@@ -27,17 +27,17 @@
                 </div>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark">
                             <thead>
                                 <tr class='bg-gray-100'>
-                                    <th scope="col" class="py-3 px-6">id</th>
-                                    <th scope="col" class="py-3 px-6">Fecha incio</th>
-                                    <th scope="col" class="py-3 px-6">Fecha fin</th>
-                                    <th scope="col" class="py-3 px-6">Ruta</th>
-                                    <th scope="col" class="py-3 px-6">Remisiones id</th>
-                                    {{-- <th scope="col" class="py-3 px-6">Dias</th> --}}
-                                    <th scope="col" class="py-3 px-6">Fecha registro</th>
-                                    <th scope="col" class="py-3 px-6">Acciones</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">id</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Fecha incio</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Fecha fin</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Ruta</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Remisiones id</th>
+                                    {{-- <th scope="col" class="py-3 px-6 uppercase">Dias</th> --}}
+                                    <th scope="col" class="py-3 px-6 uppercase">Fecha registro</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>

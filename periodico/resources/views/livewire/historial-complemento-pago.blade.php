@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark">
                             <thead>
                                 <tr class='bg-gray-100'>
                                     <th class='px-4 py-2 uppercase'>id</th>

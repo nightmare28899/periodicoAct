@@ -21,7 +21,7 @@
             <div class="w-1/2 p-2">
                 <label for="calle" class="block text-black text-sm font-bold mb-2">Calle:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('calle') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('calle') border-red-500 @enderror"
                     id="calle" wire:model.defer="calle" placeholder="Escribe tu calle" />
                 @error('calle')
                     <span
@@ -31,7 +31,7 @@
             <div class="w-1/2 p-2">
                 <label for="noint" class="block text-black text-sm font-bold mb-2">No. Int.(Opcional):</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('noint') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noint') border-red-500 @enderror"
                     id="noint" wire:model.defer="noint" placeholder="Escribe tu No. Int" />
                 @error('noint')
                     <span
@@ -44,7 +44,7 @@
             <div class="w-1/2 p-2">
                 <label for="noext" class="block text-black text-sm font-bold mb-2">No. Ext.:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('noext') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noext') border-red-500 @enderror"
                     id="noext" wire:model.defer="noext" placeholder="Escribe tu No. Ext" />
                 @error('noext')
                     <span
@@ -54,7 +54,7 @@
             <div class="w-1/2 p-2">
                 <label for="colonia" class="block text-black text-sm font-bold mb-2">Colonia:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('colonia') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('colonia') border-red-500 @enderror"
                     id="colonia" wire:model.defer="colonia" placeholder="Escribe tu Colonia" />
                 @error('colonia')
                     <span
@@ -67,7 +67,7 @@
             <div class="w-1/2 p-2">
                 <label for="cp" class="block text-black text-sm font-bold mb-2">C.P.:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('cp') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cp') border-red-500 @enderror"
                     id="cp" wire:model.defer="cp" placeholder="Escribe tu CP" />
                 @error('cp')
                     <span
@@ -77,7 +77,7 @@
             <div class="w-1/2 p-2">
                 <label for="localidad" class="block text-black text-sm font-bold mb-2">Localidad:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('localidad') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('localidad') border-red-500 @enderror"
                     id="localidad" wire:model.defer="localidad" placeholder="Escribe tu Localidad" />
                 @error('localidad')
                     <span
@@ -90,7 +90,7 @@
             <div class="w-1/2 p-2">
                 <label for="ciudad" class="block text-black text-sm font-bold mb-2">Ciudad:</label>
                 <input type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('ciudad') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ciudad') border-red-500 @enderror"
                     id="ciudad" wire:model.defer="ciudad" placeholder="Escribe tu Ciudad" />
                 @error('ciudad')
                     <span
@@ -101,7 +101,7 @@
             <div class="w-1/2 p-2">
                 <label for="ruta" class="block text-black text-sm font-bold mb-2">Ruta:</label>
                 <select
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('ruta') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('ruta') border-red-500 @enderror"
                     wire:model.defer="ruta" id="ruta" style="width: 100%">
                     <option value='' style="display: none;">Escoge una opción</option>
                     @foreach ($rutas as $id => $ruta)
@@ -121,7 +121,7 @@
             <div class="w-1/2 p-2">
                 <label for="referencia" class="block text-black text-sm font-bold mb-2">Referencia:</label>
                 <textarea type="text"
-                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full uppercase p-2.5 @error('referencia') border-red-500 @enderror"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('referencia') border-red-500 @enderror"
                     id="referencia" wire:model.defer="referencia" placeholder="Escribe una referencia"></textarea>
                 @error('referencia')
                     <span

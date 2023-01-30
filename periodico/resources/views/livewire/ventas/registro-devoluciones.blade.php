@@ -26,7 +26,7 @@
                 </div>
                 <div class="text-center overflow-x mt-3">
                     <div class="overflow-x-auto">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark w-full">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="px-4 py-2 uppercase">Id</th>
@@ -39,7 +39,7 @@
                             <tbody>
                                 @if (count($devolucionVenta) > 0)
                                     @foreach ($devolucionVenta as $result)
-                                        <tr class="uppercase">
+                                        <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $result->id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombre }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->fechas }}</td>

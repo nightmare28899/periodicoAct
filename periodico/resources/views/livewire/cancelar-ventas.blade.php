@@ -41,7 +41,7 @@
                             <tbody>
                                 @if (count($ventas) > 0)
                                     @foreach ($ventas as $result)
-                                        <tr class="uppercase">
+                                        <tr>
                                             <td class="px-4 py-2 border border-dark">{{ $result->id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->cliente_id }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombre }}</td>

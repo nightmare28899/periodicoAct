@@ -17,7 +17,7 @@
                     </div>
                     <div class="flex-none mx-1">
                         <input type="text"
-                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                            class="text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" placeholder="Buscar por ID" wire:model="query" autocomplete="off" />
                     </div>
                 </div>

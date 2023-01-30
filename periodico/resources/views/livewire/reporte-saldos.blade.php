@@ -32,14 +32,14 @@
                 </div>
                 <div class="text-center overflow-x">
                     <div class="overflow-x-auto w-full">
-                        <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
+                        <table class="table-auto border-separate border-spacing-2 border border-dark">
                             <thead>
                                 <tr class='bg-gray-100'>
-                                    <th scope="col" class="py-3 px-6">Fecha FC</th>
-                                    <th scope="col" class="py-3 px-6">Folio interno</th>
-                                    <th scope="col" class="py-3 px-6">rfc</th>
-                                    <th scope="col" class="py-3 px-6">total</th>
-                                    <th scope="col" class="py-3 px-6">Forma pago</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Fecha FC</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Folio interno</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">rfc</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">total</th>
+                                    <th scope="col" class="py-3 px-6 uppercase">Forma pago</th>
                                 </tr>
                             </thead>
                             <tbody>

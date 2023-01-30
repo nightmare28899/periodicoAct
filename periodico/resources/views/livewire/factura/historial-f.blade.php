@@ -15,7 +15,7 @@
                     </div>
                     <div class="w-64 ml-5 pt-6">
                         <input type="text"
-                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full uppercase"
+                            class=" text-slate-600 relative bg-white rounded text-base shadow outline-none focus:outline-none focus:ring w-full"
                             name="search" id="search" placeholder="Buscar Cliente" wire:model="query"
                             autocomplete="off" />
                     </div>
@@ -25,7 +25,7 @@
                 @if ($invoices)
                     <div class="text-center overflow-x">
                         <div class="overflow-x-auto w-full">
-                            <table class="table-auto border-separate border-spacing-2 border border-dark uppercase">
+                            <table class="table-auto border-separate border-spacing-2 border border-dark">
                                 <thead>
                                     <tr class="bg-gray-100">
                                         <th class="px-4 py-2 uppercase">Fecha</th>

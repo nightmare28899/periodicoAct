@@ -205,9 +205,9 @@ class FacturarPPD extends Component
             ];
         }
 
-        if ($this->cliente['nombre'] != '') {
+        if ($this->cliente['rfc'] == 'Física') {
             $nombre = $this->cliente['nombre'];
-        } else if ($this->cliente['razon_social'] != '') {
+        } else {
             $nombre = $this->cliente['razon_social'];
         }
 
