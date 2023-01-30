@@ -139,6 +139,7 @@ class Factura extends Component
 
     public function facturar()
     {
+
         if (substr($this->idTipo, 0, 6) == 'suscri') {
             $items = [
                 [
@@ -278,13 +279,12 @@ class Factura extends Component
                     'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
                 ]);
 
-                /* $enviarCorreo = (`https://apisandbox.facturama.mx/cfdi?cfdiType={$this->cfdipe}&cfdiId={$facturama->data->Complement->TaxStamp->Uuid}&email={$this->cliente->email}`);
 
-                $enviarCorreo = Http::post('https://apisandbox.facturama.mx/cfdi?', [
-                    'cfdiType' => (string)$this->cfdipe,
-                    'cfdiId' => (string)$facturama->data->Complement->TaxStamp->Uuid,
-                    'email' => (string)$this->cliente->email,
-                ]); */
+                $url = 'https://api.facturama.mx/cfdi?cfdiType=issued&cfdiId=';
+
+                $email = '&email=';
+
+                Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $facturama->data->Id . $email . $this->cliente->email);
 
                 $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
                     'status' => 'facturado',

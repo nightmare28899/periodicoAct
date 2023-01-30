@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Domicilio;
 use App\Models\complemento_pago;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class ComplementoDePago extends Component
 {
@@ -220,6 +221,12 @@ class ComplementoDePago extends Component
                     'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
                     'status' => 'Activo',
                 ]);
+
+                $url = 'https://api.facturama.mx/cfdi?cfdiType=issued&cfdiId=';
+
+                $email = '&email=';
+
+                Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $facturama->data->Id . $email . $this->cliente->email);
 
                 $this->status = 'created';
                 $this->dispatchBrowserEvent('alert', [
