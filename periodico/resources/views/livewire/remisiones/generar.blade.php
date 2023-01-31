@@ -167,7 +167,7 @@
                                         @if ($suscri->remisionStatus != 'Remisionado' && $suscri->estado != 'Cancelada')
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                    <input wire:model.defer="clienteSeleccionado" type="checkbox"
                                                         value={{ $suscri->idSuscripcion }}>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>

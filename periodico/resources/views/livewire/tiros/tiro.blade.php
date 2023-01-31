@@ -64,6 +64,7 @@
                         <table class="table-auto border-separate border-spacing-2 border border-dark w-full">
                             <thead>
                                 <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 uppercase">num</th>
                                     <th class="px-4 py-2 uppercase">Ruta</th>
                                     <th class="px-4 py-2 uppercase">Día</th>
                                     <th class="px-4 py-2 uppercase">Tipo</th>
@@ -78,15 +79,17 @@
                             <tbody>
                                 <?php $sum_ejemplares = 0; ?>
                                 <?php $ventasClientes = 0; ?>
+                                <?php $contador = 1; ?>
                                 @foreach ($ventas as $result)
                                     @if ($result->{$diaS} != 0 && $result->estado != 'Cancelada' && $result->tiroStatus != 'Cancelada')
                                         <tr>
+                                            <td class="px-4 py-2 border border-dark">{{ $contador }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $result->nombreruta }}, Tipo:
                                                 {{ $result->tiporuta }}, Repartidor: {{ $result->repartidor }},
                                                 Cobrador: {{ $result->cobrador }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $diaS }} </td>
                                             <td class="px-4 py-2 border border-dark">Venta/Cliente</td>
-                                            @if ($result->nombre)
+                                            @if ($result->rfc == 'Física')
                                                 <td class="px-4 py-2 border border-dark">{{ $result->nombre }}</td>
                                             @else
                                                 <td class="px-4 py-2 border border-dark">{{ $result->razon_social }}
@@ -109,7 +112,8 @@
                                             </td>
                                         </tr>
                                         <?php $sum_ejemplares += $result->{$diaS}; ?>
-                                        <?php $ventasClientes = $loop->index + 1; ?>
+                                        <?php $ventasClientes = $contador; ?>
+                                        <?php $contador++; ?>
                                     @else
                                         <tr>
 
@@ -124,6 +128,7 @@
                                      $suscrip->remisionStatus === 'Remisionado' */ ||
                                         $suscrip->contrato === 'Cortesía')
                                         <tr>
+                                            <td class="px-4 py-2 border border-dark">{{ $contador }}</td>
                                             <td class="px-4 py-2 border border-dark">{{ $suscrip->nombreruta }}, Tipo:
                                                 {{ $suscrip->tiporuta }}, Repartidor: {{ $suscrip->repartidor }},
                                                 Cobrador: {{ $suscrip->cobrador }}</td>
@@ -150,6 +155,7 @@
                                         </tr>
                                         <?php $sum_ejemplaressus += $suscrip->cantEjemplares; ?>
                                         <?php $suscripcionesClientes = $loop->index + 1; ?>
+                                        <?php $contador++; ?>
                                     @else
                                         <tr>
 
