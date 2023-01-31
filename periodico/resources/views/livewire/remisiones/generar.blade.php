@@ -118,7 +118,7 @@
                                         @if (/* $result->{$diaS} != 0 &&  */ $result->estado == 'Activo' && $result->remisionStatus == 'Pendiente'/*  ||  $result->remisionStatus == 'Cancelada' */)
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    <input wire:model="clienteSeleccionado" type="checkbox"
+                                                    <input wire:model.defer="clienteSeleccionado" type="checkbox"
                                                         value={{ $result->idVenta }}>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
