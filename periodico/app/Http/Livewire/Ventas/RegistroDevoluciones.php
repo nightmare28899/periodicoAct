@@ -16,28 +16,37 @@ class RegistroDevoluciones extends Component
 {
     use WithPagination;
 
-    public $desde, $hasta, $status = 'created', $to, $from, $domicilio, $ruta, $folioDev, $devfound, $all = [];
+    public $desde, $hasta, $status = 'created', $to, $from, $domicilio = [], $ruta = [], $folioDev, $devfound, $all = [], $seleccionados = [], $idRemisions = [], $rutas = [], $array1 = [], $finalData, $date1, $date2, $rutaSeleccionada;
 
-    public function verPDF($id, $idRemision, $idDomicilio)
+    public function seleccionado()
     {
-        if ($this->desde && $this->hasta && $this->folioDev) {
+        if ($this->seleccionados && $this->desde && $this->hasta && $this->folioDev) {
+            for ($i = 0; $i < count($this->seleccionados); $i++) {
 
-            $this->domicilio = Domicilio::find($idDomicilio);
-            $this->ruta = Ruta::find($this->domicilio->ruta_id);
-            $this->devfound = devolucionVenta::find($id);
-            /* array_push($this->dates, explode(',',$this->devfound->fechas)); */
-            $this->all = devolucionVenta::where('id', $id)->get();
+                $this->devfound = devolucionVenta::whereIn('id', $this->seleccionados)->get();
+
+                for ($i = 0; $i < count($this->devfound); $i++) {
+                    array_push($this->domicilio,  Domicilio::find($this->devfound[$i]->idDomicilio));
+                    array_push($this->ruta, Ruta::find($this->domicilio[$i]->ruta_id));
+                }
+            }
+
+            for ($i = 0; $i < count($this->devfound); $i++) {
+                array_push($this->array1, explode(',', $this->devfound[$i]->devoluciones));
+
+                $this->finalData = array_map(function (...$arrays) {
+                    return array_sum($arrays);
+                }, ...$this->array1);
+            }
+
             $pdf = Pdf::loadView('livewire.ventas.devoluciones-pdf', [
-                'devolucionVenta' => devolucionVenta::where('id', $id)->first(),
                 'desde' => $this->from = Carbon::parse($this->desde)->format('d/m/Y'),
                 'hasta' => $this->to = Carbon::parse($this->hasta)->format('d/m/Y'),
-                'ruta' => $this->ruta,
                 'folio' => $this->folioDev,
-                'idRemision' => $idRemision,
-                'fechas' => $dates = explode(',', $this->devfound->fechas),
-                'devoluciones' => $devoluciones = explode(',', $this->devfound->devoluciones),
-                'importe' => $this->devfound->importe,
-                'cantidad' => count($this->all),
+                'devolucionVenta' => $this->devfound,
+                'ruta' => $this->ruta,
+                'fechas' => $dates = explode(',', $this->devfound[0]->fechas),
+                'finalData' => $this->finalData,
             ])
                 ->setPaper('A5', 'landscape')
                 ->output();
@@ -48,18 +57,29 @@ class RegistroDevoluciones extends Component
         } else {
             $this->status = 'error';
             $this->dispatchBrowserEvent('alert', [
-                'message' => ($this->status == 'error') ? '¡Coloca los periodos primero!' : ''
+                'message' => ($this->status == 'error') ? '¡Coloca los periodos, folio y selecciona los clientes!' : ''
             ]);
         }
     }
 
     public function render()
     {
-        $devolucionVenta = devolucionVenta::paginate(10);
+        $this->rutas = Ruta::all();
+        if ($this->desde && $this->hasta && $this->rutaSeleccionada) {
 
+            $this->date1 = Carbon::parse($this->desde)->format('d/m/Y');
+            $this->date2 = Carbon::parse($this->hasta)->format('d/m/Y');
+
+            $devolucionVenta = devolucionVenta::where(function ($query) {
+                $query->where('fechaInicio', '=', $this->date1)
+                    ->where('fechaFin', '=', $this->date2)
+                    ->where('ruta', '=', $this->rutaSeleccionada);
+            })->paginate(10);
+        }
 
         return view('livewire.ventas.registro-devoluciones', [
-            'devolucionVenta' => $devolucionVenta
+            'devolucionVenta' => $devolucionVenta ?? [],
+            'rutas' => $this->rutas,
         ]);
     }
 }

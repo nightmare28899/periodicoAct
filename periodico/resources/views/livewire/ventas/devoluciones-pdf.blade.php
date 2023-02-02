@@ -16,14 +16,6 @@
             page-break-after: always;
         }
 
-        /* header {
-            position: fixed;
-            top: -60px;
-            left: 0px;
-            right: 0px;
-            height: 50px;
-        } */
-
         th,
         td {
             border-top: .3px solid gray;
@@ -96,44 +88,51 @@
         <p id="movido2"><strong>FOLIO VALE DEV.</strong></p>
 
         <div style="margin-top: -25px;">
-            <p>{{ $ruta->id }} {{ $ruta->repartidor }}</p>
-            <p id="movido3">{{ $desde }} {{ $hasta }} <b style="margin-left: 11.5rem;">{{ $folio }}</b></p>
+            <p>{{ $ruta[0]['id'] }} {{ $ruta[0]['repartidor'] }}</p>
+            <p id="movido3">{{ $desde }} {{ $hasta }} <b
+                    style="margin-left: 11rem;">{{ $folio }}</b></p>
         </div>
 
         <table>
             <thead>
                 <tr>
                     <th>REMISION</th>
-                    @foreach ($fechas as $fecha)
-                        <th>{{ \Carbon\Carbon::parse($fecha)->format('m-d') }}</th>
+                    @foreach ($fechas as $data)
+                        <th>{{ \Carbon\Carbon::parse($data)->format('m-d') }}</th>
                     @endforeach
                     <th>DEVOLS.</th>
                     <th>IMPORTE</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th>{{ $idRemision }}</th>
-                    <?php $total = 0; ?>
-                    @foreach ($devoluciones as $dev)
-                        <th>{{ $dev }}</th>
-                        <?php $total += $dev; ?>
-                    @endforeach
-                    <th>{{ $total }}</th>
-                    <th>{{ number_format($importe, 2) }}</th>
-                </tr>
+                <?php $total = 0; ?>
+                <?php $sumaTotal = 0; ?>
+                <?php $devolucion = 0; ?>
+                @foreach ($devolucionVenta as $dev)
+                    <tr>
+                        <th>{{ $dev->idRemision }}</th>
+                        @foreach (explode(',', $dev->devoluciones) as $info)
+                            <th>{{ $info }}</th>
+                            <?php $total += $info; ?>
+                        @endforeach
+                        <th>{{ $total }}</th>
+                        <th>{{ number_format($dev->importe, 2) }}</th>
+                    </tr>
+                    <?php $sumaTotal += $dev->importe; ?>
+                    <?php $devolucion += $total; ?>
+                @endforeach
             </tbody>
             <br>
             <tbody>
                 <tr>
                     <th>DEV. REMISIONES</th>
                     <?php $total = 0; ?>
-                    @foreach ($devoluciones as $dev)
-                        <th>{{ $dev }}</th>
-                        <?php $total += $dev; ?>
+                    @foreach ((array) $finalData as $data)
+                        <th>{{ $data }}</th>
+                        <?php $total += $data; ?>
                     @endforeach
-                    <th>{{ $total }}</th>
-                    <th>{{ number_format($importe, 2) }}</th>
+                    <th>{{ $devolucion }}</th>
+                    <th>{{ number_format($sumaTotal, 2) }}</th>
                 </tr>
             </tbody>
             <br>
@@ -141,33 +140,35 @@
                 <tr>
                     <th>DEV. FISICA</th>
                     <?php $total = 0; ?>
-                    @foreach ($devoluciones as $dev)
-                        <th>{{ $dev }}</th>
-                        <?php $total += $dev; ?>
+                    @foreach ((array) $finalData as $data)
+                        <th>{{ $data }}</th>
+                        <?php $total += $data; ?>
                     @endforeach
-                    <th>{{ $total }}</th>
-                    <th>0.00</th>
+                    <th>{{ $devolucion }}</th>
+                    <th>{{ number_format(0, 2) }}</th>
                 </tr>
             </thead>
             <br>
             <thead>
                 <tr>
                     <th>DIFERENCIA</th>
-                    @foreach ($devoluciones as $dev)
+                    <?php $total = 0; ?>
+                    @foreach ((array) $finalData as $data)
                         <th>0</th>
                     @endforeach
                     <th>0</th>
-                    <th>{{ number_format($importe, 2) }}</th>
+                    <th>0</th>
                 </tr>
             </thead>
         </table>
 
-        <p><strong>No. remisiones {{ $cantidad }}</strong></p>
+        <p><strong>No. remisiones {{ count($devolucionVenta) }}</strong></p>
         <p id="movido5"><strong>TOTAL A LIQUIDAR</strong></p>
-        <p id="movido6"><strong>{{ number_format($importe, 2) }}</strong></p>
+        <p id="movido6"><strong>{{ number_format($sumaTotal, 2) }}</strong></p>
 
         <p id="movido7" style="border-top: 1px solid black; font-size: 12px;"><b>ELABORO(Nombre y firma)</b></p>
-        <p id="movido8" style="border-top: 1px solid black; font-size: 12px;"><b>ENTREGA(Nombre y firma) CHOFER/CIRCULACIÓN</b></p>
+        <p id="movido8" style="border-top: 1px solid black; font-size: 12px;"><b>ENTREGA(Nombre y firma)
+                CHOFER/CIRCULACIÓN</b></p>
 
     </main>
 </body>

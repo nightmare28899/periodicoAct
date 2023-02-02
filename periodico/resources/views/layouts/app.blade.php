@@ -133,6 +133,7 @@
                 case '¡No puedes dejar campos vacíos!':
                 case '¡Llena toda la información!':
                 case '¡Coloca los periodos primero!':
+                case '¡Coloca los periodos, folio y selecciona los clientes!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':

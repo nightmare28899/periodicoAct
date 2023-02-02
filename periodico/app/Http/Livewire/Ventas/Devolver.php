@@ -8,11 +8,10 @@ use App\Models\ventas;
 use App\Models\Remisionid;
 use App\Models\devolucionVenta;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
 
 class Devolver extends Component
 {
-    public $ventas, $tiro, $remisiones = [], $idRemision, $datoEncontrado, $datesFound = [], $dias = [], $cantDevolver = [], $cantidades = [], $modalConfirmar = false, $status = 'created', $implodeCant, $calculoImporte = 0;
+    public $ventas, $tiro, $remisiones = [], $idRemision, $datoEncontrado, $datesFound = [], $dias = [], $cantDevolver = [], $cantidades = [], $modalConfirmar = false, $status = 'created', $implodeCant, $calculoImporte = 0, $rutaFound;
 
     public function render()
     {
@@ -60,6 +59,18 @@ class Devolver extends Component
     {
         if (count($this->cantDevolver) > 0) {
 
+            foreach ($this->remisiones as $remision) {
+                $remisionFoundId = explode(',', $remision->remisiones_id);
+
+                for ($i = 0; $i < count($remisionFoundId); $i++) {
+                    if ((int)$remisionFoundId[$i] == $this->idRemision) {
+                        $this->datesFound = explode(',', $remision->fechas);
+                        $this->dias = explode(',', $remision->dias);
+                        $this->rutaFound = $remision->ruta;
+                    }
+                }
+            }
+
             devolucionVenta::create([
                 'idVenta' => $this->tiro->idTipo,
                 'idRemision' => $this->idRemision,
@@ -70,7 +81,10 @@ class Devolver extends Component
                 'fechas' => implode(",", $this->datesFound),
                 'dias' => implode(",",$this->dias),
                 'entregados' => $this->tiro->entregar,
-                'importe' => $cantDevolverTotales
+                'importe' => $cantDevolverTotales,
+                'fechaInicio' => reset($this->datesFound),
+                'fechaFin' => end($this->datesFound),
+                'ruta' => $this->rutaFound,
             ]);
 
             Tiro::where('idTipo', $this->tiro->idTipo)->update([

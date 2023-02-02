@@ -16,6 +16,6 @@ class devolucionVenta extends Model
     protected $table = 'venta_devueltos';
 
     protected $fillable = [
-        'idVenta', 'idRemision', 'idCliente', 'idDomicilio', 'nombre', 'devoluciones', 'fechas', 'dias', 'entregados', 'importe'
+        'idVenta', 'idRemision', 'idCliente', 'idDomicilio', 'nombre', 'devoluciones', 'fechas', 'dias', 'entregados', 'importe', 'fechaInicio', 'fechaFin', 'ruta'
     ];
 }
