@@ -18,7 +18,6 @@ class Facturas extends Component
         if ($this->clienteSeleccionado && $this->fechaRemision) {
             $result = Tiro::where(function ($query) {
                 $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'cancelado')
                     ->orWhere('status', '=', 'sin pagar');
             })
                 ->where('cliente_id', $this->clienteSeleccionado['id'])
@@ -27,7 +26,6 @@ class Facturas extends Component
         } else if ($this->query) {
             $result = Tiro::where(function ($query) {
                 $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'cancelado')
                     ->orWhere('status', '=', 'sin pagar');
             })
                 ->where('cliente_id', $this->query)
@@ -37,7 +35,6 @@ class Facturas extends Component
         } else if ($this->fechaRemision) {
             $result = Tiro::where(function ($query) {
                 $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'cancelado')
                     ->orWhere('status', '=', 'sin pagar');
             })
                 ->where('fecha', $this->fechaRemision)
@@ -45,7 +42,6 @@ class Facturas extends Component
         } else {
             $result = Tiro::where(function ($query) {
                 $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'cancelado')
                     ->orWhere('status', '=', 'sin pagar');
             })
                 ->paginate(10);
