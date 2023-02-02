@@ -541,12 +541,12 @@ class GenerarR extends Component
                         'domicilio_id' => $this->ventas[$i]->domicilio_id,
                     ]);
 
+                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                    array_push($this->remisionesId, 1);
+
                     ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
                         'remisionStatus' => 'Remisionado',
                     ]);
-
-                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
-                    array_push($this->remisionesId, 1);
                     /* } */
                 }
             }
@@ -576,11 +576,11 @@ class GenerarR extends Component
                         'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                     ]);
 
+                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
+
                     Suscripcion::where('idSuscripcion', '=', $this->suscripcion[$i]['idSuscripcion'])->update([
                         'remisionStatus' => 'Remisionado',
                     ]);
-
-                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
                     /* } */
                 }
             }
@@ -1165,12 +1165,12 @@ class GenerarR extends Component
                     'domicilio_id' => $this->ventas[$i]['domicilio_id'],
                 ]);
 
+                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                array_push($this->remisionesId, $this->idRemision[$i]['id']);
+
                 ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
                     'remisionStatus' => 'Remisionado',
                 ]);
-
-                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
-                array_push($this->remisionesId, $this->idRemision[$i]['id']);
                 /* } */
             }
         }
@@ -1200,11 +1200,11 @@ class GenerarR extends Component
                     'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                 ]);
 
+                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
+
                 Suscripcion::where('idSuscripcion', '=', $this->suscripcion[$i]['idSuscripcion'])->update([
                     'remisionStatus' => 'Remisionado',
                 ]);
-
-                array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
                 /* } */
             }
         }
