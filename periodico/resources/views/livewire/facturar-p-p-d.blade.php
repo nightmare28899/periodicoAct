@@ -290,7 +290,7 @@
                         <div class="w-1/2 p-2">
                             <label for='cpInput' class='block text-gray-700 text-sm font-bold mb-2'>Código
                                 Postal:</label>
-                            <input type='number' name='cpInput'
+                            <input type='text' name='cpInput'
                                 class='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('cpInput') border-red-500 @enderror'
                                 placeholder='Escribe tu Código Postal' wire:model.defer='cpInput'>
                             @error('cpInput')
@@ -325,7 +325,7 @@
                         <div class="w-1/2 p-2">
                             <label for="noextInput" class="block text-black text-sm font-bold mb-2">No.
                                 Exterior:</label>
-                            <input type="number"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('noextInput') border-red-500 @enderror"
                                 id="noextInput" wire:model.defer="noextInput" placeholder="Escribe tu noext" />
                             @error('noextInput')
@@ -336,7 +336,7 @@
                         <div class="w-1/2 p-2">
                             <label for="nointInput" class="block text-black text-sm font-bold mb-2">No.
                                 Interior:</label>
-                            <input type="number"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('pais') border-red-500 @enderror"
                                 id="nointInput" wire:model.defer="nointInput" placeholder="Escribe tu noint" />
                             @error('nointInput')
@@ -350,7 +350,7 @@
                         <div class="w-1/2 p-2">
                             <label for="regimenfisInput" class="block text-black text-sm font-bold mb-2">Regimen
                                 Fiscal:</label>
-                            <input type="number"
+                            <input type="text"
                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('regimenfisInput') border-red-500 @enderror"
                                 id="regimenfisInput" wire:model.defer="regimenfisInput"
                                 placeholder="Escribe tu regimen fiscal" />
