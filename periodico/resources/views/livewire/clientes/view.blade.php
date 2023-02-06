@@ -76,6 +76,9 @@
                     </div>
                 @endif
 
+                @if ($modalClientOnly)
+                    @include('livewire.clientes.create-client')
+                @endif
                 @if ($isModalOpen)
                     @include('livewire.clientes.create')
                 @endif

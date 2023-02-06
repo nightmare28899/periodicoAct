@@ -29,6 +29,8 @@ class Clientes extends Component
 
     public $lunesTotal = 0, $martesTotal = 0, $miercolesTotal = 0, $juevesTotal = 0, $viernesTotal = 0, $sabadoTotal = 0, $domingoTotal = 0;
 
+    public $modalClientOnly = 0;
+
     public $listeners = [
         'hideMe' => 'hideModal'
     ];
@@ -489,7 +491,8 @@ class Clientes extends Component
     public function create()
     {
         $this->resetInput();
-        $this->openModalPopover();
+        $this->modalClientOnly = true;
+        /* $this->openModalPopover(); */
         $this->editEnabled = false;
     }
 
@@ -696,6 +699,31 @@ class Clientes extends Component
         $this->regimen_fiscal = $Cliente->regimen_fiscal;
         $this->razon_social = $Cliente->razon_social;
 
+        $domicilioFound = Domicilio::where('cliente_id', $id)->first();
+        if ($domicilioFound != null) {
+            $this->calle = $domicilioFound->calle;
+            $this->noint = $domicilioFound->noint;
+            $this->noext = $domicilioFound->noext;
+            $this->colonia = $domicilioFound->colonia;
+            $this->cp = $domicilioFound->cp;
+            $this->localidad = $domicilioFound->localidad;
+            $this->municipio = $domicilioFound->municipio;
+            $this->referencia = $domicilioFound->referencia;
+            $this->ruta_id = $domicilioFound->ruta_id;
+            $this->tarifa_id = $domicilioFound->tarifa_id;
+        } else {
+            $this->calle = '';
+            $this->noint = '';
+            $this->noext = '';
+            $this->colonia = '';
+            $this->cp = '';
+            $this->localidad = '';
+            $this->municipio = '';
+            $this->referencia = '';
+            $this->ruta_id = '';
+            $this->tarifa_id = '';
+        }
+
         $this->openModalPopover();
 
         $this->status = 'updated';
@@ -703,7 +731,7 @@ class Clientes extends Component
 
     public function update()
     {
-        $this->validate([
+        /* $this->validate([
             'estado' => 'required',
             'pais' => 'required',
             'regimen_fiscal' => 'required',
@@ -711,7 +739,8 @@ class Clientes extends Component
             'clasificacion' => 'required',
             'rfc' => 'required',
             'rfc_input' => 'required',
-        ]);
+        ]); */
+
         $cliente = Cliente::find($this->cliente_id);
         $cliente->update([
             'clasificacion' => $this->clasificacion,
@@ -726,6 +755,37 @@ class Clientes extends Component
             'regimen_fiscal' => $this->regimen_fiscal,
             'razon_social' => $this->razon_social,
         ]);
+
+        $domicilioFound = Domicilio::where('cliente_id', $this->cliente_id)->first();
+
+        if ($domicilioFound != null) {
+            $domicilioFound->update([
+                'calle' => $this->calle,
+                'noint' => $this->noint,
+                'noext' => $this->noext,
+                'colonia' => $this->colonia,
+                'cp' => $this->cp,
+                'localidad' => $this->localidad,
+                'municipio' => $this->municipio,
+                'referencia' => $this->referencia,
+                'ruta_id' => $this->ruta_id,
+                'tarifa_id' => $this->tarifa_id,
+            ]);
+        } else {
+            Domicilio::Create([
+                'calle' => $this->calle,
+                'noint' => $this->noint,
+                'noext' => $this->noext,
+                'colonia' => $this->colonia,
+                'cp' => $this->cp,
+                'localidad' => $this->localidad,
+                'municipio' => $this->municipio,
+                'referencia' => $this->referencia,
+                'ruta_id' => $this->ruta_id,
+                'tarifa_id' => $this->tarifa_id,
+                'cliente_id' => $this->cliente_id,
+            ]);
+        }
 
         $this->status = 'updated';
         $this->toast();

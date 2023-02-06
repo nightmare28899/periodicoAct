@@ -1,4 +1,4 @@
-<x-jet-dialog-modal wire:model="isModalOpen">
+<x-jet-dialog-modal wire:model="modalClientOnly">
 
     <x-slot name="title">
         <div class="flex sm:px-6">
@@ -227,7 +227,7 @@
         </div>
 
         <div class="flex-auto w-64 px-4 sm:px-6">
-            {{-- @if ($status == 'updated')
+            @if ($status == 'updated')
                 <button wire:click.prevent="update" type="button"
                         class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -253,12 +253,12 @@
                     </svg>
                     Crear
                 </button>
-            @endif --}}
+            @endif
 
-            <button wire:click.prevent="openClientModal" type="button"
+            {{-- <button wire:click.prevent="openClientModal" type="button"
                 class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-bold text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                 Siguiente
-            </button>
+            </button> --}}
         </div>
 
     </x-slot>
