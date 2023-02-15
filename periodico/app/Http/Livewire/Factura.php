@@ -216,7 +216,7 @@ class Factura extends Component
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
                 "Date" => Carbon::now()->format('Y-m-d\TH:i:s'),
-                "GlobalInformation" => $this->activarCG ? $this->globalInformation : [],
+                "GlobalInformation" => $this->globalInformation,
                 "Decimals" => "2",
                 "Receiver" => [
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->cliente['rfc_input'],
