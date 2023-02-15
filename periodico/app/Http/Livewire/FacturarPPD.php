@@ -27,11 +27,6 @@ class FacturarPPD extends Component
             $this->cliente['regimen_fiscal'] = '616';
             /* $this->PaymentForm = '03'; */
             $this->domicilio['cp'] = '58190';
-            $this->globalInformation = [
-                "Periodicity" => "04",
-                "Months" => "08",
-                "Year" => "2022",
-            ];
             $this->rfcGenerico = 'XAXX010101000';
             $this->nombreGenerico = 'PUBLICO EN GENERAL';
             $this->cpGenerico = '58190';
