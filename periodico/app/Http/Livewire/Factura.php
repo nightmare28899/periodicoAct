@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Carbon;
 use Livewire\Component;
 use App\Models\Cliente;
 use App\Models\domicilioSubs;
@@ -12,6 +11,7 @@ use App\Models\ventas;
 use App\Models\Domicilio;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class Factura extends Component
 {
@@ -203,9 +203,9 @@ class Factura extends Component
         }
 
         $this->globalInformation = [
-            "Periodicity" => "04",
-            "Months" => "08",
-            "Year" => "2022",
+            "Periodicity" => '01',
+            "Months" => Carbon::now()->format('m'),
+            "Year" => Carbon::now()->format('Y'),
         ];
 
         $this->invoice = Invoice::all();
@@ -220,7 +220,8 @@ class Factura extends Component
                 "CfdiType" => "I",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
-                "GlobalInformation" => $this->globalInformation ? $this->globalInformation : [],
+                "Date" => Carbon::now()->format('Y-m-d\TH:i:s'),
+                "GlobalInformation" => $this->activarCG ? $this->globalInformation : [],
                 "Decimals" => "2",
                 "Receiver" => [
                     "Rfc" => $this->activarCG ? $this->rfcGenerico : $this->cliente['rfc_input'],

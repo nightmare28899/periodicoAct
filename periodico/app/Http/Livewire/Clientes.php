@@ -771,7 +771,7 @@ class Clientes extends Component
                 'ruta_id' => $this->ruta_id,
                 'tarifa_id' => $this->tarifa_id,
             ]);
-        } else {
+        } /* else {
             Domicilio::Create([
                 'calle' => $this->calle,
                 'noint' => $this->noint,
@@ -785,7 +785,7 @@ class Clientes extends Component
                 'tarifa_id' => $this->tarifa_id,
                 'cliente_id' => $this->cliente_id,
             ]);
-        }
+        } */
 
         $this->status = 'updated';
         $this->toast();
