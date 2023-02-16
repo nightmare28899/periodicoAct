@@ -132,9 +132,51 @@ class Factura extends Component
         $this->modalAgregar = false;
     }
 
+    public function reenviar()
+    {
+        if (substr($this->idTipo, 0, 6) == 'suscri') {
+            $InvoiceFound = Invoice::where('idTipo', $this->suscripcion->idSuscripcion)->first();
+            if ($InvoiceFound) {
+                $url = 'https://api.facturama.mx/cfdi?cfdiType=issued&cfdiId=';
+
+                $email = '&email=';
+
+                Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $InvoiceFound->invoice_id . $email . $this->cliente->email);
+
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Factura reenviada!' : ''
+                ]);
+            } else {
+                $this->status = 'error';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'error') ? '¡Primero genera la factura!' : ''
+                ]);
+            }
+        } else {
+            $InvoiceFound = Invoice::where('idTipo', $this->suscripcion->idVenta)->first();
+            if ($InvoiceFound) {
+                $url = 'https://api.facturama.mx/cfdi?cfdiType=issued&cfdiId=';
+
+                $email = '&email=';
+
+                Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $InvoiceFound->invoice_id . $email . $this->cliente->email);
+
+                $this->status = 'created';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'created') ? '¡Factura reenviada!' : ''
+                ]);
+            } else {
+                $this->status = 'error';
+                $this->dispatchBrowserEvent('alert', [
+                    'message' => ($this->status == 'error') ? '¡Primero genera la factura!' : ''
+                ]);
+            }
+        }
+    }
+
     public function facturar()
     {
-
         if (substr($this->idTipo, 0, 6) == 'suscri') {
             $items = [
                 [
@@ -274,7 +316,6 @@ class Factura extends Component
                     'total' => $facturama->data->Total,
                     'uuid' => $facturama->data->Complement->TaxStamp->Uuid,
                 ]);
-
 
                 $url = 'https://api.facturama.mx/cfdi?cfdiType=issued&cfdiId=';
 

@@ -79,6 +79,7 @@
                 case '¡PDF cargado correctamente!':
                 case '¡Remisiones cargadas!':
                 case '¡Devolución realizada!':
+                case '¡Factura reenviada!':
                     toastr.success(event.detail.message, '¡Exito!');
                     break;
                 case '¡Cliente eliminado correctamente!':
@@ -134,6 +135,7 @@
                 case '¡Llena toda la información!':
                 case '¡Coloca los periodos primero!':
                 case '¡Coloca los periodos, folio y selecciona los clientes!':
+                case '¡Hubo un error!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
