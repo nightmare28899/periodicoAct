@@ -515,7 +515,7 @@ class GenerarR extends Component
                 ->whereIn('suscripciones.idSuscripcion', $this->clienteSeleccionado)
                 ->select("suscripciones.suscripcion", "suscripciones.cliente_id", "suscripciones.esUnaSuscripcion", "suscripciones.idSuscripcion", "suscripciones.tarifa", "suscripciones.cantEjemplares", "suscripciones.precio", "suscripciones.contrato", "suscripciones.tipoSuscripcion", "suscripciones.periodo", "suscripciones.fechaInicio", "suscripciones.fechaFin", "suscripciones.dias", "suscripciones.lunes", "suscripciones.martes", "suscripciones.miércoles", "suscripciones.jueves", "suscripciones.viernes", "suscripciones.sábado", "suscripciones.domingo", "suscripciones.tipo", "suscripciones.descuento", "suscripciones.observaciones", "suscripciones.importe", "suscripciones.total", "suscripciones.domicilio_id", "suscripciones.created_at", "cliente.nombre", "cliente.razon_social", "cliente.rfc_input", "cliente.estado", "cliente.pais", "domicilio_subs.*", "ruta.nombreruta", "ruta.tiporuta")
                 ->get();
-
+          
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
                     /* if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) { */
@@ -575,8 +575,9 @@ class GenerarR extends Component
                         'tipo' => $this->suscripcion[$i]['tiporuta'],
                         'domicilio_id' => $this->suscripcion[$i]['domicilio_id'],
                     ]);
+                    $tiroFound =  Tiro::whereIn('idTipo', $this->clienteSeleccionado)->get();
 
-                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->suscripcion[$i]['idSuscripcion'])->first());
+                    array_push($this->idRemision, $tiroFound[$i]['id']);
 
                     Suscripcion::where('idSuscripcion', '=', $this->suscripcion[$i]['idSuscripcion'])->update([
                         'remisionStatus' => 'Remisionado',
