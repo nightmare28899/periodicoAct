@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class AgregarDiasSuscripcion extends Component
 {
-    public $suscripcionBuscada = [], $incremento = 'aumentar', $dias, $status, $date;
+    public $suscripcionBuscada = [], $incremento = 'aumentar', $dias, $status, $date, $query = '';
 
     public function mount()
     {

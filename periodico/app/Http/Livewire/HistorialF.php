@@ -22,6 +22,7 @@ class HistorialF extends Component
                     ->orWhere('cliente', 'like', '%' . $this->query . '%')
                     ->orWhere('id', $this->query);
             })
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         } else if ($this->query) {
             $invoices = Invoice::where(function ($query) {
@@ -29,11 +30,12 @@ class HistorialF extends Component
                     ->orWhere('cliente', 'like', '%' . $this->query . '%')
                     ->orWhere('id', $this->query);
             })
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         } else if ($this->fechaFactura) {
-            $invoices = Invoice::where('invoice_date', $this->fechaFactura)->paginate(10);
+            $invoices = Invoice::where('invoice_date', $this->fechaFactura)->orderBy('id', 'desc')->paginate(10);
         } else {
-            $invoices = Invoice::paginate(10);
+            $invoices = Invoice::orderBy('id', 'desc')->paginate(10);
         }
 
         return view('livewire.factura.historial-f', compact('invoices'));

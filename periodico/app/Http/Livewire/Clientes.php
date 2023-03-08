@@ -157,8 +157,6 @@ class Clientes extends Component
             /* 'Sanborn' => 'SANBORN', */
         ];
 
-
-
         $formaPago = [
             'Efectivo' => 'Efectivo',
             'Cheque Nominativo' => 'Cheque Nominativo',
@@ -471,6 +469,7 @@ class Clientes extends Component
 
         return view('livewire.clientes.view', [
             'clientes' => Cliente::where('cliente.nombre', 'like', '%' . $this->clientesQuery . '%')
+                ->orderBy('cliente.id', 'desc')
                 ->paginate(10),
             'rfc' => $this->rfc,
             'total' => $this->total,

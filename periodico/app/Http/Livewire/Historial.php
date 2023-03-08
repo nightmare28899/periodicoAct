@@ -51,15 +51,18 @@ class Historial extends Component
                             ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
                     })
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
+                    ->orderBy('tiro.id', 'desc')
                     ->paginate(10);
             } else if ($this->statusTiro != 'Todos') {
                 $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->where('tiro.status', $this->statusTiro)
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
+                    ->orderBy('tiro.id', 'desc')
                     ->paginate(10);
             } else {
                 $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                     ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
+                    ->orderBy('tiro.id', 'desc')
                     ->paginate(10);
             }
         } else {

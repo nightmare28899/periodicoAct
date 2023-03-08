@@ -70,6 +70,7 @@ class HistorialSuscripciones extends Component
                         ->orWhere('suscripciones.id', $this->query);
                 })
                 ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
+                ->orderBy('suscripciones.id', 'desc')
                 ->paginate(10);
         }
 
@@ -81,12 +82,14 @@ class HistorialSuscripciones extends Component
                     $query->where('suscripciones.estado', '=', $this->estatusPago);
                 })
                 ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
+                ->orderBy('suscripciones.id', 'desc')
                 ->paginate(10);
         } else {
             $suscripciones = Suscripcion
                 ::join('cliente', 'cliente.id', '=', 'suscripciones.cliente_id')
                 ->join('domicilio_subs', 'domicilio_subs.cliente_id', '=', 'suscripciones.cliente_id')
                 ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
+                ->orderBy('suscripciones.id', 'desc')
                 ->paginate(10);
         }
 
@@ -100,6 +103,7 @@ class HistorialSuscripciones extends Component
                             ->whereDate('suscripciones.fechaFin', '>=', $this->hasta);
                     })
                     ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
+                    ->orderBy('suscripciones.id', 'desc')
                     ->paginate(10);
             } else {
                 $suscripciones = Suscripcion
@@ -111,6 +115,7 @@ class HistorialSuscripciones extends Component
                             ->where('suscripciones.estado', '=', $this->estatusPago);
                     })
                     ->select('suscripciones.*', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noint', 'domicilio_subs.noext', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.ciudad')
+                    ->orderBy('suscripciones.id', 'desc')
                     ->paginate(10);
             }
         }

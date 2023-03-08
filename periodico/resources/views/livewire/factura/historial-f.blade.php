@@ -28,6 +28,7 @@
                             <table class="table-auto border-separate border-spacing-2 border border-dark">
                                 <thead>
                                     <tr class="bg-gray-100">
+                                        <th class="px-4 py-2 uppercase">Id</th>
                                         <th class="px-4 py-2 uppercase">Fecha</th>
                                         <th class="px-4 py-2 uppercase">Tipo</th>
                                         <th class="px-4 py-2 uppercase">Cliente</th>
@@ -39,6 +40,7 @@
                                 <tbody>
                                     @foreach ($invoices as $invoice)
                                         <tr>
+                                            <td class="px-4 py-2 border border-dark">{{ $invoice->id }}</td>
                                             <td class="px-4 py-2 border border-dark">
                                                 {{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d/m/Y') }}
                                             </td>

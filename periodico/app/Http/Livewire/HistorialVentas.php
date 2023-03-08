@@ -23,6 +23,7 @@ class HistorialVentas extends Component
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
                 ->where('ventas.estado', $this->estatusPago)
+                ->orderBy('ventas.id', 'desc')
                 ->paginate(10);
 
             if ($this->desde && $this->hasta) {
@@ -35,6 +36,7 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.desde', '<=', $this->desde)
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -49,6 +51,7 @@ class HistorialVentas extends Component
                             ->orWhere('ventas.id', $this->query)
                             ->orWhere('ventas.cliente_id', $this->query);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -65,6 +68,7 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -77,6 +81,7 @@ class HistorialVentas extends Component
                         $query->where('ruta.nombreruta', $this->rutaSeleccionada)
                             ->where('ventas.estado', $this->estatusPago);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
         } else {
@@ -85,6 +90,7 @@ class HistorialVentas extends Component
                     ->join('domicilio', 'domicilio.id', '=', 'ventas.domicilio_id')
                     ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             } else {
                 $ventas = ventas::join('cliente', 'cliente.id', '=', 'ventas.cliente_id')
@@ -94,6 +100,7 @@ class HistorialVentas extends Component
                     ->where(function ($query) {
                         $query->where('ruta.nombreruta', $this->rutaSeleccionada);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -106,6 +113,7 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
                     ->select('ventas.*', 'cliente.nombre', 'domicilio.calle', 'domicilio.colonia', 'domicilio.municipio', 'domicilio.cp', 'domicilio.noext', 'domicilio.noint', 'ruta.nombreruta')
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -119,6 +127,7 @@ class HistorialVentas extends Component
                             ->orWhere('ventas.id', $this->query)
                             ->orWhere('ventas.cliente_id', $this->query);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
 
@@ -134,6 +143,7 @@ class HistorialVentas extends Component
                             ->whereDate('ventas.desde', '<=', $this->desde)
                             ->whereDate('ventas.hasta', '>=', $this->hasta);
                     })
+                    ->orderBy('ventas.id', 'desc')
                     ->paginate(10);
             }
         }
