@@ -26,15 +26,17 @@ class RemisionesRangoPorFecha extends Component
                 $query->where('fechaInicio', $this->de)
                     ->where('fechaFin', $this->hasta);
             })
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         } else {
-            $remisionesData = Remisionid::paginate(10);
+            $remisionesData = Remisionid::orderBy('id', 'desc')->paginate(10);
         }
 
         if ($this->ruta != 'seleccion') {
             $remisionesData = Remisionid::where(function ($query) {
                 $query->where('ruta', $this->ruta);
             })
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         }
 
