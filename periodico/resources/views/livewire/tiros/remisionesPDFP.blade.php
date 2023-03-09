@@ -139,7 +139,7 @@
             </h3>
             <p id="movido" style="font-size: 16px; text-transform: uppercase;">
                 <b>remision</b>
-                {{ $idTiroSig != null ? $idTiroSig[$key]['id'] : 1 }}
+                {{ $idTiroSig != null ? $idTiroSig[$key]['id'] : $result['id'] }}
             </p>
             <h3
                 style="text-transform: uppercase; padding-bottom: -12; margin-bottom: -12; font-size: 16px;">
