@@ -108,14 +108,14 @@
                                     {{-- <th class='px-6 py-2 uppercase'>Dia</th> --}}
                                     <th class='px-6 py-2 uppercase'>Nombre Ruta</th>
                                     <th class='px-6 py-2 uppercase'>Tipo</th>
-                                    <th class='px-6 py-2 uppercase'>Fecha Inicio</th>
-                                    <th class='px-6 py-2 uppercase'>Fecha Fin</th>
+                                    {{-- <th class='px-6 py-2 uppercase'>Fecha Inicio</th>
+                                    <th class='px-6 py-2 uppercase'>Fecha Fin</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
                                 @if ($ventaCopia)
                                     @foreach ($ventaCopia as $result)
-                                        @if (/* $result->{$diaS} != 0 &&  */ $result->estado == 'Activo' && $result->remisionStatus == 'Pendiente'/*  ||  $result->remisionStatus == 'Cancelada' */)
+                                        @if (/* $result->{$diaS} != 0 &&  */ $result->estado == 'Activo' /* && $result->remisionStatus == 'Pendiente' *//*  ||  $result->remisionStatus == 'Cancelada' */)
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     <input wire:model.defer="clienteSeleccionado" type="checkbox"
@@ -147,14 +147,14 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->nombreruta }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $result->tiporuta }}</td>
-                                                <td class='px-4 py-2 border border-dark'>
+                                                {{-- <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">
                                                         <label class="text-black"
                                                             for="Física">{{ \Carbon\Carbon::parse($result->desde)->format('d/m/Y') }}</label>
                                                     </div>
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>
-                                                    {{ \Carbon\Carbon::parse($result->hasta)->format('d/m/Y') }}</td>
+                                                    {{ \Carbon\Carbon::parse($result->hasta)->format('d/m/Y') }}</td> --}}
                                             </tr>
                                         @endif
                                     @endforeach
@@ -192,7 +192,7 @@
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->nombreruta }}
                                                 </td>
                                                 <td class='px-4 py-2 border border-dark'>{{ $suscri->tiporuta }}</td>
-                                                <td class='px-4 py-2 border border-dark'>
+                                                {{-- <td class='px-4 py-2 border border-dark'>
                                                     <div class="form-group">
                                                         <label
                                                             class="text-black">{{ \Carbon\Carbon::parse($suscri->fechaInicio)->format('d/m/Y') }}</label>
@@ -203,7 +203,7 @@
                                                         <label
                                                             class="text-black">{{ \Carbon\Carbon::parse($suscri->fechaFin)->format('d/m/Y') }}</label>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endif
                                     @endforeach
