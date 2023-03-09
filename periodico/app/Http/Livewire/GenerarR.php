@@ -511,36 +511,39 @@ class GenerarR extends Component
 
             if (count($this->ventas) > 0) {
                 for ($i = 0; $i < count($this->clienteSeleccionado); $i++) {
-                    /* if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) { */
-                    $clienteVenta = ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->first();
-                    $clienteFound = Cliente::find($clienteVenta->cliente_id);
+                    if (!Tiro::where('idTipo', '=', $this->clienteSeleccionado[$i])->exists()) {
+                        $clienteVenta = ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->first();
+                        $clienteFound = Cliente::find($clienteVenta->cliente_id);
 
-                    Tiro::create([
-                        'fecha' => $this->dateF->format('Y-m-d'),
-                        'cliente' => $this->ventas[$i]['nombre'],
-                        'entregar' => $this->deHastaData == true ? $this->totalesVentas : $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
-                        'devuelto' => $this->devuelto,
-                        'faltante' => $this->faltante,
-                        'venta' => $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
-                        'estado' => 'Activo',
-                        'cliente_id' => $this->ventas[$i]->cliente_id,
-                        'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
-                        'importe' => $this->deHastaData == true ? $this->importeVentas : $this->ventas[$i]->total,
-                        'dia' => $this->diaS,
-                        'idTipo' => $this->clienteSeleccionado[$i],
-                        'nombreruta' => $this->ventas[$i]['nombreruta'],
-                        'status' => $clienteFound->clasificacion  == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
-                        'tipo' => $this->ventas[$i]['tiporuta'],
-                        'domicilio_id' => $this->ventas[$i]->domicilio_id,
-                    ]);
+                        Tiro::create([
+                            'fecha' => $this->dateF->format('Y-m-d'),
+                            'cliente' => $this->ventas[$i]['nombre'],
+                            'entregar' => $this->deHastaData == true ? $this->totalesVentas : $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
+                            'devuelto' => $this->devuelto,
+                            'faltante' => $this->faltante,
+                            'venta' => $this->ventas[$i]->lunes + $this->ventas[$i]->martes + $this->ventas[$i]->miércoles + $this->ventas[$i]->jueves + $this->ventas[$i]->viernes + $this->ventas[$i]->sábado + $this->ventas[$i]->domingo,
+                            'estado' => 'Activo',
+                            'cliente_id' => $this->ventas[$i]->cliente_id,
+                            'precio' => $this->diaS == 'domingo' ? $this->ventas[$i]['dominical'] : $this->ventas[$i]['ordinario'],
+                            'importe' => $this->deHastaData == true ? $this->importeVentas : $this->ventas[$i]->total,
+                            'dia' => $this->diaS,
+                            'idTipo' => $this->clienteSeleccionado[$i],
+                            'nombreruta' => $this->ventas[$i]['nombreruta'],
+                            'status' => $clienteFound->clasificacion  == 'CRÉDITO' ? 'CREDITO' : 'sin pagar',
+                            'tipo' => $this->ventas[$i]['tiporuta'],
+                            'domicilio_id' => $this->ventas[$i]->domicilio_id,
+                        ]);
 
-                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
-                    array_push($this->remisionesId, 1);
+                        array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                        array_push($this->remisionesId, 1);
 
-                    ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
-                        'remisionStatus' => 'Remisionado',
-                    ]);
-                    /* } */
+                        ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
+                            'remisionStatus' => 'Remisionado',
+                        ]);
+                    } else {
+                        array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                        array_push($this->remisionesId, $this->idRemision[$i]['id']);
+                    }
                 }
             }
 
@@ -901,6 +904,9 @@ class GenerarR extends Component
                     ventas::where('idVenta', '=', $this->ventas[$i]['idVenta'])->update([
                         'remisionStatus' => 'Remisionado',
                     ]);
+                } else {
+                    array_push($this->idRemision, Tiro::where("idTipo", "=", $this->ventas[$i]['idVenta'])->first());
+                    array_push($this->remisionesId, $this->idRemision[$i]['id']);
                 }
             }
         }
