@@ -14,7 +14,7 @@ class Facturas extends Component
 
     public function someInvoices()
     {
-        return redirect()->route('manyInvoices');
+        return redirect()->route('someInvoices');
     }
 
     public function render()

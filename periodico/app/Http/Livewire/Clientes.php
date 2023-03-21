@@ -654,7 +654,7 @@ class Clientes extends Component
             'pais' => 'required',
             'regimen_fiscal' => 'required',
             'telefono' => 'required|max:10',
-            'email' => 'required|string|unique:users',
+            'email' => 'required|string',
             'email_cobranza' => 'required|string',
             'rfc' => 'required',
             'rfc_input' => 'required',
@@ -678,6 +678,7 @@ class Clientes extends Component
         $this->emit('closeModal');
         $this->updateMode = false;
         $this->closeModalPopover();
+        $this->modalClientOnly = false;
         $this->clienteModalOpen = false;
         $this->toast();
     }

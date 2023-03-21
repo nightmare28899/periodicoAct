@@ -19,6 +19,10 @@
                             name="search" id="search" placeholder="Buscar nombre o id" wire:model="query"
                             autocomplete="off" />
                     </div>
+                    <div class="w-64 ml-5 pt-4">
+                        <button class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                            wire:click="someInvoices">Varias Facturas</button>
+                    </div>
                 </div>
                 <br>
 

@@ -1,4 +1,4 @@
-<div class="container mx-auto">
+<div class="mx-auto">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black leading-tight">
             {{ __('Lista de Clientes') }}

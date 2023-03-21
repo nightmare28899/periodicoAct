@@ -61,7 +61,7 @@
                                                         cancelada</a>
                                                 @else
                                                     <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-red-500 hover:bg-red-600 rounded-lg focus:shadow-outline"
-                                                        href="{{ url('cancelarFactura/' . $invoice->invoice_id) }}">Cancelar
+                                                        href="{{ url('cancelarFactura/' . $invoice->invoice_id . '/cancelar') }}">Cancelar
                                                         factura</a>
                                                 @endif
                                             </td>
