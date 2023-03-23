@@ -19,8 +19,9 @@ class SomeInvoices extends Component
 
     public $ventas = [], $suscripciones = [], $selected = [], $rutas, $rutaSeleccionada = '', $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $cfdipe = "(issued | received)", $concepto = '';
 
-    public function mount()
+    public function mount($type)
     {
+        $this->tipoFactura = $type;
         $this->resetear();
     }
 
@@ -121,7 +122,7 @@ class SomeInvoices extends Component
             array_push(
                 $this->data,
                 [
-                    "Serie" => substr($this->dataOrdersFound[$i]['idTipo'], 0, 6) == 'suscri' ? 'SUSPUE' : 'VPPUE',
+                    "Serie" => (substr($this->dataOrdersFound[$i]['idTipo'], 0, 6) == 'suscri' && $this->tipoFactura == 'PUE' ? 'SUSPUE' : (substr($this->dataOrdersFound[$i]['idTipo'], 0, 6) == 'suscri' && $this->tipoFactura == 'PPD' ? 'SUSPPD' : ($this->tipoFactura == 'PUE' ? 'VPPUE' : 'VPPPD'))),
                     "ProductCode" => '55101504',
                     "IdentificationNumber" => "EDL",
                     "Description" => $this->concepto,
@@ -157,14 +158,14 @@ class SomeInvoices extends Component
 
         if ($this->PaymentForm && $this->cfdiUse) {
             $facturama =  \Crisvegadev\Facturama\Invoice::create([
-                "Serie" => 'VPPUESUPUE',
+                "Serie" =>  $this->tipoFactura == "PUE" ? 'VPPUESUPUE' : 'VPPPDSUPPD',
                 "Currency" => "MXN",
                 "ExpeditionPlace" => "58190",
                 /* "PaymentConditions" => "CREDITO A SIETE DIAS", */
                 "Folio" => count($this->invoice) == 0 ? 1 : count($this->invoice) + 1,
                 "CfdiType" => "I",
                 "PaymentForm" => $this->PaymentForm,
-                "PaymentMethod" => "PUE",
+                "PaymentMethod" => $this->tipoFactura == "PUE" ? "PUE" : "PPD",
                 "GlobalInformation" => $this->globalInformation,
                 "Date" => Carbon::now()->format('Y-m-d\TH:i:s'),
                 "Decimals" => "2",
@@ -203,7 +204,7 @@ class SomeInvoices extends Component
                 $invoice->invoice_date = $facturama->data->Date;
                 $invoice->cliente_id = $this->clienteBarraBuscadora['id'];
                 $invoice->cliente = $this->clienteBarraBuscadora['nombre'];
-                $invoice->idTipo = "VPPUE";
+                $invoice->idTipo = $this->tipoFactura == "PUE" ? 'VPPUESUPUE' : 'VPPPDSUPPD';
                 $invoice->status = 'Vigente';
                 $invoice->serie = $facturama->data->Serie;
                 $invoice->folio = $facturama->data->Folio;
@@ -243,6 +244,7 @@ class SomeInvoices extends Component
                 return redirect('/vistaPrevia/' . $facturama->data->Id);
             } else {
                 $this->d = "";
+                $this->odersSelected = [];
 
                 foreach ($facturama->errors as $key => $error) {
                     $this->d .= "- $error \n";
@@ -263,9 +265,11 @@ class SomeInvoices extends Component
         $this->rutas = Ruta::all();
 
         if ($this->rutaSeleccionada != '') {
-            $this->ventas = Tiro::join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
+            if ($this->tipoFactura == "PUE") {
+                $this->ventas = Tiro::join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
                 ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
                 ->where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '!=', 'CREDITO')
                 ->where('tiro.status', '!=', 'cancelado')
                 ->where('domicilio.ruta_id', $this->rutaSeleccionada)
                 ->select('tiro.*', 'ruta.nombreruta')
@@ -274,14 +278,42 @@ class SomeInvoices extends Component
             $this->suscripciones = Tiro::join('domicilio_subs', 'domicilio_subs.id', '=', 'tiro.domicilio_id')
                 ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
                 ->where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '!=', 'CREDITO')
                 ->where('tiro.status', '!=', 'cancelado')
                 ->where('domicilio_subs.ruta', $this->rutaSeleccionada)
                 ->select('tiro.*', 'ruta.nombreruta')
                 ->get();
-        } else {
-            $this->ventas = Tiro::where('tiro.status', '!=', 'facturado')
+            } else {
+                $this->ventas = Tiro::join('domicilio', 'domicilio.id', '=', 'tiro.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio.ruta_id')
+                ->where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '=', 'CREDITO')
                 ->where('tiro.status', '!=', 'cancelado')
+                ->where('domicilio.ruta_id', $this->rutaSeleccionada)
+                ->select('tiro.*', 'ruta.nombreruta')
                 ->get();
+
+            $this->suscripciones = Tiro::join('domicilio_subs', 'domicilio_subs.id', '=', 'tiro.domicilio_id')
+                ->join('ruta', 'ruta.id', '=', 'domicilio_subs.ruta')
+                ->where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '=', 'CREDITO')
+                ->where('tiro.status', '!=', 'cancelado')
+                ->where('domicilio_subs.ruta', $this->rutaSeleccionada)
+                ->select('tiro.*', 'ruta.nombreruta')
+                ->get();
+            }
+        } else {
+            if ($this->tipoFactura == "PUE") {
+                $this->ventas = Tiro::where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '!=', 'cancelado')
+                ->where('tiro.status', '!=', 'CREDITO')
+                ->get();
+            } else {
+                $this->ventas = Tiro::where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '!=', 'cancelado')
+                ->where('tiro.status', '=', 'CREDITO')
+                ->get();
+            }
         }
 
         if ($this->activarCG && $this->clienteBarraBuscadora != null) {

@@ -13,6 +13,11 @@ class FacturaPPD extends Component
 
     public $query = '', $clienteSeleccionado, $tiros = [], $clientesBuscados = [], $fechaRemision, $idCliente;
 
+    public function someInvoices()
+    {
+        return redirect('/someInvoices/' . 'PPD');
+    }
+
     public function render()
     {
         if ($this->query && $this->fechaRemision) {

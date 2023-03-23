@@ -114,7 +114,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/devolverVentas/{id}', Devolver::class)->name('devolverVentas');
     Route::get('/devolucionInforme', RegistroDevoluciones::class)->name('devolucionInforme');
     Route::get('/PDFDevolucionView', PDFViewDevolucion::class)->name('PDFDevolucionView');
-    Route::get('/someInvoices', SomeInvoices::class)->name('someInvoices');
+    Route::get('/someInvoices/{type}', SomeInvoices::class)->name('someInvoices');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

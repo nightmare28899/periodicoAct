@@ -247,8 +247,8 @@
                                 <div class="w-64 px-2">
                                     <label for="tipoFactura">Tipo Factura:</label><br>
                                     <select name="tipoFactura" class="input-generic-style" id="tipoFactura">
-                                        <option value="{{ $payType == 'contado' ? 'PUE' : 'PPD' }}">
-                                            {{ $payType == 'contado' ? 'PUE' : 'PPD' }}</option>
+                                        <option value="{{ $tipoFactura == 'PUE' ? 'PUE' : 'PPD' }}">
+                                            {{ $tipoFactura == 'PUE' ? 'PUE' : 'PPD' }}</option>
                                     </select>
                                 </div>
                                 <div class="w-auto px-2 text-dark">
