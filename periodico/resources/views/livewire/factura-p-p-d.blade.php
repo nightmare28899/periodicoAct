@@ -50,7 +50,7 @@
 
                                 <tbody>
                                     @foreach ($invoices as $invoice)
-                                        @if ($invoice->clasificacion == 'CRÉDITO' && $invoice->status == 'CREDITO' && $invoice->status != 'facturado')
+                                        {{-- @if ($invoice->clasificacion == 'CRÉDITO' && $invoice->status == 'CREDITO' && $invoice->status != 'facturado') --}}
                                             <tr>
                                                 <td class='px-4 py-2 border border-dark'>
                                                     {{ \Carbon\Carbon::parse($invoice->fecha)->format('d/m/Y') }}</td>
@@ -130,7 +130,7 @@
                                                         disabled>Cancelado</a>
                                                 </td>
                                             </tr> --}}
-                                        @endif
+                                        {{-- @endif --}}
                                     @endforeach
                                 </tbody>
                             </table>

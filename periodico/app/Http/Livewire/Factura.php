@@ -17,6 +17,8 @@ class Factura extends Component
 {
     public $clienteid, $idTipo, $cliente, $suscripcion, $domicilio, $tipoFactura = '', $PaymentForm, $cfdiUse, $activarCG = false, $status = '', $venta, $tiro, $globalInformation, $items, $rfcGenerico, $nombreGenerico, $cpGenerico, $regimenFisGenerico, $modalAgregar = 0, $rfcInput, $cpInput, $colInput, $estadoInput, $noextInput, $regimenfisInput, $razonsInput, $calleInput, $paisInput, $nointInput, $d, $modalErrors = 0, $invoice = [], $cfdipe = "(issued | received)", $concepto = '';
 
+    public $idTiro;
+
     public function render()
     {
         if ($this->activarCG) {
@@ -34,10 +36,11 @@ class Factura extends Component
         return view('livewire.factura.view', ['d' => $this->d]);
     }
 
-    public function mount($cliente_id, $idTipo)
+    public function mount($cliente_id, $idTipo, $id)
     {
         $this->clienteid = $cliente_id;
         $this->idTipo = $idTipo;
+        $this->idTiro = $id;
 
         if (substr($idTipo, 0, 6) == 'suscri') {
 
@@ -50,9 +53,8 @@ class Factura extends Component
             $this->cliente = Cliente::find($cliente_id);
             $this->suscripcion = ventas::where('idVenta', $idTipo)->first();
             $this->domicilio = Domicilio::where('id', $this->suscripcion['domicilio_id'])->first();
+            $this->tiro = Tiro::find($id);
             $this->tipoFactura = 'PUE';
-            $this->tiro = Tiro::where('cliente_id', $cliente_id)->first();
-            /* $this->globalInformation[] = []; */
         }
     }
 
@@ -323,7 +325,7 @@ class Factura extends Component
 
                 Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $facturama->data->Id . $email . $this->cliente->email);
 
-                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                $this->tiro = Tiro::find($this->idTiro)->update([
                     'status' => 'facturado',
                 ]);
 

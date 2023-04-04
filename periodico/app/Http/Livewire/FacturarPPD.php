@@ -224,7 +224,7 @@ class FacturarPPD extends Component
                 "CfdiType" => "E",
                 "PaymentForm" => $this->PaymentForm,
                 "PaymentMethod" => $this->tipoFactura,
-                "Date" => Carbon::now()->format('Y-m-d\TH:i:s'),
+                "Date" => Carbon::now()->format('Y-m-d'),
                 "GlobalInformation" => $this->globalInformation,
                 "Decimals" => "2",
                 "Receiver" => [
@@ -290,7 +290,7 @@ class FacturarPPD extends Component
 
                 Http::withBasicAuth('LaVozDeMich', 'LAVOZ1270')->post($url . $facturama->data->Id . $email . $this->cliente->email);
 
-                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->update([
+                $this->tiro = Tiro::where('cliente_id', $this->clienteid)->where('idTipo', $this->idTipo)->update([
                     'status' => 'facturado',
                 ]);
 

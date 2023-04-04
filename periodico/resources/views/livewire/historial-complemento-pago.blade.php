@@ -18,7 +18,6 @@
                                     <th class='px-4 py-2 uppercase'>factura id</th>
                                     <th class='px-4 py-2 uppercase'>uuid</th>
                                     <th class='px-6 py-2 uppercase'>fecha pago</th>
-                                    <th class='px-4 py-2 uppercase'>fecha</th>
                                     <th class='px-4 py-2 uppercase'>acciones</th>
                                 </tr>
                             </thead>
@@ -33,8 +32,6 @@
                                         <td class='border px-6 py-2'>
                                             {{ \Carbon\Carbon::parse($complemento->fecha_pago)->format('Y-m-d') }}</td>
                                         <td class='border px-4 py-2'>
-                                            {{ \Carbon\Carbon::parse($complemento->created_at)->format('Y-m-d') }}</td>
-                                        <td class="border px-4 py-2">
                                             <a href="{{ url('vistaPreviaComplemento/' . $complemento->invoice_id) }}"
                                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver
                                                 PDF</a>

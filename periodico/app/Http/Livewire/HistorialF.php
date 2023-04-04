@@ -13,6 +13,10 @@ class HistorialF extends Component
 
     public $clientes, $cliente_id, $fecha, $total, $invoice_id, $clienteSeleccionado, $fechaFactura, $idCliente, $fechaRemision, $query = "";
 
+    public function complementpay($id) {
+        return redirect('/makeComplemento/' . $id);
+    }
+
     public function render()
     {
         if ($this->query && $this->fechaRemision) {

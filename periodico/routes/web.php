@@ -29,7 +29,6 @@ use App\Http\Livewire\PdfSuscripcionReporteVencimiento;
 use App\Http\Livewire\SuscripcionReporteFechas;
 use App\Http\Livewire\SuspencionDeContrato;
 use App\Http\Livewire\SuscripcionSuspendidaReporte;
-use App\Http\Livewire\ComplementoDePago;
 use App\Http\Livewire\VistaFacturaPPD;
 use App\Http\Livewire\HistorialSuscripciones;
 use App\Http\Livewire\HistorialComplementoPago;
@@ -46,6 +45,7 @@ use App\Http\Livewire\Ventas\Devolver;
 use App\Http\Livewire\Ventas\RegistroDevoluciones;
 use App\Http\Livewire\Ventas\PDFViewDevolucion;
 use App\Http\Livewire\Invoices\SomeInvoices;
+use App\Http\Livewire\Complementopago\MakeComplement;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +72,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/tiros/remision', function () {
         return view('livewire.tiros.generarRemision');
     });
-    Route::get('/factura/{cliente_id}/{idTipo}', Factura::class);
+    Route::get('/factura/{cliente_id}/{idTipo}/{id}', Factura::class);
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
     Route::get('/cancelarFactura/{id}/{idTipo}', CancelarFactura::class);
     Route::get('/crearVenta', ClienteBuscador::class)->name('CrearVenta');
@@ -88,7 +88,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/PDFRemision', PDFRemision::class)->name('PDFRemision');
     Route::get('/PDFRemisionesP', PdfRemisionesP::class)->name('PDFRemisionesP');
     Route::get('/FacturarPPD/{cliente_id}/{idTipo}', FacturarPPD::class)->name('FacturarPPD');
-    Route::get('/complementoPago', ComplementoDePago::class)->name('complementoPago');
     Route::get('/vistaPrevia/{id}', VistaFactura::class);
     Route::get('/agregarDiasSuscripcion', AgregarDiasSuscripcion::class)->name('agregarDiasSuscripcion');
     Route::get('/suspenderSuscripcion', SuspencionDeContrato::class)->name('suspenderSuscripcion');
@@ -115,6 +114,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/devolucionInforme', RegistroDevoluciones::class)->name('devolucionInforme');
     Route::get('/PDFDevolucionView', PDFViewDevolucion::class)->name('PDFDevolucionView');
     Route::get('/someInvoices/{type}', SomeInvoices::class)->name('someInvoices');
+    Route::get('/makeComplemento/{id}', MakeComplement::class)->name('makeComplemento');
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

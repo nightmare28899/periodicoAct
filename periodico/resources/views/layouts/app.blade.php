@@ -136,6 +136,8 @@
                 case '¡Coloca los periodos primero!':
                 case '¡Coloca los periodos, folio y selecciona los clientes!':
                 case '¡Hubo un error!':
+                case '¡No puedes colocar una cantidad mayor al monto!':
+                case '¡Debes llenar todos los campos!':
                     toastr.error(event.detail.message, '¡Alerta!');
                     break;
                 case '¡El cliente no tiene ningúna venta registrada!':
@@ -147,6 +149,7 @@
                 case '¡Tarifa actualizada correctamente!':
                 case '¡Domicilio actualizado correctamente!':
                 case '¡Venta actualizada exitosamente!':
+                case '¡Datos fiscales actualizados!':
                     toastr.info(event.detail.message, '¡Actualizado!');
                     break;
                 default:

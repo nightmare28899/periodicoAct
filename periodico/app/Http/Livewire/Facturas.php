@@ -20,37 +20,56 @@ class Facturas extends Component
     public function render()
     {
         if ($this->clienteSeleccionado && $this->fechaRemision) {
-            $result = Tiro::where(function ($query) {
-                $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'sin pagar');
-            })
-                ->where('cliente_id', $this->clienteSeleccionado['id'])
-                ->where('fecha', $this->fechaRemision)
+            $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente.clasificacion', '!=', 'CREDITO')
+                ->where('cliente.clasificacion', '!=', 'CRÉDITO')
+                ->where(function ($query) {
+                    $query->where('tiro.status', '!=', 'facturado')
+                        ->where('tiro.status', '=', 'Pagado')
+                        ->orWhere('tiro.status', '=', 'sin pagar');
+                })
+                ->where('tiro.cliente_id', $this->clienteSeleccionado['id'])
+                ->where('tiro.fecha', $this->fechaRemision)
+                ->select('tiro.*', 'cliente.clasificacion')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         } else if ($this->query) {
-            $result = Tiro::where(function ($query) {
-                $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'sin pagar');
-            })
-                ->where('cliente_id', $this->query)
-                ->orWhere('cliente', 'like', '%' . $this->query . '%')
-                ->orWhere('id', $this->query)
+            $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente.clasificacion', '!=', 'CREDITO')
+                ->where('cliente.clasificacion', '!=', 'CRÉDITO')
+                ->where(function ($query) {
+                    $query->where('tiro.status', '!=', 'facturado')
+                        ->where('tiro.status', '=', 'Pagado')
+                        ->orWhere('tiro.status', '=', 'sin pagar');
+                })
+                ->where('tiro.cliente_id', $this->query)
+                ->orWhere('tiro.cliente', 'like', '%' . $this->query . '%')
+                ->orWhere('tiro.id', $this->query)
+                ->select('tiro.*', 'cliente.clasificacion')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         } else if ($this->fechaRemision) {
-            $result = Tiro::where(function ($query) {
-                $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'sin pagar');
-            })
+            $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente.clasificacion', '!=', 'CREDITO')
+                ->where('cliente.clasificacion', '!=', 'CRÉDITO')
+                ->where(function ($query) {
+                    $query->where('status', '=', 'Pagado')
+                        ->orWhere('status', '=', 'sin pagar');
+                })
                 ->where('fecha', $this->fechaRemision)
+                ->select('tiro.*', 'cliente.clasificacion')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         } else {
-            $result = Tiro::where(function ($query) {
-                $query->where('status', '=', 'Pagado')
-                    ->orWhere('status', '=', 'sin pagar');
-            })
+            $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente.clasificacion', '!=', 'CREDITO')
+                ->where('cliente.clasificacion', '!=', 'CRÉDITO')
+                ->where(function ($query) {
+                    $query->where('tiro.status', '!=', 'facturado')
+                        ->where('tiro.status', '=', 'Pagado')
+                        ->orWhere('tiro.status', '=', 'sin pagar');
+                })
+                ->select('tiro.*', 'cliente.clasificacion')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         }

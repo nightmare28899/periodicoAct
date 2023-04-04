@@ -20,7 +20,8 @@
                             autocomplete="off" />
                     </div>
                     <div class="w-64 ml-5 pt-4">
-                        <button class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                        <button
+                            class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
                             wire:click="someInvoices">Varias Facturas</button>
                     </div>
                 </div>
@@ -51,34 +52,37 @@
 
                                 <tbody>
                                     @foreach ($invoices as $invoice)
-                                        <tr>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ $invoice->id }}</td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ \Carbon\Carbon::parse($invoice->fecha)->format('d/m/Y') }}</td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ Str::substr($invoice->idTipo, 0, 5) }}</td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ $invoice->cliente ? $invoice->cliente : $invoice->razon_social }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->entregar }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->devuelto }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->faltante }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->venta }}</td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($invoice->precio, 2)) }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                {{ sprintf('$ %s', number_format($invoice->importe, 2)) }}
-                                            </td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->dia }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->nombreruta }}</td>
-                                            <td class='px-4 py-2 border border-dark'>{{ $invoice->tipo }}</td>
-                                            <td class='px-4 py-2 border border-dark'>
-                                                <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
-                                                    href="{{ url('factura/' . $invoice->cliente_id . '/' . $invoice->idTipo) }}">Facturar</a>
-                                            </td>
-                                        </tr>
+                                        @if ($invoice->status != 'facturado' && $invoice->clasificacion != 'CRÉDITO')
+                                            <tr>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ $invoice->id }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ \Carbon\Carbon::parse($invoice->fecha)->format('d/m/Y') }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ Str::substr($invoice->idTipo, 0, 5) }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ $invoice->cliente ? $invoice->cliente : $invoice->razon_social }}
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->entregar }}</td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->devuelto }}</td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->faltante }}</td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->venta }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ sprintf('$ %s', number_format($invoice->precio, 2)) }}
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    {{ sprintf('$ %s', number_format($invoice->importe, 2)) }}
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->dia }}</td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->nombreruta }}
+                                                </td>
+                                                <td class='px-4 py-2 border border-dark'>{{ $invoice->tipo }}</td>
+                                                <td class='px-4 py-2 border border-dark'>
+                                                    <a class="inline-flex items-center h-10 px-4 m-2 text-sm text-white transition-colors duration-150 bg-indigo-500 hover:bg-indigo-600 rounded-lg focus:shadow-outline"
+                                                        href="{{ url('factura/' . $invoice->cliente_id . '/' . $invoice->idTipo . '/' . $invoice->id) }}">Facturar</a>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>

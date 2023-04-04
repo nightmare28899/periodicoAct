@@ -173,7 +173,7 @@
                                                                     <x-slot name="content">
                                                                         <div class="border-t border-gray-200"></div>
                                                                         <button
-                                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}')"
+                                                                            wire:click="editarRemision({{ $tiro->id }})"
                                                                             class="px-2 w-full py-1 cursor-pointer hover:bg-sky-600 hover:text-white">
                                                                             Devolver periodicos
                                                                         </button>
@@ -193,12 +193,11 @@
                                                                 @endif
                                                             @endif
                                                         @endif
-                                                    @else
-                                                        <button
-                                                            wire:click="editarRemision({{ $tiro->id }}, '{{ $tiro->idTipo }}', '{{ $tiro->dia }}' )"
+                                                    {{-- @else
+                                                        <button wire:click="editarRemision({{ $tiro->id }})"
                                                             class="px-2 py-2 cursor-pointer bg-sky-500 hover:bg-sky-600 text-white my-2 rounded-lg">
                                                             Editar
-                                                        </button>
+                                                        </button> --}}
                                                     @endif
 
                                                     @if ($tiro->status != 'Cancelado')

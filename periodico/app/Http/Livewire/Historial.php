@@ -10,7 +10,6 @@ use App\Models\Domicilio;
 use App\Models\domicilioSubs;
 use App\Models\Suscripcion;
 use App\Models\Ruta;
-use App\Models\Remisionid;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
@@ -66,38 +65,26 @@ class Historial extends Component
                     ->paginate(10);
             }
         } else {
+
+            $this->datos = Tiro::all();
+
             if ($this->query) {
-                $this->datos = Tiro::all();
-
-                for ($i = 0; $i < count($this->datos); $i++) {
-                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
-                        array_push($this->type, $this->datos[$i]->idTipo);
-
-                        $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                            ->join('domicilio_subs', 'domicilio_subs.id', '=', 'tiro.domicilio_id')
-                            ->where(function ($query) {
-                                $query->whereIn('idTipo', $this->type)
-                                    ->where('tiro.id', $this->query)
-                                    ->orWhere('tiro.cliente_id', $this->query)
-                                    ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
-                            })
-                            ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre', 'domicilio_subs.calle', 'domicilio_subs.noext', 'domicilio_subs.noint', 'domicilio_subs.colonia', 'domicilio_subs.cp', 'domicilio_subs.localidad', 'domicilio_subs.referencia', 'domicilio_subs.ciudad')
-                            ->paginate(10);
-                    }
-                }
+                $result = tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->where('idTipo', 'like', 'suscri%')
+                    ->where(function ($query) {
+                        $query->where('tiro.id', $this->query)
+                            ->orWhere('cliente.nombre', 'like', '%' . $this->query . '%');
+                    })
+                    ->select('tiro.*', 'cliente.nombre')
+                    ->paginate(10);
+            } else if ($this->statusTiro != 'Todos') {
+                $result = tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                    ->where('idTipo', 'like', 'suscri%')
+                    ->where('tiro.status', $this->statusTiro)
+                    ->select('tiro.*', 'cliente.nombre')
+                    ->paginate(10);
             } else {
-                $this->datos = Tiro::all();
-                for ($i = 0; $i < count($this->datos); $i++) {
-                    if (substr($this->datos[$i]->idTipo, 0, 6) == 'suscri') {
-                        array_push($this->type, $this->datos[$i]->idTipo);
-                        $result = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
-                            ->where(function ($query) {
-                                $query->whereIn('idTipo', $this->type);
-                            })
-                            ->select('tiro.*', 'cliente.clasificacion', 'cliente.nombre')
-                            ->paginate(10);
-                    }
-                }
+                $result = tiro::where('idTipo', 'like', 'suscri%')->paginate(10);
             }
         }
 
@@ -205,87 +192,9 @@ class Historial extends Component
         return Redirect::to('/PDFPago');
     }
 
-    public function editarRemision($id, $idVenta, $dia)
+    public function editarRemision($id)
     {
         return Redirect::to('/devolverVentas/' . $id);
-
-        $this->modalEditar = true;
-        $this->modalHistorial = false;
-        $this->modalRemision = false;
-        $this->showingModal = false;
-        $tiros = Tiro::join("domicilio", "domicilio.id", "domicilio_id")->join("tarifa", "tarifa.id", "tarifa_id")->find($id);
-        $venta = Ventas::where('idVenta', $idVenta)->first();
-        $this->remisionesRango = Remisionid::all();
-        $allTiro = Tiro::all();
-
-
-        foreach ($this->remisionesRango as $key => $remision) {
-            $remisionFoundId = explode(',', $remision->remisiones_id);
-            $this->remisionFoundDias = explode(',', $remision->dias);
-            $dates = explode(',', $remision->fechas);
-
-            for ($i = 0; $i < count($remisionFoundId); $i++) {
-                if ((int)$remisionFoundId[$i] == $id) {
-                    for ($j = 0; $j < count($this->remisionFoundDias); $j++) {
-                        switch ($this->remisionFoundDias[$j]) {
-                            case 'lunes':
-                                (int)$this->cantLunes += 1;
-                                break;
-                            case 'martes':
-                                (int)$this->cantMartes += 1;
-                                break;
-                            case 'miércoles':
-                                (int)$this->cantMiercoles += 1;
-                                break;
-                            case 'jueves':
-                                (int)$this->cantJueves += 1;
-                                break;
-                            case 'viernes':
-                                (int)$this->cantViernes += 1;
-                                break;
-                            case 'sábado':
-                                (int)$this->cantSabado += 1;
-                                break;
-                            case 'domingo':
-                                (int)$this->cantDomingo += 1;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            for ($i = 4; $i < count($dates); $i++) {
-                array_push($this->fechasFound, $dates[$i]);
-            }
-            dd($this->fechasFound);
-        }
-
-
-        $this->cantLunes != null ? $this->lunes = $venta->lunes * $this->cantLunes : $this->lunes = $venta->lunes;
-        $this->cantMartes != null ? $this->martes = $venta->martes * $this->cantMartes : $this->martes = $venta->martes;
-        $this->cantMiercoles != null ? $this->miercoles = $venta->miércoles * $this->cantMiercoles : $this->miercoles = $venta->miércoles;
-        $this->cantJueves != null ? $this->jueves = $venta->jueves * $this->cantJueves : $this->jueves = $venta->jueves;
-        $this->cantViernes != null ? $this->viernes = $venta->viernes * $this->cantViernes : $this->viernes = $venta->viernes;
-        $this->cantSabado != null ? $this->sabado = $venta->sábado * $this->cantSabado : $this->sabado = $venta->sábado;
-        $this->cantDomingo != null ? $this->domingo = $venta->domingo * $this->cantDomingo : $this->domingo = $venta->domingo;
-
-        $this->cantLunes = 0;
-        $this->cantMartes = 0;
-        $this->cantMiercoles = 0;
-        $this->cantJueves = 0;
-        $this->cantViernes = 0;
-        $this->cantSabado = 0;
-        $this->cantDomingo = 0;
-
-        $this->tiros_id = $id;
-        $this->tarifaOrdinario = $tiros->ordinario;
-        $this->tarifaDominical = $tiros->dominical;
-        $this->devuelto = $tiros->devuelto;
-        $this->idVentaEditar = $idVenta;
-        $this->diaDevolucion = $dia;
-        $this->cantActual = $tiros->entregar;
-        $this->entregar = $tiros->entregar;
-        $this->cantCancelar = false;
     }
 
     public function cerrarEditar()

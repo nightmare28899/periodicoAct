@@ -25,6 +25,7 @@ class FacturaPPD extends Component
                 ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                 ->where(function ($query) {
                     $query->where('cliente_id', $this->query)
+                        ->where('clasificacion', 'CRÉDITO')
                         ->orWhere('cliente', 'like', '%' . $this->query . '%')
                         ->where('fecha', $this->fechaRemision);
                 })
@@ -34,6 +35,7 @@ class FacturaPPD extends Component
             $invoices = Tiro
                 ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                 ->where('cliente_id', $this->query)
+                ->where('clasificacion', 'CRÉDITO')
                 ->orWhere('cliente', 'like', '%' . $this->query . '%')
                 ->select('tiro.*', 'cliente.clasificacion')
                 ->paginate(10);
@@ -41,10 +43,15 @@ class FacturaPPD extends Component
             $invoices = Tiro
                 ::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
                 ->where('fecha', $this->fechaRemision)
+                ->where('clasificacion', 'CRÉDITO')
                 ->select('tiro.*', 'cliente.clasificacion')
                 ->paginate(10);
         } else {
             $invoices = Tiro::join('cliente', 'cliente.id', '=', 'tiro.cliente_id')
+                ->where('cliente.clasificacion', 'CREDITO')
+                ->where('cliente.clasificacion', 'CRÉDITO')
+                ->where('tiro.status', '!=', 'facturado')
+                ->where('tiro.status', '!=', 'cancelado')
                 ->select('tiro.*', 'cliente.clasificacion')
                 ->paginate(10);
         }
