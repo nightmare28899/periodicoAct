@@ -50,9 +50,8 @@
                     <div class="flex-none mx-1">
                         <button wire:click="create"
                             class="my-4 inline-flex justify-center rounded-md border border-transparent px-4 py-2 bg-green-600 text-base font-bold text-white shadow-sm hover:bg-green-700">
-                            <svg wire:loading wire:target="create"
-                                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
+                            <svg wire:loading wire:target="create" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
                                     stroke="currentColor" stroke-width="4">
                                 </circle>
@@ -104,42 +103,80 @@
                     @include('livewire.domicilios.create')
                 @endif
 
-                <div class="overflow-x-auto w-full">
+                <table class="table-auto mb-5">
+                    <h1>Colores Indicadores</h1>
+                    <tbody>
+                        <tr>
+                            <td style="background: gray; padding: 0 1rem;"></td>
+                            <td>&nbsp; No tiene</td>
+                        </tr>
+                        <tr>
+                            <td style="background: red;"></td>
+                            <td>&nbsp; Tiene Venta</td>
+                        </tr>
+                        <tr>
+                            <td style="background: blue"></td>
+                            <td>&nbsp; Tiene Suscripción</td>
+                        </tr>
+                    </tbody>
+                </table>
 
+                <div class="overflow-x-auto w-full">
                     <table class="table-auto border-separate border-spacing-2 border border-dark text-center">
                         <thead>
                             <tr class="bg-gray-100">
+                                <th class="px-4 py-2 w-20 uppercase">Tiene Venta</th>
+                                <th class="px-4 py-2 w-20 uppercase">Tiene Suscripción</th>
                                 <th class="px-4 py-2 w-20 uppercase">ID</th>
+                                <th class="px-4 py-2 w-20 uppercase">Nombre</th>
+                                <th class="px-4 py-2 w-20 uppercase">Tarifa Detalles</th>
+                                <th class="px-4 py-2 w-20 uppercase">Razón Social</th>
                                 <th class="px-4 py-2 w-20 uppercase">Clasificación</th>
                                 <th class="px-4 py-2 w-20 uppercase">Persona</th>
                                 <th class="px-4 py-2 w-20 uppercase">RFC</th>
-                                <th class="px-4 py-2 w-20 uppercase">Nombre</th>
                                 <th class="px-4 py-2 w-20 uppercase">Estado</th>
                                 <th class="px-4 py-2 w-20 uppercase">País</th>
                                 <th class="px-4 py-2 w-20 uppercase">Email</th>
-                                <th class="px-4 py-2 w-20 uppercase">Email Cobranza</th>
+                                {{-- <th class="px-4 py-2 w-20 uppercase">Email Cobranza</th> --}}
                                 <th class="px-4 py-2 w-20 uppercase">Teléfono</th>
                                 <th class="px-4 py-2 w-20 uppercase">Régimen Fiscal</th>
-                                <th class="px-4 py-2 w-20 uppercase">Razón Social</th>
                                 <th class="px-4 py-2 w-20 uppercase">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($clientes)
                                 @foreach ($clientes as $cliente)
+                                    <?php $clientRoute = App\Http\Livewire\Clientes::pathFound($cliente->id); ?>
+                                    <?php $clientSusc = App\Http\Livewire\Clientes::suscripcionFound($cliente->id); ?>
                                     <tr>
+                                        <td class="px-4 py-2 border border-dark"
+                                            style="{{ $clientRoute ? 'background: red;' : 'background: gray;' }}">
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark"
+                                            style="{{ $clientSusc ? 'background: blue;' : 'background: gray;' }}">
+                                        </td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->id }}</td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->nombre }}</td>
+                                        <td class="px-4 py-2 border border-dark">
+                                            @if ($clientRoute)
+                                                Nombre:
+                                                <strong>{{ $clientRoute->tipo }}</strong>
+                                                Ordinario:
+                                                <strong>{{ sprintf('$ %s', number_format($clientRoute->ordinario, 2)) }}</strong>
+                                                Dominical:
+                                                <strong>{{ sprintf('$ %s', number_format($clientRoute->dominical, 2)) }}</strong>
+                                            @endif
+                                        </td>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->razon_social }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->clasificacion }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->rfc }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->rfc_input }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->nombre }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->estado }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->pais }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->email }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->email_cobranza }}</td>
+                                        {{-- <td class="px-4 py-2 border border-dark">{{ $cliente->email_cobranza }}</td> --}}
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->telefono }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->regimen_fiscal }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->razon_social }}</td>
                                         <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                             <x-jet-dropdown align="right" width="48">
                                                 <x-slot name="trigger">

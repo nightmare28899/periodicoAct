@@ -2,7 +2,7 @@
 
     <x-slot name="title">
         <div class="flex sm:px-6">
-            <h1 class="mb-3 text-2xl text-black font-bold ml-3">Datos del Domicilio</h1>
+            <h1 class="mb-3 text-2xl text-black font-bold ml-3">Datos del Domicilio Venta</h1>
             <button type="button" wire:click="$set('clienteModalOpen', false)" wire:loading.attr="disabled"
                 class="mb-3 text-gray-400 bg-transparent hover:bg-red-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-red-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal">
@@ -124,15 +124,15 @@
             </div>
 
             <div class="flex">
-                <div class="w-1/2 p-2">
+                <div class="w-3/4 p-2">
                     <label for="exampleFormControlInput1" class="block text-black text-sm font-bold mb-2">Tarifa</label>
                     <select
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('tarifa_id') border-red-500 @enderror"
                         wire:model.defer="tarifa_id" style="width: 100%">
                         <option value='' style="display: none;">Escoge una opción</option>
-                        @foreach ($tarifas as $id => $tarifa)
-                            <option value={{ $id }}>
-                                {{ $tarifa }}
+                        @foreach ($tarifas as $tarifa)
+                            <option value={{ $tarifa->id }}>
+                                {{ $tarifa->tipo }}, Ordinario: {{ sprintf('$ %s', number_format($tarifa->ordinario, 2)) }}, Dominical: {{ sprintf('$ %s', number_format($tarifa->dominical, 2)) }}
                             </option>
                         @endforeach
                     </select>
@@ -141,7 +141,10 @@
                             class="text-white bg-red-500 text-sm rounded-lg block w-full p-2.5 text-center my-2">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="w-1/2 p-2">
+            </div>
+
+            <div>
+                <div class="w-3/4 p-2">
                     <label for="exampleFormControlInput2"
                         class="block text-black text-sm font-bold mb-2">Referencia:</label>
                     <textarea type="text"
@@ -179,7 +182,8 @@
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="update" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
                         </circle>
                         <path class="opacity-75" fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
@@ -192,7 +196,8 @@
                     class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-blue-600 text-base leading-6 font-bold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                     <svg wire:loading wire:target="store" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                            stroke="currentColor" stroke-width="4">
                         </circle>
                         <path class="opacity-75" fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">

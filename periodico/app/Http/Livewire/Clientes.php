@@ -135,6 +135,20 @@ class Clientes extends Component
         }
     }
 
+    public function pathFound($id)
+    {
+        $domicilioF = Domicilio::join('tarifa', 'tarifa.id', '=', 'domicilio.tarifa_id')->where('domicilio.cliente_id', $id)->first();
+
+        return $domicilioF;
+    }
+
+    public function suscripcionFound($id)
+    {
+        $suscripcionF = Suscripcion::where('cliente_id', $id)->first();
+
+        return $suscripcionF;
+    }
+
     public function render()
     {
         $this->date = new Carbon();
@@ -202,7 +216,8 @@ class Clientes extends Component
         }
 
         $rutas = Ruta::pluck('nombreruta', 'id');
-        $tarifas = Tarifa::pluck('tipo', 'id');
+        /* $tarifas = Tarifa::pluck('tipo', 'id'); */
+        $tarifas = Tarifa::all();
 
         $this->dataClient = Cliente
             ::join("domicilio", "domicilio.cliente_id", "=", "cliente.id")
