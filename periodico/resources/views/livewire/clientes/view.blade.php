@@ -125,20 +125,20 @@
                     <table class="table-auto border-separate border-spacing-2 border border-dark text-center">
                         <thead>
                             <tr class="bg-gray-100">
+                                <th class="px-4 py-2 w-20 uppercase">ID</th>
                                 <th class="px-4 py-2 w-20 uppercase">Tiene Venta</th>
                                 <th class="px-4 py-2 w-20 uppercase">Tiene Suscripción</th>
-                                <th class="px-4 py-2 w-20 uppercase">ID</th>
                                 <th class="px-4 py-2 w-20 uppercase">Nombre</th>
                                 <th class="px-4 py-2 w-20 uppercase">Tarifa Detalles</th>
                                 <th class="px-4 py-2 w-20 uppercase">Razón Social</th>
                                 <th class="px-4 py-2 w-20 uppercase">Clasificación</th>
-                                <th class="px-4 py-2 w-20 uppercase">Persona</th>
+                                {{-- <th class="px-4 py-2 w-20 uppercase">Persona</th> --}}
                                 <th class="px-4 py-2 w-20 uppercase">RFC</th>
                                 <th class="px-4 py-2 w-20 uppercase">Estado</th>
-                                <th class="px-4 py-2 w-20 uppercase">País</th>
+                                {{-- <th class="px-4 py-2 w-20 uppercase">País</th> --}}
                                 <th class="px-4 py-2 w-20 uppercase">Email</th>
                                 {{-- <th class="px-4 py-2 w-20 uppercase">Email Cobranza</th> --}}
-                                <th class="px-4 py-2 w-20 uppercase">Teléfono</th>
+                                {{-- <th class="px-4 py-2 w-20 uppercase">Teléfono</th> --}}
                                 <th class="px-4 py-2 w-20 uppercase">Régimen Fiscal</th>
                                 <th class="px-4 py-2 w-20 uppercase">Acciones</th>
                             </tr>
@@ -149,13 +149,13 @@
                                     <?php $clientRoute = App\Http\Livewire\Clientes::pathFound($cliente->id); ?>
                                     <?php $clientSusc = App\Http\Livewire\Clientes::suscripcionFound($cliente->id); ?>
                                     <tr>
+                                        <td class="px-4 py-2 border border-dark">{{ $cliente->id }}</td>
                                         <td class="px-4 py-2 border border-dark"
                                             style="{{ $clientRoute ? 'background: red;' : 'background: gray;' }}">
                                         </td>
                                         <td class="px-4 py-2 border border-dark"
                                             style="{{ $clientSusc ? 'background: blue;' : 'background: gray;' }}">
                                         </td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->id }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->nombre }}</td>
                                         <td class="px-4 py-2 border border-dark">
                                             @if ($clientRoute)
@@ -169,13 +169,13 @@
                                         </td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->razon_social }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->clasificacion }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->rfc }}</td>
+                                        {{-- <td class="px-4 py-2 border border-dark">{{ $cliente->rfc }}</td> --}}
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->rfc_input }}</td>
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->estado }}</td>
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->pais }}</td>
+                                        {{-- <td class="px-4 py-2 border border-dark">{{ $cliente->pais }}</td> --}}
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->email }}</td>
                                         {{-- <td class="px-4 py-2 border border-dark">{{ $cliente->email_cobranza }}</td> --}}
-                                        <td class="px-4 py-2 border border-dark">{{ $cliente->telefono }}</td>
+                                        {{-- <td class="px-4 py-2 border border-dark">{{ $cliente->telefono }}</td> --}}
                                         <td class="px-4 py-2 border border-dark">{{ $cliente->regimen_fiscal }}</td>
                                         <td class="px-4 py-2 border border-dark flex-nowrap pt-2">
                                             <x-jet-dropdown align="right" width="48">
