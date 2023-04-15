@@ -188,16 +188,16 @@
                         <tr>
                             <td>{{ $fecha }}</td>
                             <td>{{ $diasEntreFechas[$key] == 'domingo' ? 'DOM' : 'ORD' }}</td>
-                            <td>{{ $fecha != '20/03/2023' ? $result[$diasEntreFechas[$key]] : 0 }}</td>
+                            <td>{{ $result[$diasEntreFechas[$key]] }}</td>
                             <td></td>
                             <td></td>
-                            <td>{{ $diasEntreFechas[$key] == 'domingo' ? number_format($result['dominical'], 2) : ($fecha != '20/03/2023' ? number_format($result['ordinario'], 2) : 0) }}
+                            <td>{{ $diasEntreFechas[$key] == 'domingo' ? number_format($result['dominical'], 2) : number_format($result['ordinario'], 2) }}
                             </td>
-                            <td>{{ $diasEntreFechas[$key] == 'domingo' ? number_format($result['dominical'] * $result[$diasEntreFechas[$key]], 2) : ($fecha != '20/03/2023' ? number_format($result['ordinario'] * $result[$diasEntreFechas[$key]], 2) : 0) }}
+                            <td>{{ $diasEntreFechas[$key] == 'domingo' ? number_format($result['dominical'] * $result[$diasEntreFechas[$key]], 2) : number_format($result['ordinario'] * $result[$diasEntreFechas[$key]], 2) }}
                             </td>
                         </tr>
-                        <?php $totales += ($fecha != '20/03/2023' ? $result[$diasEntreFechas[$key]] : 0) ?>
-                        <?php $importe += $diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$diasEntreFechas[$key]] : ($fecha != '20/03/2023' ? $result['ordinario'] * $result[$diasEntreFechas[$key]] : 0) ?>
+                        <?php $totales += $result[$diasEntreFechas[$key]]; ?>
+                        <?php $importe += $diasEntreFechas[$key] == 'domingo' ? $result['dominical'] * $result[$diasEntreFechas[$key]] : $result['ordinario'] * $result[$diasEntreFechas[$key]]; ?>
                     @endforeach
                     <tr>
                         <td>TOTALES</td>
